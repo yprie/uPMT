@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <BorderPane fx:id="borderPaneLabel" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;">
+         <right>
+            <ImageView fx:id="hasExtractImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </right>
+         <padding>
+            <Insets bottom="5.0" left="3.0" right="3.0" top="5.0" />
+         </padding>
+         <center>
+            <Label fx:id="label" text="______" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+   </top>
+   <center>
+      <ScrollPane fx:id="scrollTypesPane" fitToWidth="true" BorderPane.alignment="CENTER">
+         <content>
+            <FlowPane fx:id="typeSpace" alignment="TOP_CENTER" columnHalignment="CENTER" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
