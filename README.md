@@ -6,4 +6,4 @@ This repository provides the basic code made by French students in computer scie
 
 # LICENCE
 
-See the [LICENSE](LICENSE.md) file for license rights and limitations (GPLv3).
+See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3).
