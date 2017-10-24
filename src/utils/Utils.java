@@ -38,7 +38,9 @@ public abstract class Utils {
 		}else{
 			System.out.println("Loading projects");
 			for (String s : projectNames) {
-				projects.add(Projet.load(s));
+				if(s.contains(".ser")) {
+					projects.add(Projet.load(s));
+				}
 			}
 		}	
 	}
