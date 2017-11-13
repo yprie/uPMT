@@ -35,7 +35,7 @@ public class AddMomentToMomentComnand implements Command, Undoable {
 	public AddMomentToMomentComnand(MomentExpVBox moment, Main main){
 		this.main = main;
 		this.momentPane = moment;
-		this.newMoment = new MomentExpVBox(main);
+		this.newMoment = new MomentExpVBox(main, true);
 	}
 
 	@Override

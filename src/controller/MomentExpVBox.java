@@ -102,8 +102,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	// Stack of redoable Classes
 	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
 
+	public MomentExpVBox(Main main, boolean n) {
+		this(main);
+		if(n) this.editNameMode();
+	}
+	
 	public MomentExpVBox(Main main){
-		
 		this.main = main;
 		moment = new MomentExperience("------",-1,-1);
         this.setPrefWidth(USE_COMPUTED_SIZE);
@@ -151,6 +155,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
         addTypeController.addObserver(main.getMainViewController());
 	}
 	
+	
 	private void loadMomentPane(){
 		sousMomentPane = new GridPane();
         try {
@@ -166,7 +171,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.setLabelChangeName(main,this);
-		
 		// adding the deletion of the moment by suppr / del
 		this.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
@@ -179,6 +183,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	            }
 	        }
 	    });
+		
 	}
 	
 	public void LoadMomentData(){
@@ -285,45 +290,49 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 			public void handle(MouseEvent arg0) {
 				if(arg0.getClickCount() == 2){
 					System.out.println("DoubleClick");
-					TextField t = new TextField();
-					t.setMaxWidth(180);
-					t.setText(moment.getNom());
-					t.requestFocus();
-					
-					ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
-						 @Override
-						    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-						    {
-						        if (!newPropertyValue)
-						        {
-						        	RenameMomentCommand cmd = new RenameMomentCommand(nameController,moment.getNom(),t.getText());
-									cmd.execute();
-									UndoCollector.INSTANCE.add(cmd);
-									borderPaneLabel.setCenter(label);
-									t.focusedProperty().removeListener(this);
-						        }
-						    }
-					};
-					t.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-						@Override
-						public void handle(KeyEvent event) {
-							if(event.getCode() == KeyCode.ENTER){
-								t.setText(t.getText());
-								borderPaneLabel.setCenter(label);
-							}
-							if(event.getCode() == KeyCode.ESCAPE){
-								borderPaneLabel.setCenter(label);
-							}
-						}
-					});
-					t.focusedProperty().addListener(listener);
-					Platform.runLater(()->t.requestFocus());
-					Platform.runLater(()->t.selectAll());
-					borderPaneLabel.setCenter(t);
+					editNameMode();
 				}
 			}
 		});
+	}
+	
+	private void editNameMode() {
+		TextField t = new TextField();
+		t.setMaxWidth(180);
+		t.setText(moment.getNom());
+		t.requestFocus();
+		
+		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
+			 @Override
+			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+			    {
+			        if (!newPropertyValue)
+			        {
+			        	RenameMomentCommand cmd = new RenameMomentCommand(nameController,moment.getNom(),t.getText());
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+						borderPaneLabel.setCenter(label);
+						t.focusedProperty().removeListener(this);
+			        }
+			    }
+		};
+		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER){
+					t.setText(t.getText());
+					borderPaneLabel.setCenter(label);
+				}
+				if(event.getCode() == KeyCode.ESCAPE){
+					borderPaneLabel.setCenter(label);
+				}
+			}
+		});
+		t.focusedProperty().addListener(listener);
+		Platform.runLater(()->t.requestFocus());
+		Platform.runLater(()->t.selectAll());
+		borderPaneLabel.setCenter(t);
 	}
 	
 	public TypeClassRepresentationController getTypeClassRep(Classe item) {

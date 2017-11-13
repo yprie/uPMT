@@ -373,6 +373,17 @@ public class MainViewController implements Initializable, Observer {
 		TextField t = new TextField();
 		t.setText(main.getCurrentMoment().getMoment().getNom());
 		
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	//Le Textfield demande le Focus
+            	t.requestFocus();
+            	//Si le text n'est pas vide, on selectionne tout.
+            	if(!t.getText().isEmpty())
+            		t.selectAll();
+            }
+        });
+		
 		ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
 			 @Override
 			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)

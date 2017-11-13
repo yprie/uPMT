@@ -67,7 +67,7 @@ public class AddMomentCommand implements Command,Undoable{
 		main.getCurrentDescription().addMomentExp(momentExpPane.getMoment());
 		
 		if(momentExpPane.getCol() == main.getCurrentDescription().getNumberCols()-1){
-			MomentExpVBox mb = new MomentExpVBox(main);
+			MomentExpVBox mb = new MomentExpVBox(main, true);
 			MainViewTransformations.addMomentExpBorderPaneListener(mb, main);
 			ColumnConstraints c = new ColumnConstraints();
 			c.setMinWidth(180);
