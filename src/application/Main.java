@@ -101,7 +101,7 @@ public class Main extends Application {
 		}
 		
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle(_langBundle.getString("main_title"));
+		this.primaryStage.setTitle("µPMT - Micro-Phenomenology Modelling Tool");
 		
 		//Launching layouts
 		initRootLayout();
