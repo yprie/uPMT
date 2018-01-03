@@ -178,7 +178,7 @@ public class Main extends Application {
     }
     
     /**
-     * Launch and show the lauching screen
+     * Launch and show the launching screen
      */
     public void showLaunchingScreen(){
 		Stage promptWindow = new Stage();

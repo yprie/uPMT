@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="typePane" maxHeight="30.0" prefHeight="30.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" maxHeight="30.0" prefHeight="30.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" text="Label" BorderPane.alignment="CENTER">
          <graphic>
@@ -20,10 +20,10 @@
    <center>
       <HBox alignment="CENTER_LEFT">
          <children>
-            <Button fx:id="rename" mnemonicParsing="false" onAction="#rename" prefHeight="25.0" />
-            <Button fx:id="addFolder" mnemonicParsing="false" onAction="#addFolder" prefHeight="25.0" />
-            <Button fx:id="addClass" mnemonicParsing="false" onAction="#addClass" prefHeight="25.0" />
-            <Button fx:id="deleteFolder" mnemonicParsing="false" onAction="#deleteFolder" prefHeight="25.0" />
+            <Button fx:id="rename" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#rename" prefHeight="25.0" />
+            <Button fx:id="addFolder" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#addFolder" prefHeight="25.0" />
+            <Button fx:id="addClass" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#addClass" prefHeight="25.0" />
+            <Button fx:id="deleteFolder" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#deleteFolder" prefHeight="25.0" />
          </children>
          <BorderPane.margin>
             <Insets left="15.0" />
