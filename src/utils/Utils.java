@@ -32,31 +32,85 @@ public abstract class Utils {
 	public static void loadProjects(LinkedList<Projet> projects){
 		HashSet<String> projectNames = loadProjectsNames();
 		
+		
 		if(projectNames.isEmpty()){
 			// For debug purposes
 			System.out.println("No projects to load");
 		}else{
 			System.out.println("Loading projects");
 			for (String s : projectNames) {
-				if(s.contains(".ser")) {
+				if(s.contains(Projet.FORMAT)) {
 					projects.add(Projet.load(s));
 				}
 			}
-		}	
+		}
 	}
 
+	
+	public static boolean checkRecovery() {
+		HashSet<String> projectNames = loadProjectsNames();
+		boolean ret = false;
+		
+		if(projectNames.isEmpty()){
+			// For debug purposes
+			System.out.println("No projects to load");
+		}else{
+			System.out.println("Loading projects");
+			for (String s : projectNames) {
+				if(s.contains(Projet.FORMAT)) {
+					if(projectNames.contains(Projet.RECOVERY+s)) {
+						ret=true;
+						break;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+	
 	private static HashSet<String> loadProjectsNames() {
 		HashSet<String> results = new HashSet<String>();
 
-		File[] files = new File("./save").listFiles();
+		File[] files = new File(Projet.PATH).listFiles();
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 
 		for (File file : files) {
 		    if (file.isFile()) {
 		        results.add(file.getName());
+		        System.out.println(file.getName());
 		    }
 		}
 		return results;
+	}
+	
+	public static void deleteRecovery() {
+		File[] files = new File(Projet.PATH).listFiles();
+		//If this pathname does not denote a directory, then listFiles() returns null. 
+
+		for (File file : files) {
+		    if (file.isFile()) {
+		    	if(file.getName().contains(Projet.RECOVERY))
+		    		file.delete();
+		    }
+		}
+	}
+	
+	public static void replaceRecovery() {
+
+		//Search RecpveryFiles
+		File[] files = new File(Projet.PATH).listFiles();
+		//If this pathname does not denote a directory, then listFiles() returns null. 
+		for (File file : files)
+		    if (file.isFile()) 
+		    	if(file.getName().contains(Projet.RECOVERY)) {
+		    		String fileName = file.getName().replace(Projet.RECOVERY, "");
+		    		System.out.println();
+		    		File fileToDelete = new File(Projet.PATH+fileName);
+		    		fileToDelete.delete();
+		    		file.renameTo(new File(Projet.PATH+fileName));
+		    	}
+		
+		
 	}
 	
 	public static String toRGBCode( Color color )

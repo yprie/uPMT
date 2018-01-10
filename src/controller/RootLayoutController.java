@@ -45,6 +45,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import utils.UndoCollector;
+import utils.Utils;
 
 public class RootLayoutController implements Initializable{
 		
@@ -114,29 +115,39 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	private void saveRequest(WindowEvent event){
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle(main._langBundle.getString("quit"));
-    	alert.setHeaderText(main._langBundle.getString("quit_alarm"));
-    	ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("ok"));
-    	ButtonType buttonTypeTwo = new ButtonType(main._langBundle.getString("no"));
-    	ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"));
-    	
-    	alert.getButtonTypes().setAll(buttonTypeOne,buttonTypeTwo,buttonTypeCancel);
-
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == buttonTypeOne){
-    		saveProject();
-    		window.close();
-    	} else if (result.get() == buttonTypeTwo) {
-    	    window.close();
-    	} else if (result.get() == buttonTypeCancel){
-    	    alert.close();
-    	    try {
-    	    	 event.consume();
+		if(!main.isNeedToBeSaved()) {
+			try {
+   	    	 event.consume();
 			} catch (NullPointerException e) {
 				System.out.println("no event, exit normally");
 			}
-    	}
+			window.close();
+		} else {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+	    	alert.setTitle(main._langBundle.getString("quit"));
+	    	alert.setHeaderText(main._langBundle.getString("quit_alarm"));
+	    	ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("ok"));
+	    	ButtonType buttonTypeTwo = new ButtonType(main._langBundle.getString("no"));
+	    	ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"));
+	    	
+	    	alert.getButtonTypes().setAll(buttonTypeOne,buttonTypeTwo,buttonTypeCancel);
+	
+	    	Optional<ButtonType> result = alert.showAndWait();
+	    	if (result.get() == buttonTypeOne){
+	    		saveProject();
+	    		window.close();
+	    	} else if (result.get() == buttonTypeTwo) {
+	    		Utils.deleteRecovery();
+	    	    window.close();
+	    	} else if (result.get() == buttonTypeCancel){
+	    	    alert.close();
+	    	    try {
+	    	    	 event.consume();
+				} catch (NullPointerException e) {
+					System.out.println("no event, exit normally");
+				}
+	    	}
+		}
 	}
 	
 	@FXML

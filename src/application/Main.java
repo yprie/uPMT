@@ -85,7 +85,9 @@ public class Main extends Application {
 	private RootLayoutController rootLayoutController;
 	
 	//Main reference to the clicked moment
-	private MomentExpVBox currentMoment;	
+	private MomentExpVBox currentMoment;
+	
+	private boolean needSave = false;
 	
 	public void start(Stage primaryStage) throws IOException {
 		loadProperties();
@@ -101,7 +103,7 @@ public class Main extends Application {
 		}
 		
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("µPMT - Micro-Phenomenology Modelling Tool");
+		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 		
 		//Launching layouts
 		initRootLayout();
@@ -150,6 +152,9 @@ public class Main extends Application {
 		this.projects = new LinkedList<Projet>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
+		if(Utils.checkRecovery()) {
+			this.mainViewController.alertRecovery();
+		}
 		Utils.loadProjects(projects);
 	}
 	
@@ -274,13 +279,19 @@ public class Main extends Application {
 	 * saves the current project
 	 */
 	public void saveCurrentProject(){
+		needSave = false;
 		currentProject.save();
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 	}
 	
 	public void needToSave(){
+		needSave = true;
+		currentProject.autosave();
+		System.out.println("NEED TO SAVE");
 		this.primaryStage.setTitle(_langBundle.getString("main_title")+" *");
 	}
+	
+	public boolean isNeedToBeSaved() {return needSave;}
 	
 	public void changeLocaleAndReload(String locale){
 		saveCurrentProject();

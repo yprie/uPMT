@@ -28,11 +28,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class Projet implements Serializable {
 	
 	private String nom;
+	public static final String FORMAT = ".ser";
+	public static final String PATH = "./save/";
+	public static final String RECOVERY = "recovery_";
+	
 	private Schema schemaProjet;
 	private LinkedList<DescriptionEntretien> entretiens;
 
@@ -60,10 +65,22 @@ public class Projet implements Serializable {
 	}
 
 	public void save(){
+		//delete autosave file
+		File autoSaveFile = new File(PATH+RECOVERY+nom+FORMAT);
+		autoSaveFile.delete();
+		saveFile(PATH+nom+FORMAT);
+		
+	}
+	
+	public void autosave(){
+		saveFile(PATH+RECOVERY+nom+FORMAT);	
+	}
+	
+	private void saveFile(String filename){
 		// save in it's own file
 		ObjectOutputStream oos = null;
 		try {
-			final FileOutputStream fichier = new FileOutputStream("./save/"+this.getName()+".ser");
+			final FileOutputStream fichier = new FileOutputStream(filename);
 			oos = new ObjectOutputStream(fichier);
 			oos.writeObject(this);
 			oos.flush();
@@ -96,7 +113,7 @@ public class Projet implements Serializable {
 		ObjectInputStream ois = null;
 		
 		try {
-			final FileInputStream fichier = new FileInputStream("./save/"+projet);
+			final FileInputStream fichier = new FileInputStream(PATH+projet);
 			System.out.println(projet);
 			ois = new ObjectInputStream(fichier);
 			final Projet p2 = (Projet) ois.readObject();

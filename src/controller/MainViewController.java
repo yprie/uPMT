@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.lang.Object;
 
@@ -52,7 +53,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -62,6 +65,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -79,6 +83,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Classe;
 import model.DescriptionEntretien;
 import model.MomentExperience;
@@ -447,6 +452,30 @@ public class MainViewController implements Initializable, Observer {
 		if(obs.getClass().equals(new MomentExtractController(null).getClass())) {
 			this.extraitEntretien.setText((String) value);
 		}
+	}
+	
+	public void alertRecovery(){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+    	/*alert.setTitle(main._langBundle.getString("recovery"));
+    	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));*/
+		alert.setTitle("TRADUCTION NEEDED: Recovery");
+    	alert.setHeaderText("TRADUCTION NEEDED: We detected that the application did not close properly. Do you want to recover a copy of the project that was interrupted?");
+    	ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("ok"));
+    	ButtonType buttonTypeTwo = new ButtonType(main._langBundle.getString("no"));
+    	
+    	alert.getButtonTypes().setAll(buttonTypeOne,buttonTypeTwo);
+
+    	Optional<ButtonType> result = alert.showAndWait();
+    	if (result.get() == buttonTypeOne){
+    		Utils.replaceRecovery();
+    		alert.close();
+    	} else if (result.get() == buttonTypeTwo) {
+    		Utils.deleteRecovery();
+    		alert.close();
+    	} else{
+    		System.out.println("IL SEST PASSE UN TRUC");
+    	    alert.close();
+    	}
 	}
 
 }
