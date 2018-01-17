@@ -37,6 +37,12 @@
                   <MenuItem fx:id="redo1111" mnemonicParsing="false" onAction="#openChineseVersion" text="中文" />
                </items>
             </Menu>
+             <Menu mnemonicParsing="false" text="%help">
+               <items>                 
+                  <MenuItem fx:id="aboutUs" mnemonicParsing="false" onAction="#aboutUs" text="%about_us" />               
+               	  <MenuItem fx:id="link" mnemonicParsing="false" onAction="#openALink" text="%link_to_github" />               
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>

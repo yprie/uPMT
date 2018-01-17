@@ -1,7 +1,7 @@
 /*****************************************************************************
  * RootLayoutController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,14 @@
 package controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +42,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
@@ -56,6 +60,9 @@ public class RootLayoutController implements Initializable{
 	private @FXML MenuItem exportProject;
 	private @FXML MenuItem undo;
 	private @FXML MenuItem redo;
+	private @FXML MenuItem aboutUs; 
+//	private @FXML TextArea document;
+	private @FXML MenuItem link;
 	
 	private Main main;
 	private Stage window;
@@ -92,6 +99,52 @@ public class RootLayoutController implements Initializable{
 		UndoCollector.INSTANCE.redo();;
 	}
 	
+	@FXML
+	public void aboutUs(){
+		Stage helpWindow = new Stage();
+		helpWindow.setTitle("Help");
+		helpWindow.setResizable(false);
+		helpWindow.setWidth(610);  
+		helpWindow.setHeight(350);    
+ 
+		try {
+			FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/HelpView.fxml"));
+//          loader.setController(new HelpController(main, helpWindow, this.document));
+            loader.setController(new HelpController(main, helpWindow));
+            loader.setResources(main._langBundle);
+            AnchorPane layout = (AnchorPane) loader.load();
+			Scene main = new Scene(layout);
+			helpWindow.setScene(main);
+			helpWindow.showAndWait();
+			
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}
+	}
+	// ----------------------------modifier: open a document
+	@FXML
+	public void openALink() {
+		Stage web = new Stage();
+		
+//		link.onActionProperty().addListener(listener);
+
+		link.setOnAction((ActionEvent action)->{ 
+			try {
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+        });
+	     web.setAlwaysOnTop(true); 
+	     web.centerOnScreen();
+	     web.close(); 
+	}
 	
 	@FXML
 	public void newInterview(){

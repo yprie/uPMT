@@ -63,11 +63,12 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
+                                <!--
                               <Button fx:id="editName" mnemonicParsing="false" onAction="#editNameLabel" prefHeight="30.0" prefWidth="30.0">
                                  <HBox.margin>
                                     <Insets left="5.0" />
                                  </HBox.margin>
-                              </Button>
+                              </Button> -->
                               <Region HBox.hgrow="ALWAYS" />
                               <Button fx:id="closeBtn" mnemonicParsing="false" onAction="#closeInspector" prefHeight="30.0" prefWidth="30.0" />
                            </children>
@@ -92,11 +93,15 @@
                            </children>
                         </HBox>
                         <Separator maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
+                        <!--
                         <Label text="%start_time" />
                         <TextField fx:id="debut" />
                         <Label layoutX="20.0" layoutY="299.0" text="%end_time" />
                         <TextField fx:id="fin" />
                         <Label layoutX="20.0" layoutY="465.0" text="%type" />
+                        -->
+                        <Label text="%duration" />
+                        <TextField fx:id="duree" prefHeight="24.0" />
                         <FlowPane fx:id="typesArea" hgap="3.0" prefHeight="200.0" vgap="3.0" />
                      </children>
 <!-- <<<<<<< HEAD -->
