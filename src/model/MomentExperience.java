@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExperience.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,9 @@ import javafx.scene.paint.Color;
 public class MomentExperience implements Serializable {
 
 	private Date date;
-	private String debut;
-	private String fin;
+	private String duree;
+//	private String debut;
+//	private String fin;
 	private String nom;
 	private String morceauDescripteme;
 	private LinkedList<Type> types;
@@ -55,18 +56,14 @@ public class MomentExperience implements Serializable {
 		this.date = date;
 	}
 	
-	public String getDebut(){
-		return debut;
+	public String getDuree() {
+		return duree;
 	}
-	public void setDebut(String d){
-		debut = d;
+
+	public void setDuree(String d) {
+		duree = d;
 	}
-	public String getFin(){
-		return fin;
-	}
-	public void setFin(String s){
-		fin = s;
-	}
+
 
 	public String getNom() {
 		return nom;

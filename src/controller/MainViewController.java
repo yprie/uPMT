@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,8 +110,9 @@ public class MainViewController implements Initializable, Observer {
 	
 	// Inspector
 	private @FXML Label nomMoment;
-	private @FXML TextField debut;
-	private @FXML TextField fin;
+//	private @FXML TextField debut;
+//	private @FXML TextField fin;
+	private @FXML TextField duree;
 	private @FXML TextArea extraitEntretien;
 	private @FXML ScrollPane inspector_pane;
 	private @FXML Button closeBtn;
@@ -119,7 +120,7 @@ public class MainViewController implements Initializable, Observer {
 	private @FXML ColorPicker couleurMoment;
 	private @FXML FlowPane typesArea;
 	private @FXML Button showExtractButton;
-	private @FXML Button editName;
+//	private @FXML Button editName;
 	private @FXML HBox vBoxLabel;
 	private @FXML SplitPane mainSplitPane;
 	
@@ -134,6 +135,7 @@ public class MainViewController implements Initializable, Observer {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		this.setLabelChangeName(main,this);
 		mainSplitPane.setDividerPosition(0,0.15);
 		mainSplitPane.setDividerPosition(1,0.85);
 		
@@ -204,6 +206,127 @@ public class MainViewController implements Initializable, Observer {
 		initInspector();
 	}
 	
+	private void setLabelChangeName(Main main,MainViewController thiss){
+		nomMoment.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(arg0.getClickCount() == 2){
+					System.out.println("DoubleClick");
+					editNameMode();
+				}
+			}
+		});
+	}
+	
+	//modifier 
+	private void editNameMode() {
+		TextField t = new TextField();
+		t.setText(main.getCurrentMoment().getMoment().getNom());
+		t.requestFocus();
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	//Le Textfield demande le Focus
+            	t.requestFocus();
+            	//Si le text n'est pas vide, on selectionne tout.
+            	if(!t.getText().isEmpty())
+            		t.selectAll();
+            }
+        });
+		
+		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
+			 @Override
+			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+			    {
+			        if (!newPropertyValue)
+			        {
+			        	RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentNameController(),
+								main.getCurrentMoment().getMoment().getNom(),t.getText());
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+						vBoxLabel.getChildren().remove(t);
+						vBoxLabel.getChildren().add(0,nomMoment);
+						t.focusedProperty().removeListener(this);
+			        }
+			    }
+		};
+		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.ENTER){
+					t.setText(t.getText());
+					vBoxLabel.getChildren().remove(t);
+				}
+				if(event.getCode() == KeyCode.ESCAPE){
+					vBoxLabel.getChildren().remove(t);
+					vBoxLabel.getChildren().add(0, nomMoment);
+				}
+			}
+		});
+		t.focusedProperty().addListener(listener);
+//		Platform.runLater(()->t.requestFocus());
+//		Platform.runLater(()->t.selectAll());
+		vBoxLabel.getChildren().add(0, t);
+		vBoxLabel.getChildren().remove(nomMoment);
+	}
+	
+//	@FXML
+//	public void editNameLabel() {
+//		TextField t = new TextField();
+//		t.setText(main.getCurrentMoment().getMoment().getNom());
+//		
+//		Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//            	//Le Textfield demande le Focus
+//            	t.requestFocus();
+//            	//Si le text n'est pas vide, on selectionne tout.
+//            	if(!t.getText().isEmpty())
+//            		t.selectAll();
+//            }
+//        });
+//		
+//		ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
+//			 @Override
+//			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+//			    {
+//			        if (!newPropertyValue)
+//			        {
+//			        	RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentNameController(),
+//						main.getCurrentMoment().getMoment().getNom(),t.getText());
+//						cmd.execute();
+//						UndoCollector.INSTANCE.add(cmd);
+//						vBoxLabel.getChildren().remove(t);
+//						vBoxLabel.getChildren().add(0,nomMoment);
+//						editName.setDisable(false);
+//						t.focusedProperty().removeListener(this);
+//			        }
+//			    }
+//		};
+//		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
+//
+//			@Override
+//			public void handle(KeyEvent event) {
+//				if (event.getCode() == KeyCode.ENTER) {
+//					t.setText(t.getText());
+//					vBoxLabel.getChildren().remove(t);
+//				}
+//				if (event.getCode() == KeyCode.ESCAPE) {
+//					vBoxLabel.getChildren().remove(t);
+//					vBoxLabel.getChildren().add(0, nomMoment);
+//					editName.setDisable(false);
+//
+//				}
+//			}
+//		});
+//		t.focusedProperty().addListener(listener);
+//		vBoxLabel.getChildren().add(0, t);
+//		vBoxLabel.getChildren().remove(nomMoment);
+//		editName.setDisable(true);
+//	}
+	
 	public void updateGrid() {
 		gridScrollPane.setContent((interviewsPane.get(main.getCurrentDescription())));
 		main.setGrid(interviewsPane.get(main.getCurrentDescription()));
@@ -262,23 +385,28 @@ public class MainViewController implements Initializable, Observer {
 			main.getCurrentMoment().getMoment().setMorceauDescripteme(newValue);
 
 		});
-		debut.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("debut changed from " + oldValue + " to " + newValue);
-			main.getCurrentMoment().getMoment().setDebut(newValue);
+//		debut.textProperty().addListener((observable, oldValue, newValue) -> {
+//			System.out.println("debut changed from " + oldValue + " to " + newValue);
+//			main.getCurrentMoment().getMoment().setDebut(newValue);
+//
+//		});
+//		fin.textProperty().addListener((observable, oldValue, newValue) -> {
+//			System.out.println("fin changed from " + oldValue + " to " + newValue);
+//			main.getCurrentMoment().getMoment().setFin(newValue);
+//		});
+		duree.textProperty().addListener((observable, oldValue, newValue) -> {
+			System.out.println("duree changed from " + oldValue + " to " + newValue);
+			main.getCurrentMoment().getMoment().setDuree(newValue);
 
-		});
-		fin.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("fin changed from " + oldValue + " to " + newValue);
-			main.getCurrentMoment().getMoment().setFin(newValue);
 		});
 
 	}
 
 	public void renderInspector() {
 		openInspector();
-		File image = new File("./img/rename.png");
-		Node icon = new ImageView(new Image(image.toURI().toString()));
-		this.editName.setGraphic(icon);
+//		File image = new File("./img/rename.png");
+//		Node icon = new ImageView(new Image(image.toURI().toString()));
+//		this.editName.setGraphic(icon);
 		
 		File image2 = new File("./img/close.gif");
 		Node icon2 = new ImageView(new Image(image2.toURI().toString()));
@@ -299,8 +427,9 @@ public class MainViewController implements Initializable, Observer {
 
 		MomentExperience currentMoment = main.getCurrentMoment().getMoment();
 		nomMoment.setText(currentMoment.getNom());
-		debut.setText(currentMoment.getDebut());
-		fin.setText(currentMoment.getFin());
+//		debut.setText(currentMoment.getDebut());
+//		fin.setText(currentMoment.getFin());
+		duree.setText(currentMoment.getDuree());
 		extraitEntretien.setText(currentMoment.getMorceauDescripteme());
 
 		typesArea.getChildren().clear();
@@ -373,60 +502,7 @@ public class MainViewController implements Initializable, Observer {
 		main.getCurrentMoment().getMomentColorController().update(colorString);
 	}
 
-	@FXML
-	public void editNameLabel() {
-		TextField t = new TextField();
-		t.setText(main.getCurrentMoment().getMoment().getNom());
-		
-		Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-            	//Le Textfield demande le Focus
-            	t.requestFocus();
-            	//Si le text n'est pas vide, on selectionne tout.
-            	if(!t.getText().isEmpty())
-            		t.selectAll();
-            }
-        });
-		
-		ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
-			 @Override
-			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-			    {
-			        if (!newPropertyValue)
-			        {
-			        	RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentNameController(),
-						main.getCurrentMoment().getMoment().getNom(),t.getText());
-						cmd.execute();
-						UndoCollector.INSTANCE.add(cmd);
-						vBoxLabel.getChildren().remove(t);
-						vBoxLabel.getChildren().add(0,nomMoment);
-						editName.setDisable(false);
-						t.focusedProperty().removeListener(this);
-			        }
-			    }
-		};
-		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					t.setText(t.getText());
-					vBoxLabel.getChildren().remove(t);
-				}
-				if (event.getCode() == KeyCode.ESCAPE) {
-					vBoxLabel.getChildren().remove(t);
-					vBoxLabel.getChildren().add(0, nomMoment);
-					editName.setDisable(false);
-
-				}
-			}
-		});
-		t.focusedProperty().addListener(listener);
-		vBoxLabel.getChildren().add(0, t);
-		vBoxLabel.getChildren().remove(nomMoment);
-		editName.setDisable(true);
-	}
 
 	@FXML
 	public void showExtract() {

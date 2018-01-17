@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Main.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -340,16 +340,26 @@ public class Main extends Application {
 			}
 		}
 		
+//		if(!classes.isEmpty()){
+//			for(String s : classes){
+//				writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
+//				+","+format(m.getFin())+","+s);
+//			}
+//		}else{
+//			writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
+//			+","+format(m.getFin())+",\"\",\"\",\"\"");
+//		}
+
 		if(!classes.isEmpty()){
 			for(String s : classes){
-				writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
-				+","+format(m.getFin())+","+s);
+				writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","
+			+format(m.getCouleur())+","+format(m.getDuree())+","+s);
 			}
 		}else{
-			writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
-			+","+format(m.getFin())+",\"\",\"\",\"\"");
+			writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","
+		+format(m.getCouleur())+","+format(m.getDuree())+",\"\",\"\",\"\"");
 		}
-
+		
 		for (int i = 0; i < m.getSousMoments().size(); i++) {
 			MomentExperience sub = m.getSousMoments().get(i);
 			writeMoment(ent,sub, writer, hierarchy+"."+(i+1));
