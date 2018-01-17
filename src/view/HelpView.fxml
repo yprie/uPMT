@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="722.0" prefWidth="1231.0">
+         <center>
+            <TextArea fx:id="document" prefHeight="670.0" prefWidth="1231.0" text="&#10;&#10;&#10;&#10;               This is a tool called uPMT which is aimed at reserchers using explicitation or micropheno-&#10;     menological interviews to study lived experience. &#10;&#10;                It has been designed to help analyze the micro-dynamics of experience as described in &#10;      interview transcriptions, by modelling and formalizing the sequential unfolding of &quot;experience &#10;      moments&quot; described with concepts and attributes.&#10;&#10;&#10;&#10;&#10;&#10;&#10;                  @Version1.0 of the software was implemented by Corentin Jezequel in late 2017,&#10;                                under the supervision of Yannick Prié and Thomas Rabeyron.                                     &#10;" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
