@@ -24,12 +24,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Properties;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 public class Projet implements Serializable {
 	
@@ -105,7 +113,7 @@ public class Projet implements Serializable {
 	
 	
 	public void remove(){
-		File f = new File("./save/"+this.getName()+".ser");
+		File f = new File(PATH+this.getName()+FORMAT);
 		f.delete();
 	}
 	
@@ -119,7 +127,21 @@ public class Projet implements Serializable {
 			final Projet p2 = (Projet) ois.readObject();
 			return p2;
 
-		} catch (final java.io.IOException e) {
+		}
+		catch(InvalidClassException e) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+	        alert.setTitle("Error, version conflict");
+	        alert.setHeaderText("Your saves are in conflict with this new version.");
+	        alert.setContentText("Please delete your saves \""+PATH+projet+"\" to fix the problem.\n");
+
+	        Optional<ButtonType> result = alert.showAndWait();
+	        if (result.get() == ButtonType.OK){
+	    		alert.close();
+	        } else {
+	            alert.close();
+	        }
+		}
+		catch (final java.io.IOException e) {
 			e.printStackTrace();
 		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
