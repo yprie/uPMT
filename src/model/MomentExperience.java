@@ -39,6 +39,7 @@ public class MomentExperience implements Serializable {
 	private LinkedList<MomentExperience> sousMoments;
 	private int gridCol;
 	private String couleur = "#D3D3D3";
+	private Propriete currentProperty =null;
 
 	public MomentExperience(String nom,int row,int col){
 		this.sousMoments = new LinkedList<MomentExperience>();
@@ -127,5 +128,13 @@ public class MomentExperience implements Serializable {
 
 	public void setCouleur(String couleur) {
 		this.couleur = couleur;
+	}
+	
+	public void setCurrentProperty(Propriete n) {
+		currentProperty = n;
+	}
+	
+	public Propriete getCurrentProperty() {
+		return currentProperty;
 	}
 }

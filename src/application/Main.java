@@ -87,6 +87,7 @@ public class Main extends Application {
 	//Main reference to the clicked moment
 	private MomentExpVBox currentMoment;
 	
+	
 	private boolean needSave = false;
 	
 	public void start(Stage primaryStage) throws IOException {
@@ -472,4 +473,5 @@ public class Main extends Application {
 	public void set_langBundle(ResourceBundle _langBundle) {
 		this._langBundle = _langBundle;
 	}
+
 }

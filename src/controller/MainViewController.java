@@ -73,6 +73,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
@@ -86,6 +87,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Classe;
 import model.DescriptionEntretien;
+import model.Enregistrement;
 import model.MomentExperience;
 import model.Propriete;
 import model.Type;
@@ -123,6 +125,7 @@ public class MainViewController implements Initializable, Observer {
 //	private @FXML Button editName;
 	private @FXML HBox vBoxLabel;
 	private @FXML SplitPane mainSplitPane;
+	
 	
 	Main main;
 
@@ -203,6 +206,8 @@ public class MainViewController implements Initializable, Observer {
 				}
 			}
 		});
+		
+		
 		initInspector();
 	}
 	
@@ -477,7 +482,7 @@ public class MainViewController implements Initializable, Observer {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien, Enregistrement.MOMENT));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);
@@ -488,6 +493,26 @@ public class MainViewController implements Initializable, Observer {
 			// TODO Exit Program
 			e.printStackTrace();
 		}
+	}
+	
+	@FXML
+	public void pickExtractAttribute() {
+		/*Stage promptWindow = new Stage();
+		promptWindow.setTitle("Selection de l'extrait");
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien));
+			loader.setResources(main._langBundle);
+			BorderPane layout = (BorderPane) loader.load();
+			Scene launchingScene = new Scene(layout);
+			promptWindow.setScene(launchingScene);
+			promptWindow.show();
+
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}*/
 	}
 
 	// function used to select a color for the moment

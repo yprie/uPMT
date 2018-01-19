@@ -20,30 +20,36 @@
 
 package controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.ChangeExtractProperty;
 import controller.command.RenameMomentCommand;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import model.Enregistrement;
 import utils.UndoCollector;
 
 public class SelectDescriptemePartController implements Initializable {
+	
 	
 	private Main main;
 	private Stage stage;
 	private @FXML TextArea descriptemeArea;
 	private @FXML Button acceptSelection;
 	private TextArea inspectorText;
+	private String extractFor;
 
-	public SelectDescriptemePartController(Main main, Stage s,TextArea t) {
+	public SelectDescriptemePartController(Main main, Stage s,TextArea t, String e) {
 		this.main = main;
 		this.stage = s;
 		this.inspectorText = t;
+		extractFor = e;
 	}
 	
 	@Override
@@ -54,17 +60,32 @@ public class SelectDescriptemePartController implements Initializable {
 	
 	@FXML
 	public void validateSelection(){
-		if(this.descriptemeArea.getSelectedText().trim().length()!=0){
-			RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentExtractController(),
-					main.getCurrentMoment().getMoment().getMorceauDescripteme(),this.descriptemeArea.getSelectedText().trim());
+		String newExtract = "";
+		if(this.descriptemeArea.getSelectedText().trim().length()!=0)
+			newExtract = this.descriptemeArea.getSelectedText().trim();
+		else
+			newExtract = null;
+	
+		if(extractFor==Enregistrement.PROPERTY) {
+			System.out.println("Description: "+main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte());
+			System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
+			ChangeExtractProperty cmd = new ChangeExtractProperty(
+					main.getCurrentMoment().getPropertyExtractController(),
+					main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte(),
+					newExtract);
+			main.getCurrentMoment().getCurrentProperty().getDescripteme().setTexte(newExtract);
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
-		}else{
-			RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentExtractController(),
-					main.getCurrentMoment().getMoment().getMorceauDescripteme(),null);
+		}else if(extractFor==Enregistrement.MOMENT) {
+			RenameMomentCommand cmd = new RenameMomentCommand(
+					main.getCurrentMoment().getMomentExtractController(),
+					main.getCurrentMoment().getMoment().getMorceauDescripteme(),
+					newExtract);
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
 		}
+		
+		main.needToSave();
 		stage.close();
 	}
 }

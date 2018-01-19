@@ -40,13 +40,19 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import model.Enregistrement;
 import model.Propriete;
 import utils.UndoCollector;
 
@@ -61,6 +67,8 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	
 	private TypeController propertyController;
 	
+	private Tooltip extractTooltip;
+	
 	public TypePropertyRepresentation(Propriete t,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
 		this.property = t;
 		this.propertyTypeTreeItem = propertyTypeTreeItem;
@@ -74,7 +82,57 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+        propertyName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent mouseEvent) {
+		        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+		            if(mouseEvent.getClickCount() == 2){
+		            	pickPropertyExtract();
+		            }
+		        }
+		    }
+		});
+        extractTooltip = new Tooltip();
+        propertyName.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		    	if(property.getDescripteme().getTexte().length()==0)
+		    		extractTooltip.setText("Double-click to add an extract.");
+		    	else extractTooltip.setText(property.getDescripteme().getTexte());
+		        javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
+		        extractTooltip.show(propertyName, p.getX(), p.getY());
+		    }
+		});
+        propertyName.setOnMouseExited(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		    	extractTooltip.hide();
+		    }
+		});
+		extractTooltip.setOpacity(1);
         LinkToTreeProperty();
+	}
+	
+
+	private void pickPropertyExtract() {
+		Stage promptWindow = new Stage();
+		promptWindow.setTitle("Selection de l'extrait");
+		try {
+			main.getCurrentMoment().setCurrentProperty(property);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, new TextArea(),Enregistrement.PROPERTY));
+			loader.setResources(main._langBundle);
+			BorderPane layout = (BorderPane) loader.load();
+			Scene launchingScene = new Scene(layout);
+			promptWindow.setScene(launchingScene);
+			promptWindow.show();
+
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}
 	}
 	
 	private void LinkToTreeProperty() {

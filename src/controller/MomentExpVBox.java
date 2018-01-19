@@ -40,6 +40,7 @@ import controller.controller.MomentExtractController;
 import controller.controller.MomentNameController;
 import controller.controller.MomentRemoveTypeController;
 import controller.controller.Observer;
+import controller.controller.PropertyExtractController;
 import controller.typeTreeView.TypeTreeView;
 import controller.typeTreeView.TypeTreeViewControllerClass;
 import controller.controller.Observable;
@@ -99,6 +100,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	private MomentAddTypeController addTypeController;
 	private MomentRemoveTypeController momentRemoveTypeController;
 	
+	
+	private PropertyExtractController propertyExtractController;
+	
 	// Stack of redoable Classes
 	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
 
@@ -153,6 +157,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 		this.momentRemoveTypeController = new MomentRemoveTypeController(this.moment);
         this.momentRemoveTypeController.addObserver(this);
         addTypeController.addObserver(main.getMainViewController());
+        
+        this.propertyExtractController = new PropertyExtractController(moment.getCurrentProperty());
 	}
 	
 	
@@ -185,6 +191,17 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	    });
 		
 	}
+	
+	public void setCurrentProperty(Propriete n) {
+		moment.setCurrentProperty(n);
+		propertyExtractController.setPropriete(n);
+	}
+	
+	public Propriete getCurrentProperty() {
+		return moment.getCurrentProperty();
+	}
+	
+	
 	
 	public void LoadMomentData(){
 		label.setText(moment.getNom());
@@ -418,6 +435,14 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 				this.hideExtractIcon();
 			}
 		}
+		if(obs.getClass().equals(PropertyExtractController.class)) {
+			if(value != null) {
+				System.out.println("Cas 1");
+
+			}else {
+				System.out.println("Cas 2");
+			}
+		}
 		if(obs.getClass().equals(MomentAddTypeController.class)) {
 			if(value != null) {
 				TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Classe) value,this,main);
@@ -509,5 +534,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	
 	public MomentRemoveTypeController getMomentRemoveTypeController() {
 		return this.momentRemoveTypeController;
+	}
+	
+	public PropertyExtractController getPropertyExtractController() {
+		return this.propertyExtractController;
 	}
 }

@@ -22,7 +22,11 @@ package controller;
 import java.io.BufferedReader;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,6 +62,7 @@ public class NewInterviewDialogController implements Initializable{
 	private @FXML Button btnValider;
 	private @FXML Button btnAnnuler;
 	private @FXML Label nomFichier;
+	private @FXML Label newEntrFileName;
 	private @FXML TitledPane collapse_step1;
 	private @FXML TitledPane collapse_step2;
 	private @FXML TitledPane collapse_step3;
@@ -143,18 +148,25 @@ public class NewInterviewDialogController implements Initializable{
 		window.close();
 	}
 	public void validerClick(){
-		
-		LocalDate d = dateEntretien.getValue();		
-		String text = "";
-	    try {
-	    	String filePath = fichierChoisi.getPath();
-	        BufferedReader br = new BufferedReader(new FileReader(filePath));
-	        String line = br.readLine();
+		LocalDate d = dateEntretien.getValue();	
+		String text="";
+		try {
+			File fileDir =fichierChoisi;
+
+			BufferedReader br = new BufferedReader(
+			   new InputStreamReader(
+	                      new FileInputStream(fileDir), "UTF8"));
+
+			
+
+			String line = br.readLine();
 	        while (line != null || !line.equals(null)) {
 		        text = text + line + "\n";
 	            line=br.readLine();
 	        }
-	    } catch (Exception e) {
+
+	                br.close();
+		    }catch (Exception e) {
 	    	System.out.println(e.getMessage());
 	    }
 	    System.out.println(text);
@@ -186,7 +198,11 @@ public class NewInterviewDialogController implements Initializable{
 		fileChooser.setTitle("Choisir verbatim Entretien");
 		fichierChoisi = fileChooser.showOpenDialog(null);
 		if(fichierChoisi != null){
+			newEntrFileName.setText(fichierChoisi.getPath());
 			canCreate.set(false);
+		}
+		else {
+			newEntrFileName.setText("/");
 		}
 	}
 }

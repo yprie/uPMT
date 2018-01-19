@@ -40,11 +40,18 @@ public class Propriete extends Type implements Serializable{
 	}
 	
 	public Descripteme getDescripteme(){
+		if(extract==null) {
+			extract= new Descripteme("");
+		}
 		return this.extract;
 	}
 	
-	public void SetDescriptemeTxt(String texte){
-		this.extract.setTexte(texte);
+	public void setDescriptemeTxt(String texte){
+		if(extract==null) {
+			extract= new Descripteme(texte);
+		}
+		else
+			this.extract.setTexte(texte);
 	}
 	
 	@Override

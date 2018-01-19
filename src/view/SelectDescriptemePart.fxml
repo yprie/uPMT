@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <BorderPane BorderPane.alignment="CENTER">
          <center>
@@ -18,6 +18,6 @@
       </BorderPane>
    </bottom>
    <center>
-      <TextArea fx:id="descriptemeArea" prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="descriptemeArea" prefHeight="500.0" prefWidth="600.0" wrapText="true" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
