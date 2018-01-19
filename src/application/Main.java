@@ -173,6 +173,7 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
+            
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);
             primaryStage.show();
@@ -195,6 +196,8 @@ public class Main extends Application {
             loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
             BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout,404,250);
+			//ENLEVER LE COMMENTAIRE POUR ACTIVER LA BETA CSS FLAT DESIGN
+			//rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			promptWindow.setScene(launchingScene);
 			promptWindow.showAndWait();
 			

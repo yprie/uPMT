@@ -1,1 +1,46 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.tree-view, .tree-cell {
+    -fx-background-color: #4d394b ;
+    -fx-text-fill: white ;
+}
+.tree-view {
+    -fx-background-color: #4d394b;
+    -fx-text-fill: white ;
+
+    /* There is some oddness if padding is in em values rather than pixels,
+       in particular, the left border of the control doesn't show. */
+    -fx-padding: 1; /* 0.083333em; */
+}
+/* .tree-cell:expanded, .tree-cell:sub-tree-item {
+    -fx-background-color: #404040 ;
+}*/
+.tree-cell:selected {
+    -fx-font-weight: bold ;
+    -fx-background-color: #4c9689 ;
+}
+.tree-cell {
+    -fx-padding: 0.75em 0em 0.75em 0em ;
+}
+.tree-cell:sub-tree-item {
+    -fx-padding: 0.25em ;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+   -fx-background-color: black;
+   -fx-padding:1;
+}
+.split-pane:vertical > .split-pane-divider {
+   -fx-background-color: black;
+   -fx-padding:1;
+}
+
+.menu-bar{
+	-fx-background-color: white;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: white;
+}
+.scroll-pane {
+   -fx-background-color: transparent;
+}
