@@ -48,6 +48,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import model.Descripteme;
 import model.DescriptionEntretien;
+import model.Projet;
 import utils.MainViewTransformations;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -184,6 +185,9 @@ public class NewInterviewDialogController implements Initializable{
 			main.launchMainView();
 		}
 		main.getCurrentProject().save();
+		main.launchMainView();
+		main.refreshDataTreeView();
+		main.needToSave();
 		window.close();
 	}
 	
@@ -203,6 +207,7 @@ public class NewInterviewDialogController implements Initializable{
 		}
 		else {
 			newEntrFileName.setText("/");
+			canCreate.set(true);
 		}
 	}
 }

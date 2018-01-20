@@ -46,6 +46,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -60,6 +61,7 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	
 	private @FXML Label propertyValue;
 	private @FXML Label propertyName;
+	private @FXML ImageView hasExtractImageProperties;
 	private @FXML BorderPane propertyPane;
 	private Main main;
 	private Propriete property;
@@ -97,6 +99,9 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
         propertyName.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
+		    	if(property.getDescripteme().getTexte()==null) {
+		    		property.getDescripteme().setTexte("");
+		    	}
 		    	if(property.getDescripteme().getTexte().length()==0)
 		    		extractTooltip.setText("Double-click to add an extract.");
 		    	else extractTooltip.setText(property.getDescripteme().getTexte());

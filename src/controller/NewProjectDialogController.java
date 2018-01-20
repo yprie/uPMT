@@ -82,12 +82,12 @@ public class NewProjectDialogController implements Initializable{
 		p.getSchemaProjet().setName("Schema de "+nomProjet.getText());
 		main.getProjects().add(p);
 		main.setCurrentProject(p);
-		p.save();
+		//p.save();
 		window.close();
 		launchingScreenWindow.close();
 		main.launchMainView();
 		main.refreshDataTreeView();
-		main.needToSave();
+		//main.needToSave();
 	}
 	
 	public void closeWindow(){

@@ -2,23 +2,31 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<fx:root fx:id="propertyPane" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="propertyPane" type="BorderPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <Label text="  :  " BorderPane.alignment="CENTER" />
    </center>
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
-   <left>
-      <Label fx:id="propertyName" text="propertyName" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets right="5.0" />
-         </BorderPane.margin>
-      </Label>
-   </left>
    <right>
       <Label fx:id="propertyValue" text="propertyValue" BorderPane.alignment="CENTER" />
    </right>
+   <left>
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <Label fx:id="propertyName" text="propertyName" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="5.0" />
+               </BorderPane.margin>
+            </Label>
+         </center>
+         <left>
+            <ImageView fx:id="hasExtractImageProperties" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </left>
 </fx:root>
