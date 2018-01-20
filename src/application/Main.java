@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
@@ -87,6 +88,10 @@ public class Main extends Application {
 	//Main reference to the clicked moment
 	private MomentExpVBox currentMoment;
 	
+	private String bundleRes=null;
+	
+	private File fProperties=null;
+	
 	
 	private boolean needSave = false;
 	
@@ -117,19 +122,53 @@ public class Main extends Application {
 	private void loadProperties () {
 		Properties pros = new Properties();
 		InputStream is = null;
-		try {
+		/*try {
 			File f = new File("/bundles/Current.properties");
 			is = new FileInputStream(f);
 		} catch (Exception e) {
 			System.out.println("load file failed");
 			is = null;
 		}
+		if
+		
+		
 		try {
 			if (is == null) {
 				is = getClass().getResourceAsStream("../bundles/Current.properties");
 			}
 			pros.load(is);
 		} catch (Exception e){
+			e.printStackTrace();
+		}*/
+		/*is = getClass().getResourceAsStream("../bundles/Current.properties");
+		if(is==null) {
+			is = getClass().getResourceAsStream("/bundles/Current.properties");
+		}
+		if(is==null) {
+			is = getClass().getResourceAsStream("./bundles/Current.properties");
+		}*/
+		
+		String urls[] = {
+        		"../bundles/Current.properties",
+        		"./bundles/Current.properties",
+        		"/bundles/Current.properties",
+        		".bundles/bundles/Current.properties",
+        		"../bundles/bundles/Current.properties",
+        		"/bundles/bundles/Current.properties",
+        		"/Current.properties",
+        		"bundles/bundles/Current.properties",
+        		"Current.properties",
+        		"bundles/Current.properties",
+        };
+		
+        for(String url : urls) {
+        	is = getClass().getResourceAsStream(url);
+        	if(is!=null) break;
+        }
+        try {
+			pros.load(is);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String loc = pros.getProperty("locale","fr");
@@ -310,11 +349,39 @@ public class Main extends Application {
         	try {
     	        Properties props = new Properties();
     	        props.setProperty("locale", locale);
-    	        File f = new File(getClass().getResource("../bundles/Current.properties").getFile());
-    	        OutputStream out = new FileOutputStream( f );
+    	        URL tmp = null;
+    	        File f =null;
+    	        String urls[] = {
+    	        		"../bundles/Current.properties",
+    	        		"./bundles/Current.properties",
+    	        		"/bundles/Current.properties",
+    	        		".bundles/bundles/Current.properties",
+    	        		"../bundles/bundles/Current.properties",
+    	        		"/bundles/bundles/Current.properties",
+    	        		"/Current.properties",
+    	        		"bundles/bundles/Current.properties",
+    	        		"Current.properties",
+    	        		"bundles/Current.properties",
+    	        };
+    	        OutputStream out=null;
+    	        for(String url : urls) {
+    	        	System.out.println("Test avec avec "+url);
+    	        	try {
+	    	        	tmp =getClass().getResource(url);
+	    	        	if(tmp!=null) {
+	        	        	f = new File(tmp.toURI());
+	        	        	out = new FileOutputStream( f );
+	        	        	break;
+	    	        	} else System.out.println("tmp est null");
+    	        	}catch(Exception e) {
+    	        		System.out.println("N'a pas marché avec "+url);
+    	        	}
+    	        }
+    	        
+    	   
     	        props.store(out, "This is an optional header comment string");
     	        
-    	        start(primaryStage);
+    	        //start(primaryStage);
     	    }
     	    catch (Exception e ) {
     	        e.printStackTrace();
