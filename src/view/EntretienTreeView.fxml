@@ -17,7 +17,7 @@
       <Insets bottom="3.0" right="8.0" top="3.0" />
    </padding>
    <center>
-      <HBox BorderPane.alignment="CENTER">
+      <HBox BorderPane.alignment="CENTER" styleClass="tree-view-right">
          <children>
             <Button fx:id="renameInterview" mnemonicParsing="false" onAction="#renameInter" />
             <Button fx:id="afficherDescritpeme" mnemonicParsing="false" onAction="#showInterview" />

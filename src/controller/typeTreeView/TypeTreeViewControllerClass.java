@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import application.Main;
 import controller.command.AddPropertyToClassCommand;
 import controller.command.ChangeColorClassCommand;
 import controller.command.RemoveClassFromParentCommand;
@@ -180,7 +181,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void setColor(){
 		if (type.getType().getCouleur() != null) {
 			couleurType.setValue(Color.valueOf(type.getType().getCouleur()));
-			this.nomType.setTextFill(Color.web(type.getType().getCouleur()));
+			if(Main.activateBetaDesign)
+				this.nomType.setTextFill(Color.WHITE);
+			else
+				this.nomType.setTextFill(Color.web(type.getType().getCouleur()));
 		}
 	}
 	
@@ -206,7 +210,12 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			this.nomType.setText((String) value);
 		}
 		if(obs.getClass().equals(ChangeColorClassSchemeController.class)) {
-			this.nomType.setTextFill(Color.web((String) value));
+			
+			if(Main.activateBetaDesign)
+				this.nomType.setTextFill(Color.WHITE);
+			else
+				this.nomType.setTextFill(Color.web((String) value));
+			
 			couleurType.setValue(Color.valueOf((String) value));
 		}
 	}

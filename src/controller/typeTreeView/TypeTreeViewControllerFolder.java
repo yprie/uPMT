@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.Main;
 import controller.command.RemoveFolderSchemeCommand;
 import controller.command.RenameFolderSchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
@@ -41,6 +42,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import utils.UndoCollector;
 
 public class TypeTreeViewControllerFolder extends TypeTreeViewController {
@@ -60,7 +62,8 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomType.setText(type.getType().getName());
-		
+		if(Main.activateBetaDesign)
+			this.nomType.setTextFill(Color.WHITE);
 		File image = new File("./img/folder.png");
 		Image icon = new Image(image.toURI().toString());
 		this.folderIcon.setImage(icon);

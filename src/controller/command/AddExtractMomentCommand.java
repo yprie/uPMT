@@ -21,6 +21,7 @@
 package controller.command;
 
 import controller.controller.Observer;
+import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
@@ -30,7 +31,7 @@ public class AddExtractMomentCommand implements Command,Undoable{
 	private String oldName;
 	private String newName;
 	
-	public AddExtractMomentCommand(Observable observable, String oldName,String newName) {
+	public AddExtractMomentCommand(Observable observable, String oldName,String newName, Main main) {
 		this.observable = observable;
 		this.oldName = oldName;
 		this.newName = newName;

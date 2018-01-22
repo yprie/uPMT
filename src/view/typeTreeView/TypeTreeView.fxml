@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane styleClass="testclass" fx:id="typePane" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" text="Label" BorderPane.alignment="CENTER">
          <graphic>
@@ -18,7 +18,7 @@
       <Insets bottom="3.0" right="8.0" top="3.0" />
    </padding>
    <center>
-      <HBox alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" styleClass="tree-view-right">
          <BorderPane.margin>
             <Insets left="15.0" />
          </BorderPane.margin>

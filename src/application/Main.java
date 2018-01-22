@@ -65,6 +65,9 @@ import utils.Utils;
 import java.util.ResourceBundle;
 
 public class Main extends Application {
+	
+	public final static boolean activateBetaDesign = false;
+	
 	// Main Layout and Stage
 	private BorderPane rootLayout;
 	private Stage primaryStage;
@@ -74,7 +77,7 @@ public class Main extends Application {
 	public ResourceBundle _langBundle;
 	
 	// Main Model references and containers
-	private LinkedList<Projet> projects;
+	private LinkedList<Projet> projects = new LinkedList<Projet>();
 	private Projet currentProject;
 	private DescriptionEntretien currentDescription;
 	private Schema BasicSchema;
@@ -122,32 +125,6 @@ public class Main extends Application {
 	private void loadProperties () {
 		Properties pros = new Properties();
 		InputStream is = null;
-		/*try {
-			File f = new File("/bundles/Current.properties");
-			is = new FileInputStream(f);
-		} catch (Exception e) {
-			System.out.println("load file failed");
-			is = null;
-		}
-		if
-		
-		
-		try {
-			if (is == null) {
-				is = getClass().getResourceAsStream("../bundles/Current.properties");
-			}
-			pros.load(is);
-		} catch (Exception e){
-			e.printStackTrace();
-		}*/
-		/*is = getClass().getResourceAsStream("../bundles/Current.properties");
-		if(is==null) {
-			is = getClass().getResourceAsStream("/bundles/Current.properties");
-		}
-		if(is==null) {
-			is = getClass().getResourceAsStream("./bundles/Current.properties");
-		}*/
-		
 		String urls[] = {
         		"../bundles/Current.properties",
         		"./bundles/Current.properties",
@@ -163,14 +140,15 @@ public class Main extends Application {
 		
         for(String url : urls) {
         	is = getClass().getResourceAsStream(url);
-        	if(is!=null) break;
+        	 try {
+     			pros.load(is);
+     			System.out.println("succeed load with: "+url);
+     			break;
+     		} catch (Exception e) {
+     			System.out.println("fail with: "+url);
+     		}
         }
-        try {
-			pros.load(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		String loc = pros.getProperty("locale","fr");
 		_locale= new Locale(pros.getProperty("locale","fr"));
 		set_langBundle(ResourceBundle.getBundle("bundles.Lang", _locale));
@@ -237,7 +215,8 @@ public class Main extends Application {
             BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout,404,250);
 			//ENLEVER LE COMMENTAIRE POUR ACTIVER LA BETA CSS FLAT DESIGN
-			//rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			if(activateBetaDesign)
+				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			promptWindow.setScene(launchingScene);
 			promptWindow.showAndWait();
 			

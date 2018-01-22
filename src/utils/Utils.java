@@ -72,6 +72,10 @@ public abstract class Utils {
 		HashSet<String> results = new HashSet<String>();
 
 		File[] files = new File(Projet.PATH).listFiles();
+		if(files==null) {
+			new File(Projet.PATH).mkdir();
+			files = new File(Projet.PATH).listFiles();
+		}
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 
 		for (File file : files) {
@@ -80,6 +84,9 @@ public abstract class Utils {
 		        System.out.println(file.getName());
 		    }
 		}
+		
+		
+		
 		return results;
 	}
 	
