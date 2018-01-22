@@ -42,4 +42,8 @@ public class PropertyExtractController implements controller.controller.Observab
 	public void RemoveObserver(Observer o) {
 		ObsMomentNames.remove(o);
 	}
+	
+	public Propriete getProperty() {
+		return mPropriete;
+	}
 }

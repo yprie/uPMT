@@ -20,6 +20,7 @@
 
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,6 +30,7 @@ import controller.command.ChangePropertyValueCommand;
 import controller.controller.ChangePropertyValueController;
 import controller.controller.Observable;
 import controller.controller.Observer;
+import controller.controller.PropertyExtractController;
 import controller.controller.RenamePropertyController;
 import controller.controller.TypeController;
 import javafx.application.Platform;
@@ -46,6 +48,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -71,6 +74,8 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	
 	private Tooltip extractTooltip;
 	
+	private PropertyExtractController propertyExtractController;
+	
 	public TypePropertyRepresentation(Propriete t,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
 		this.property = t;
 		this.propertyTypeTreeItem = propertyTypeTreeItem;
@@ -85,6 +90,10 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
             throw new RuntimeException(exception);
         }
         
+        this.propertyExtractController = new PropertyExtractController(property);
+        propertyExtractController.addObserver(this);
+        propertyExtractController.addObserver(main.getMainViewController());
+        
         propertyName.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent mouseEvent) {
@@ -96,29 +105,67 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 		    }
 		});
         extractTooltip = new Tooltip();
+        
+        hasExtractImageProperties.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		    	if(propertiesHaveDescriptem()) {
+			    	extractTooltip.setText(property.getDescripteme().getTexte());
+			        javafx.geometry.Point2D p = hasExtractImageProperties.localToScreen(hasExtractImageProperties.getLayoutBounds().getMaxX(), hasExtractImageProperties.getLayoutBounds().getMaxY()); 
+			        extractTooltip.show(hasExtractImageProperties, p.getX(), p.getY());
+		    	}
+		    }
+		});
+        
+        
+        hasExtractImageProperties.setOnMouseExited(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent event) {
+		    	if(propertiesHaveDescriptem())
+		    		extractTooltip.hide();
+		    }
+		});
+        
+        
+
         propertyName.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		    	if(property.getDescripteme().getTexte()==null) {
-		    		property.getDescripteme().setTexte("");
+		    	if(!propertiesHaveDescriptem()) {
+		    		extractTooltip.setText("Double-click to add a Descripteme.");
+			    	javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
+			        extractTooltip.show(propertyName, p.getX(), p.getY());
 		    	}
-		    	if(property.getDescripteme().getTexte().length()==0)
-		    		extractTooltip.setText("Double-click to add an extract.");
-		    	else extractTooltip.setText(property.getDescripteme().getTexte());
-		        javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
-		        extractTooltip.show(propertyName, p.getX(), p.getY());
 		    }
 		});
         propertyName.setOnMouseExited(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		    	extractTooltip.hide();
+		    	if(!propertiesHaveDescriptem())
+		    		extractTooltip.hide();
 		    }
 		});
-		extractTooltip.setOpacity(1);
+        
         LinkToTreeProperty();
+        if(this.propertiesHaveDescriptem()) {
+        	this.showExtractIcon(property.getDescripteme().getTexte());
+        	System.out.println("Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
+        }
+        else{
+        	System.out.println("Hide icon: Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
+        	this.hideExtractIcon();
+        }
 	}
 	
+	private boolean propertiesHaveDescriptem() {
+		if(property.getDescripteme().getTexte()==null) {
+    		return false;
+    	}
+    	else if(property.getDescripteme().getTexte().length()==0) {
+    		return false;
+    	}
+    	else return true;
+	}
 
 	private void pickPropertyExtract() {
 		Stage promptWindow = new Stage();
@@ -127,7 +174,11 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 			main.getCurrentMoment().setCurrentProperty(property);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, new TextArea(),Enregistrement.PROPERTY));
+			loader.setController(new SelectDescriptemePartController(
+					main,
+					promptWindow,
+					new TextArea(),
+					propertyExtractController));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);
@@ -195,7 +246,8 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 						        if (!newPropertyValue)
 						        {
 						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
-						        			tpr, property.getValeur(), 
+						        			tpr,
+						        			property.getValeur(), 
 						        			t.getText(),
 						        			main);
 						        	cmd.execute();
@@ -229,7 +281,6 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	@Override
 	public void updateVue(Observable obs, Object value) {
 		if(obs.getClass().equals(RenamePropertyController.class)) {
-			System.out.println("HEHRE");
 			setPropertyName((String) value);
 			property.setName((String) value);
 		}
@@ -241,6 +292,34 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 				setValue((String) value);
 			}
 		}
+		if(obs.getClass().equals(PropertyExtractController.class)) {
+			if(value != null) {
+				System.out.println("Have Value");
+				this.showExtractIcon((String) value);
+
+			}else {
+				System.out.println("Haven't Value");
+				this.hideExtractIcon();
+			}
+		}
+	}
+	
+	public void showExtractIcon(String tooltip){
+		File image = new File("./img/hasExtractIcon.gif");
+		Image icon = new Image(image.toURI().toString());
+		this.hasExtractImageProperties.setManaged(true);
+		this.hasExtractImageProperties.setVisible(true);
+		this.hasExtractImageProperties.setImage(icon);
+		extractTooltip.setText(tooltip);
+		extractTooltip.setOpacity(1);
+	}
+	
+	
+	public void hideExtractIcon(){
+		this.hasExtractImageProperties.setImage(null);
+		this.hasExtractImageProperties.setVisible(false);
+		this.hasExtractImageProperties.setManaged(false);
+		//extractTooltip.setOpacity(0);
 	}
 	
 	public TypeController getPropertyController() {

@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import application.Main;
 import controller.command.ChangeExtractProperty;
 import controller.command.RenameMomentCommand;
+import controller.controller.PropertyExtractController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -43,13 +44,19 @@ public class SelectDescriptemePartController implements Initializable {
 	private @FXML TextArea descriptemeArea;
 	private @FXML Button acceptSelection;
 	private TextArea inspectorText;
-	private String extractFor;
+	private PropertyExtractController propertyExtractController;
 
-	public SelectDescriptemePartController(Main main, Stage s,TextArea t, String e) {
+	public SelectDescriptemePartController(Main main, Stage s,TextArea t) {
 		this.main = main;
 		this.stage = s;
 		this.inspectorText = t;
-		extractFor = e;
+	}
+	
+	public SelectDescriptemePartController(Main main, Stage s,TextArea t, PropertyExtractController propController) {
+		this.main = main;
+		this.stage = s;
+		this.inspectorText = t;
+		propertyExtractController = propController;
 	}
 	
 	@Override
@@ -66,18 +73,18 @@ public class SelectDescriptemePartController implements Initializable {
 		else
 			newExtract = null;
 	
-		if(extractFor==Enregistrement.PROPERTY) {
+		if(propertyExtractController!=null) {
 			System.out.println("Description: "+main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte());
 			System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
 			ChangeExtractProperty cmd = new ChangeExtractProperty(
-					main.getCurrentMoment().getPropertyExtractController(),
-					main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte(),
+					propertyExtractController,
+					propertyExtractController.getProperty().getDescripteme().getTexte(),
 					newExtract,
 					main);
 			main.getCurrentMoment().getCurrentProperty().getDescripteme().setTexte(newExtract);
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
-		}else if(extractFor==Enregistrement.MOMENT) {
+		}else{
 			RenameMomentCommand cmd = new RenameMomentCommand(
 					main.getCurrentMoment().getMomentExtractController(),
 					main.getCurrentMoment().getMoment().getMorceauDescripteme(),

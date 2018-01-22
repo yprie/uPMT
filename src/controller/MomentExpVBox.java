@@ -158,7 +158,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
         this.momentRemoveTypeController.addObserver(this);
         addTypeController.addObserver(main.getMainViewController());
         
-        this.propertyExtractController = new PropertyExtractController(moment.getCurrentProperty());
 	}
 	
 	
@@ -194,7 +193,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	
 	public void setCurrentProperty(Propriete n) {
 		moment.setCurrentProperty(n);
-		propertyExtractController.setPropriete(n);
 	}
 	
 	public Propriete getCurrentProperty() {
@@ -225,14 +223,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 		extractTooltip.setText(tooltip);
 		extractTooltip.setOpacity(1);
 	}
-	
-	public void showExtractIcon(){
-		File image = new File("./img/hasExtractIcon.gif");
-		Image icon = new Image(image.toURI().toString());
-		this.hasExtractImage.setImage(icon);
-		extractTooltip.setText("");
-		extractTooltip.setOpacity(0);
-	}
+
 	
 	public void hideExtractIcon(){
 		this.hasExtractImage.setImage(null);
@@ -437,14 +428,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 
 			}else {
 				this.hideExtractIcon();
-			}
-		}
-		if(obs.getClass().equals(PropertyExtractController.class)) {
-			if(value != null) {
-				System.out.println("Cas 1");
-
-			}else {
-				System.out.println("Cas 2");
 			}
 		}
 		if(obs.getClass().equals(MomentAddTypeController.class)) {
