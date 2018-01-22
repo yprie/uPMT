@@ -67,12 +67,15 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	private @FXML Button addProperty;
 	private @FXML ImageView classIcon;
 	
+	private Main main;
+	
 	public static int propertiesNumber = 1;
 	
-	public TypeTreeViewControllerClass(TypeController type, TypeTreeView typeTreeView) {
+	public TypeTreeViewControllerClass(TypeController type, TypeTreeView typeTreeView, Main m) {
 		super(type,typeTreeView);
 		type.getClassNameController().addObserver(this);
 		type.getClassColorController().addObserver(this);
+		main = m;
 	}
 	
 	@Override
@@ -118,7 +121,11 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			        {
 			        	if(type.getType().isClass()){
 							String oldName = new String(type.getType().getName());
-							RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(type.getClassNameController(), oldName, textField.getText());
+							RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
+									type.getClassNameController(), 
+									oldName, 
+									textField.getText(),
+									main);
 							cmd.execute();
 							UndoCollector.INSTANCE.add(cmd);
 						}		        	
@@ -157,7 +164,11 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void pickColor(){
 		Color colorPicked = couleurType.getValue();
 		String colorConverted = Utils.toRGBCode(colorPicked);
-		ChangeColorClassCommand cmd = new ChangeColorClassCommand(type.getClassColorController(), this.type.getType().getCouleur(), colorConverted);
+		ChangeColorClassCommand cmd = new ChangeColorClassCommand(
+				type.getClassColorController(),
+				this.type.getType().getCouleur(),
+				colorConverted,
+				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);		
 	}
@@ -166,14 +177,18 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void addProperty(){
 		propertiesNumber++;
 		Propriete nt = new Propriete("Propriete " + propertiesNumber);
-		AddPropertyToClassCommand cmd = new AddPropertyToClassCommand(type, nt, tree.getTreeItem());
+		AddPropertyToClassCommand cmd = new AddPropertyToClassCommand(type, nt, tree.getTreeItem(), this.main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
 	}
 		
 	@FXML
 	public void deleteClass(){
-		RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(tree.getTreeItem().getValue(), (Classe) type.getType(),tree.getTreeItem().getParent());
+		RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+				tree.getTreeItem().getValue(), 
+				(Classe) type.getType(),
+				tree.getTreeItem().getParent(),
+				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
 	}

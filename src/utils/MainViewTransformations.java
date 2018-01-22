@@ -28,7 +28,7 @@ import application.Main;
 import controller.MomentExpVBox;
 import controller.TypeClassRepresentationController;
 import controller.command.AddMomentCommand;
-import controller.command.AddMomentToMomentComnand;
+import controller.command.AddMomentToMomentCommand;
 import controller.command.AddTypeCommand;
 import controller.command.RemoveTypeCommand;
 import javafx.beans.value.ChangeListener;
@@ -88,7 +88,7 @@ public abstract class MainViewTransformations {
 			    	UndoCollector.INSTANCE.add(cmd);
 		    	}	
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
-			    	AddMomentToMomentComnand cmd = new AddMomentToMomentComnand(moment,main);
+			    	AddMomentToMomentCommand cmd = new AddMomentToMomentCommand(moment,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}

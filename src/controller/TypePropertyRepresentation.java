@@ -194,7 +194,10 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 						    {
 						        if (!newPropertyValue)
 						        {
-						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(tpr, property.getValeur(), t.getText());
+						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
+						        			tpr, property.getValeur(), 
+						        			t.getText(),
+						        			main);
 						        	cmd.execute();
 						        	UndoCollector.INSTANCE.add(cmd);
 									box.setRight(propertyValue);

@@ -49,11 +49,13 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 	private TypeController controller;
 	private Propriete newp;
 	private TreeItem<TypeController> tree;
+	private Main main;
 	
-	public AddPropertyToClassCommand(TypeController controller, Propriete newp, TreeItem<TypeController> treeItem) {
+	public AddPropertyToClassCommand(TypeController controller, Propriete newp, TreeItem<TypeController> treeItem, Main m) {
 		this.newp = newp;
 		this.controller = controller;
 		this.tree = treeItem;
+		main = m;
 	}
 	
 	@Override
@@ -68,6 +70,7 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 			}
 		}
 		controller.getRemovePropertySchemeController().update(newp);
+		main.needToSave();
 	}
 
 	@Override
@@ -89,6 +92,7 @@ public class AddPropertyToClassCommand implements Command,Undoable{
         tree.getChildren().add(newType);
         tree.setExpanded(true);	
         controller.getAddPropertySchemeController().update(newp);
+        main.needToSave();
 	}
 
 	@Override

@@ -54,11 +54,13 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 	private LinkedList<Command> listeCommandes;
 	private TreeItem<TypeController> parentFolder;
 	private int folderPos;
+	private Main main;
 	
-	public RemoveFolderSchemeCommand(TreeItem<TypeController> parentTree) {
+	public RemoveFolderSchemeCommand(TreeItem<TypeController> parentTree, Main m) {
 		this.tree = parentTree;
 		listeCommandes = new LinkedList<Command>();
 		folderPos = parentTree.getParent().getChildren().indexOf(parentTree);
+		main = m;
 	}
 	
 	public boolean containsFolder(TreeItem<TypeController> tree) {
@@ -80,7 +82,11 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 					Platform.runLater(new Runnable() {	
 						@Override
 						public void run() {
-							RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(classe.getValue(), (Classe) classe.getValue().getType(),child);
+							RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+									classe.getValue(), 
+									(Classe) classe.getValue().getType(),
+									child,
+									main);
 							listeCommandes.add(cmd);
 							cmd.execute();
 						}
@@ -90,7 +96,11 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 				Platform.runLater(new Runnable() {	
 					@Override
 					public void run() {
-						RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(child.getValue(), (Classe) child.getValue().getType(),parentTree);
+						RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+								child.getValue(), 
+								(Classe) child.getValue().getType(),
+								parentTree,
+								main);
 						listeCommandes.add(cmd);
 						cmd.execute();
 					}

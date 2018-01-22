@@ -27,6 +27,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
 import model.Type;
+import application.Main;
 import controller.TypePropertyRepresentation;
 import controller.controller.Observable;
 import utils.Undoable;
@@ -36,11 +37,13 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 	private String oldName;
 	private String newName;
 	private TypePropertyRepresentation property;
+	private Main main;
 	
-	public ChangePropertyValueCommand(TypePropertyRepresentation p,String oldName,String newName) {
+	public ChangePropertyValueCommand(TypePropertyRepresentation p,String oldName,String newName, Main m) {
 		this.oldName = oldName;
 		this.newName = newName;
 		this.property = p;
+		main = m;
 	}
 	
 	@Override

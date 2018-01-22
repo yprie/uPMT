@@ -49,11 +49,13 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 	private TypeController controller;
 	private Propriete oldp;
 	private TreeItem<TypeController> tree;
+	private Main main;
 	
-	public RemovePropertyFromClassCommand(TypeController controller, Propriete oldp, TreeItem<TypeController> treeItem) {
+	public RemovePropertyFromClassCommand(TypeController controller, Propriete oldp, TreeItem<TypeController> treeItem, Main m) {
 		this.oldp = oldp;
 		this.controller = controller;
 		this.tree = treeItem;
+		main = m;
 	}
 	
 	@Override
@@ -66,6 +68,7 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
         tree.getChildren().add(newType);
         //getItem().getType().getTypes().add(nt);
         tree.setExpanded(true);	
+        main.needToSave();
 	}
 
 	@Override
@@ -91,6 +94,7 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 				break;
 			}
 		}
+		main.needToSave();
 	}
 
 	@Override

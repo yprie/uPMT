@@ -246,8 +246,11 @@ public class MainViewController implements Initializable, Observer {
 			    {
 			        if (!newPropertyValue)
 			        {
-			        	RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentNameController(),
-								main.getCurrentMoment().getMoment().getNom(),t.getText());
+			        	RenameMomentCommand cmd = new RenameMomentCommand(
+			        			main.getCurrentMoment().getMomentNameController(),
+								main.getCurrentMoment().getMoment().getNom(),
+								t.getText(),
+								main);
 						cmd.execute();
 						UndoCollector.INSTANCE.add(cmd);
 						vBoxLabel.getChildren().remove(t);
@@ -520,8 +523,11 @@ public class MainViewController implements Initializable, Observer {
 	public void pickColor() {
 		Color couleur = couleurMoment.getValue();
 		String colorString = Utils.toRGBCode(couleur);
-		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(main.getCurrentMoment().getMomentColorController(),
-				main.getCurrentMoment().getMoment().getCouleur(),colorString);
+		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
+				main.getCurrentMoment().getMomentColorController(),
+				main.getCurrentMoment().getMoment().getCouleur(),
+				colorString,
+				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
 		main.getCurrentMoment().getMomentColorController().update(colorString);

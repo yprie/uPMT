@@ -26,13 +26,13 @@ import javafx.scene.layout.ColumnConstraints;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
-public class AddMomentToMomentComnand implements Command, Undoable {
+public class AddMomentToMomentCommand implements Command, Undoable {
 	
 	private Main main;
 	private MomentExpVBox momentPane;
 	private MomentExpVBox newMoment;
 	
-	public AddMomentToMomentComnand(MomentExpVBox moment, Main main){
+	public AddMomentToMomentCommand(MomentExpVBox moment, Main main){
 		this.main = main;
 		this.momentPane = moment;
 		this.newMoment = new MomentExpVBox(main, true);

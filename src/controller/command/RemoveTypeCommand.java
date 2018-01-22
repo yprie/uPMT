@@ -46,6 +46,7 @@ public class RemoveTypeCommand implements Command,Undoable {
 		if (main.getMainViewController().isInspectorOpen()) {
 			main.getMainViewController().renderInspector();
 		}
+		main.needToSave();
 	}
 
 	@Override
@@ -65,6 +66,7 @@ public class RemoveTypeCommand implements Command,Undoable {
 		if (main.getMainViewController().isInspectorOpen()) {
 			main.getMainViewController().renderInspector();
 		}
+		main.needToSave();
 	}
 
 	@Override

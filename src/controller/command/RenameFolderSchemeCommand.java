@@ -22,6 +22,7 @@ package controller.command;
 
 import controller.controller.Observer;
 import controller.typeTreeView.TypeTreeViewControllerFolder;
+import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
@@ -30,16 +31,19 @@ public class RenameFolderSchemeCommand implements Command,Undoable{
 	private String oldName;
 	private String newName;
 	private TypeTreeViewControllerFolder controller;
+	private Main main;
 	
-	public RenameFolderSchemeCommand(TypeTreeViewControllerFolder controller, String oldName,String newName) {
+	public RenameFolderSchemeCommand(TypeTreeViewControllerFolder controller, String oldName,String newName, Main m) {
 		this.oldName = oldName;
 		this.newName = newName;
 		this.controller = controller;
+		main = m;
 	}
 	
 	@Override
 	public void undo() {
 		controller.setName(oldName);
+		main.needToSave();
 	}
 
 	@Override
@@ -55,6 +59,7 @@ public class RenameFolderSchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		controller.setName(newName);
+		main.needToSave();
 	}
 
 	@Override

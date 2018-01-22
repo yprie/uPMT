@@ -48,10 +48,10 @@ public class RemoveClassFromParentCommand implements Command,Undoable{
 	private TypeController controller;
 	private Classe classe;
 	private TreeItem<TypeController> tree;
-	
+	private Main main;
 	private TreeItem<TypeController> oldClassTree;
 	
-	public RemoveClassFromParentCommand(TypeController controller, Classe classe, TreeItem<TypeController> parentTree) {
+	public RemoveClassFromParentCommand(TypeController controller, Classe classe, TreeItem<TypeController> parentTree, Main m) {
 		this.classe = classe;
 		this.controller = controller;
 		this.tree = parentTree;
@@ -62,12 +62,14 @@ public class RemoveClassFromParentCommand implements Command,Undoable{
 				break;
 			}
 		}
+		main = m;
 	}
 	
 	@Override
 	public void undo() {
 		controller.getAddClassSchemeController().update(classe);
 		tree.getChildren().add(oldClassTree);
+		main.needToSave();
 	}
 
 	@Override
@@ -84,6 +86,7 @@ public class RemoveClassFromParentCommand implements Command,Undoable{
 	public void execute() {
 		controller.getRemoveClassSchemeController().update(classe);
 		tree.getChildren().remove(oldClassTree);
+		main.needToSave();
 	}
 
 	@Override

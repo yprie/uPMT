@@ -184,15 +184,15 @@ public class TypeTreeView extends TreeCell<TypeController>{
     				 // loading view (XML) with fitting type
     				 if(elem.getType().isProperty()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewProperty.fxml"));
-        			     controller =  new TypeTreeViewControllerProperty(elem,this);
+        			     controller =  new TypeTreeViewControllerProperty(elem,this, main);
     				 }
     				 if(elem.getType().isClass()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewClass.fxml"));
-        			     controller =  new TypeTreeViewControllerClass(elem,this);
+        			     controller =  new TypeTreeViewControllerClass(elem,this, main);
     				 }
     				 if(elem.getType().isFolder()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewFolder.fxml"));
-        			     controller =  new TypeTreeViewControllerFolder(elem,this);
+        			     controller =  new TypeTreeViewControllerFolder(elem,this, main);
     				 }
     				 
     			     this.controller = controller;

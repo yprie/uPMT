@@ -52,11 +52,13 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	private @FXML Button addFolder;
 	private @FXML ImageView folderIcon;
 	
+	private Main main;
 	private TypeTreeViewControllerFolder ref;
 	
-	public TypeTreeViewControllerFolder(TypeController type, TypeTreeView typeTreeView) {
+	public TypeTreeViewControllerFolder(TypeController type, TypeTreeView typeTreeView, Main m) {
 		super(type,typeTreeView);
 		ref = this;
+		main = m;
 	}
 	
 	@Override
@@ -109,7 +111,11 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 			        if (!newPropertyValue)
 			        {
 						if(type.getType().isFolder()){
-							RenameFolderSchemeCommand cmd = new RenameFolderSchemeCommand(ref, type.getType().getName(), textField.getText());
+							RenameFolderSchemeCommand cmd = new RenameFolderSchemeCommand(
+									ref, 
+									type.getType().getName(), 
+									textField.getText(),
+									main);
 							cmd.execute();
 							UndoCollector.INSTANCE.add(cmd);
 						}			        	
@@ -156,7 +162,7 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	
 	@FXML
 	public void deleteFolder(){
-		RemoveFolderSchemeCommand cmd = new RemoveFolderSchemeCommand(this.tree.getTreeItem());
+		RemoveFolderSchemeCommand cmd = new RemoveFolderSchemeCommand(this.tree.getTreeItem(), main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
 	}

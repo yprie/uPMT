@@ -325,7 +325,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 			    {
 			        if (!newPropertyValue)
 			        {
-			        	RenameMomentCommand cmd = new RenameMomentCommand(nameController,moment.getNom(),t.getText());
+			        	RenameMomentCommand cmd = new RenameMomentCommand(
+			        			nameController,
+			        			moment.getNom(),
+			        			t.getText(),
+			        			main);
 						cmd.execute();
 						UndoCollector.INSTANCE.add(cmd);
 						borderPaneLabel.setCenter(label);

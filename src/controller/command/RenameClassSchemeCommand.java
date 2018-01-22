@@ -21,6 +21,7 @@
 package controller.command;
 
 import controller.controller.Observer;
+import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
@@ -29,16 +30,19 @@ public class RenameClassSchemeCommand implements Command,Undoable{
 	private Observable observable;
 	private String oldName;
 	private String newName;
+	private Main main;
 	
-	public RenameClassSchemeCommand(Observable observable, String oldName,String newName) {
+	public RenameClassSchemeCommand(Observable observable, String oldName,String newName, Main m) {
 		this.observable = observable;
 		this.oldName = oldName;
 		this.newName = newName;
+		main = m;
 	}
 	
 	@Override
 	public void undo() {
 		observable.update(oldName);
+		main.needToSave();
 	}
 
 	@Override
@@ -54,6 +58,7 @@ public class RenameClassSchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newName);
+		main.needToSave();
 	}
 
 	@Override

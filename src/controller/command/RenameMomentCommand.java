@@ -21,6 +21,7 @@
 package controller.command;
 
 import controller.controller.Observer;
+import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
@@ -29,16 +30,19 @@ public class RenameMomentCommand implements Command,Undoable{
 	private Observable observable;
 	private String oldExtract;
 	private String newExtract;
+	private Main main;
 	
-	public RenameMomentCommand(Observable observable, String oldExtract,String newExtract) {
+	public RenameMomentCommand(Observable observable, String oldExtract,String newExtract, Main m) {
 		this.observable = observable;
 		this.oldExtract = oldExtract;
 		this.newExtract = newExtract;
+		main = m;
 	}
 	
 	@Override
 	public void undo() {
 		observable.update(oldExtract);
+		main.needToSave();
 	}
 
 	@Override
@@ -54,6 +58,7 @@ public class RenameMomentCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newExtract);
+		main.needToSave();
 	}
 
 	@Override

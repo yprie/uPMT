@@ -58,10 +58,12 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	
 	private @FXML Button deleteProperty;
 	private @FXML ImageView propertyIcon;
+	private Main main;
 	
-	public TypeTreeViewControllerProperty(TypeController type, TypeTreeView typeTreeView) {
+	public TypeTreeViewControllerProperty(TypeController type, TypeTreeView typeTreeView, Main m) {
 		super(type,typeTreeView);
 		type.getRenamePropertyController().addObserver(this);
+		main = m;
 	}
 	
 	@Override
@@ -99,7 +101,11 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 			        {
 						if(type.getType().isProperty()){
 							String oldName = new String(type.getType().getName());
-							RenamePropertySchemeCommand cmd = new RenamePropertySchemeCommand(type.getRenamePropertyController(), oldName, textField.getText());
+							RenamePropertySchemeCommand cmd = new RenamePropertySchemeCommand(
+									type.getRenamePropertyController(), 
+									oldName, 
+									textField.getText(),
+									main);
 							cmd.execute();
 							UndoCollector.INSTANCE.add(cmd);
 						}			        	
@@ -149,7 +155,11 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	
 	@FXML
 	public void deleteProperty(){
-		RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(tree.getTreeItem().getParent().getValue(), (Propriete) type.getType(),tree.getTreeItem().getParent());
+		RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(
+				tree.getTreeItem().getParent().getValue(), 
+				(Propriete) type.getType(),
+				tree.getTreeItem().getParent(),
+				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
 	}

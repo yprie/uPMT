@@ -21,6 +21,7 @@
 package controller.command;
 
 import controller.controller.Observer;
+import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
@@ -29,16 +30,19 @@ public class ChangeColorMomentCommand implements Command,Undoable{
 	private Observable observable;
 	private String oldColor;
 	private String newColor;
+	private Main main;
 	
-	public ChangeColorMomentCommand(Observable observable, String oldColor,String newColor) {
+	public ChangeColorMomentCommand(Observable observable, String oldColor,String newColor, Main m) {
 		this.observable = observable;
 		this.oldColor = oldColor;
 		this.newColor = newColor;
+		main = m;
 	}
 	
 	@Override
 	public void undo() {
 		observable.update(oldColor);
+		main.needToSave();
 	}
 
 	@Override
@@ -54,6 +58,7 @@ public class ChangeColorMomentCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newColor);
+		main.needToSave();
 	}
 
 	@Override
