@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
@@ -19,11 +25,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <SplitPane fx:id="mainSplitPane" dividerPositions="0.25, 0.75">
          <items>
-            <SplitPane dividerPositions="0.7" orientation="VERTICAL" style="-fx-max-width: 400; -fx-min-width: 400;" SplitPane.resizableWithParent="false">
+            <SplitPane dividerPositions="0.7" orientation="VERTICAL" style="-fx-max-width: 400; -fx-min-width: 200;" SplitPane.resizableWithParent="false">
                <items>
                   <TreeView fx:id="treeViewSchema" />
                   <TreeView fx:id="treeViewInterview" />
@@ -43,10 +49,16 @@
                         </HBox>
                      </top>
                      <center>
-                        <ScrollPane fx:id="gridScrollPane">
+                        <ScrollPane fx:id="gridScrollPane">                        
                            <BorderPane.margin>
-                              <Insets />
-                           </BorderPane.margin>
+                              <!--<Insets />-->
+                           </BorderPane.margin>                           
+                           <content>
+                              <Label id="drogHere" alignment="CENTER" contentDisplay="CENTER" prefHeight="278.0" prefWidth="411.0" text="%drog_here" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="30.0" />
+                                 </font></Label>
+                           </content>
                         </ScrollPane>
                      </center>
                   </BorderPane>
@@ -80,7 +92,7 @@
                            <children>
                               <Label text="%color" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <ColorPicker fx:id="couleurMoment" maxHeight="-Infinity" minHeight="30.0" onAction="#pickColor" prefHeight="30.0" />
+                              <ColorPicker fx:id="couleurMoment" maxHeight="-Infinity" minHeight="30.0" onAction="#pickColor" prefHeight="30.0" prefWidth="87.0" />
                            </children>
                         </HBox>
                         <Label text="%extract" />

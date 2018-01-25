@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="850.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="7.0" layoutY="13.0" prefHeight="825.0" prefWidth="1186.0">
+         <children>
+            <Label id="particip" layoutX="190.0" layoutY="270.0" text="%Participants">
+               <font>
+                  <Font size="26.0" />
+               </font></Label>
+            <Label id="wel" layoutX="88.0" layoutY="75.0" text="%Welcome" textFill="#9a1111">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Label id="dateEnt" layoutX="193.0" layoutY="364.0" text="%Date">
+               <font>
+                  <Font size="26.0" />
+               </font></Label>
+            <Label id="nom" layoutX="190.0" layoutY="173.0" text="%Name(ID)">
+               <font>
+                  <Font size="26.0" />
+               </font></Label>
+            <Button id="btnVeri" layoutX="457.0" layoutY="729.0" mnemonicParsing="false" onAction="#verifierClick" text="%verifier">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+            <TextField id="nameId" layoutX="438.0" layoutY="168.0" prefHeight="48.0" prefWidth="411.0" />
+            <TextField id="partiEnt" layoutX="438.0" layoutY="266.0" prefHeight="48.0" prefWidth="411.0" />
+            <TextArea id="commentaire" layoutX="427.0" layoutY="529.0" prefHeight="155.0" prefWidth="468.0" />
+            <DatePicker id="date" layoutX="438.0" layoutY="356.0" prefHeight="48.0" prefWidth="417.0" />
+            <Label id="comm" layoutX="193.0" layoutY="564.0" text="%Commentaire">
+               <font>
+                  <Font size="26.0" />
+               </font></Label>
+            <Button id="btnAnnu" layoutX="724.0" layoutY="729.0" mnemonicParsing="false" onAction="#annulerClick" text="%annuler">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+            <AnchorPane layoutX="99.0" layoutY="436.0" prefHeight="93.0" prefWidth="989.0">
+               <children>
+                  <Label id="addFile" layoutX="94.0" layoutY="21.0" text="%Add_fichier">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Button id="btnSelectFile" layoutX="339.0" layoutY="14.0" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" prefWidth="275.0" text="%select_fichier" />
+                  <Label id="format" layoutX="630.0" layoutY="31.0" text="%Format" />
+                  <Label id="newIntFileName" layoutX="830.0" layoutY="22.0" prefHeight="32.0" prefWidth="22.0" text="/" />
+               </children>
+            </AnchorPane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

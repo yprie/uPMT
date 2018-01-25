@@ -83,6 +83,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Classe;
@@ -126,6 +127,8 @@ public class MainViewController implements Initializable, Observer {
 	private @FXML HBox vBoxLabel;
 	private @FXML SplitPane mainSplitPane;
 	
+	private @FXML Label drogHere;
+	
 	
 	Main main;
 
@@ -141,11 +144,13 @@ public class MainViewController implements Initializable, Observer {
 		this.setLabelChangeName(main,this);
 		mainSplitPane.setDividerPosition(0,0.15);
 		mainSplitPane.setDividerPosition(1,0.85);
+		this.drogHere = drogHere;
+		
 		
 		File fileImage = new File("./img/momentIcon.png");
 		Image image = new Image(fileImage.toURI().toString());
 		this.ajoutMomentButton.setImage(image);
-
+		
 		if (!main.getCurrentProject().getEntretiens().isEmpty()) {
 			main.setCurrentDescription(main.getCurrentProject().getEntretiens().getFirst());
 		}
@@ -336,6 +341,7 @@ public class MainViewController implements Initializable, Observer {
 //	}
 	
 	public void updateGrid() {
+		
 		gridScrollPane.setContent((interviewsPane.get(main.getCurrentDescription())));
 		main.setGrid(interviewsPane.get(main.getCurrentDescription()));
 	}
