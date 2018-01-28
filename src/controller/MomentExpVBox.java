@@ -24,6 +24,7 @@ import java.awt.ScrollPane;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
 import controller.controller.MomentAddTypeController;
@@ -63,10 +65,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -75,13 +82,15 @@ import javafx.stage.StageStyle;
 import model.Classe;
 import model.MomentExperience;
 import model.Propriete;
+import model.SerializedMomentVBox;
+import model.Serializer;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.UndoCollector;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Button;
 
-public class MomentExpVBox extends VBox implements Initializable, Observer{
+public class MomentExpVBox extends VBox implements Initializable, Observer, Serializable{
 	
 	private MomentExperience moment;
 	private BorderPane momentPane;
@@ -89,6 +98,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	private @FXML FlowPane typeSpace;
 	private GridPane sousMomentPane;
 	private @FXML BorderPane borderPaneLabel;
+	private @FXML BorderPane momentCardPane;
 	private Main main;
 	private @FXML ImageView hasExtractImage;
 	private Tooltip extractTooltip;
@@ -100,23 +110,26 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	private MomentAddTypeController addTypeController;
 	private MomentRemoveTypeController momentRemoveTypeController;
 	
+	public static DataFormat df = new DataFormat("controller.MomentExpVBox");
+	public static DataFormat realCol = new DataFormat("controller.MomentExpVBox.realCol");
+	public static DataFormat rootCol = new DataFormat("controller.MomentExpVBox.rootCol");
+	private static final long serialVersionUID = 1420672609912364060L;
 	
-	private PropertyExtractController propertyExtractController;
+	private MomentExpVBox momentParent=null;
+
+	
+	
 	
 	// Stack of redoable Classes
 	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
 
-	public MomentExpVBox(Main main, boolean n) {
-		this(main);
-		if(n) this.editNameMode();
-	}
-	
-	public MomentExpVBox(Main main){
+	public MomentExpVBox(MomentExperience mexp, Main main) {
 		this.main = main;
-		moment = new MomentExperience("------",-1,-1);
+		moment = mexp;
         this.setPrefWidth(USE_COMPUTED_SIZE);
         this.setMaxWidth(USE_COMPUTED_SIZE);
         this.setMinHeight(200);
+        //System.out.println("HFJFDJEJER "+moment.getNom());
         loadMomentPane();
         extractTooltip = new Tooltip();
         BorderPane.setMargin(this.momentPane,(new Insets(10,10,10,10)));
@@ -158,9 +171,33 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
         this.momentRemoveTypeController.addObserver(this);
         addTypeController.addObserver(main.getMainViewController());
         
+        
+        borderPaneLabel.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+            	Dragboard db = borderPaneLabel.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                // Store node ID in order to know what is dragged.
+                content.putString("moveMoment");
+                content.put(MomentExpVBox.rootCol, MomentExpVBox.this.getColOfRootMoment());
+				content.put(MomentExpVBox.realCol, MomentExpVBox.this.getCol());
+				try {
+					content.put(MomentExpVBox.df, Serializer.serialize(MomentExpVBox.this.getMoment()));
+				}
+				catch(IOException e) {
+					e.printStackTrace();
+				}
+                db.setContent(content);
+                event.consume();
+            }
+        });
+        
 	}
 	
+	public MomentExpVBox(Main main){
+		this(new MomentExperience("------",-1,-1), main);
+	}
 	
+
 	private void loadMomentPane(){
 		sousMomentPane = new GridPane();
         try {
@@ -212,7 +249,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	}
 	
 	public void setColor(String col){
-		String styleLabel = "-fx-background-color: "+col+"; -fx-border-color: black;";
+		String styleLabel = "-fx-background-color: "+col+"; ";
+		if(Main.activateBetaDesign)
+			styleLabel+= 		"-fx-border-color: transparent;";
+		else
+			styleLabel+= 		"-fx-border-color: black;";
 		this.borderPaneLabel.setStyle(styleLabel);
 	}
 	
@@ -230,22 +271,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 		extractTooltip.setOpacity(0);
 	}
 	
-	public void removeMomentFromParent(MomentExpVBox moment,Main main){
-		if (!moment.getSousMomentPane().getChildren().isEmpty()) {
-			for (Node child : moment.getSousMomentPane().getChildren()) {
-				MomentExpVBox childMEV = (MomentExpVBox)child;
-				if (childMEV.getMoment().equals(this.moment)) {
-					moment.getSousMomentPane().getChildren().remove(child);
-					moment.getMoment().getSousMoments().remove(this.moment);
-					break;
-				}
-				else{
-					removeMomentFromParent(childMEV,main);
-				}
-			}
-		}
-	}
-	
+
 	public void deleteMoment(){
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -256,38 +282,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 
     	Optional<ButtonType> result = alert.showAndWait();
     	if (result.get() == ButtonType.OK){
-    		for (Node m : main.getGrid().getChildren()) {
-        		int pos = main.getGrid().getChildren().indexOf(m);
-        		MomentExpVBox mom = (MomentExpVBox)m;
-				LinkedList<Node> moments = new LinkedList<Node>();
-        		if (mom.getMoment().equals(moment)) {
-        			
-        			for (int i = 0; i < main.getGrid().getChildren().size(); i++) {;
-        				moments.add(main.getGrid().getChildren().get(i));
-					}
-        			moments.remove(pos);
-        			main.getGrid().getChildren().clear();
-        			for (int j = 0; j < moments.size(); j++) {
-						main.getGrid().add(moments.get(j), j, 0);
-					}
-        			
-        			// if number of elements sup to 1 remove one row
-        			if((main.getGrid().getColumnConstraints().size() > 1)){
-        				main.getGrid().getColumnConstraints().remove(main.getGrid().getColumnConstraints().size()-1);
-        				main.getCurrentDescription().setNumberCols(main.getCurrentDescription().getNumberCols()-1);
-        			}
-					main.getCurrentDescription().getMoments().remove(mom.getMoment());
-					
-					// Actualize the col of the model
-					for (int i = 0; i < main.getGrid().getChildren().size()-1; i++) {
-						main.getCurrentDescription().getMoments().get(i).setGridCol(i);
-					}
-					break;
-				}
-        		else{
-        			removeMomentFromParent(mom,main);
-        		}
-			}
+    		RemoveMomentCommand cmd = new RemoveMomentCommand(this, main);
+    		cmd.execute();
+    		UndoCollector.INSTANCE.add(cmd);
     	}
 	}
 	
@@ -297,7 +294,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 			@Override
 			public void handle(MouseEvent arg0) {
 				if(arg0.getClickCount() == 2){
-					System.out.println("DoubleClick");
+					//System.out.println("DoubleClick");
 					editNameMode();
 				}
 			}
@@ -454,6 +451,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 	}
 	
 	public void setBorderColor(String couleur) {
+		if(Main.activateBetaDesign && couleur == "black") couleur = "transparent";
 		momentPane.setStyle("-fx-border-color : "+couleur);
 		String styleLabel = "-fx-background-color: "+moment.getCouleur()+"; -fx-border-color:"+couleur +";";
 		this.borderPaneLabel.setStyle(styleLabel);
@@ -499,10 +497,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 		return this.borderPaneLabel;
 	}
 	
-	public String toString(){
-		return this.label.getText() + "(" + this.getMoment().getType() + ")";
-	}
-	
 	public MomentNameController getMomentNameController() {
 		return this.nameController;
 	}
@@ -523,7 +517,73 @@ public class MomentExpVBox extends VBox implements Initializable, Observer{
 		return this.momentRemoveTypeController;
 	}
 	
-	public PropertyExtractController getPropertyExtractController() {
-		return this.propertyExtractController;
+	public MomentExpVBox getVBoxParent() {
+		return this.momentParent;
+	}
+	
+	public void setVBoxParent(MomentExpVBox parent) {
+		this.momentParent = parent;
+	}
+	
+	public int getColOfRootMoment() {
+		if(hasParent()) return this.momentParent.getColOfRootMoment();
+		else return this.getCol();
+	}
+	
+	public boolean isAChildOf(MomentExperience p) {
+		if(hasParent()) {
+			if(p.equals(this.getVBoxParent().getMoment()))
+				return true;
+			else 
+				return this.getVBoxParent().isAChildOf(p);
+		}
+		else return false;
+	}
+	
+	public boolean isAParentOf(MomentExperience p) {
+		boolean ret = false;
+		for(Node n : this.getSousMomentPane().getChildren()) {
+			if(ret)break;
+			MomentExpVBox m = (MomentExpVBox)n;
+			if(m.getMoment().equals(p)) ret = true;
+			else {
+				ret = m.isAParentOf(p);
+			}
+		}
+		return ret;
+	}
+	
+	public boolean isDirectParentOf(MomentExperience p) {
+		boolean ret = false;
+		for(Node n : this.getSousMomentPane().getChildren()) {
+			MomentExpVBox m = (MomentExpVBox)n;
+			//System.out.print(m.getMoment().getNom()+" est le pere de "+p.getNom()+" ?");
+			if(m.getMoment().equals(p)) {
+				//System.out.println(" -> Oui");
+				ret = true;
+				break;
+			}
+			else {
+				//System.out.println(" -> Non");
+			}
+		}
+		return ret;
+	}
+	
+	
+	public boolean hasParent() {
+		return this.momentParent!=null;
+	}
+	
+	
+	public String toString() {
+		String ret="";
+		ret="{Nom:"+this.moment.getNom()+"; Sous-Moments:[";
+		for(Node n : this.getSousMomentPane().getChildren()) {
+			MomentExpVBox m = (MomentExpVBox)n;
+			ret+=m.toString();
+		}
+		ret+="]}\n";
+		return ret;
 	}
 }

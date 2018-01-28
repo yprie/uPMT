@@ -132,7 +132,7 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	if(!propertiesHaveDescriptem()) {
-		    		extractTooltip.setText("Double-click to add a Descripteme.");
+		    		extractTooltip.setText("Double-click to add an extract.");
 			    	javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
 			        extractTooltip.show(propertyName, p.getX(), p.getY());
 		    	}

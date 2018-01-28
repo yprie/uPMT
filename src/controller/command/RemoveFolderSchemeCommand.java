@@ -55,12 +55,11 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 	private TreeItem<TypeController> parentFolder;
 	private int folderPos;
 	private Main main;
-	
-	public RemoveFolderSchemeCommand(TreeItem<TypeController> parentTree, Main m) {
+	public RemoveFolderSchemeCommand(TreeItem<TypeController> parentTree, Main main) {
 		this.tree = parentTree;
 		listeCommandes = new LinkedList<Command>();
 		folderPos = parentTree.getParent().getChildren().indexOf(parentTree);
-		main = m;
+		this.main = main;
 	}
 	
 	public boolean containsFolder(TreeItem<TypeController> tree) {

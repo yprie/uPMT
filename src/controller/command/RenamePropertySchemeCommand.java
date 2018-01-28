@@ -42,7 +42,6 @@ public class RenamePropertySchemeCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		observable.update(oldName);
-		main.needToSave();
 	}
 
 	@Override
@@ -58,7 +57,6 @@ public class RenamePropertySchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newName);
-		main.needToSave();
 	}
 
 	@Override

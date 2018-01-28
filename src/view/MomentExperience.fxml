@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" prefWidth="180.0" style="-fx-background-color: lightgrey; -fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="momentCardPane" minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" prefWidth="180.0" styleClass="momentCard" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <BorderPane fx:id="borderPaneLabel" maxWidth="1.7976931348623157E308" style="-fx-border-color: black;">
+      <BorderPane fx:id="borderPaneLabel" maxWidth="1.7976931348623157E308" style="-fx-background-color: #D3D3D3;">
          <right>
             <ImageView fx:id="hasExtractImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
          </right>

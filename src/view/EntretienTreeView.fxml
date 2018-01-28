@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="interviewPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane styleClass="tree-view-right" fx:id="interviewPane" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomEntretien" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="Label" BorderPane.alignment="CENTER" />
    </left>

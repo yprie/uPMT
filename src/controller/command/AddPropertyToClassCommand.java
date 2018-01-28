@@ -92,7 +92,6 @@ public class AddPropertyToClassCommand implements Command,Undoable{
         tree.getChildren().add(newType);
         tree.setExpanded(true);	
         controller.getAddPropertySchemeController().update(newp);
-        main.needToSave();
 	}
 
 	@Override

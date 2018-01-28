@@ -59,7 +59,6 @@ public class RenameFolderSchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		controller.setName(newName);
-		main.needToSave();
 	}
 
 	@Override

@@ -42,7 +42,6 @@ public class ChangeColorClassCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		observable.update(oldColor);
-		main.needToSave();
 	}
 
 	@Override
@@ -58,7 +57,6 @@ public class ChangeColorClassCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newColor);
-		main.needToSave();
 	}
 
 	@Override

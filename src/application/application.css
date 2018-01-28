@@ -1,27 +1,63 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* --------------------------------------
+ * --------------------------------------
+ * --------------TREE VIEW---------------
+ * --------------------------------------
+ * -------------------------------------- */
+ 
 .tree-view, .tree-cell {
-    -fx-background-color: #4d394b ;
-    -fx-text-fill: white ;
+    -fx-background-color: white ;
+    -fx-text-fill: black ;
 }
-.tree-view {
-    -fx-background-color: #4d394b;
+.tree-cell:selected {
+    -fx-background-color: #eee ;
+    /*-fx-font-weight: bold;*/
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 10, 0 , 0 , 0 );
+    -fx-text-fill: black ;
 }
 
-.tree-cell:selected {
-    -fx-background-color: #4c9689 ;
-    -fx-text-fill: white ;
+.tree-cell:selected Text{
+    -fx-fill: black ;
 }
 .tree-cell {
-    -fx-padding: 0.75em 0em 0.75em 0em;
+    -fx-padding: 5px 0em 5px 0em;
 }
+
+.tree-view-right > .button, .tree-view-right > .color-picker{
+	-fx-border-width: 1;
+	-fx-min-width:45px;
+    -fx-padding: 5;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-background-radius: 50px;
+    -fx-background-color: white;
+    -fx-border-color: #eee;
+    -fx-border-radius:50;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+.tree-view-right > .button:hover, .tree-view-right > .color-picker:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.tree-view-right > .button:pressed, .tree-view-right > .color-picker:pressed {
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 10, 0 , 0 , 0 );
+}
+.tree-view-right > .button Text, .tree-view-right > .color-picker Text {
+    -fx-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
+}
+
+
 
 
 .split-pane:horizontal > .split-pane-divider {
-   -fx-background-color: black;
+   -fx-background-color: #494a4b;
    -fx-padding:0.5;
 }
 .split-pane:vertical > .split-pane-divider {
-   -fx-background-color: black;
+   -fx-background-color: #494a4b;
    -fx-padding:0.5;
 }
 
@@ -29,35 +65,29 @@
 	-fx-background-color: white;
 }
 
-.scroll-pane > .viewport {
-   -fx-background-color: white;
+.topVBox{
+	-fx-background-color: white;
 }
-.scroll-pane {
-   -fx-background-color: transparent;
+.rightVBox{
+	-fx-background-color: #f8f8f8;
 }
 
-.tree-view-right > .button, .color-picker{
-	-fx-border-width: 2;
-	-fx-min-width:50px;
-    -fx-padding: 10 10 10 10;
-    -fx-padding: 5px;
-    -fx-border-insets: 5px;
-    -fx-background-insets: 5px;
-    -fx-background-radius: 5;
-    -fx-background-color: transparent;
-    -fx-border-color: white;
-    -fx-border-radius:5;
-    -fx-font-weight: bold;
-    -fx-font-size: 1.1em;
+.scroll-pane > .viewport {
+   -fx-background-color: #f0f0f0;
 }
-.tree-view-right > .button:hover, .color-picker:hover {
+
+.momentCard > .scroll-pane > .viewport{
     -fx-background-color: white;
-    -fx-text-fill: black;
+    -fx-border-color: transparent;
+    
 }
-.tree-view-right > .button:pressed, .color-picker:pressed {
-    -fx-background-color: #f0f0f0;
+.momentCard{
+	-fx-border-color: transparent;
+	-fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+    -fx-background-radius: 3;
+    -fx-border-radius:3;
+    -fx-effect: dropshadow(three-pass-box, rgba(50,50,50,0.5), 2, 0, 0, 2);
 }
-.tree-view-right > .button Text, .color-picker Text {
-    -fx-fill: white;
-    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
-}
+
+

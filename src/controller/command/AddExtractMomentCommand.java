@@ -1,5 +1,5 @@
 /*****************************************************************************
- * ChangeColorMomentCommand.java
+ * AddExtractMomentCommand.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -25,23 +25,21 @@ import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
-public class ChangeColorMomentCommand implements Command,Undoable{
+public class AddExtractMomentCommand implements Command, Undoable{
 
 	private Observable observable;
-	private String oldColor;
-	private String newColor;
-	private Main main;
+	private String oldName;
+	private String newName;
 	
-	public ChangeColorMomentCommand(Observable observable, String oldColor,String newColor, Main m) {
+	public AddExtractMomentCommand(Observable observable, String oldName,String newName, Main main) {
 		this.observable = observable;
-		this.oldColor = oldColor;
-		this.newColor = newColor;
-		main = m;
+		this.oldName = oldName;
+		this.newName = newName;
 	}
 	
 	@Override
 	public void undo() {
-		observable.update(oldColor);
+		observable.update(oldName);
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class ChangeColorMomentCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		observable.update(newColor);
+		observable.update(newName);
 	}
 
 	@Override

@@ -67,6 +67,10 @@ public class DescriptionEntretien implements Serializable{
 		this.moments.add(m);
 	}
 	
+	public void addMomentExpAt(int pos, MomentExperience m){
+		this.moments.add(pos, m);
+	}
+	
 	public LinkedList<MomentExperience> getMoments(){
 		return this.moments;
 	}

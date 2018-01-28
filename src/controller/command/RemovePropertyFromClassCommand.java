@@ -94,7 +94,6 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 				break;
 			}
 		}
-		main.needToSave();
 	}
 
 	@Override

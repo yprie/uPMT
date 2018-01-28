@@ -41,6 +41,7 @@ import controller.RootLayoutController;
 import controller.controller.TypeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -50,6 +51,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Classe;
 import model.DescriptionEntretien;
@@ -64,9 +66,11 @@ import utils.SchemaTransformations;
 import utils.Utils;
 import java.util.ResourceBundle;
 
+
 public class Main extends Application {
 	
-	public final static boolean activateBetaDesign = false;
+	public final static boolean activateBetaDesign = true;
+	public final static Color colorSelectedCell = Color.BLACK;
 	
 	// Main Layout and Stage
 	private BorderPane rootLayout;
@@ -309,7 +313,7 @@ public class Main extends Application {
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
-		System.out.println("NEED TO SAVE");
+		//System.out.println("NEED TO SAVE");
 		this.primaryStage.setTitle(_langBundle.getString("main_title")+" *");
 	}
 	

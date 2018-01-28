@@ -64,8 +64,8 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomType.setText(type.getType().getName());
-		if(Main.activateBetaDesign)
-			this.nomType.setTextFill(Color.WHITE);
+		/*if(Main.activateBetaDesign)
+			this.nomType.setTextFill(Color.BLACK);*/
 		File image = new File("./img/schema.gif");
 		Image icon = new Image(image.toURI().toString());
 		this.rootIcon.setImage(icon);

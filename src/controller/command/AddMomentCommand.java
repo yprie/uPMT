@@ -24,31 +24,31 @@ import application.Main;
 import controller.MomentExpVBox;
 import javafx.scene.control.Control;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import model.MomentExperience;
+import model.Propriete;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
 public class AddMomentCommand implements Command,Undoable{
 	
-	private MomentExpVBox momentExpPane;
+	private MomentExpVBox moment;
 	private Main main;
+	private MomentExpVBox momentAfterChange;
 	
 	public AddMomentCommand(MomentExpVBox mp, Main main){
-		this.momentExpPane = mp;
+		this.moment = mp;
 		this.main = main;
+		momentAfterChange = moment;
 	}
 
 	@Override
 	public void undo() {
-		System.out.println(momentExpPane);
-		momentExpPane.hideMoment();
-		main.getCurrentDescription().getMoments().remove(momentExpPane.getMoment());
-		// if last moment added a new col, delete that col
-		if(momentExpPane.getCol() == main.getCurrentDescription().getNumberCols()-2 && (main.getGrid().getColumnConstraints().size() > 1)){
-			main.getGrid().getColumnConstraints().remove(main.getGrid().getColumnConstraints().size()-1);
-			main.getCurrentDescription().setNumberCols(main.getCurrentDescription().getNumberCols()-1);
-		}
-		main.needToSave();
+		RemoveMomentCommand cmd = new RemoveMomentCommand(moment, main);
+		cmd.execute();
+		momentAfterChange=cmd.getMomentAfterChanges();
 	}
 
 	@Override
@@ -63,25 +63,36 @@ public class AddMomentCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		momentExpPane.showMoment();
-		main.getCurrentDescription().addMomentExp(momentExpPane.getMoment());
-		
-		if(momentExpPane.getCol() == main.getCurrentDescription().getNumberCols()-1){
-			MomentExpVBox mb = new MomentExpVBox(main, true);
-			MainViewTransformations.addMomentExpBorderPaneListener(mb, main);
-			ColumnConstraints c = new ColumnConstraints();
-			c.setMinWidth(180);
-			c.setPrefWidth(Control.USE_COMPUTED_SIZE);
-			c.setMaxWidth(Control.USE_COMPUTED_SIZE);
-			// add a new col and the borderPane
-			main.getGrid().getColumnConstraints().add(c);
-			main.getGrid().add(mb,main.getCurrentDescription().getNumberCols(), 0);
-			// increase the number of col by one
-			main.getCurrentDescription().setNumberCols(main.getCurrentDescription().getNumberCols()+1);
-		}
-		main.needToSave();
+		System.out.println("On veut ajouter " + moment.getMoment().getNom() + " à l'index " + moment.getCol());
+	    main.getCurrentDescription().setNumberCols(main.getCurrentDescription().getNumberCols() + 2);
+	    
+	    int pos = moment.getCol() / 2;
+	    
+	    main.getCurrentDescription().addMomentExpAt(pos, moment.getMoment());
+	    
+
+	    for (int i = 0; i < main.getGrid().getChildren().size(); i++) {
+	      try {
+	        MomentExpVBox m = (MomentExpVBox)main.getGrid().getChildren().get(i);
+	        String print = "On bouge " + m.getMoment().getNom() + " de " + m.getCol();
+	        if (m.getCol() >= moment.getCol())
+	          m.setCol(m.getCol() + 2);
+	        print = print + " à " + m.getCol();
+	      }
+	      catch (ClassCastException localClassCastException) {}
+	    }
+	    
+
+
+	    moment.setVBoxParent(null);
+	    momentAfterChange = moment;
+	    MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
+	    main.needToSave();
 	}
 
+	public MomentExpVBox getMomentAfterChanges() {
+		return momentAfterChange;
+	}
 	
 	@Override
 	public boolean canExecute() {

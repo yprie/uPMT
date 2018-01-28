@@ -31,53 +31,69 @@ public class AddMomentToMomentCommand implements Command, Undoable {
 	private Main main;
 	private MomentExpVBox momentPane;
 	private MomentExpVBox newMoment;
+	private MomentExpVBox momentAfterChange;
 	
-	public AddMomentToMomentCommand(MomentExpVBox moment, Main main){
-		this.main = main;
-		this.momentPane = moment;
-		this.newMoment = new MomentExpVBox(main, true);
-	}
+	
+	public AddMomentToMomentCommand(MomentExpVBox moment, Main main)
+	  {
+	    this.main = main;
+	    momentPane = moment;
+	    newMoment = new MomentExpVBox(main);
+	    momentAfterChange = newMoment;
+	  }
+	  
+	  public AddMomentToMomentCommand(MomentExpVBox newMoment, MomentExpVBox moment, Main main)
+	  {
+	    this.main = main;
+	    momentPane = moment;
+	    this.newMoment = new MomentExpVBox(newMoment.getMoment(), main);
+	    momentAfterChange = newMoment;
+	  }
 
 	@Override
 	public void undo() {
-		if(this.momentPane.getSousMomentPane().getColumnConstraints().size() > 0){
-			this.momentPane.getSousMomentPane().getChildren().remove(momentPane.getSousMomentPane().getColumnConstraints().size()-1);
-			this.momentPane.getSousMomentPane().getColumnConstraints().remove(momentPane.getSousMomentPane().getColumnConstraints().size()-1);
-			momentPane.getMoment().getSousMoments().remove(newMoment.getMoment());
-			main.needToSave();
-		}
+		RemoveMomentCommand cmd = new RemoveMomentCommand(newMoment, main);
+	    cmd.execute();
+	    momentAfterChange = cmd.getMomentAfterChanges();
 	}
 
 	@Override
 	public void redo() {
-		ColumnConstraints c = new ColumnConstraints();
-		this.momentPane.getSousMomentPane().getColumnConstraints().add(c);
-		this.momentPane.getSousMomentPane().add(newMoment,momentPane.getSousMomentPane().getColumnConstraints().size()-1,0);
-		momentPane.getMoment().getSousMoments().add(newMoment.getMoment());
-		main.needToSave();
-
+		execute();
 	}
 
 	@Override
 	public String getUndoRedoName() {
-		return "ajout Moment dans Moment";
+		return "addMomentToMoment";
 	}
 
 	@Override
-	public void execute() {		
-		if(this.momentPane.getChildren().size() == 1){
-			this.momentPane.getChildren().add(this.momentPane.getSousMomentPane());
-		}
-		ColumnConstraints c = new ColumnConstraints();
-		this.momentPane.getSousMomentPane().getColumnConstraints().add(c);
-		this.momentPane.getSousMomentPane().add(newMoment,momentPane.getSousMomentPane().getColumnConstraints().size()-1,0);
-		newMoment.showMoment();
-		MainViewTransformations.addMomentExpBorderPaneListener(newMoment, main);
-		momentPane.getMoment().getSousMoments().add(newMoment.getMoment());
-		main.needToSave();
+	public void execute() {	
+		System.out.println("On ajoute " + newMoment.getMoment().getNom() + " à " + momentPane.getMoment().getNom());
+	    
+	    newMoment.setCol(-1);
+	    newMoment.setVBoxParent(momentPane);
+	    if (momentPane.getChildren().size() == 1) {
+	      momentPane.getChildren().add(momentPane.getSousMomentPane());
+	    }
+	    ColumnConstraints c = new ColumnConstraints();
+	    momentPane.getSousMomentPane().getColumnConstraints().add(c);
+	    momentPane.getSousMomentPane().add(newMoment, momentPane.getSousMomentPane().getColumnConstraints().size() - 1, 0);
+	    newMoment.showMoment();
+	    MainViewTransformations.addMomentExpBorderPaneListener(newMoment, main);
+	    momentPane.getMoment().getSousMoments().add(newMoment.getMoment());
+	    momentAfterChange = newMoment;
+	    MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
+	    main.needToSave();
 	}
 		
 
+
+	public MomentExpVBox getMomentAfterChanges() {
+		return newMoment;
+	}
+	
+	
 	@Override
 	public boolean canExecute() {
 		return false;

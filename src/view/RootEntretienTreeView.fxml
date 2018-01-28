@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomRoot" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="Label" BorderPane.alignment="CENTER">
          <graphic>
@@ -27,7 +27,7 @@
       <Insets bottom="3.0" right="8.0" top="3.0" />
    </padding>
    <center>
-      <HBox BorderPane.alignment="CENTER">
+      <HBox BorderPane.alignment="CENTER" styleClass="tree-view-right">
          <children>
             <Button fx:id="addInterview" mnemonicParsing="false" onAction="#newInterview">
                <HBox.margin>

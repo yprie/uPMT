@@ -6,7 +6,7 @@ public class MomentID {
 
 	private static ArrayList<Integer> idUsed = new ArrayList<Integer>();
 	
-	public static int generateID() {
+	static int generateID() {
 		idUsed.add(idUsed.size()+1);
 		return idUsed.size();
 	}

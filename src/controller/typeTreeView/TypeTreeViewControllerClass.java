@@ -196,10 +196,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void setColor(){
 		if (type.getType().getCouleur() != null) {
 			couleurType.setValue(Color.valueOf(type.getType().getCouleur()));
-			if(Main.activateBetaDesign)
-				this.nomType.setTextFill(Color.WHITE);
-			else
+			if(!Main.activateBetaDesign)
 				this.nomType.setTextFill(Color.web(type.getType().getCouleur()));
+			else
+				this.nomType.setTextFill(Main.colorSelectedCell);
 		}
 	}
 	
@@ -226,10 +226,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 		}
 		if(obs.getClass().equals(ChangeColorClassSchemeController.class)) {
 			
-			if(Main.activateBetaDesign)
-				this.nomType.setTextFill(Color.WHITE);
-			else
+			if(!Main.activateBetaDesign)
 				this.nomType.setTextFill(Color.web((String) value));
+			else
+				this.nomType.setTextFill(Color.BLACK);
 			
 			couleurType.setValue(Color.valueOf((String) value));
 		}

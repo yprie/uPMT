@@ -86,7 +86,6 @@ public class RemoveClassFromParentCommand implements Command,Undoable{
 	public void execute() {
 		controller.getRemoveClassSchemeController().update(classe);
 		tree.getChildren().remove(oldClassTree);
-		main.needToSave();
 	}
 
 	@Override

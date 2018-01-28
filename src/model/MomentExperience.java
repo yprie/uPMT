@@ -40,6 +40,7 @@ public class MomentExperience implements Serializable {
 	private int gridCol;
 	private String couleur = "#D3D3D3";
 	private Propriete currentProperty =null;
+	private int id;
 
 	public MomentExperience(String nom,int row,int col){
 		this.sousMoments = new LinkedList<MomentExperience>();
@@ -47,6 +48,12 @@ public class MomentExperience implements Serializable {
 		this.types = new LinkedList<Type>();
 		this.nom = nom;
 		this.gridCol = col;
+		id=MomentID.generateID();
+	}
+	
+	
+	public int getID() {
+		return id;
 	}
 	
 	public Date getDate() {
@@ -115,11 +122,14 @@ public class MomentExperience implements Serializable {
 		this.sousMoments = sousMoments;
 	}
 
+	@Override
 	public boolean equals(Object arg0) {
-		MomentExperience mom2 = (MomentExperience)arg0;
-		return this.nom == mom2.nom &&
-			this.date == mom2.date &&
-			this.types == mom2.types;
+		try {
+			MomentExperience e = (MomentExperience)arg0;
+			return this.getID()==e.getID();
+		}catch(Exception e) {
+			return false;
+		}
 	}
 
 	public String getCouleur() {
@@ -137,4 +147,6 @@ public class MomentExperience implements Serializable {
 	public Propriete getCurrentProperty() {
 		return currentProperty;
 	}
+	
+	
 }
