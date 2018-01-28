@@ -23,7 +23,7 @@
    <center>
       <SplitPane fx:id="mainSplitPane" dividerPositions="0.25, 0.75">
          <items>
-            <SplitPane dividerPositions="0.7" orientation="VERTICAL" style="-fx-max-width: 400; -fx-min-width: 400;" SplitPane.resizableWithParent="false">
+            <SplitPane dividerPositions="0.7" orientation="VERTICAL" style="-fx-max-width: 400; -fx-min-width: 200;" SplitPane.resizableWithParent="false">
                <items>
                   <TreeView fx:id="treeViewSchema" />
                   <TreeView fx:id="treeViewInterview" />

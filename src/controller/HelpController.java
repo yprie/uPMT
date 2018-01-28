@@ -43,7 +43,7 @@ public class HelpController implements Initializable{
 //		t.setText("Micro-Phenomenology");
 
 //		this.document.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
-		this.document.setEditable(false);
+//		this.document.setEditable(false);
 		window.show();
 	}
 	
