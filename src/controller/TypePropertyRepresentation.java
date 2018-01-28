@@ -149,10 +149,10 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
         LinkToTreeProperty();
         if(this.propertiesHaveDescriptem()) {
         	this.showExtractIcon(property.getDescripteme().getTexte());
-        	System.out.println("Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
+        	//System.out.println("Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
         }
         else{
-        	System.out.println("Hide icon: Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
+        	//System.out.println("Hide icon: Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
         	this.hideExtractIcon();
         }
 	}

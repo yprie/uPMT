@@ -58,45 +58,35 @@ public class MoveMomentCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		this.initMoment = add.getMomentAfterChanges();
-		System.out.println("--------------\n--------------\n--------------\n");
-		System.out.println("Actuellement nous somme en face de "+initMoment.getMoment().getNom());
-		initMoment.setVBoxParent(initParent);
 		if(initParent!=null) {
-			System.out.println("Son père actuel "+initParent.getMoment().getNom()+" = "+initMoment.getVBoxParent().getMoment().getNom());
+			rm = new RemoveMomentCommand(initMoment,main);
+			rm.execute();
+			//initMoment.setVBoxParent(initParent);
+			AddMomentToMomentCommand cmd = new AddMomentToMomentCommand(initMoment, initParent, main);
+			cmd.execute();
+			MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
 		}
 		else {
-			System.out.println("Il n'a pas de parent");
+			initMoment.setVBoxParent(initParent);
+			toCol = initMoment.getCol();
+			int tmp = initCol;
+			initCol = toCol;
+			toCol = tmp;
+			int tmpInit=0;
+			if(initCol>toCol) {
+				initCol++;
+				toCol--;
+			}
+			else toCol++;
+				execute();
 		}
-		toCol = initMoment.getCol();
-		int tmp = initCol;
-		initCol = toCol;
-		toCol = tmp;
-		int tmpInit=0;
-		if(initCol>toCol) {
-			initCol++;
-			toCol--;
-		}
-		else toCol++;
-		System.out.println("Veut aller de:"+initCol);
-		System.out.println("Vers:"+toCol);
-		System.out.println("getCol:"+initMoment.getCol());
-		execute();
 		main.needToSave();
 	}
 
 	@Override
 	public void redo() {
 		this.initMoment = add.getMomentAfterChanges();
-		System.out.println("Actuellement nous somme en face de "+initMoment.getMoment().getNom());
 		initMoment.setVBoxParent(initParent);
-		if(initParent!=null) {
-			System.out.println("Son père actuel "+initParent.getMoment().getNom()+" = "+initMoment.getVBoxParent().getMoment().getNom());
-		}
-		else {
-			System.out.println("Il n'a pas de parent");
-		}
-		System.out.println("Sa colonne actuelle "+initCol);
-		System.out.println("Sa destination :"+toCol);
 		
 		execute();
 		main.needToSave();
