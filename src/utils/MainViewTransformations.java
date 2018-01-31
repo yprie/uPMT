@@ -38,6 +38,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -54,6 +55,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import model.Classe;
 import model.DescriptionEntretien;
@@ -65,7 +67,7 @@ import model.Type;
 public abstract class MainViewTransformations {
 	
 	public static void addBorderPaneMomentListener(MomentExpVBox moment, Main main){
-				
+
 		moment.getMomentPane().setOnDragOver(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	// Checking if a type is already present
@@ -103,11 +105,11 @@ public abstract class MainViewTransformations {
 		    	if(((event.getDragboard().getString().equals("ajoutType") && doesntalreadyHasType)
 		    			|| event.getDragboard().getString().equals("ajoutMoment")
 		    			|| event.getDragboard().getString().equals("moveMoment"))
-		    			&& cond)
-		    	{
+		    			&& cond){
 			        event.acceptTransferModes(TransferMode.ANY);
 		    	}		    	
 		    	event.consume();
+		    	
 		    }
 		});	
 		
@@ -131,12 +133,7 @@ public abstract class MainViewTransformations {
 						e.printStackTrace();
 					}
 					int initCol = (Integer)event.getDragboard().getContent(MomentExpVBox.realCol);
-					/*System.out.println("ça va bouger");
-					System.out.flush();
-					System.out.println(serial.getNom()+" va sur "+moment.getMoment().getNom());
-					System.out.flush();*/
 			    	MoveMomentToMomentCommand cmd = new MoveMomentToMomentCommand(serial, moment ,main);
-					//System.out.flush();
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
@@ -145,6 +142,7 @@ public abstract class MainViewTransformations {
 		    } 
 		});
 		
+
 		//Click the moment panel
 		moment.getMomentPane().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -492,4 +490,19 @@ public abstract class MainViewTransformations {
 			return ret;
 		}
 
+		public static void setDragCursor(Region r) {
+			r.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent arg0) {
+					r.setCursor(Cursor.MOVE);
+				}
+			});
+			r.setOnMouseExited(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent arg0) {
+					r.setCursor(Cursor.DEFAULT);
+				}
+			});
+		}
+		
 }

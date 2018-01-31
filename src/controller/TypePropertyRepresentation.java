@@ -105,7 +105,8 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 		    }
 		});
         extractTooltip = new Tooltip();
-        
+        extractTooltip.setWrapText(true);
+		extractTooltip.setMaxWidth(500);
         hasExtractImageProperties.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {

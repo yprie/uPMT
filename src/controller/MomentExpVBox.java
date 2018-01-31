@@ -131,7 +131,10 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         this.setMinHeight(200);
         //System.out.println("HFJFDJEJER "+moment.getNom());
         loadMomentPane();
-        extractTooltip = new Tooltip();
+        
+        extractTooltip = new Tooltip("");
+		extractTooltip.setWrapText(true);
+		extractTooltip.setMaxWidth(500);
         BorderPane.setMargin(this.momentPane,(new Insets(10,10,10,10)));
         VBox.setMargin(this,(new Insets(10,10,10,10)));
         //implementation du tooltip
@@ -171,7 +174,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         this.momentRemoveTypeController.addObserver(this);
         addTypeController.addObserver(main.getMainViewController());
         
-        
+        MainViewTransformations.setDragCursor(this.borderPaneLabel);
         borderPaneLabel.setOnDragDetected(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
             	Dragboard db = borderPaneLabel.startDragAndDrop(TransferMode.MOVE);
@@ -264,7 +267,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		extractTooltip.setText(tooltip);
 		extractTooltip.setOpacity(1);
 	}
-
 	
 	public void hideExtractIcon(){
 		this.hasExtractImage.setImage(null);
@@ -422,7 +424,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			if(value != null) {
 				this.showExtractIcon((String) value);
-
 			}else {
 				this.hideExtractIcon();
 			}
