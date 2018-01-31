@@ -40,6 +40,9 @@ import controller.MomentExpVBox;
 import controller.RootLayoutController;
 import controller.controller.TypeController;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -48,6 +51,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -146,10 +150,10 @@ public class Main extends Application {
         	is = getClass().getResourceAsStream(url);
         	 try {
      			pros.load(is);
-     			System.out.println("succeed load with: "+url);
+     			//System.out.println("succeed load with: "+url);
      			break;
      		} catch (Exception e) {
-     			System.out.println("fail with: "+url);
+     			//System.out.println("fail with: "+url);
      		}
         }
 
@@ -196,6 +200,7 @@ public class Main extends Application {
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             
+            
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);
             primaryStage.show();
@@ -222,6 +227,7 @@ public class Main extends Application {
 			if(activateBetaDesign)
 				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			promptWindow.setScene(launchingScene);
+			promptWindow.setAlwaysOnTop(true);
 			promptWindow.showAndWait();
 			
 			// if project empty -> launch interview creation
@@ -348,7 +354,7 @@ public class Main extends Application {
     	        };
     	        OutputStream out=null;
     	        for(String url : urls) {
-    	        	System.out.println("Test avec avec "+url);
+    	        	//System.out.println("Test avec avec "+url);
     	        	try {
 	    	        	tmp =getClass().getResource(url);
 	    	        	if(tmp!=null) {
@@ -357,7 +363,7 @@ public class Main extends Application {
 	        	        	break;
 	    	        	} else System.out.println("tmp est null");
     	        	}catch(Exception e) {
-    	        		System.out.println("N'a pas marché avec "+url);
+    	        		//System.out.println("N'a pas marché avec "+url);
     	        	}
     	        }
     	        
@@ -486,6 +492,17 @@ public class Main extends Application {
 	
 	public void setTreeViewSchema(TreeView<TypeController> treeViewSchema) {
 		this.treeViewSchema = treeViewSchema;
+		this.treeViewSchema.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				 if (!newValue.booleanValue()) {
+					 Main.this.treeViewSchema.getSelectionModel().clearSelection();
+				 }
+			}
+			
+		});
+
 	}
 	
 	public TreeView<DescriptionEntretien> getTreeViewInterview() {

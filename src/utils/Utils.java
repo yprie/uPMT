@@ -35,9 +35,9 @@ public abstract class Utils {
 		
 		if(projectNames.isEmpty()){
 			// For debug purposes
-			System.out.println("No projects to load");
+			////System.out.println("No projects to load");
 		}else{
-			System.out.println("Loading projects");
+			////System.out.println("Loading projects");
 			for (String s : projectNames) {
 				if(s.contains(Projet.FORMAT)) {
 					projects.add(Projet.load(s));
@@ -53,9 +53,9 @@ public abstract class Utils {
 		
 		if(projectNames.isEmpty()){
 			// For debug purposes
-			System.out.println("No projects to load");
+			////System.out.println("No projects to load");
 		}else{
-			System.out.println("Loading projects");
+			////System.out.println("Loading projects");
 			for (String s : projectNames) {
 				if(s.contains(Projet.FORMAT)) {
 					if(projectNames.contains(Projet.RECOVERY+s)) {
@@ -81,7 +81,7 @@ public abstract class Utils {
 		for (File file : files) {
 		    if (file.isFile()) {
 		        results.add(file.getName());
-		        //System.out.println(file.getName());
+		        ////System.out.println(file.getName());
 		    }
 		}
 		
@@ -111,7 +111,7 @@ public abstract class Utils {
 		    if (file.isFile()) 
 		    	if(file.getName().contains(Projet.RECOVERY)) {
 		    		String fileName = file.getName().replace(Projet.RECOVERY, "");
-		    		System.out.println();
+		    		//System.out.println();
 		    		File fileToDelete = new File(Projet.PATH+fileName);
 		    		fileToDelete.delete();
 		    		file.renameTo(new File(Projet.PATH+fileName));

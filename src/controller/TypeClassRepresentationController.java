@@ -234,12 +234,25 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		}
 		if(obs.getClass().equals(AddPropertySchemeController.class)) {
 			Propriete n = new Propriete(((Propriete)value).getName());
+			boolean contain = false;
+			for(Type t : classe.getTypes()) {
+				if(t.getName().equals(n.getName())) {
+					contain = true;
+					break;
+				}
+			}
+			System.out.println("contains ? "+contain);
+			
 			if(!this.classe.getTypes().contains(n)) {
 				addProperty((Propriete) n);
+			}
+			else {
+				System.out.println("AH BAH VOILA !!!!!");
 			}
 		}
 		if(obs.getClass().equals(RemovePropertySchemeController.class)) {
 			Propriete toRemove = (Propriete) value;
+			System.out.println("Remove dans TypeClassRpzCtrl "+toRemove.getName());
 			RemoveProperty(toRemove);
 		}
 		if(obs.getClass().equals(AddPropertySchemeWithValueController.class)) {

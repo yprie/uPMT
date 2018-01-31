@@ -6,9 +6,13 @@ import java.util.ResourceBundle;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class HelpController implements Initializable{
@@ -45,6 +49,7 @@ public class HelpController implements Initializable{
 //		this.document.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
 //		this.document.setEditable(false);
 		window.show();
+
 	}
 	
 	public TextArea getDocument() {

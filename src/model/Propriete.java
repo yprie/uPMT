@@ -61,24 +61,12 @@ public class Propriete extends Type implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Propriete other = (Propriete) obj;
-		if (extract == null) {
-			if (other.extract != null)
-				return false;
-		} else if (!extract.equals(other.extract))
-			return false;
-		if (valeur == null) {
-			if (other.valeur != null)
-				return false;
-		} else if (!valeur.equals(other.valeur))
-			return false;
-		return true;
+		try {
+			Propriete other = (Propriete) obj;
+			if(other.getName().equals(this.getName())) return true;
+			else return false;
+		}catch(Exception e) {return false;}
+		
 	}
 	
 	

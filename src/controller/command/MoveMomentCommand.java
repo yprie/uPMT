@@ -109,8 +109,8 @@ public class MoveMomentCommand implements Command,Undoable{
 			initMoment.setCol(toCol-1);
 		add = new AddMomentCommand(initMoment, main);
 		add.execute();
-		MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
-		main.needToSave();
+		//MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
+		//main.needToSave();
 		//System.out.println(MainViewTransformations.allMomentsToString(main));
 	}
 

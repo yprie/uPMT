@@ -85,13 +85,25 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
+		System.out.println("//////////");
+		System.out.println("//////////");
+		System.out.println("//////////");
 		// adding the new property to the scheme
 		TreeItem<TypeController> newType = new TreeItem<TypeController>();
 		TypeController tc = new TypeController(newp, controller.getType());
+		
         newType.setValue(tc);
+
         tree.getChildren().add(newType);
+        
+
         tree.setExpanded(true);	
+        
+        
         controller.getAddPropertySchemeController().update(newp);
+        
+        MainViewTransformations.updateGrid(main);
+        main.needToSave();
 	}
 
 	@Override

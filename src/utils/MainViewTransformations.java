@@ -349,22 +349,19 @@ public abstract class MainViewTransformations {
 	}
 	
 	public static void loadTypes(MomentExpVBox mp,Main main){
+		System.out.println("------------------------------------");
+		System.out.println(mp.getMoment().getNom()+": ");
 		for (Type t : mp.getMoment().getType()) {
 			TypeClassRepresentationController classe = new TypeClassRepresentationController((Classe) t,mp,main);
 			mp.getTypeSpace().getChildren().add(classe);
 			addTypeListener(classe, mp, t, main);
+			System.out.println(t.toString());
 		}
+		System.out.println("------------------------------------");
 	}
 	
-	public static void updateCol(GridPane grid) {
-		System.out.println("col");
-		for(int i=0;i<grid.getChildren().size();i++) {
-			try {
-				MomentExpVBox m = (MomentExpVBox)grid.getChildren().get(i);
-				m.setCol(i);
-			}
-			catch(ClassCastException e) {}//Si exception c'est qu'il s'agit du dernier, qui n'est pas un MomentExpVBox mais un groupe
-		}
+	public static void updateGrid(Main main) {
+		loadGridData(main.getGrid(), main, main.getCurrentDescription());
 	}
 	
 	public static String allMomentsToString(Main main) {

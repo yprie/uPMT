@@ -84,7 +84,7 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 		add.execute();
 		
 		//initMoment2 = add.getMomentAfterChanges();
-		MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
+		//MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
 		
 		main.needToSave();
 	}

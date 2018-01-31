@@ -45,6 +45,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TitledPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -101,9 +102,11 @@ public class RootLayoutController implements Initializable{
 	
 	@FXML
 	public void aboutUs(){
-		Stage helpWindow = new Stage();
+		Stage helpWindow = new Stage(StageStyle.UTILITY);
 		helpWindow.setTitle("Help");
 		helpWindow.setResizable(false);
+		helpWindow.setAlwaysOnTop(true);
+		helpWindow.initModality(Modality.APPLICATION_MODAL);
 		//helpWindow.setWidth(610);  
 		//helpWindow.setHeight(350);    
  
@@ -111,12 +114,14 @@ public class RootLayoutController implements Initializable{
 			FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/HelpView.fxml"));
 //          loader.setController(new HelpController(main, helpWindow, this.document));
-            loader.setController(new HelpController(main, helpWindow));
             loader.setResources(main._langBundle);
             AnchorPane layout = (AnchorPane) loader.load();
-			Scene main = new Scene(layout);
-			helpWindow.setScene(main);
-			helpWindow.showAndWait();
+            Scene sc = new Scene(layout);
+			helpWindow.setScene(sc);
+			
+            loader.setController(new HelpController(main, helpWindow));
+            helpWindow.showAndWait();
+			
 			
 		} catch (IOException e) {
 			// TODO Exit Program

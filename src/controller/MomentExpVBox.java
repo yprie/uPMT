@@ -430,9 +430,10 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(obs.getClass().equals(MomentAddTypeController.class)) {
 			if(value != null) {
 				TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Classe) value,this,main);
-				MainViewTransformations.addTypeListener(elementPane, this, (Type) value, main);
-				//((TypeTreeViewControllerClass)((TypeTreeView)Main.tempDragReference).getController()).getNameController().addObserver(elementPane);
-				this.typeSpace.getChildren().add(elementPane);
+				
+					MainViewTransformations.addTypeListener(elementPane, this, (Type) value, main);
+					//((TypeTreeViewControllerClass)((TypeTreeView)Main.tempDragReference).getController()).getNameController().addObserver(elementPane);
+					this.typeSpace.getChildren().add(elementPane);
 			}
 			else {
 				this.typeSpace.getChildren().remove(this.typeSpace.getChildren().size()-1);
@@ -449,6 +450,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			}
 		}
 	}
+	
+
 	
 	public void setBorderColor(String couleur) {
 		if(Main.activateBetaDesign && couleur == "black") couleur = "transparent";
