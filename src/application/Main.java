@@ -492,7 +492,7 @@ public class Main extends Application {
 	
 	public void setTreeViewSchema(TreeView<TypeController> treeViewSchema) {
 		this.treeViewSchema = treeViewSchema;
-		this.treeViewSchema.focusedProperty().addListener(new ChangeListener<Boolean>() {
+		/*this.treeViewSchema.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -501,7 +501,7 @@ public class Main extends Application {
 				 }
 			}
 			
-		});
+		});*/
 
 	}
 	
