@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane styleClass="tree-view-right" fx:id="interviewPane" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="interviewPane" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomEntretien" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="Label" BorderPane.alignment="CENTER" />
    </left>
@@ -16,8 +16,8 @@
    <padding>
       <Insets bottom="3.0" right="8.0" top="3.0" />
    </padding>
-   <center>
-      <HBox BorderPane.alignment="CENTER" styleClass="tree-view-right">
+   <right>
+      <HBox styleClass="tree-view-right" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="renameInterview" mnemonicParsing="false" onAction="#renameInter" />
             <Button fx:id="afficherDescritpeme" mnemonicParsing="false" onAction="#showInterview" />
@@ -27,5 +27,5 @@
             <Insets left="15.0" />
          </BorderPane.margin>
       </HBox>
-   </center>
+   </right>
 </BorderPane>

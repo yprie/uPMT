@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root style="-fx-border-color: black;" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="155.0" minWidth="155.0" prefWidth="155.0" styleClass="momentCard" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox fx:id="properties" minHeight="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -15,12 +15,12 @@
       </VBox>
    </center>
    <top>
-      <Label fx:id="className" text="nomClasse" BorderPane.alignment="CENTER">
+      <Label fx:id="className" text="nomClasse" wrapText="true" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets left="5.0" right="5.0" top="3.0" />
          </BorderPane.margin>
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="10.0" />
          </font>
       </Label>
    </top>

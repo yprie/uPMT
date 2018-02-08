@@ -21,12 +21,33 @@
 package model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
-public class Propriete extends Type implements Serializable{
+public class Propriete extends Type implements Serializable, Cloneable{
 	
 	private String valeur;
 	private Descripteme extract;
 
+
+	/*public Propriete clone() {
+		Propriete ret = new Propriete(nom);
+		ret.setDescription(description);
+		ret.setCouleur(couleur);
+		LinkedList<Type> retTypes = new LinkedList<Type>();
+		for(int i=0;i<types.size();i++) {
+			ret.addType(types.get(i).clone());
+		}
+		ret.setDescriptemeTxt(extract.getTexte());
+		return ret;
+	}*/
+	
+	public Object clone() {
+		Propriete ret = null;
+	    ret = (Propriete) super.clone();
+	    ret.extract = (Descripteme) extract.clone();
+	    return ret;
+	}
+	
 	public Propriete(String nom) {
 		super(nom);
 	}

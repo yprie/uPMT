@@ -55,17 +55,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Enregistrement;
 import model.Propriete;
 import utils.UndoCollector;
 
-public class TypePropertyRepresentation extends BorderPane implements Initializable, Observer{
+public class TypePropertyRepresentation extends HBox implements Initializable, Observer{
 	
 	private @FXML Label propertyValue;
 	private @FXML Label propertyName;
 	private @FXML ImageView hasExtractImageProperties;
-	private @FXML BorderPane propertyPane;
+	private @FXML HBox propertyPane;
 	private Main main;
 	private Propriete property;
 	private TreeItem<TypeController> propertyTypeTreeItem;
@@ -169,8 +172,10 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	}
 
 	private void pickPropertyExtract() {
-		Stage promptWindow = new Stage();
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Selection de l'extrait");
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			main.getCurrentMoment().setCurrentProperty(property);
 			FXMLLoader loader = new FXMLLoader();
@@ -228,7 +233,7 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 		property.setValeur(value);
 	}
 	
-	private void setLabelChangeName(BorderPane box, TypePropertyRepresentation tpr){
+	private void setLabelChangeName(HBox propertyPane2, TypePropertyRepresentation tpr){
 		
 		
 		propertyValue.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -253,7 +258,9 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 						        			main);
 						        	cmd.execute();
 						        	UndoCollector.INSTANCE.add(cmd);
-									box.setRight(propertyValue);
+						        	propertyPane2.getChildren().remove(2);
+						        	propertyPane2.getChildren().add(propertyValue);
+									//propertyPane2.setRight(propertyValue);
 						        }
 						    }
 					};
@@ -263,17 +270,23 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 						public void handle(KeyEvent event) {
 							if(event.getCode() == KeyCode.ENTER){
 								t.setText(t.getText());
-								box.setRight(propertyValue);
+								propertyPane2.getChildren().remove(2);
+					        	propertyPane2.getChildren().add(propertyValue);
+								//propertyPane2.setRight(propertyValue);
 							}
 							if(event.getCode() == KeyCode.ESCAPE){
-								box.setRight(propertyValue);
+								propertyPane2.getChildren().remove(2);
+					        	propertyPane2.getChildren().add(propertyValue);
+					        	//propertyPane2.setRight(propertyValue);
 							}
 						}
 					});
 					t.focusedProperty().addListener(listener);
 					Platform.runLater(()->t.requestFocus());
 					Platform.runLater(()->t.selectAll());
-					box.setRight(t);
+					propertyPane2.getChildren().remove(2);
+		        	propertyPane2.getChildren().add(t);
+					//propertyPane2.setRight(t);
 				}
 			}
 		});
@@ -306,7 +319,7 @@ public class TypePropertyRepresentation extends BorderPane implements Initializa
 	}
 	
 	public void showExtractIcon(String tooltip){
-		File image = new File("./img/hasExtractIcon.gif");
+		File image = new File("./img/hasExtractIcon.png");
 		Image icon = new Image(image.toURI().toString());
 		this.hasExtractImageProperties.setManaged(true);
 		this.hasExtractImageProperties.setVisible(true);

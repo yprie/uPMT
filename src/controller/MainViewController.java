@@ -83,7 +83,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import model.Classe;
 import model.DescriptionEntretien;
@@ -139,8 +141,8 @@ public class MainViewController implements Initializable, Observer {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		this.setLabelChangeName(main,this);
-		mainSplitPane.setDividerPosition(0,0.15);
-		mainSplitPane.setDividerPosition(1,0.85);
+		//mainSplitPane.setDividerPosition(0,0.15);
+		//mainSplitPane.setDividerPosition(1,0.85);
 		
 		File fileImage = new File("./img/momentIcon.png");
 		Image image = new Image(fileImage.toURI().toString());
@@ -425,7 +427,7 @@ public class MainViewController implements Initializable, Observer {
 		this.showExtractButton.setGraphic(icon3);
 		
 		// setting the value of the color Picker
-		System.out.println(main.getCurrentMoment().getMoment().getCouleur());
+		System.out.println("id: "+main.getCurrentMoment().getMoment().getID()+" - row: "+main.getCurrentMoment().getMoment().getRow()+" - col:"+main.getCurrentMoment().getMoment().getGridCol());
 
 		if (main.getCurrentMoment().getMoment().getCouleur() != null) {
 			couleurMoment.setValue(Color.valueOf(main.getCurrentMoment().getMoment().getCouleur()));
@@ -455,7 +457,7 @@ public class MainViewController implements Initializable, Observer {
 
 	public void loadInspectorType() {
 	
-	for (Type t : main.getCurrentMoment().getMoment().getType()) {
+	for (Type t : main.getCurrentMoment().getMoment().getTypes()) {
 			Classe dup = (Classe) t;
 			TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Classe) dup,main.getCurrentMoment(),main);
 			MainViewTransformations.addTypeListener(elementPane, main.getCurrentMoment(), (Type) dup, main);
@@ -480,8 +482,10 @@ public class MainViewController implements Initializable, Observer {
 	// function called by the button to choose the extract
 	@FXML
 	public void pickExtract() {
-		Stage promptWindow = new Stage();
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Selection de l'extrait");
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));

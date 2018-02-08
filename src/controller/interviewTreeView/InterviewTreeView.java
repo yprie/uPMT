@@ -67,7 +67,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeOne){
-			main.getCurrentProject().getEntretiens().remove(interview);
+			main.getCurrentProject().removeEntretiens(interview);
 			this.getTreeItem().getParent().getChildren().remove(this.getTreeItem());
 		}
 	}

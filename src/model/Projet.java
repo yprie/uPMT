@@ -60,6 +60,18 @@ public class Projet implements Serializable {
 		this.entretiens.add(d);
 	}
 	
+	public void addEntretiens(int index, DescriptionEntretien d){
+		this.entretiens.add(index, d);
+	}
+	
+	public DescriptionEntretien removeEntretiens(int index) {
+		return this.entretiens.remove(index);
+	}
+	
+	public boolean removeEntretiens(DescriptionEntretien interview) {
+		return this.entretiens.remove(interview);
+	}
+	
 	public String toString(){
 		String str = "NomProjet = "+this.nom + "\n";
 		for(DescriptionEntretien e : entretiens){

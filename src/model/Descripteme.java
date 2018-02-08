@@ -22,9 +22,31 @@ package model;
 
 import java.io.Serializable;
 
-public class Descripteme implements Serializable{
+public class Descripteme implements Serializable, Cloneable{
 	
 	private String texte;
+	
+	public Object clone() {
+		Descripteme ret = null;
+	    try {
+			ret = (Descripteme) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return ret;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		try {
+			Descripteme d = (Descripteme) o;
+			return d.texte.equals(texte);
+		}
+		catch(Exception e) {
+			return false;
+		}
+	}
 	
 	public Descripteme(String texte){
 		this.texte = texte;
@@ -41,4 +63,6 @@ public class Descripteme implements Serializable{
 	public String toString(){
 		return this.texte;
 	}
+	
+	
 }

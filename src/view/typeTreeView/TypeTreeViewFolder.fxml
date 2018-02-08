@@ -7,18 +7,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="typePane" maxHeight="30.0" prefHeight="30.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" maxHeight="30.0" minWidth="300.0" prefHeight="30.0" prefWidth="300.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" text="Label" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fx:id="folderIcon" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
          </graphic></Label>
    </left>
-   <padding>
-      <Insets bottom="3.0" right="8.0" top="3.0" />
-   </padding>
-   <center>
-      <HBox alignment="CENTER_LEFT" styleClass="tree-view-right">
+   <right>
+      <HBox alignment="CENTER_LEFT" styleClass="tree-view-right" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="rename" mnemonicParsing="false" onAction="#rename" />
             <Button fx:id="addFolder" mnemonicParsing="false" onAction="#addFolder" />
@@ -29,5 +26,5 @@
             <Insets left="15.0" />
          </BorderPane.margin>
       </HBox>
-   </center>
+   </right>
 </BorderPane>

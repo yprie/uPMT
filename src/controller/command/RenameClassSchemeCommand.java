@@ -58,6 +58,7 @@ public class RenameClassSchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newName);
+		main.needToSave();
 	}
 
 	@Override

@@ -20,26 +20,110 @@
 
 package model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-public class DescriptionEntretien implements Serializable{
+public class DescriptionEntretien implements Serializable, Cloneable{
 	
 	private Descripteme descripteme;
 	private LinkedList<MomentExperience> moments;
 	private LocalDate dateEntretien;
 	private String participant;
 	private String commentaire;
-	private int numberCols;
 	private String nom;
+	
+	@Override
+	public boolean equals(Object o) {
+		boolean ret=false;
+		try {
+			DescriptionEntretien d = (DescriptionEntretien)o;
+
+			
+			if(descripteme==null && d.descripteme==null) ret=true;
+			else if(d.descripteme.equals(descripteme)) ret=true;
+			//System.out.println("a "+ret);
+			
+				
+			if(moments==null && d.moments==null) ret=true;
+			else if(!(ret && d.moments.equals(moments))) ret=false;
+			//System.out.println("b "+ret);
+
+			
+			if(dateEntretien==null && d.dateEntretien==null) ret=true;
+			else if(!(ret && d.dateEntretien.equals(dateEntretien))) ret=false;
+			//System.out.println("c "+ret);
+			
+
+			
+			if(participant==null && d.participant==null) ret=true;
+			else if(!(ret && d.participant.equals(participant))) ret=false;
+			//System.out.println("d "+ret);
+
+			
+			if(commentaire==null && d.commentaire==null) ret=true;
+			else if(!(ret && d.commentaire.equals(commentaire))) ret=false;
+			//System.out.println("e "+ret);
+
+			
+			if(nom==null && d.nom==null) ret=true;
+			else if(!(ret && d.nom.equals(nom))) ret=false;
+			//System.out.println("f "+ret);
+			
+		}catch (Exception e) {ret = false;
+		//System.out.println("erreur "+ret);
+		}
+		return ret;
+	}
+	
+	/*public DescriptionEntretien clone() {
+		DescriptionEntretien ret = new DescriptionEntretien(descripteme.clone(), new String(nom));
+		ret.setCommentaire(commentaire);
+		ret.setDateEntretien(dateEntretien);
+		ret.setParticipant(participant);
+		for(int i=0;i<moments.size(); i++) {
+			ret.addMoment(moments.get(i).clone());
+		}
+		return ret;
+	}*/
+	
+	/*public Object clone() {
+		DescriptionEntretien ret = null;
+	    try {
+			ret = (DescriptionEntretien) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    ret.descripteme = (Descripteme)descripteme.clone();
+	    return ret;
+	}*/
+	public Object clone() {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return (Object) ois.readObject();
+		} catch (IOException e) {
+			return null;
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 	
 	public DescriptionEntretien(Descripteme d,String nomEntretiens){
 		this.moments = new LinkedList<MomentExperience>();
 		this.nom = nomEntretiens;
-		this.numberCols = 1;
 		this.descripteme = d;
 	}
 	
@@ -63,12 +147,31 @@ public class DescriptionEntretien implements Serializable{
 		this.moments = moments;
 	}
 
-	public void addMomentExp(MomentExperience m){
+	public void addMoment(MomentExperience m){
 		this.moments.add(m);
+		m.setRow(0);
+		updateMomentsPos();
 	}
 	
-	public void addMomentExpAt(int pos, MomentExperience m){
-		this.moments.add(pos, m);
+	public void addMoment(int index, MomentExperience m){
+		this.moments.add(index, m);
+		updateMomentsPos();
+	}
+	
+	public void removeMomentExp(MomentExperience m) {
+		this.moments.remove(m);
+		updateMomentsPos();
+	}
+	
+	
+	private void updateMomentsPos() {
+		for(int i=0; i<moments.size(); i++) {
+			System.out.println("Moment "+moments.get(i).getNom()+", id:"+moments.get(i).getID()+":["+i+";0]");
+			moments.get(i).setGridCol(i);
+			moments.get(i).setRow(0);
+			moments.get(i).setParent(null);
+			moments.get(i).updateSousMomentPos();
+		}
 	}
 	
 	public LinkedList<MomentExperience> getMoments(){
@@ -98,12 +201,9 @@ public class DescriptionEntretien implements Serializable{
 		return this.nom;
 	}
 	
-	public int getNumberCols() {
-		return numberCols;
+	public int getNumberOfMoments() {
+		return moments.size();
 	}
 
-	public void setNumberCols(int numberCols) {
-		this.numberCols = numberCols;
-	}
 	
 }

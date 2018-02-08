@@ -28,6 +28,7 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import model.DescriptionEntretien;
 import model.MomentExperience;
 import model.Propriete;
 import utils.MainViewTransformations;
@@ -35,60 +36,41 @@ import utils.Undoable;
 
 public class MoveMomentCommand implements Command,Undoable{
 	
-	private Main main;
+	private MomentExperience moment;
 	private int toCol;
-	private int initCol;
-	private MomentExpVBox initMoment;
-	private MomentExpVBox initParent;
-	private RemoveMomentCommand rm;
-	private AddMomentCommand add;
+	private Main main;
+	private DescriptionEntretien dataBefore;
+	private DescriptionEntretien dataAfter;
+	private int indexInterview;
 	
-	public MoveMomentCommand(MomentExperience initMExp, int toCol, Main main){
-		this(MainViewTransformations.getMomentVBoxByMoment(initMExp, main), toCol, main);
-	}
-
-	public MoveMomentCommand(MomentExpVBox initM, int toCol, Main main){
+	public MoveMomentCommand(MomentExperience moment, int toCol, Main main){
+		this.moment = moment;
 		this.main = main;
 		this.toCol = toCol;
-		this.initMoment = initM;
-		initCol = initMoment.getCol();
-		this.initParent = initM.getVBoxParent();
 	}
 	
+
 	@Override
 	public void undo() {
-		this.initMoment = add.getMomentAfterChanges();
-		if(initParent!=null) {
-			rm = new RemoveMomentCommand(initMoment,main);
-			rm.execute();
-			//initMoment.setVBoxParent(initParent);
-			AddMomentToMomentCommand cmd = new AddMomentToMomentCommand(initMoment, initParent, main);
-			cmd.execute();
-			MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
-		}
-		else {
-			initMoment.setVBoxParent(initParent);
-			toCol = initMoment.getCol();
-			int tmp = initCol;
-			initCol = toCol;
-			toCol = tmp;
-			int tmpInit=0;
-			if(initCol>toCol) {
-				initCol++;
-				toCol--;
-			}
-			else toCol++;
-				execute();
-		}
+		//Update Interview in the project
+		main.getCurrentProject().removeEntretiens(indexInterview);
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		
+		//Edit Current Interview
+		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
 
 	@Override
 	public void redo() {
-		this.initMoment = add.getMomentAfterChanges();
-		initMoment.setVBoxParent(initParent);
+		//Update Interview in the project
+		main.getCurrentProject().removeEntretiens(indexInterview);
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
 		
-		execute();
+		//Edit Current Interview
+		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
 
@@ -99,21 +81,20 @@ public class MoveMomentCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		rm = new RemoveMomentCommand(initMoment,main);
-		rm.execute();
-		if(initMoment.hasParent())
-			initMoment.setCol(toCol+1);
-		else if(toCol<initCol)
-			initMoment.setCol(toCol+1);
-		else
-			initMoment.setCol(toCol-1);
-		add = new AddMomentCommand(initMoment, main);
-		add.execute();
-		//MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
-		//main.needToSave();
-		//System.out.println(MainViewTransformations.allMomentsToString(main));
-	}
+		try {
+			dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 
+			if(!moment.hasParent() && moment.getGridCol()<toCol) toCol--;
+			MainViewTransformations.deleteMoment(moment, main);
+			
+			main.getCurrentDescription().addMoment(toCol, moment);
+			
+			MainViewTransformations.updateGrid(main);
+		    main.needToSave();
+		    dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+		}catch(Exception e) {e.printStackTrace();}
+	}
 	
 	@Override
 	public boolean canExecute() {

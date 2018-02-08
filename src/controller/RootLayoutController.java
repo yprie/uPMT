@@ -153,9 +153,12 @@ public class RootLayoutController implements Initializable{
 	
 	@FXML
 	public void newInterview(){
-		Stage promptWindow = new Stage();
+
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Nouvel Entretien");
 		promptWindow.setResizable(false);
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));

@@ -122,6 +122,7 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		RebuildFolderRec();
+		main.needToSave();
 	}
 
 	@Override
@@ -138,6 +139,7 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		RemoveFolderRec(tree);
+		main.needToSave();
 	}
 
 	@Override

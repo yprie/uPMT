@@ -20,40 +20,98 @@
 
 package model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 
 import javafx.scene.paint.Color;
 
-public class MomentExperience implements Serializable {
+public class MomentExperience implements Serializable, Cloneable {
 
 	private Date date;
 	private String duree;
-//	private String debut;
-//	private String fin;
 	private String nom;
 	private String morceauDescripteme;
 	private LinkedList<Type> types;
 	private LinkedList<Enregistrement> enregistrements;
 	private LinkedList<MomentExperience> sousMoments;
+	private MomentExperience parentMoment=null;
 	private int gridCol;
 	private String couleur = "#D3D3D3";
 	private Propriete currentProperty =null;
 	private int id;
+	private int row;
+	
+	/*public MomentExperience clone() {
+		MomentExperience ret = new MomentExperience(nom, row, gridCol);
+		if(date!=null)
+			ret.setDate((Date)date.clone());
+		ret.setDuree(duree);
+		ret.setMorceauDescripteme(morceauDescripteme);
+		//Types
+		LinkedList<Type> retTypes = new LinkedList<Type>();
+		for(int i=0;i<types.size();i++) {
+			retTypes.add(types.get(i).clone());
+		}
+		ret.setTypes(retTypes);
+		//Enregistrements
+		LinkedList<Enregistrement> retEnregistrements = new LinkedList<Enregistrement>();
+		for(int i=0;i<enregistrements.size();i++) {
+			retEnregistrements.add(enregistrements.get(i).clone());
+		}
+		ret.setEnregistrements(retEnregistrements);
+		for(int i=0;i<sousMoments.size(); i++) {
+			ret.addSousMoment(sousMoments.get(i).clone());
+		}
+		ret.setGridCol(gridCol);
+		ret.setID(id);
+		ret.setCouleur(couleur);
+		return ret;
+	}*/
+	
+	public Object clone() {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			return (Object) ois.readObject();
+		} catch (IOException e) {
+			return null;
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 
 	public MomentExperience(String nom,int row,int col){
 		this.sousMoments = new LinkedList<MomentExperience>();
 		this.enregistrements = new LinkedList<Enregistrement>();
 		this.types = new LinkedList<Type>();
 		this.nom = nom;
+		this.row = row;
 		this.gridCol = col;
 		id=MomentID.generateID();
 	}
 	
 	
+	public MomentExperience() {
+		this("-----", 0,-1);
+	}
+
+
 	public int getID() {
 		return id;
+	}
+	
+	protected void setID(int id) {
+		this.id = id;
 	}
 	
 	public Date getDate() {
@@ -89,11 +147,11 @@ public class MomentExperience implements Serializable {
 		this.morceauDescripteme = morceauDescripteme;
 	}
 
-	public LinkedList<Type> getType() {
+	public LinkedList<Type> getTypes() {
 		return types;
 	}
 
-	public void setCaracteristiques(LinkedList<Type> caracteristiques) {
+	public void setTypes(LinkedList<Type> caracteristiques) {
 		this.types = caracteristiques;
 	}
 
@@ -117,7 +175,69 @@ public class MomentExperience implements Serializable {
 	public LinkedList<MomentExperience> getSousMoments() {
 		return sousMoments;
 	}
-
+	
+	public void addSousMoment(MomentExperience m) {
+		if(!this.sousMoments.contains(m)) {
+			m.setParent(this);
+			this.sousMoments.add(m);
+			updateSousMomentPos();
+		}
+	}
+	
+	public void addSousMoment(int index, MomentExperience m) {
+		if(!this.sousMoments.contains(m)) {
+			m.setParent(this);
+			this.sousMoments.add(index, m);
+			updateSousMomentPos();
+		}
+	}
+	
+	public MomentExperience removeSousMoment(MomentExperience m) {
+		return removeSousMoment(m.getGridCol());
+	}
+	
+	public MomentExperience removeSousMoment(int index) {
+		MomentExperience m = this.sousMoments.remove(index);
+		m.setParent(null);
+		updateSousMomentPos();
+		return m;
+	}
+	
+	public boolean hasParent() {
+		if(this.parentMoment==null)return false;
+		else return true;
+	}
+	
+	protected void updateSousMomentPos() {
+		for(int i=0; i<sousMoments.size(); i++) {
+			System.out.println("Moment "+sousMoments.get(i).getNom()+", id:"+sousMoments.get(i).getID()+" ["+i+";0]");
+			sousMoments.get(i).setGridCol(i);
+			sousMoments.get(i).setRow(row+1);
+			sousMoments.get(i).updateSousMomentPos();
+		}
+	}
+	
+	public int getParentCol() {
+		if(this.parentMoment==null) {
+			return this.gridCol;
+		}
+		else return parentMoment.getParentCol();
+	}
+	
+	public void setParent(MomentExperience m) {
+		this.parentMoment = m;
+		if(parentMoment!=null)
+			setRow(parentMoment.getRow()+1);
+		else setRow(-1);
+	}
+	
+	public int getRow() {return row;}
+	public void setRow(int r) {row = r;}
+	
+	public MomentExperience getParent() {
+		return this.parentMoment;
+	}
+	
 	public void setSousMoments(LinkedList<MomentExperience> sousMoments) {
 		this.sousMoments = sousMoments;
 	}

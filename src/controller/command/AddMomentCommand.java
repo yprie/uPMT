@@ -20,6 +20,9 @@
 
 package controller.command;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 import application.Main;
 import controller.MomentExpVBox;
 import javafx.scene.control.Control;
@@ -27,6 +30,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import model.DescriptionEntretien;
 import model.MomentExperience;
 import model.Propriete;
 import utils.MainViewTransformations;
@@ -34,64 +38,73 @@ import utils.Undoable;
 
 public class AddMomentCommand implements Command,Undoable{
 	
-	private MomentExpVBox moment;
+	private MomentExperience moment;
+	private MomentExperience parentMoment=null;
 	private Main main;
-	private MomentExpVBox momentAfterChange;
+	private DescriptionEntretien dataBefore;
+	private DescriptionEntretien dataAfter;
+	private int indexInterview;
+	private int index;
 	
-	public AddMomentCommand(MomentExpVBox mp, Main main){
-		this.moment = mp;
+	public AddMomentCommand(int index, Main main){
+		this.moment = new MomentExperience();
 		this.main = main;
-		momentAfterChange = moment;
+		this.index = index;
+		
+	}
+	
+	public AddMomentCommand(int index, MomentExperience parentMoment, Main main){
+		this(index, main);
+		this.parentMoment = parentMoment;
 	}
 
 	@Override
 	public void undo() {
-		RemoveMomentCommand cmd = new RemoveMomentCommand(moment, main);
-		cmd.execute();
-		momentAfterChange=cmd.getMomentAfterChanges();
+		//Update Interview in the project
+		main.getCurrentProject().removeEntretiens(indexInterview);
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		
+		//Edit Current Interview
+		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		MainViewTransformations.updateGrid(main);
+		main.needToSave();
 	}
 
 	@Override
 	public void redo() {
-		execute();
+		//Update Interview in the project
+		main.getCurrentProject().removeEntretiens(indexInterview);
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
+		
+		//Edit Current Interview
+		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		MainViewTransformations.updateGrid(main);
+		main.needToSave();
 	}
 
 	@Override
 	public String getUndoRedoName() {
-		return "addMoment";
+		return "ajoutMoment";
 	}
 
 	@Override
 	public void execute() {
-		System.out.println("On veut ajouter " + moment.getMoment().getNom() + " à l'index " + moment.getCol());
-	    main.getCurrentDescription().setNumberCols(main.getCurrentDescription().getNumberCols() + 2);
-	    
-	    int pos = moment.getCol() / 2;
-	    
-	    main.getCurrentDescription().addMomentExpAt(pos, moment.getMoment());
-	    
-
-	    for (int i = 0; i < main.getGrid().getChildren().size(); i++) {
-	      try {
-	        MomentExpVBox m = (MomentExpVBox)main.getGrid().getChildren().get(i);
-	        String print = "On bouge " + m.getMoment().getNom() + " de " + m.getCol();
-	        if (m.getCol() >= moment.getCol())
-	          m.setCol(m.getCol() + 2);
-	        print = print + " à " + m.getCol();
-	      }
-	      catch (ClassCastException localClassCastException) {}
-	    }
-	    
-
-
-	    moment.setVBoxParent(null);
-	    momentAfterChange = moment;
-	    MainViewTransformations.loadGridData(main.getGrid(), main, main.getCurrentDescription());
-	    main.needToSave();
-	}
-
-	public MomentExpVBox getMomentAfterChanges() {
-		return momentAfterChange;
+		try {
+			//System.out.println("Execute de "+id);
+			this.dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+			
+			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
+			//indexInterview = new Integer(main.getProjects().indexOf(main.getCurrentDescription()));
+			
+			if(parentMoment!=null)
+				parentMoment.addSousMoment(index, moment);
+			else
+				main.getCurrentDescription().addMoment(index, moment);
+			MainViewTransformations.updateGrid(main);
+			//System.out.println("update");
+		    main.needToSave();
+		    this.dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+		}catch(Exception e) {e.printStackTrace();}
 	}
 	
 	@Override

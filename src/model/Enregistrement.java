@@ -22,9 +22,20 @@ package model;
 
 import java.io.Serializable;
 
-public abstract class Enregistrement implements Serializable {
+public abstract class Enregistrement implements Serializable,Cloneable {
 	public final static String MOMENT = "moment";
 	public final static String PROPERTY = "property";
 	protected String link;
 
+	public Object clone() {
+		Enregistrement ret = null;
+	    try {
+			ret = (Enregistrement) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return ret;
+	}
+	
 }

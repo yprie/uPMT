@@ -56,7 +56,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Classe;
 import model.DescriptionEntretien;
 import model.Dossier;
@@ -113,7 +115,7 @@ public class Main extends Application {
 		
 		if(!projects.isEmpty()){
 			currentProject = projects.getFirst();
-			System.out.println(currentProject.getSchemaProjet());
+			//System.out.println(currentProject.getSchemaProjet());
 		}
 		else {
 			currentProject = new Projet("projetTMP", new Schema("SchemaTemporaire"));
@@ -214,8 +216,10 @@ public class Main extends Application {
      * Launch and show the launching screen
      */
     public void showLaunchingScreen(){
-		Stage promptWindow = new Stage();
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle(get_langBundle().getString("welcome"));
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/LaunchingScreen.fxml"));
@@ -227,7 +231,6 @@ public class Main extends Application {
 			if(activateBetaDesign)
 				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			promptWindow.setScene(launchingScene);
-			promptWindow.setAlwaysOnTop(true);
 			promptWindow.showAndWait();
 			
 			// if project empty -> launch interview creation
@@ -393,7 +396,7 @@ public class Main extends Application {
 	 */
 	private void writeMoment(DescriptionEntretien ent, MomentExperience m, PrintWriter writer, String hierarchy){
 		LinkedList<String> classes = new LinkedList<String>();
-		for(Type t : m.getType()){
+		for(Type t : m.getTypes()){
 			for(Type prop : t.getTypes()){
 				Propriete p = (Propriete) prop;
 				classes.add(format(t.getName())+","+format(p.getName())+","+format(p.getValeur()));

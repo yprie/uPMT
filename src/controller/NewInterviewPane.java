@@ -93,7 +93,7 @@ public class NewInterviewPane implements Initializable{
 		    }catch (Exception e) {
 	    	System.out.println(e.getMessage());
 	    }
-	    System.out.println(text);
+	    //System.out.println(text);
 		
 		DescriptionEntretien de = new DescriptionEntretien(new Descripteme(text), nameId.getText());
 		de.setDateEntretien(d);

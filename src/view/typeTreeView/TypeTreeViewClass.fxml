@@ -8,25 +8,18 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="typePane" maxHeight="30.0" prefHeight="30.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" maxHeight="30.0" minWidth="300.0" prefHeight="30.0" prefWidth="300.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" text="Label" BorderPane.alignment="CENTER">
          <graphic>
             <ImageView fx:id="classIcon" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
          </graphic></Label>
    </left>
-   <padding>
-      <Insets bottom="3.0" right="8.0" top="3.0" />
-   </padding>
-   <center>
-      <HBox alignment="CENTER_LEFT" styleClass="tree-view-right">
+   <right>
+      <HBox alignment="CENTER_LEFT" styleClass="tree-view-right" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="rename" mnemonicParsing="false" onAction="#rename" />
-            <ColorPicker fx:id="couleurType" onAction="#pickColor">
-               <padding>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-               </padding>
-            </ColorPicker>
+            <ColorPicker fx:id="couleurType" onAction="#pickColor" style="-fx-color-label-visible: false;" />
             <Button fx:id="addProperty" mnemonicParsing="false" onAction="#addProperty" />
             <Button fx:id="deleteClass" mnemonicParsing="false" onAction="#deleteClass" />
          </children>
@@ -34,5 +27,5 @@
             <Insets left="15.0" />
          </BorderPane.margin>
       </HBox>
-   </center>
+   </right>
 </BorderPane>

@@ -172,7 +172,7 @@ public class NewInterviewDialogController implements Initializable{
 		    }catch (Exception e) {
 	    	System.out.println(e.getMessage());
 	    }
-	    System.out.println(text);
+	    //System.out.println(text);
 		
 		DescriptionEntretien de = new DescriptionEntretien(new Descripteme(text), nomEntretien.getText());
 		de.setDateEntretien(d);

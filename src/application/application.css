@@ -2,11 +2,56 @@
 
 /* --------------------------------------
  * --------------------------------------
+ * --------------SCROLLBAR---------------
+ * --------------------------------------
+ * -------------------------------------- */
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+	-fx-background-color:transparent;
+	-fx-border-color:transparent;
+	-fx-background-radius: 0em;
+	-fx-border-radius:2em;
+}
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color:transparent;
+	-fx-background-radius: 0em;
+	-fx-padding:0 0 12 0;
+}
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color:transparent;
+	-fx-background-radius: 0em;
+	-fx-padding:0 12 0 0;
+}
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+	-fx-shape: " ";	
+	-fx-padding:0;
+}
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color:derive(black,90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 2em;
+}
+
+
+
+
+/* --------------------------------------
+ * --------------------------------------
  * --------------TREE VIEW---------------
  * --------------------------------------
  * -------------------------------------- */
  
-.tree-view, .tree-cell {
+.tree-view{
+    -fx-background-color: white ;
+    -fx-padding:0;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+}
+.tree-cell {
     -fx-background-color: white ;
     -fx-text-fill: black ;
 }
@@ -20,16 +65,16 @@
 .tree-cell:selected Text{
     -fx-fill: black ;
 }
-.tree-cell {
+/*.tree-cell {
     -fx-padding: 5px 0em 5px 0em;
-}
+}*/
 
 .tree-view-right > .button, .tree-view-right > .color-picker{
 	-fx-border-width: 1;
 	-fx-min-width:45px;
     -fx-padding: 5;
-    -fx-border-insets: 5px;
-    -fx-background-insets: 5px;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
     -fx-background-radius: 50px;
     -fx-background-color: white;
     -fx-border-color: #eee;
@@ -51,7 +96,7 @@
 
 
 
-
+/*
 .split-pane:horizontal > .split-pane-divider {
    -fx-background-color: #494a4b;
    -fx-padding:0.5;
@@ -59,7 +104,7 @@
 .split-pane:vertical > .split-pane-divider {
    -fx-background-color: #494a4b;
    -fx-padding:0.5;
-}
+}*/
 
 .menu-bar{
 	-fx-background-color: white;
@@ -82,9 +127,10 @@
     
 }
 .momentCard{
+	-fx-background-color: white;
 	-fx-border-color: transparent;
-	-fx-border-insets: 5px;
-    -fx-background-insets: 5px;
+	-fx-border-insets: 3px;
+    -fx-background-insets: 3px;
     -fx-background-radius: 3;
     -fx-border-radius:3;
     -fx-effect: dropshadow(three-pass-box, rgba(50,50,50,0.5), 2, 0, 0, 2);

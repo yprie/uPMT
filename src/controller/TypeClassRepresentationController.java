@@ -157,7 +157,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	}
 	
 	public void resetFocusColor(){
-		this.setStyle("-fx-border-color : black");
+		this.setStyle("-fx-border-color : white");
 
 	}
 

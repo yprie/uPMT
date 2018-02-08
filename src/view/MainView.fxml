@@ -21,12 +21,12 @@
 
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.25, 0.75">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.5, 0.5">
          <items>
-            <SplitPane dividerPositions="0.7" orientation="VERTICAL" style="-fx-max-width: 400; -fx-min-width: 200;" SplitPane.resizableWithParent="false">
+            <SplitPane dividerPositions="0.7" maxWidth="400.0" orientation="VERTICAL" prefWidth="400.0">
                <items>
-                  <TreeView fx:id="treeViewSchema" />
-                  <TreeView fx:id="treeViewInterview" />
+                  <TreeView fx:id="treeViewSchema" prefWidth="400.0" SplitPane.resizableWithParent="false" />
+                  <TreeView fx:id="treeViewInterview" prefWidth="400.0" />
                </items>
             </SplitPane>
             <AnchorPane>
@@ -52,7 +52,7 @@
                   </BorderPane>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="inspector_pane" fitToHeight="true" fitToWidth="true">
+            <ScrollPane fx:id="inspector_pane" fitToHeight="true" fitToWidth="true" maxWidth="300.0">
                <content>
                   <VBox fx:id="vboxInspecteur" spacing="7.0" styleClass="rightVBox">
                      <children>

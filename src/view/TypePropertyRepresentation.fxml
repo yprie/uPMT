@@ -4,29 +4,36 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<fx:root fx:id="propertyPane" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <Label text="  :  " BorderPane.alignment="CENTER" />
-   </center>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
-   <right>
-      <Label fx:id="propertyValue" text="propertyValue" BorderPane.alignment="CENTER" />
-   </right>
-   <left>
-      <BorderPane BorderPane.alignment="CENTER">
+
+<fx:root fx:id="propertyPane" maxHeight="20.0" maxWidth="145.0" minHeight="20.0" minWidth="145.0" prefHeight="20.0" prefWidth="145.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane maxWidth="60.0" minWidth="60.0" prefWidth="60.0">
          <center>
             <Label fx:id="propertyName" text="propertyName" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets right="5.0" />
+                  <Insets />
                </BorderPane.margin>
+               <font>
+                  <Font size="9.0" />
+               </font>
             </Label>
          </center>
          <left>
-            <ImageView fx:id="hasExtractImageProperties" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+            <ImageView fx:id="hasExtractImageProperties" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
          </left>
       </BorderPane>
-   </left>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="20.0" maxWidth="15.0" minHeight="20.0" minWidth="15.0" prefHeight="20.0" prefWidth="15.0" text="  :  ">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="propertyValue" maxHeight="20.0" minHeight="20.0" prefHeight="20.0" text="propertyValue">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+   </children>
 </fx:root>

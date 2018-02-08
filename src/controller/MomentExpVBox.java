@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.ChangeColorMomentCommand;
 import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
@@ -59,8 +60,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -78,15 +81,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import model.Classe;
 import model.MomentExperience;
 import model.Propriete;
-import model.SerializedMomentVBox;
 import model.Serializer;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.UndoCollector;
+import utils.Utils;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Button;
 
@@ -102,6 +106,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private Main main;
 	private @FXML ImageView hasExtractImage;
 	private Tooltip extractTooltip;
+	private @FXML ColorPicker momentColorPicker;
 	
 	//Controllers
 	private MomentNameController nameController;
@@ -152,6 +157,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    }
 		});
 		extractTooltip.setOpacity(0);
+		extractTooltip.hide();
+	
+		
 		
 		// creation of the name observer
 		nameController = new MomentNameController(this.moment);
@@ -194,10 +202,29 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
             }
         });
         
+   
+	}
+	
+	
+	
+	@FXML
+	public void colorPicked() {
+		Color couleur = momentColorPicker.getValue();
+		String colorString = Utils.toRGBCode(couleur);
+		System.out.println(moment.getCouleur());
+		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
+				this.getMomentColorController(),
+				moment.getCouleur(),
+				colorString,
+				main);
+		cmd.execute();
+		UndoCollector.INSTANCE.add(cmd);
+		System.out.println(moment.getCouleur());
+		this.getMomentColorController().update(colorString);
 	}
 	
 	public MomentExpVBox(Main main){
-		this(new MomentExperience("------",-1,-1), main);
+		this(new MomentExperience(), main);
 	}
 	
 
@@ -249,6 +276,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(this.moment.getMorceauDescripteme() != null){
 			showExtractIcon(this.moment.getMorceauDescripteme());
 		}
+		if (moment.getCouleur() != null) {
+        	momentColorPicker.setValue(Color.valueOf(moment.getCouleur()));
+		} else {
+			momentColorPicker.setValue(Color.WHITE);
+		}
+		label.setTextFill(MainViewTransformations.ContrastColor(momentColorPicker.getValue()));
 	}
 	
 	public void setColor(String col){
@@ -261,7 +294,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void showExtractIcon(String tooltip){
-		File image = new File("./img/hasExtractIcon.gif");
+		File image = new File("./img/hasExtractIcon.png");
 		Image icon = new Image(image.toURI().toString());
 		this.hasExtractImage.setImage(icon);
 		extractTooltip.setText(tooltip);
@@ -284,7 +317,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 
     	Optional<ButtonType> result = alert.showAndWait();
     	if (result.get() == ButtonType.OK){
-    		RemoveMomentCommand cmd = new RemoveMomentCommand(this, main);
+    		RemoveMomentCommand cmd = new RemoveMomentCommand(this.getMoment(), main);
     		cmd.execute();
     		UndoCollector.INSTANCE.add(cmd);
     	}
@@ -323,6 +356,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 						cmd.execute();
 						UndoCollector.INSTANCE.add(cmd);
 						borderPaneLabel.setCenter(label);
+						//borderPaneLabel.setCenter(label);
 						t.focusedProperty().removeListener(this);
 			        }
 			    }
@@ -334,9 +368,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				if(event.getCode() == KeyCode.ENTER){
 					t.setText(t.getText());
 					borderPaneLabel.setCenter(label);
+					//borderPaneLabel.setCenter(label);
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					borderPaneLabel.setCenter(label);
+					//borderPaneLabel.setCenter(label);
 				}
 			}
 		});
@@ -344,6 +380,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		Platform.runLater(()->t.requestFocus());
 		Platform.runLater(()->t.selectAll());
 		borderPaneLabel.setCenter(t);
+		//borderPaneLabel.setCenter(t);
 	}
 	
 	public TypeClassRepresentationController getTypeClassRep(Classe item) {
@@ -359,7 +396,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void removeTypeClassRep(TypeClassRepresentationController tcrc) {
 		if(this.typeSpace.getChildren().contains(tcrc)) {
 			this.typeSpace.getChildren().remove(tcrc);
-			this.moment.getType().remove(tcrc.getClasse());
+			this.moment.getTypes().remove(tcrc.getClasse());
 			stack.push(tcrc);
 			if(main.getMainViewController().isInspectorOpen()) {
 				main.getMainViewController().renderInspector();
@@ -372,7 +409,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			TypeClassRepresentationController tcrc = stack.getFirst();
 			if(!this.typeSpace.getChildren().contains(tcrc)) {
 				this.typeSpace.getChildren().add(tcrc);
-				this.moment.getType().add(tcrc.getClasse());
+				this.moment.getTypes().add(tcrc.getClasse());
 				stack.pop();
 				Platform.runLater(new Runnable() {
 					@Override
@@ -420,6 +457,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		if(obs.getClass().equals(MomentColorController.class)) {
 			this.setColor((String) value);
+			this.momentColorPicker.setValue(Color.valueOf((String) value));
+			label.setTextFill(MainViewTransformations.ContrastColor(momentColorPicker.getValue()));
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			if(value != null) {
@@ -439,6 +478,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			else {
 				this.typeSpace.getChildren().remove(this.typeSpace.getChildren().size()-1);
 			}
+			
 		}
 		if(obs.getClass().equals(MomentRemoveTypeController.class)) {
 
@@ -450,6 +490,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				this.typeSpace.getChildren().add((TypeClassRepresentationController)value);
 			}
 		}
+		 
 	}
 	
 
@@ -463,10 +504,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 
 	public int getCol() {
 		return this.moment.getGridCol();
-	}
-
-	public void setCol(int col) {
-		this.moment.setGridCol(col);
 	}
 
 	public Label getLabel() {
@@ -579,6 +616,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		return this.momentParent!=null;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		try {
+			return ((MomentExpVBox)obj).getMoment().equals(this.getMoment());
+		}catch(Exception e) {return false;}
+	}
 	
 	public String toString() {
 		String ret="";

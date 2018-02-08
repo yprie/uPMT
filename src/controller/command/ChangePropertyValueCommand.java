@@ -53,6 +53,7 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 		if(property.getMain().getMainViewController().isInspectorOpen()) {
 			property.getMain().getMainViewController().renderInspector();
 		}
+		main.needToSave();
 	}
 
 	@Override
@@ -72,6 +73,7 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 		if(property.getMain().getMainViewController().isInspectorOpen()) {
 			property.getMain().getMainViewController().renderInspector();
 		}	
+		main.needToSave();
 	}
 
 	@Override

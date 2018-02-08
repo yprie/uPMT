@@ -22,9 +22,15 @@ package model;
 
 import java.io.Serializable;
 
-public class EnregistrementAudio extends Enregistrement implements Serializable{
+public class EnregistrementAudio extends Enregistrement implements Serializable, Cloneable{
 	
 	public EnregistrementAudio(String link){
 		this.link = link;
+	}
+	
+	public Object clone() {
+		EnregistrementAudio ret = null;
+	    ret = (EnregistrementAudio) super.clone();
+	    return ret;
 	}
 }

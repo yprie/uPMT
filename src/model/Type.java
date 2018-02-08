@@ -23,12 +23,28 @@ package model;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Type implements Serializable{
+public abstract class Type implements Serializable, Cloneable{
 	
 	protected LinkedList<Type> types;
 	protected String description;
 	protected String couleur = "#000000";
 	protected String nom;
+	
+	public Object clone() {
+		Type t = null;
+	    try {
+	    	// On récupère l'instance à renvoyer par l'appel de la 
+	      	// méthode super.clone()
+	    	t = (Type) super.clone();
+	    } catch(CloneNotSupportedException cnse) {
+	      	// Ne devrait jamais arriver car nous implémentons 
+	      	// l'interface Cloneable
+	      	cnse.printStackTrace(System.err);
+	    }
+	    t.types = (LinkedList<Type>) types.clone();
+	    // on renvoie le clone
+	    return t;
+	}
 	
 	public Type(String nom) {
 		super();
@@ -100,4 +116,5 @@ public class Type implements Serializable{
 	{
 		return this.getClass().equals(new Propriete("").getClass());
 	}
+	
 }

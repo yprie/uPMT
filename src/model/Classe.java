@@ -21,11 +21,30 @@
 package model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
-public class Classe extends Type implements Serializable {
+public class Classe extends Type implements Serializable, Cloneable {
 
 	public Classe(String nom) {
 		super(nom);
+	}
+	
+	/*public Classe clone() {
+		Classe ret = new Classe(new String(nom));
+		ret.setDescription(description);
+		ret.setCouleur(couleur);
+		LinkedList<Type> retTypes = new LinkedList<Type>();
+		for(int i=0;i<types.size();i++) {
+			ret.addType(types.get(i).clone());
+		}
+		//ret.setDescriptemeTxt(new String(extract.getTexte()));
+		return ret;
+	}*/
+	
+	public Object clone() {
+	    Classe classe = null;
+	    classe = (Classe) super.clone();
+	    return classe;
 	}
 	
 	@Override

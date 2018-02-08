@@ -30,7 +30,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import model.Projet;
 import javafx.collections.FXCollections;
@@ -85,7 +87,9 @@ public class LaunchingScreenController implements Initializable{
 	public void NewProjectDialog(){
 		// TODO: This prompt a new stage to help create a new project
 		
-		Stage promptWindow = new Stage();
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		promptWindow.setTitle(m_main._langBundle.getString("new_project"));
 		
 		try {

@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="momentCardPane" minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" prefWidth="180.0" styleClass="momentCard" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="momentCardPane" maxHeight="220.0" minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="220.0" prefWidth="180.0" styleClass="momentCard" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <BorderPane fx:id="borderPaneLabel" maxWidth="1.7976931348623157E308" style="-fx-background-color: #D3D3D3;">
-         <right>
-            <ImageView fx:id="hasExtractImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-         </right>
-         <padding>
-            <Insets bottom="5.0" left="3.0" right="3.0" top="5.0" />
-         </padding>
+      <BorderPane fx:id="borderPaneLabel" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0" style="-fx-background-color: #D3D3D3;">
          <center>
             <Label fx:id="label" text="______" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </Label>
          </center>
       </BorderPane>
@@ -33,4 +32,25 @@
          </content>
       </ScrollPane>
    </center>
+   <bottom>
+      <BorderPane maxHeight="25.0" minHeight="25.0" prefHeight="25.0" BorderPane.alignment="CENTER">
+         <right>
+            <ImageView fx:id="hasExtractImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </right>
+         <center>
+            <ImageView fitHeight="20.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../../img/timeIcon.png" />
+               </image>
+            </ImageView>
+         </center>
+         <left>
+            <ColorPicker fx:id="momentColorPicker" maxHeight="27.0" minHeight="27.0" onAction="#colorPicked" prefHeight="27.0" style="-fx-color-label-visible: false; -fx-background-color: transparent; -fx-font-size: 7; -fx-color-rect-width: 10; -fx-color-rect-height: 10;" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </ColorPicker>
+         </left>
+      </BorderPane>
+   </bottom>
 </BorderPane>

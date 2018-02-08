@@ -58,6 +58,7 @@ public class RenameMomentCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		observable.update(newExtract);
+		main.needToSave();
 	}
 
 	@Override
