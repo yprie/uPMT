@@ -44,6 +44,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
@@ -127,9 +129,21 @@ public abstract class MainViewTransformations {
 	        MenuItem menu2 = new MenuItem("Copy");
 	        menu2.setOnAction(p -> {
 	            //todo do sth
-	        	
+//	        	Clipboard clipboard = Clipboard.getSystemClipboard();
+//	            ClipboardContent content = new ClipboardContent();
+//	            content.putImage(moment.getMomentPane());
+	            
+//	            clipboard.setContent(content);
 	        });
 	        contextMenu.getItems().add(menu2);
+	        
+	        MenuItem menu3 = new MenuItem("Paste");
+	        menu2.setOnAction(p -> {
+	            //todo do sth
+	        	
+	        });
+	        contextMenu.getItems().add(menu3);
+	        
 		    if (e.getButton().equals(MouseButton.SECONDARY) || e.isControlDown()) {
 		        contextMenu.show(moment, e.getScreenX(), e.getScreenY());
 		    }

@@ -68,6 +68,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
@@ -122,8 +123,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	private MomentExpVBox momentParent=null;
 
-	
-	
 	
 	// Stack of redoable Classes
 	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
@@ -316,6 +315,14 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
     		UndoCollector.INSTANCE.add(cmd);
     	}
 	}
+	
+	/* */
+	public void copyMoment() {
+		Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+	}
+	
+	
 	
 	private void setLabelChangeName(Main main,MomentExpVBox thiss){
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
