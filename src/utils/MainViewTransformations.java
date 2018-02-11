@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewTransformations.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
@@ -85,13 +87,13 @@ public abstract class MainViewTransformations {
 				try {
 					draggedMoment = (MomentExperience)Serializer.deserialize((byte[])event.getDragboard().getContent(MomentExpVBox.df));
 					if(draggedMoment!=null) {
-						//draggedMoment ne peut pas être déposé sur lui même
+						//draggedMoment ne peut pas etre depose sur lui meme
 						if(draggedMoment.equals(moment.getMoment()))
 							cond = false;
-						//draggedMoment ne peut pas être déposé sur ses enfants
+						//draggedMoment ne peut pas etre depose sur ses enfants
 						else if(moment.isAChildOf(draggedMoment))
 							cond = false;
-						//draggedMoment ne peut pas être déposé sur son père direct
+						//draggedMoment ne peut pas etre depose sur son pere direct
 						else if(moment.isDirectParentOf(draggedMoment))
 							cond = false;
 					}
@@ -111,6 +113,29 @@ public abstract class MainViewTransformations {
 		    	
 		    }
 		});	
+		
+		moment.getMomentPane().addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+			ContextMenu contextMenu = new ContextMenu();
+			MenuItem menu1 = new MenuItem("delete");
+	        menu1.setOnAction(p -> {
+	            //todo do sth
+	        	moment.deleteMoment();
+	        });
+	        contextMenu.getItems().add(menu1);
+	        
+	        MenuItem menu2 = new MenuItem("copy");
+	        menu2.setOnAction(p -> {
+	            //todo do sth
+	        	
+	        });
+	        contextMenu.getItems().add(menu2);
+		    if (e.getButton().equals(MouseButton.SECONDARY) || e.isControlDown()) {
+		        contextMenu.show(moment, e.getScreenX(), e.getScreenY());
+		    }
+		    else {
+		    	contextMenu.hide();
+		    }
+		});
 		
 		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
@@ -216,7 +241,7 @@ public abstract class MainViewTransformations {
 		    public void handle(DragEvent event) {
 		    	int pos = main.getGrid().getColumnIndex(p)/2;
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
-		    		System.out.println("On ajoute un nouveau moment à l'index "+pos);
+		    		System.out.println("On ajoute un nouveau moment ï¿½ l'index "+pos);
 			    	AddMomentCommand cmd = new AddMomentCommand(pos,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
@@ -448,7 +473,7 @@ public abstract class MainViewTransformations {
 				grid.add(p,j*2,i);
 				
 				//System.out.println("On ajoute un moment");
-				//System.out.println("J'ajoute un moment à "+j);
+				//System.out.println("J'ajoute un moment ï¿½ "+j);
 				MomentExpVBox mp = new MomentExpVBox(main);
 				addBorderPaneMomentListener(mp, main);
 				
@@ -456,7 +481,7 @@ public abstract class MainViewTransformations {
 				boolean hasMoment = false;
 				if (main.getCurrentDescription() != null) {
 					for (MomentExperience m : d.getMoments()) {
-						//System.out.println(m.getNom()+" est à "+m.getGridCol()+" et j est à "+j);
+						//System.out.println(m.getNom()+" est ï¿½ "+m.getGridCol()+" et j est ï¿½ "+j);
 						if(m.getGridCol() == j){
 							mom = m;
 							mp.setMoment(mom);
@@ -486,7 +511,7 @@ public abstract class MainViewTransformations {
 	
 	public static void deleteMoment(MomentExperience toCompare, Main main) {
 		for(MomentExperience current:main.getCurrentDescription().getMoments()) {
-			System.out.println("On compare "+current.getNom()+" à "+toCompare.getNom());
+			System.out.println("On compare "+current.getNom()+" ï¿½ "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				main.getCurrentDescription().removeMomentExp(current);
 				System.out.println("On supprime "+current.getNom());
@@ -498,9 +523,10 @@ public abstract class MainViewTransformations {
 			System.out.println("On ne supprime pas "+current.getNom());
 		}
 	}
+	
 	public static void deleteMomentFromParent(MomentExperience parent, MomentExperience toCompare) {
 		for(MomentExperience current:parent.getSousMoments()) {
-			System.out.println("**On compare "+current.getNom()+" à "+toCompare.getNom());
+			System.out.println("**On compare "+current.getNom()+" ï¿½ "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				parent.removeSousMoment(current);
 				System.out.println("**On supprime "+current.getNom());

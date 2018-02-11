@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExpVBox.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,8 +266,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		return moment.getCurrentProperty();
 	}
 	
-	
-	
 	public void LoadMomentData(){
 		label.setText(moment.getNom());
 		if (this.moment.getCouleur() != null) {
@@ -305,7 +303,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.setImage(null);
 		extractTooltip.setOpacity(0);
 	}
-	
 
 	public void deleteMoment(){
 		
@@ -419,11 +416,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 							main.getMainViewController().renderInspector();
 						}
 					}
-				});
-				
+				});		
 			}
-		}
-		
+		}	
 	}
 	
 	public void showMoment(){
@@ -492,8 +487,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		 
 	}
-	
-
 	
 	public void setBorderColor(String couleur) {
 		if(Main.activateBetaDesign && couleur == "black") couleur = "transparent";
@@ -610,7 +603,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		return ret;
 	}
-	
 	
 	public boolean hasParent() {
 		return this.momentParent!=null;

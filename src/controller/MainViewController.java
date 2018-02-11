@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewController.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -536,7 +536,6 @@ public class MainViewController implements Initializable, Observer {
 		UndoCollector.INSTANCE.add(cmd);
 		main.getCurrentMoment().getMomentColorController().update(colorString);
 	}
-
 
 
 	@FXML
