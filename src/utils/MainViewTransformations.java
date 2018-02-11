@@ -114,16 +114,17 @@ public abstract class MainViewTransformations {
 		    }
 		});	
 		
+		/* Right click to delete a moment */
 		moment.getMomentPane().addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
 			ContextMenu contextMenu = new ContextMenu();
-			MenuItem menu1 = new MenuItem("delete");
+			MenuItem menu1 = new MenuItem("Delete");
 	        menu1.setOnAction(p -> {
 	            //todo do sth
 	        	moment.deleteMoment();
 	        });
 	        contextMenu.getItems().add(menu1);
 	        
-	        MenuItem menu2 = new MenuItem("copy");
+	        MenuItem menu2 = new MenuItem("Copy");
 	        menu2.setOnAction(p -> {
 	            //todo do sth
 	        	

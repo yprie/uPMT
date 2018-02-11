@@ -201,8 +201,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
                 event.consume();
             }
         });
-        
-   
 	}
 	
 	
@@ -255,7 +253,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	            }
 	        }
 	    });
-		
 	}
 	
 	public void setCurrentProperty(Propriete n) {
