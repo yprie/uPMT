@@ -489,7 +489,7 @@ public class MainViewController implements Initializable, Observer {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien.toString()));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);

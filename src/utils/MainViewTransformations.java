@@ -116,41 +116,39 @@ public abstract class MainViewTransformations {
 		    }
 		});	
 		
-		/* Right click to delete a moment */
+		/*ContextMenu contextMenu = new ContextMenu();
+		MenuItem menu1 = new MenuItem("Delete");
+        menu1.setOnAction(p -> {
+            //todo do sth
+        	moment.deleteMoment();
+        });
+        contextMenu.getItems().add(menu1);
+        
+        MenuItem menu2 = new MenuItem("Copy");
+        menu2.setOnAction(p -> {
+            //todo do sth
+//        	Clipboard clipboard = Clipboard.getSystemClipboard();
+//            ClipboardContent content = new ClipboardContent();
+//            content.putImage(moment.getMomentPane());
+            
+//            clipboard.setContent(content);
+        });
+        contextMenu.getItems().add(menu2);
+        
+        MenuItem menu3 = new MenuItem("Paste");
+        menu2.setOnAction(p -> {
+            //todo do sth
+        	
+        });
+        contextMenu.getItems().add(menu3);
+		
 		moment.getMomentPane().addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-			ContextMenu contextMenu = new ContextMenu();
-			MenuItem menu1 = new MenuItem("Delete");
-	        menu1.setOnAction(p -> {
-	            //todo do sth
-	        	moment.deleteMoment();
-	        });
-	        contextMenu.getItems().add(menu1);
-	        
-	        MenuItem menu2 = new MenuItem("Copy");
-	        menu2.setOnAction(p -> {
-	            //todo do sth
-//	        	Clipboard clipboard = Clipboard.getSystemClipboard();
-//	            ClipboardContent content = new ClipboardContent();
-//	            content.putImage(moment.getMomentPane());
-	            
-//	            clipboard.setContent(content);
-	        });
-	        contextMenu.getItems().add(menu2);
-	        
-	        MenuItem menu3 = new MenuItem("Paste");
-	        menu2.setOnAction(p -> {
-	            //todo do sth
-	        	
-	        });
-	        contextMenu.getItems().add(menu3);
-	        
-		    if (e.getButton().equals(MouseButton.SECONDARY) || e.isControlDown()) {
+			
+	        if(contextMenu.isShowing()) contextMenu.hide();
+		    if (e.getButton().equals(MouseButton.SECONDARY)) {
 		        contextMenu.show(moment, e.getScreenX(), e.getScreenY());
 		    }
-		    else {
-		    	contextMenu.hide();
-		    }
-		});
+		});*/
 		
 		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {

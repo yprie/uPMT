@@ -183,7 +183,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 			loader.setController(new SelectDescriptemePartController(
 					main,
 					promptWindow,
-					new TextArea(),
+					property.getDescripteme().toString(),
 					propertyExtractController));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();

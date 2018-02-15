@@ -43,16 +43,16 @@ public class SelectDescriptemePartController implements Initializable {
 	private Stage stage;
 	private @FXML TextArea descriptemeArea;
 	private @FXML Button acceptSelection;
-	private TextArea inspectorText;
+	private String inspectorText;
 	private PropertyExtractController propertyExtractController;
 
-	public SelectDescriptemePartController(Main main, Stage s,TextArea t) {
+	public SelectDescriptemePartController(Main main, Stage s,String t) {
 		this.main = main;
 		this.stage = s;
 		this.inspectorText = t;
 	}
 	
-	public SelectDescriptemePartController(Main main, Stage s,TextArea t, PropertyExtractController propController) {
+	public SelectDescriptemePartController(Main main, Stage s,String t, PropertyExtractController propController) {
 		this.main = main;
 		this.stage = s;
 		this.inspectorText = t;

@@ -137,3 +137,53 @@
 }
 
 
+
+
+/*BUTTON MOMENTVIEW */
+.buttonMomentViewDisabled, .buttonMomentView{
+	-fx-border-width: 1;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-background-radius: 50px;
+    -fx-background-color: white;
+    -fx-border-color: #eee;
+    -fx-border-radius:50;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-size: 15;
+}
+
+.buttonMomentView{
+	-fx-background-image: url("../../img/hasExtractIcon.png");
+}
+
+.buttonMomentViewDisabled{
+	-fx-background-image: url("../../img/hasExtractIconDisabled.png");
+}
+
+.buttonMomentView:hover, .buttonMomentViewDisabled:hover {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.buttonMomentView:pressed, .buttonMomentViewDisabled:pressed {
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 10, 0 , 0 , 0 );
+}
+.buttonMomentView Text, .buttonMomentViewDisabled Text{
+    -fx-fill: white;
+    -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

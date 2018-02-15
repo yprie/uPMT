@@ -32,6 +32,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.scene.control.skin.CustomColorDialog;
+
 import application.Main;
 import controller.command.ChangeColorMomentCommand;
 import controller.command.RemoveMomentCommand;
@@ -57,6 +59,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -65,6 +68,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -83,6 +87,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Classe;
 import model.MomentExperience;
@@ -105,9 +111,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private @FXML BorderPane borderPaneLabel;
 	private @FXML BorderPane momentCardPane;
 	private Main main;
-	private @FXML ImageView hasExtractImage;
+	private @FXML Button hasExtractImage;
 	private Tooltip extractTooltip;
-	private @FXML ColorPicker momentColorPicker;
+	private @FXML MenuButton momentMenuAction;
 	
 	//Controllers
 	private MomentNameController nameController;
@@ -155,9 +161,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    	extractTooltip.hide();
 		    }
 		});
-		extractTooltip.setOpacity(0);
-		extractTooltip.hide();
-	
+		//extractTooltip.setOpacity(0);
+		//extractTooltip.hide();
+		this.hideExtractIcon();
 		
 		
 		// creation of the name observer
@@ -200,13 +206,46 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
                 event.consume();
             }
         });
+        
+        
+        momentMenuAction.getItems().clear();
+        MenuItem menu1 = new MenuItem("Delete");
+        menu1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				deleteMoment();
+			}
+        });
+        MenuItem menu2 = new MenuItem("Change color");
+        menu2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				CustomColorDialog dialog = new CustomColorDialog(main.getPrimaryStage());
+				dialog.setCurrentColor(Color.web(moment.getCouleur()));
+				dialog.setShowUseBtn(false);
+		        dialog.show();
+		        dialog.getDialog().centerOnScreen();
+		        dialog.setOnSave(new Runnable() {
+					@Override
+					public void run() {
+						colorPicked(dialog.getCustomColor());
+					}
+				});
+			}
+        });
+        MenuItem menu3 = new MenuItem("Add comment");
+        menu3.setDisable(true);
+        MenuItem menu4 = new MenuItem("Add date");
+        menu4.setDisable(true);
+        momentMenuAction.getItems().addAll(menu1, menu2, menu3, menu4);
 	}
 	
 	
 	
-	@FXML
-	public void colorPicked() {
-		Color couleur = momentColorPicker.getValue();
+	
+	
+	public void colorPicked(Color cp) {
+		Color couleur = cp;
 		String colorString = Utils.toRGBCode(couleur);
 		System.out.println(moment.getCouleur());
 		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
@@ -270,12 +309,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(this.moment.getMorceauDescripteme() != null){
 			showExtractIcon(this.moment.getMorceauDescripteme());
 		}
-		if (moment.getCouleur() != null) {
-        	momentColorPicker.setValue(Color.valueOf(moment.getCouleur()));
-		} else {
-			momentColorPicker.setValue(Color.WHITE);
-		}
-		label.setTextFill(MainViewTransformations.ContrastColor(momentColorPicker.getValue()));
+		//Détecte si il est préférable que le texte soit en blanc ou en noir en fonction du fond.
+		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 	}
 	
 	public void setColor(String col){
@@ -290,14 +325,25 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void showExtractIcon(String tooltip){
 		File image = new File("./img/hasExtractIcon.png");
 		Image icon = new Image(image.toURI().toString());
-		this.hasExtractImage.setImage(icon);
+		
+		this.hasExtractImage.getStyleClass().clear();
+		this.hasExtractImage.getStyleClass().add("button");
+		this.hasExtractImage.getStyleClass().add("buttonMomentView");
+		
 		extractTooltip.setText(tooltip);
 		extractTooltip.setOpacity(1);
 	}
 	
 	public void hideExtractIcon(){
-		this.hasExtractImage.setImage(null);
-		extractTooltip.setOpacity(0);
+		File image = new File("./img/hasExtractIconDisabled.png");
+		Image icon = new Image(image.toURI().toString());
+		//this.hasExtractImage.setImage(icon);
+		this.hasExtractImage.getStyleClass().clear();
+		this.hasExtractImage.getStyleClass().add("button");
+		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
+		
+		extractTooltip.setText("No Descripteme");
+		extractTooltip.setOpacity(1);
 	}
 
 	public void deleteMoment(){
@@ -456,8 +502,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		if(obs.getClass().equals(MomentColorController.class)) {
 			this.setColor((String) value);
-			this.momentColorPicker.setValue(Color.valueOf((String) value));
-			label.setTextFill(MainViewTransformations.ContrastColor(momentColorPicker.getValue()));
+			label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			if(value != null) {
@@ -628,5 +673,27 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		ret+="]}\n";
 		return ret;
+	}
+	
+	@FXML
+	public void pickExtract() {
+		Stage promptWindow = new Stage(StageStyle.UTILITY);
+		promptWindow.setTitle("Selection de l'extrait");
+		promptWindow.setAlwaysOnTop(true);
+		promptWindow.initModality(Modality.APPLICATION_MODAL);
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, moment.getMorceauDescripteme()));
+			loader.setResources(main._langBundle);
+			BorderPane layout = (BorderPane) loader.load();
+			Scene launchingScene = new Scene(layout);
+			promptWindow.setScene(launchingScene);
+			promptWindow.show();
+
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}
 	}
 }
