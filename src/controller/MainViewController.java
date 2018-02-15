@@ -94,6 +94,7 @@ import model.MomentExperience;
 import model.Propriete;
 import model.Type;
 import utils.MainViewTransformations;
+import utils.ResourceLoader;
 import utils.SchemaTransformations;
 import utils.UndoCollector;
 import utils.Utils;
@@ -144,8 +145,7 @@ public class MainViewController implements Initializable, Observer {
 		//mainSplitPane.setDividerPosition(0,0.15);
 		//mainSplitPane.setDividerPosition(1,0.85);
 		
-		File fileImage = new File("./img/momentIcon.png");
-		Image image = new Image(fileImage.toURI().toString());
+		Image image = ResourceLoader.loadImage("momentIcon.png");
 		this.ajoutMomentButton.setImage(image);
 
 		if (!main.getCurrentProject().getEntretiens().isEmpty()) {
@@ -414,16 +414,10 @@ public class MainViewController implements Initializable, Observer {
 
 	public void renderInspector() {
 		openInspector();
-//		File image = new File("./img/rename.png");
-//		Node icon = new ImageView(new Image(image.toURI().toString()));
-//		this.editName.setGraphic(icon);
-		
-		File image2 = new File("./img/close.gif");
-		Node icon2 = new ImageView(new Image(image2.toURI().toString()));
+		Node icon2 = new ImageView(ResourceLoader.loadImage("close.gif"));
 		this.closeBtn.setGraphic(icon2);
 		
-		File image3 = new File("./img/show.png");
-		Node icon3 = new ImageView(new Image(image3.toURI().toString()));
+		Node icon3 = new ImageView(ResourceLoader.loadImage("show.png"));
 		this.showExtractButton.setGraphic(icon3);
 		
 		// setting the value of the color Picker

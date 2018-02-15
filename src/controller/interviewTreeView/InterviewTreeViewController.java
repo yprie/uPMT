@@ -45,6 +45,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
 import model.DescriptionEntretien;
+import utils.ResourceLoader;
 
 public class InterviewTreeViewController extends TreeViewController implements Initializable {
 	
@@ -65,16 +66,14 @@ public class InterviewTreeViewController extends TreeViewController implements I
 	public void initialize(URL location, ResourceBundle resources) {
 		nomEntretien.setText(interview.getNom());
 		
-		File image = new File("./img/show.png");
-		Node icon = new ImageView(new Image(image.toURI().toString()));
+
+		Node icon = new ImageView(ResourceLoader.loadImage("show.png"));
 		this.afficherDescritpeme.setGraphic(icon);
-		
-		File imageDelete = new File("./img/delete.gif");
-		Node iconDel = new ImageView(new Image(imageDelete.toURI().toString()));
+
+		Node iconDel = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteInterview.setGraphic(iconDel);
 		
-		File imageRename = new File("./img/rename.png");
-		Node iconRename = new ImageView(new Image(imageRename.toURI().toString()));
+		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.renameInterview.setGraphic(iconRename);
 		
 		Tooltip affDescrip = new Tooltip("Afficher le Verbatim de l'entretien");

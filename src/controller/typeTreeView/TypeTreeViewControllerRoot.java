@@ -44,6 +44,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import model.Dossier;
 import model.Type;
+import utils.ResourceLoader;
 import utils.Utils;
 
 public class TypeTreeViewControllerRoot extends TypeTreeViewController {
@@ -66,20 +67,17 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 		nomType.setText(type.getType().getName());
 		/*if(Main.activateBetaDesign)
 			this.nomType.setTextFill(Color.BLACK);*/
-		File image = new File("./img/schema.gif");
-		Image icon = new Image(image.toURI().toString());
+
+		Image icon = ResourceLoader.loadImage("schema.gif");
 		this.rootIcon.setImage(icon);
 		
-		File imageRename = new File("./img/rename.png");
-		Node iconRename = new ImageView(new Image(imageRename.toURI().toString()));
+		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.rename.setGraphic(iconRename);
 		
-		File imageAddClass = new File("./img/addclass.gif");
-		Node iconAddClass = new ImageView(new Image(imageAddClass.toURI().toString()));
+		Node iconAddClass = new ImageView(ResourceLoader.loadImage("addclass.gif"));
 		this.addClass.setGraphic(iconAddClass);
 		
-		File imageAddFold = new File("./img/newfolder.gif");
-		Node iconAddFold = new ImageView(new Image(imageAddFold.toURI().toString()));
+		Node iconAddFold = new ImageView(ResourceLoader.loadImage("newfolder.gif"));
 		this.addFolder.setGraphic(iconAddFold);
 		
 		Tooltip renameTip = new Tooltip("Renommer le schéma");

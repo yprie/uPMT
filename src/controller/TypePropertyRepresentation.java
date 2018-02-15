@@ -61,6 +61,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Enregistrement;
 import model.Propriete;
+import utils.ResourceLoader;
 import utils.UndoCollector;
 
 public class TypePropertyRepresentation extends HBox implements Initializable, Observer{
@@ -319,8 +320,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	}
 	
 	public void showExtractIcon(String tooltip){
-		File image = new File("./img/hasExtractIcon.png");
-		Image icon = new Image(image.toURI().toString());
+		Image icon = ResourceLoader.loadImage("hasExtractIcon.png");
 		this.hasExtractImageProperties.setManaged(true);
 		this.hasExtractImageProperties.setVisible(true);
 		this.hasExtractImageProperties.setImage(icon);

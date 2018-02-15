@@ -591,11 +591,11 @@ public abstract class MainViewTransformations {
 			return ret;
 		}
 
-		public static void setDragCursor(Region r) {
+		public static void setCursor(Region r, Cursor c) {
 			r.setOnMouseEntered(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent arg0) {
-					r.setCursor(Cursor.MOVE);
+					r.setCursor(c);
 				}
 			});
 			r.setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -605,5 +605,6 @@ public abstract class MainViewTransformations {
 				}
 			});
 		}
+
 		
 }

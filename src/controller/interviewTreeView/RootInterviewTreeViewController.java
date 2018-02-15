@@ -35,6 +35,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.DescriptionEntretien;
+import utils.ResourceLoader;
 
 public class RootInterviewTreeViewController extends TreeViewController implements Initializable {
 	
@@ -52,13 +53,11 @@ public class RootInterviewTreeViewController extends TreeViewController implemen
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomRoot.setText(interview.getNom());
-		
-		File image = new File("./img/new.png");
-		Node icon = new ImageView(new Image(image.toURI().toString()));
+
+		Node icon = new ImageView(ResourceLoader.loadImage("new.png"));
 		this.addInterview.setGraphic(icon);
 		
-		File imageIcon = new File("./img/rootInterview.gif");
-		rootIcon.setImage(new Image(imageIcon.toURI().toString()));
+		rootIcon.setImage(ResourceLoader.loadImage("rootInterview.gif"));
 		
 		Tooltip addInter = new Tooltip("Ajouter une interview");
 		addInterview.setTooltip(addInter);

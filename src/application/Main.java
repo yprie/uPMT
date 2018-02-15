@@ -68,6 +68,7 @@ import model.Propriete;
 import model.Schema;
 import model.Type;
 import utils.LoadDataProjects;
+import utils.ResourceLoader;
 import utils.SchemaTransformations;
 import utils.Utils;
 import java.util.ResourceBundle;
@@ -134,42 +135,29 @@ public class Main extends Application {
 	 */
 	private void loadProperties () {
 		Properties pros = new Properties();
-		InputStream is = null;
-		String urls[] = {
-        		"../bundles/Current.properties",
-        		"./bundles/Current.properties",
-        		"/bundles/Current.properties",
-        		".bundles/bundles/Current.properties",
-        		"../bundles/bundles/Current.properties",
-        		"/bundles/bundles/Current.properties",
-        		"/Current.properties",
-        		"bundles/bundles/Current.properties",
-        		"Current.properties",
-        		"bundles/Current.properties",
-        };
-		
-        for(String url : urls) {
-        	is = getClass().getResourceAsStream(url);
-        	 try {
-     			pros.load(is);
-     			//System.out.println("succeed load with: "+url);
-     			break;
-     		} catch (Exception e) {
-     			//System.out.println("fail with: "+url);
-     		}
-        }
-
+		InputStream is = ResourceLoader.loadBundleInput("Current.properties");
+			
+		try {
+ 			pros.load(is);
+ 			//System.out.println("succeed load with: "+url);
+ 		} catch (Exception e) {
+ 			//System.out.println("fail with: "+url);
+ 		}
 		String loc = pros.getProperty("locale","fr");
 		_locale= new Locale(pros.getProperty("locale","fr"));
 		set_langBundle(ResourceBundle.getBundle("bundles.Lang", _locale));
 		
 		//set locale for local control language
+		
 		if (loc.equals("fr")){
 			Locale.setDefault(Locale.FRANCE);
 		} else if (loc.equals("en")) {
 			Locale.setDefault(Locale.US);
 		} else if (loc.equals("cn")) {
 			Locale.setDefault(Locale.CHINA);
+		}
+		else {
+			System.out.println("ERREUR");
 		}
 	}
 	
@@ -341,36 +329,7 @@ public class Main extends Application {
         	try {
     	        Properties props = new Properties();
     	        props.setProperty("locale", locale);
-    	        URL tmp = null;
-    	        File f =null;
-    	        String urls[] = {
-    	        		"../bundles/Current.properties",
-    	        		"./bundles/Current.properties",
-    	        		"/bundles/Current.properties",
-    	        		".bundles/bundles/Current.properties",
-    	        		"../bundles/bundles/Current.properties",
-    	        		"/bundles/bundles/Current.properties",
-    	        		"/Current.properties",
-    	        		"bundles/bundles/Current.properties",
-    	        		"Current.properties",
-    	        		"bundles/Current.properties",
-    	        };
-    	        OutputStream out=null;
-    	        for(String url : urls) {
-    	        	//System.out.println("Test avec avec "+url);
-    	        	try {
-	    	        	tmp =getClass().getResource(url);
-	    	        	if(tmp!=null) {
-	        	        	f = new File(tmp.toURI());
-	        	        	out = new FileOutputStream( f );
-	        	        	break;
-	    	        	} else System.out.println("tmp est null");
-    	        	}catch(Exception e) {
-    	        		//System.out.println("N'a pas marché avec "+url);
-    	        	}
-    	        }
-    	        
-    	   
+    	        OutputStream out= ResourceLoader.loadBundleOutput("Current.properties");
     	        props.store(out, "This is an optional header comment string");
     	        
     	        //start(primaryStage);

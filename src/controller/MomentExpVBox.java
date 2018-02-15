@@ -58,6 +58,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -151,6 +152,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         hasExtractImage.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
+		    	hasExtractImage.setCursor(Cursor.HAND);
 		        javafx.geometry.Point2D p = hasExtractImage.localToScreen(hasExtractImage.getLayoutBounds().getMaxX(), hasExtractImage.getLayoutBounds().getMaxY()); 
 		        extractTooltip.show(hasExtractImage, p.getX(), p.getY());
 		    }
@@ -158,6 +160,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		hasExtractImage.setOnMouseExited(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
+		    	hasExtractImage.setCursor(Cursor.DEFAULT);
 		    	extractTooltip.hide();
 		    }
 		});
@@ -187,7 +190,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         this.momentRemoveTypeController.addObserver(this);
         addTypeController.addObserver(main.getMainViewController());
         
-        MainViewTransformations.setDragCursor(this.borderPaneLabel);
+        MainViewTransformations.setCursor(this.borderPaneLabel, Cursor.MOVE); 
+        MainViewTransformations.setCursor(this.momentMenuAction, Cursor.DEFAULT);
         borderPaneLabel.setOnDragDetected(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
             	Dragboard db = borderPaneLabel.startDragAndDrop(TransferMode.MOVE);
@@ -323,9 +327,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void showExtractIcon(String tooltip){
-		File image = new File("./img/hasExtractIcon.png");
-		Image icon = new Image(image.toURI().toString());
-		
 		this.hasExtractImage.getStyleClass().clear();
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentView");
@@ -335,9 +336,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void hideExtractIcon(){
-		File image = new File("./img/hasExtractIconDisabled.png");
-		Image icon = new Image(image.toURI().toString());
-		//this.hasExtractImage.setImage(icon);
 		this.hasExtractImage.getStyleClass().clear();
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
@@ -505,9 +503,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
+			System.out.println("Changement détecté !");
 			if(value != null) {
+				System.out.println("value= "+value);
 				this.showExtractIcon((String) value);
 			}else {
+				System.out.println("value est null");
 				this.hideExtractIcon();
 			}
 		}
@@ -677,6 +678,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	@FXML
 	public void pickExtract() {
+		main.setCurrentMoment(this);
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Selection de l'extrait");
 		promptWindow.setAlwaysOnTop(true);

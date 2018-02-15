@@ -43,6 +43,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import utils.ResourceLoader;
 import utils.UndoCollector;
 
 public class TypeTreeViewControllerFolder extends TypeTreeViewController {
@@ -66,24 +67,19 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 		nomType.setText(type.getType().getName());
 		if(Main.activateBetaDesign)
 			this.nomType.setTextFill(Color.BLACK);
-		File image = new File("./img/folder.png");
-		Image icon = new Image(image.toURI().toString());
+		Image icon = ResourceLoader.loadImage("folder.png");
 		this.folderIcon.setImage(icon);
 		
-		File imageRename = new File("./img/rename.png");
-		Node iconRename = new ImageView(new Image(imageRename.toURI().toString()));
+		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.rename.setGraphic(iconRename);
 		
-		File imageAddClass = new File("./img/addclass.gif");
-		Node iconAddClass = new ImageView(new Image(imageAddClass.toURI().toString()));
+		Node iconAddClass = new ImageView(ResourceLoader.loadImage("addclass.gif"));
 		this.addClass.setGraphic(iconAddClass);
 		
-		File imageAddFold = new File("./img/newfolder.gif");
-		Node iconAddFold = new ImageView(new Image(imageAddFold.toURI().toString()));
+		Node iconAddFold = new ImageView(ResourceLoader.loadImage("newfolder.gif"));
 		this.addFolder.setGraphic(iconAddFold);
 		
-		File delete = new File("./img/delete.gif");
-		Node iconDelete = new ImageView(new Image(delete.toURI().toString()));
+		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteFolder.setGraphic(iconDelete);
 		
 		Tooltip deleteFolerTip = new Tooltip("Suppression du dossier");

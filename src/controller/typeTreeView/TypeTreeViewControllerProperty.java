@@ -51,6 +51,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import model.Propriete;
 import model.Type;
+import utils.ResourceLoader;
 import utils.UndoCollector;
 import utils.Utils;
 
@@ -71,16 +72,14 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		nomType.setText(type.getType().getName());
 		/*if(Main.activateBetaDesign)
 			this.nomType.setTextFill(Color.BLACK);*/
-		File image = new File("./img/property.png");
-		Image icon = new Image(image.toURI().toString());
+
+		Image icon = ResourceLoader.loadImage("property.png");
 		this.propertyIcon.setImage(icon);
 		
-		File imageRename = new File("./img/rename.png");
-		Node iconRename = new ImageView(new Image(imageRename.toURI().toString()));
+		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.rename.setGraphic(iconRename);
 		
-		File delete = new File("./img/delete.gif");
-		Node iconDelete = new ImageView(new Image(delete.toURI().toString()));
+		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteProperty.setGraphic(iconDelete);
 		
 		Tooltip deletePropertyTip = new Tooltip("Suppression de la proprieté");

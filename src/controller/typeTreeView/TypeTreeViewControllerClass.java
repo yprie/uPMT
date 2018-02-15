@@ -57,6 +57,7 @@ import javafx.scene.paint.Paint;
 import model.Classe;
 import model.Propriete;
 import model.Type;
+import utils.ResourceLoader;
 import utils.UndoCollector;
 import utils.Utils;
 
@@ -84,20 +85,18 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 		couleurType.setStyle("-fx-color-label-visible: false ;");
 		setColor();
 		
-		File image = new File("./img/class.gif");
-		Image icon = new Image(image.toURI().toString());
+		Image icon = ResourceLoader.loadImage("class.gif");
 		this.classIcon.setImage(icon);
-		
-		File imageRename = new File("./img/rename.png");
-		Node iconRename = new ImageView(new Image(imageRename.toURI().toString()));
+
+		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.rename.setGraphic(iconRename);
 		
-		File delete = new File("./img/delete.gif");
-		Node iconDelete = new ImageView(new Image(delete.toURI().toString()));
+
+		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteClass.setGraphic(iconDelete);
 		
-		File addPro = new File("./img/addProperty.gif");
-		Node iconAddProp = new ImageView(new Image(addPro.toURI().toString()));
+		
+		Node iconAddProp = new ImageView(ResourceLoader.loadImage("addProperty.gif"));
 		this.addProperty.setGraphic(iconAddProp);
 		
 		Tooltip deleteClassTip = new Tooltip("Suppression de la classe");

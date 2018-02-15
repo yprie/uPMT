@@ -24,7 +24,7 @@
             </Label>
          </center>
          <right>
-            <MenuButton fx:id="momentMenuAction" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" BorderPane.alignment="CENTER">
+            <MenuButton fx:id="momentMenuAction" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="momentMenu" stylesheets="@../application/application.css" BorderPane.alignment="CENTER">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
                 <MenuItem mnemonicParsing="false" text="Action 2" />

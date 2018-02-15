@@ -85,6 +85,7 @@ public class SelectDescriptemePartController implements Initializable {
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
 		}else{
+			System.out.println("Moment: "+main.getCurrentMoment().getMoment().getNom());
 			RenameMomentCommand cmd = new RenameMomentCommand(
 					main.getCurrentMoment().getMomentExtractController(),
 					main.getCurrentMoment().getMoment().getMorceauDescripteme(),
