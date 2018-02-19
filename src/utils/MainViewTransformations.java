@@ -256,8 +256,11 @@ public abstract class MainViewTransformations {
 		    	//int pos = main.getGrid().getColumnIndex(p)/2;
 		    	int pos = p.getCol();
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
-		    	//System.out.println("On ajoute un nouveau moment � l'index "+pos);
-			    	AddMomentCommand cmd = new AddMomentCommand(pos, p.getMomentParent().getMoment() ,main);
+		    		AddMomentCommand cmd=null;
+		    		if(p.hasMomentParent())
+		    			cmd = new AddMomentCommand(pos, p.getMomentParent().getMoment() ,main);
+		    		else
+		    			cmd = new AddMomentCommand(pos ,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
