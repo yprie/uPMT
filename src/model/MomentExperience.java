@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -33,7 +35,7 @@ import javafx.scene.paint.Color;
 
 public class MomentExperience implements Serializable, Cloneable {
 
-	private Date date;
+	private Date date = new Date();
 	private String duree;
 	private String nom;
 	private String morceauDescripteme;
@@ -46,6 +48,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	private Propriete currentProperty =null;
 	private int id;
 	private int row;
+	private SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 	
 	/*public MomentExperience clone() {
 		MomentExperience ret = new MomentExperience(nom, row, gridCol);
@@ -97,6 +100,10 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.nom = nom;
 		this.row = row;
 		this.gridCol = col;
+		try {
+			this.date = this.formater.parse("00:00:00");
+		} catch (ParseException e) {
+		}
 		id=MomentID.generateID();
 	}
 	
@@ -117,9 +124,17 @@ public class MomentExperience implements Serializable, Cloneable {
 	public Date getDate() {
 		return date;
 	}
+	
+	public String getDateString() {
+		return formater.format(date);
+	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String date) throws ParseException {
+		try {
+			this.date = this.formater.parse(date);
+		} catch (ParseException e) {
+			throw e;
+		}
 	}
 	
 	public String getDuree() {

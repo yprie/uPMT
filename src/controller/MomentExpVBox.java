@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayDeque;
+import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -36,6 +37,7 @@ import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
 import application.Main;
 import controller.command.ChangeColorMomentCommand;
+import controller.command.ChangeDateMomentCommand;
 import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
@@ -53,6 +55,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,11 +69,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -91,6 +96,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import model.Classe;
 import model.MomentExperience;
 import model.Propriete;
@@ -101,6 +107,7 @@ import utils.UndoCollector;
 import utils.Utils;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 
 public class MomentExpVBox extends VBox implements Initializable, Observer, Serializable{
 	
@@ -239,13 +246,46 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         });
         MenuItem menu3 = new MenuItem("Add comment");
         menu3.setDisable(true);
-        MenuItem menu4 = new MenuItem("Add date");
-        menu4.setDisable(true);
-        momentMenuAction.getItems().addAll(menu1, menu2, menu3, menu4);
+        menuTime = new MenuItem("Edit Time ('"+moment.getDateString()+"')");
+        menuTime.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				ButtonType edit = new ButtonType("Edit", ButtonData.OK_DONE);
+				ButtonType close = new ButtonType("Close", ButtonData.CANCEL_CLOSE);
+				Dialog dialog = new TextInputDialog(moment.getDateString());
+				dialog.getDialogPane().getButtonTypes().clear();
+				dialog.getDialogPane().getButtonTypes().addAll(edit, close);
+				dialog.setTitle("Time");
+				dialog.setHeaderText("The time of "+moment.getNom()+" is "+moment.getDateString());
+				dialog.initModality(Modality.APPLICATION_MODAL);
+				Optional<String> result = dialog.showAndWait();
+				if (result.isPresent()) {
+					try {
+						ChangeDateMomentCommand cmd = new ChangeDateMomentCommand(
+								result.get(),
+								moment.getDateString(),
+								MomentExpVBox.this,
+								main);
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+						
+					}catch(Exception e){}
+				}
+				else {
+					
+				}
+				//actionStatus.setText("Text entered: " + entered);
+
+			}
+        });
+        //menuTime.setDisable(true);
+        momentMenuAction.getItems().addAll(menu1, menu2, menu3, menuTime);
 	}
 	
-	
-	
+	public void editMenuTime(String text) {
+		menuTime.setText("Edit time ("+text+")");
+	}
+	private MenuItem menuTime;
 	
 	
 	public void colorPicked(Color cp) {
