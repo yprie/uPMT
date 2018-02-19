@@ -38,10 +38,10 @@ public class AddPropertySchemeController implements controller.controller.Observ
 
 	@Override
 	public void update(Object value) {
-		System.out.println("On ajoute " + ((Type)value).toString());
+		//System.out.println("On ajoute " + ((Type)value).toString());
 		classe.addType((Type) value);
 		for(Observer obs : ObsTypesNames) {
-			System.out.println("Nom: "+obs.toString());
+			//System.out.println("Nom: "+obs.toString());
 			obs.updateVue(this, value);
 		}
 	}

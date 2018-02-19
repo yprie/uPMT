@@ -165,7 +165,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		for(Type t : this.classe.getTypes()) {
 			if(t.getName().equals(p.getName())) {
 				this.classe.getTypes().remove(t);
-				System.out.println("TESTEST "+t.hashCode()+ " , "+t);
+			//System.out.println("TESTEST "+t.hashCode()+ " , "+t);
 				stack.push((Propriete) t);
 				break;
 			}
@@ -241,29 +241,29 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 					break;
 				}
 			}
-			System.out.println("contains ? "+contain);
+		//System.out.println("contains ? "+contain);
 			
 			if(!this.classe.getTypes().contains(n)) {
 				addProperty((Propriete) n);
 			}
 			else {
-				System.out.println("AH BAH VOILA !!!!!");
+			//System.out.println("AH BAH VOILA !!!!!");
 			}
 		}
 		if(obs.getClass().equals(RemovePropertySchemeController.class)) {
 			Propriete toRemove = (Propriete) value;
-			System.out.println("Remove dans TypeClassRpzCtrl "+toRemove.getName());
+		//System.out.println("Remove dans TypeClassRpzCtrl "+toRemove.getName());
 			RemoveProperty(toRemove);
 		}
 		if(obs.getClass().equals(AddPropertySchemeWithValueController.class)) {
 			addProperty(stack.pop());
 		}
 		if(obs.getClass().equals(RemoveClassSchemeController.class)) {
-			System.out.println("DELETINGCLASS");
+		//System.out.println("DELETINGCLASS");
 			moment.removeTypeClassRep(this);
 		}
 		if(obs.getClass().equals(AddClassSchemeController.class)) {
-			System.out.println("REPUTINGCLASS");
+		//System.out.println("REPUTINGCLASS");
 			moment.putPreviousClassRep();
 		}
 	}

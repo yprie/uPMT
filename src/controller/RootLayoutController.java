@@ -180,7 +180,7 @@ public class RootLayoutController implements Initializable{
 			try {
    	    	 event.consume();
 			} catch (NullPointerException e) {
-				System.out.println("no event, exit normally");
+			//System.out.println("no event, exit normally");
 			}
 			window.close();
 		} else {
@@ -205,7 +205,7 @@ public class RootLayoutController implements Initializable{
 	    	    try {
 	    	    	 event.consume();
 				} catch (NullPointerException e) {
-					System.out.println("no event, exit normally");
+				//System.out.println("no event, exit normally");
 				}
 	    	}
 		}

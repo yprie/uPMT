@@ -74,6 +74,7 @@ public class TypeTreeViewController implements Initializable{
 		textField.setText(type.getType().getName());
 		textField.setMaxWidth(100);
 		textField.requestFocus();
+		System.out.println("On renomme");
 	}
 
 	protected void hideButtons() {}

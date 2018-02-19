@@ -166,7 +166,7 @@ public class DescriptionEntretien implements Serializable, Cloneable{
 	
 	private void updateMomentsPos() {
 		for(int i=0; i<moments.size(); i++) {
-			System.out.println("Moment "+moments.get(i).getNom()+", id:"+moments.get(i).getID()+":["+i+";0]");
+		//System.out.println("Moment "+moments.get(i).getNom()+", id:"+moments.get(i).getID()+":["+i+";0]");
 			moments.get(i).setGridCol(i);
 			moments.get(i).setRow(0);
 			moments.get(i).setParent(null);

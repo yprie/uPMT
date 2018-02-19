@@ -102,7 +102,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	
 	
 	public MomentExperience() {
-		this("-----", 0,-1);
+		this("-----", 0,0);
 	}
 
 
@@ -210,7 +210,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	
 	protected void updateSousMomentPos() {
 		for(int i=0; i<sousMoments.size(); i++) {
-			System.out.println("Moment "+sousMoments.get(i).getNom()+", id:"+sousMoments.get(i).getID()+" ["+i+";0]");
+		//System.out.println("Moment "+sousMoments.get(i).getNom()+", id:"+sousMoments.get(i).getID()+" ["+i+";0]");
 			sousMoments.get(i).setGridCol(i);
 			sousMoments.get(i).setRow(row+1);
 			sousMoments.get(i).updateSousMomentPos();
@@ -226,9 +226,11 @@ public class MomentExperience implements Serializable, Cloneable {
 	
 	public void setParent(MomentExperience m) {
 		this.parentMoment = m;
-		if(parentMoment!=null)
+		if(parentMoment!=null) {
 			setRow(parentMoment.getRow()+1);
-		else setRow(-1);
+			this.setGridCol(parentMoment.getGridCol());
+		}
+		else setRow(0);
 	}
 	
 	public int getRow() {return row;}

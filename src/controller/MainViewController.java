@@ -219,7 +219,7 @@ public class MainViewController implements Initializable, Observer {
 			@Override
 			public void handle(MouseEvent arg0) {
 				if(arg0.getClickCount() == 2){
-					System.out.println("DoubleClick");
+					//System.out.println("DoubleClick");
 					editNameMode();
 				}
 			}
@@ -391,21 +391,21 @@ public class MainViewController implements Initializable, Observer {
 		this.extraitEntretien.setEditable(false);
 		this.extraitEntretien.setText("");
 		extraitEntretien.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);
+			//System.out.println("textfield changed from " + oldValue + " to " + newValue);
 			main.getCurrentMoment().getMoment().setMorceauDescripteme(newValue);
 
 		});
 //		debut.textProperty().addListener((observable, oldValue, newValue) -> {
-//			System.out.println("debut changed from " + oldValue + " to " + newValue);
+//		//System.out.println("debut changed from " + oldValue + " to " + newValue);
 //			main.getCurrentMoment().getMoment().setDebut(newValue);
 //
 //		});
 //		fin.textProperty().addListener((observable, oldValue, newValue) -> {
-//			System.out.println("fin changed from " + oldValue + " to " + newValue);
+//		//System.out.println("fin changed from " + oldValue + " to " + newValue);
 //			main.getCurrentMoment().getMoment().setFin(newValue);
 //		});
 		duree.textProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("duree changed from " + oldValue + " to " + newValue);
+			//System.out.println("duree changed from " + oldValue + " to " + newValue);
 			main.getCurrentMoment().getMoment().setDuree(newValue);
 
 		});
@@ -421,7 +421,7 @@ public class MainViewController implements Initializable, Observer {
 		this.showExtractButton.setGraphic(icon3);
 		
 		// setting the value of the color Picker
-		System.out.println("id: "+main.getCurrentMoment().getMoment().getID()+" - row: "+main.getCurrentMoment().getMoment().getRow()+" - col:"+main.getCurrentMoment().getMoment().getGridCol());
+		//System.out.println("id: "+main.getCurrentMoment().getMoment().getID()+" - row: "+main.getCurrentMoment().getMoment().getRow()+" - col:"+main.getCurrentMoment().getMoment().getGridCol());
 
 		if (main.getCurrentMoment().getMoment().getCouleur() != null) {
 			couleurMoment.setValue(Color.valueOf(main.getCurrentMoment().getMoment().getCouleur()));
@@ -540,7 +540,7 @@ public class MainViewController implements Initializable, Observer {
 				win.show();
 			}
 		} catch (Exception e) {
-			System.out.println("No DATA to display");
+			//System.out.println("No DATA to display");
 		}
 	}
 
@@ -577,7 +577,7 @@ public class MainViewController implements Initializable, Observer {
     		Utils.deleteRecovery();
     		alert.close();
     	} else{
-    		System.out.println("IL SEST PASSE UN TRUC");
+    		//System.out.println("IL SEST PASSE UN TRUC");
     	    alert.close();
     	}
 	}

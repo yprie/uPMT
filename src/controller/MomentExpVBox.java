@@ -251,7 +251,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void colorPicked(Color cp) {
 		Color couleur = cp;
 		String colorString = Utils.toRGBCode(couleur);
-		System.out.println(moment.getCouleur());
+		//System.out.println(moment.getCouleur());
 		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
 				this.getMomentColorController(),
 				moment.getCouleur(),
@@ -259,7 +259,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
-		System.out.println(moment.getCouleur());
+		//System.out.println(moment.getCouleur());
 		this.getMomentColorController().update(colorString);
 	}
 	
@@ -503,12 +503,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
-			System.out.println("Changement détecté !");
+			//System.out.println("Changement détecté !");
 			if(value != null) {
-				System.out.println("value= "+value);
+				//System.out.println("value= "+value);
 				this.showExtractIcon((String) value);
 			}else {
-				System.out.println("value est null");
+			//System.out.println("value est null");
 				this.hideExtractIcon();
 			}
 		}

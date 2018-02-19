@@ -62,7 +62,7 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 	public void undo() {
 		// remove Property from treeView
 		for (TreeItem<TypeController> prop : tree.getChildren() ) {
-			System.out.println(tree.getChildren());
+			//System.out.println(tree.getChildren());
 
 			if(prop.getValue().getType().getName().equals(newp.getName())) {
 				tree.getChildren().remove(prop);
@@ -85,9 +85,6 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		System.out.println("//////////");
-		System.out.println("//////////");
-		System.out.println("//////////");
 		// adding the new property to the scheme
 		TreeItem<TypeController> newType = new TreeItem<TypeController>();
 		TypeController tc = new TypeController(newp, controller.getType());

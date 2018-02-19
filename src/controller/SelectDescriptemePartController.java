@@ -74,8 +74,8 @@ public class SelectDescriptemePartController implements Initializable {
 			newExtract = null;
 	
 		if(propertyExtractController!=null) {
-			System.out.println("Description: "+main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte());
-			System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
+		//System.out.println("Description: "+main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte());
+		//System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
 			ChangeExtractProperty cmd = new ChangeExtractProperty(
 					propertyExtractController,
 					propertyExtractController.getProperty().getDescripteme().getTexte(),
@@ -85,7 +85,7 @@ public class SelectDescriptemePartController implements Initializable {
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
 		}else{
-			System.out.println("Moment: "+main.getCurrentMoment().getMoment().getNom());
+		//System.out.println("Moment: "+main.getCurrentMoment().getMoment().getNom());
 			RenameMomentCommand cmd = new RenameMomentCommand(
 					main.getCurrentMoment().getMomentExtractController(),
 					main.getCurrentMoment().getMoment().getMorceauDescripteme(),

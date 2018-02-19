@@ -23,12 +23,15 @@ package model;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import controller.typeTreeView.TypeTreeViewController;
+
 public abstract class Type implements Serializable, Cloneable{
 	
 	protected LinkedList<Type> types;
 	protected String description;
 	protected String couleur = "#000000";
 	protected String nom;
+	protected TypeTreeViewController controller;
 	
 	public Object clone() {
 		Type t = null;

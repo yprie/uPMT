@@ -125,7 +125,9 @@ public class TypeTreeView extends TreeCell<TypeController>{
 		TypeController tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
         newType.setValue(tc);
         getTreeItem().getChildren().add(newType);
-        this.getTreeItem().setExpanded(true);	
+        this.getTreeItem().setExpanded(true);
+        System.out.println("On ajoute une propriete !");
+        System.out.println("On a essayé de la renommer");
 	}
 	
 	private Propriete dupProperty(Propriete p){
@@ -196,6 +198,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
     				 }
     				 
     			     this.controller = controller;
+    			     elem.setTypeTreeViewController(this.controller);
     			     loader.setController(controller);
     			     BorderPane elementPane = (BorderPane) loader.load();
     			     this.setGraphic(elementPane);

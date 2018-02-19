@@ -134,7 +134,7 @@ public class Projet implements Serializable {
 		
 		try {
 			final FileInputStream fichier = new FileInputStream(PATH+projet);
-			System.out.println(projet);
+		//System.out.println(projet);
 			ois = new ObjectInputStream(fichier);
 			final Projet p2 = (Projet) ois.readObject();
 			return p2;

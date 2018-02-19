@@ -20,6 +20,7 @@
 
 package controller.controller;
 
+import controller.typeTreeView.TypeTreeViewController;
 import model.Type;
 
 public class TypeController {
@@ -36,6 +37,7 @@ public class TypeController {
 	private ChangePropertyValueController changePropertyValueController;
 	private RemoveClassSchemeController removeClassSchemeController;
 	private AddClassSchemeController addClassSchemeController;
+	private TypeTreeViewController typeTreeViewController;
 	
 	public TypeController(Type t, Type parent) {
 		this.type = t;
@@ -49,6 +51,14 @@ public class TypeController {
 		this.changePropertyValueController = new ChangePropertyValueController(t);
 		this.removeClassSchemeController = new RemoveClassSchemeController(parent);
 		this.addClassSchemeController = new AddClassSchemeController(parent);
+	}
+	
+	public TypeTreeViewController getTypeTreeViewController() {
+		return this.typeTreeViewController;
+	}
+	
+	public void setTypeTreeViewController(TypeTreeViewController c) {
+		this.typeTreeViewController = c;
 	}
 
 	public Type getType() {

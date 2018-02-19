@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import com.sun.javafx.geom.transform.GeneralTransform3D;
 
 import application.Main;
+import controller.DropPane;
 import controller.MomentExpVBox;
 import controller.TypeClassRepresentationController;
 import controller.command.AddMomentCommand;
@@ -38,6 +39,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -54,8 +56,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -69,8 +73,14 @@ import model.Type;
 
 public abstract class MainViewTransformations {
 	
+	
 	public static void addBorderPaneMomentListener(MomentExpVBox moment, Main main){
-
+		moment.getMomentPane().setOnDragExited(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+			}
+		});
 		moment.getMomentPane().setOnDragOver(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	// Checking if a type is already present
@@ -110,45 +120,13 @@ public abstract class MainViewTransformations {
 		    			|| event.getDragboard().getString().equals("moveMoment"))
 		    			&& cond){
 			        event.acceptTransferModes(TransferMode.ANY);
+			        moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 		    	}		    	
 		    	event.consume();
 		    	
 		    }
 		});	
 		
-		/*ContextMenu contextMenu = new ContextMenu();
-		MenuItem menu1 = new MenuItem("Delete");
-        menu1.setOnAction(p -> {
-            //todo do sth
-        	moment.deleteMoment();
-        });
-        contextMenu.getItems().add(menu1);
-        
-        MenuItem menu2 = new MenuItem("Copy");
-        menu2.setOnAction(p -> {
-            //todo do sth
-//        	Clipboard clipboard = Clipboard.getSystemClipboard();
-//            ClipboardContent content = new ClipboardContent();
-//            content.putImage(moment.getMomentPane());
-            
-//            clipboard.setContent(content);
-        });
-        contextMenu.getItems().add(menu2);
-        
-        MenuItem menu3 = new MenuItem("Paste");
-        menu2.setOnAction(p -> {
-            //todo do sth
-        	
-        });
-        contextMenu.getItems().add(menu3);
-		
-		moment.getMomentPane().addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-			
-	        if(contextMenu.isShowing()) contextMenu.hide();
-		    if (e.getButton().equals(MouseButton.SECONDARY)) {
-		        contextMenu.show(moment, e.getScreenX(), e.getScreenY());
-		    }
-		});*/
 		
 		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
@@ -175,6 +153,7 @@ public abstract class MainViewTransformations {
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
 		    	event.setDropCompleted(true);
+		    	moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 		    	event.consume();
 		    } 
 		});
@@ -196,7 +175,9 @@ public abstract class MainViewTransformations {
 					if(!childHasFocus){
 						moment.requestFocus();
 					}
+					System.out.println("row: "+moment.getMoment().getRow()+"; column: "+moment.getMoment().getGridCol());
 				}
+				
 			}
 		});	
 		
@@ -221,7 +202,13 @@ public abstract class MainViewTransformations {
 	/*
 	 * Listener du panel qu'il y a entre plusieurs moment
 	 * */
-	public static void addPaneOnDragListener(Pane p, Main main) {
+	public static void addPaneOnDragListener(DropPane p, Main main) {
+		p.setOnDragExited(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				p.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+			}
+		});
 		p.setOnDragOver(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	// setting the drag autorizations
@@ -229,48 +216,72 @@ public abstract class MainViewTransformations {
 		    	MomentExperience draggedMoment=null;
 				try {
 					draggedMoment = (MomentExperience)Serializer.deserialize((byte[])event.getDragboard().getContent(MomentExpVBox.df));
+					int pos = p.getCol();
+					int i = ((Integer)event.getDragboard().getContent(MomentExpVBox.realCol));
 					if(draggedMoment!=null) {
 						if(!draggedMoment.hasParent()) {
-							int pos = main.getGrid().getChildren().indexOf(p)/2;
-							int i = ((Integer)event.getDragboard().getContent(MomentExpVBox.realCol));
-							cond = ((pos-i) > 1) || ((pos-i)<0) ;
-							System.out.println("pos-i="+(pos-i)+" -- 1 < "+(pos-i)+" < 0 ?"+cond);
+							//int pos = main.getGrid().getChildren().indexOf(p)/2;
+							if(p.hasMomentParent()) { 
+								if(p.getMomentParent().getMoment().equals(draggedMoment)) 
+									cond=false;
+							}
+							else cond = ((pos-i) > 1) || ((pos-i)<0) ;
+						//System.out.println("pos-i="+(pos-i)+" -- 1 < "+(pos-i)+" < 0 ?"+cond);
+						}else {
+							if(p.hasMomentParent()) {
+								if(p.getMomentParent().getMoment().equals(draggedMoment.getParent())) {
+									cond = ((pos-i) > 1) || ((pos-i)<0) ;
+								}
+							}
 						}
-						else System.out.println(draggedMoment.getNom()+" a un parent:"+draggedMoment.getParent().getNom());
 					}
 					else cond = false;
-				} catch (Exception e) {System.out.println("null");}
+				} catch (Exception e) {
+					//System.out.println("null");
+				}
 		       
 		        //System.out.println(Math.abs(i - pos));
 		        if ((event.getDragboard().getString().equals("ajoutMoment")) || 
 		          (event.getDragboard().getString().equals("moveMoment") && cond) ) {
 		          event.acceptTransferModes(TransferMode.ANY);
+		          p.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 		        }
+		        
 		        event.consume();
 		    }
 		});	
 		
 		p.setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
-		    	int pos = main.getGrid().getColumnIndex(p)/2;
+		    	//int pos = main.getGrid().getColumnIndex(p)/2;
+		    	int pos = p.getCol();
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
-		    		System.out.println("On ajoute un nouveau moment � l'index "+pos);
-			    	AddMomentCommand cmd = new AddMomentCommand(pos,main);
+		    	//System.out.println("On ajoute un nouveau moment � l'index "+pos);
+			    	AddMomentCommand cmd = new AddMomentCommand(pos, p.getMomentParent().getMoment() ,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
 		    	if (event.getDragboard().getString().equals("moveMoment")) {
-		    		System.out.println("Panel, move a moment in index "+pos);
+		    	//System.out.println("Panel, move a moment in index "+pos);
 		    		MomentExperience serial=null;
 					try {
 						serial = (MomentExperience)Serializer.deserialize((byte[])event.getDragboard().getContent(MomentExpVBox.df));
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
-			    	MoveMomentCommand cmd = new MoveMomentCommand(serial, pos,main);
-			    	cmd.execute();
-			    	UndoCollector.INSTANCE.add(cmd);
+					if(p.hasMomentParent()) {
+						MoveMomentToMomentCommand cmd = new MoveMomentToMomentCommand(serial, p.getMomentParent().getMoment(), pos, main);
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+					}
+					else {
+						MoveMomentCommand cmd = new MoveMomentCommand(serial, pos,main);
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+					}
+			    	
 				}
+		    	p.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 		    	event.consume();
 		    } 
 		});
@@ -364,26 +375,7 @@ public abstract class MainViewTransformations {
 		});
 	}
 	
-	public static void loadSousMoment(MomentExpVBox mev,Main main){
-		if(mev.getChildren().size() == 1){
-			mev.getChildren().add(mev.getSousMomentPane());
-		}
-		for (MomentExperience m: mev.getMoment().getSousMoments()) {
-			MomentExpVBox tmp = new MomentExpVBox(main);
-			tmp.setMoment(m);
-			tmp.setVBoxParent(mev);
-			tmp.showMoment();
-			tmp.LoadMomentData();
-
-
-			ColumnConstraints c = new ColumnConstraints();
-			mev.getSousMomentPane().getColumnConstraints().add(c);
-			mev.getSousMomentPane().add(tmp,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
-			MainViewTransformations.addBorderPaneMomentListener(tmp, main);
-			loadTypes(tmp,main);
-			loadSousMoment(tmp, main);
-		}		
-	}
+	
 	
 	public static void loadTypes(MomentExpVBox mp,Main main){
 		//System.out.println("------------------------------------");
@@ -406,7 +398,7 @@ public abstract class MainViewTransformations {
 	
 	public static Color ContrastColor(Color color) {
 		  double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000;
-		  System.out.println(y);
+		 //System.out.println(y);
 		  return y*255 >= 128 ? Color.BLACK : Color.WHITE;
 		}
 	
@@ -441,6 +433,8 @@ public abstract class MainViewTransformations {
 		return ret;
 	}
 	
+	private static int PANELSIZE = 20;
+	
 	// Method used to load the grid related to a certain Interview
 	public static void loadGridData(GridPane grid,Main main, DescriptionEntretien d){
 		// Grid initialisation ( reset )
@@ -451,9 +445,9 @@ public abstract class MainViewTransformations {
 		for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute deux colonnes, "+d.getNumberOfMoments());
 				ColumnConstraints c = new ColumnConstraints();
-				c.setMinWidth(25);
-				c.setPrefWidth(25);
-				c.setMaxWidth(25);
+				c.setMinWidth(PANELSIZE);
+				c.setPrefWidth(PANELSIZE);
+				c.setMaxWidth(PANELSIZE);
 				grid.getColumnConstraints().add(c);
 				
 				ColumnConstraints c2 = new ColumnConstraints();
@@ -473,9 +467,9 @@ public abstract class MainViewTransformations {
 			for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute un panel");
 				// Creation of the Moment box
-				int width = 25;
+				int width = PANELSIZE;
 				//if(j>=d.getNumberOfMoments()-1)width=180;
-				Pane p = new Pane();
+				DropPane p = new DropPane(j);
 				p.setPrefWidth(width);
 				p.setMaxWidth(width);
 				p.setMinWidth(width);
@@ -511,7 +505,7 @@ public abstract class MainViewTransformations {
 				grid.add(mp,(j*2)+1,i);
 			}
 		}
-		Pane p = new Pane();
+		DropPane p = new DropPane(d.getNumberOfMoments());
 		p.setPrefWidth(180);
 		p.setMaxWidth(180);
 		p.setMinWidth(180);
@@ -524,31 +518,79 @@ public abstract class MainViewTransformations {
 	
 	public static void deleteMoment(MomentExperience toCompare, Main main) {
 		for(MomentExperience current:main.getCurrentDescription().getMoments()) {
-			System.out.println("On compare "+current.getNom()+" � "+toCompare.getNom());
+		//System.out.println("On compare "+current.getNom()+" � "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				main.getCurrentDescription().removeMomentExp(current);
-				System.out.println("On supprime "+current.getNom());
+			//System.out.println("On supprime "+current.getNom());
 				break;
 			}
 			else {
 				deleteMomentFromParent(current, toCompare);
 			}
-			System.out.println("On ne supprime pas "+current.getNom());
+		//System.out.println("On ne supprime pas "+current.getNom());
 		}
+	}
+	
+	public static void loadSousMoment(MomentExpVBox mev,Main main){
+		if(mev.getChildren().size() == 1){
+			mev.getChildren().add(mev.getSousMomentPane());
+		}
+
+		//Ajout >
+		if(mev.getMoment().getSousMoments().size()>0) {
+			ColumnConstraints cP = new ColumnConstraints();
+			cP.setMinWidth(PANELSIZE);
+			cP.setPrefWidth(PANELSIZE);
+			cP.setMaxWidth(PANELSIZE);
+			mev.getSousMomentPane().getColumnConstraints().add(cP);
+			
+			DropPane p = new DropPane(mev, 0);
+			addPaneOnDragListener(p, main);
+			mev.getSousMomentPane().add(p,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
+		}
+		int i=0;
+		for (MomentExperience m: mev.getMoment().getSousMoments()) {
+			i++;
+			MomentExpVBox tmp = new MomentExpVBox(main);
+			tmp.setMoment(m);
+			tmp.setVBoxParent(mev);
+			tmp.showMoment();
+			tmp.LoadMomentData();
+
+
+			ColumnConstraints c = new ColumnConstraints();
+			mev.getSousMomentPane().getColumnConstraints().add(c);
+			
+			mev.getSousMomentPane().add(tmp,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
+			
+			//Ajout>
+			ColumnConstraints cP = new ColumnConstraints();
+			cP.setMinWidth(PANELSIZE);
+			cP.setPrefWidth(PANELSIZE);
+			cP.setMaxWidth(PANELSIZE);
+			mev.getSousMomentPane().getColumnConstraints().add(cP);
+			//<
+			DropPane p = new DropPane(mev,i);
+			addPaneOnDragListener(p, main);
+			mev.getSousMomentPane().add(p,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
+			MainViewTransformations.addBorderPaneMomentListener(tmp, main);
+			loadTypes(tmp,main);
+			loadSousMoment(tmp, main);
+		}		
 	}
 	
 	public static void deleteMomentFromParent(MomentExperience parent, MomentExperience toCompare) {
 		for(MomentExperience current:parent.getSousMoments()) {
-			System.out.println("**On compare "+current.getNom()+" � "+toCompare.getNom());
+		//System.out.println("**On compare "+current.getNom()+" � "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				parent.removeSousMoment(current);
-				System.out.println("**On supprime "+current.getNom());
+			//System.out.println("**On supprime "+current.getNom());
 				break;
 			}
 			else {
 				deleteMomentFromParent(current, toCompare);
 			}
-			System.out.println("**On ne supprime pas "+current.getNom());
+		//System.out.println("**On ne supprime pas "+current.getNom());
 		}
 	}
 	

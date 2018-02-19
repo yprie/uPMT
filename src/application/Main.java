@@ -157,7 +157,7 @@ public class Main extends Application {
 			Locale.setDefault(Locale.CHINA);
 		}
 		else {
-			System.out.println("ERREUR");
+		//System.out.println("ERREUR");
 		}
 	}
 	
