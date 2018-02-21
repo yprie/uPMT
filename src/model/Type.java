@@ -21,6 +21,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import controller.typeTreeView.TypeTreeViewController;
@@ -31,7 +33,9 @@ public abstract class Type implements Serializable, Cloneable{
 	protected String description;
 	protected String couleur = "#000000";
 	protected String nom;
-	protected TypeTreeViewController controller;
+	
+
+	
 	
 	public Object clone() {
 		Type t = null;
@@ -119,5 +123,7 @@ public abstract class Type implements Serializable, Cloneable{
 	{
 		return this.getClass().equals(new Propriete("").getClass());
 	}
+	
+	
 	
 }

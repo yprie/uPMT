@@ -21,8 +21,13 @@
 package utils;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.HashSet;
 import java.util.LinkedList;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javafx.scene.paint.Color;
 import model.Projet;
@@ -40,7 +45,8 @@ public abstract class Utils {
 			////System.out.println("Loading projects");
 			for (String s : projectNames) {
 				if(s.contains(Projet.FORMAT)) {
-					projects.add(Projet.load(s));
+					//projects.add(Projet.load(s));
+					projects.add(Projet.loadData(s));
 				}
 			}
 		}

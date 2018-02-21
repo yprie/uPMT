@@ -48,7 +48,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	private Propriete currentProperty =null;
 	private int id;
 	private int row;
-	private SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+	private transient SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
 	
 	/*public MomentExperience clone() {
 		MomentExperience ret = new MomentExperience(nom, row, gridCol);

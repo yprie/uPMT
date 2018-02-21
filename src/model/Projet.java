@@ -23,6 +23,8 @@ package model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
@@ -30,26 +32,33 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Properties;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import utils.InterfaceAdapter;
 import javafx.scene.control.Alert.AlertType;
 
 public class Projet implements Serializable {
 	
-	private String nom;
-	public static final String FORMAT = ".ser";
+	public static final String FORMAT = ".upmt";
 	public static final String PATH = "./save/";
 	public static final String RECOVERY = "recovery_";
 	
+	private String nom;
 	private Schema schemaProjet;
 	private LinkedList<DescriptionEntretien> entretiens;
 
-	
 	public Projet(String n,Schema s){
 		this.nom = n;
 		this.entretiens = new LinkedList<DescriptionEntretien>();
@@ -88,12 +97,29 @@ public class Projet implements Serializable {
 		//delete autosave file
 		File autoSaveFile = new File(PATH+RECOVERY+nom+FORMAT);
 		autoSaveFile.delete();
-		saveFile(PATH+nom+FORMAT);
+		//saveFile(PATH+nom+FORMAT);
+		saveData(PATH+nom+FORMAT);
 		
 	}
 	
 	public void autosave(){
-		saveFile(PATH+RECOVERY+nom+FORMAT);	
+		//saveFile(PATH+RECOVERY+nom+FORMAT);	
+		saveData(PATH+RECOVERY+nom+FORMAT);
+	}
+	
+	private void saveData(String filename) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
+		gsonBuilder.setPrettyPrinting();
+	    Gson gson = gsonBuilder.create(); 
+		String jsonInString = gson.toJson(this);
+		System.out.println(jsonInString);
+
+		try (Writer writer = new FileWriter(filename)) {
+		    gson.toJson(this, writer);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void saveFile(String filename){
@@ -119,14 +145,24 @@ public class Projet implements Serializable {
 		}		
 	}
 	
-	public void writeMoment(MomentExperience m, PrintWriter writer){
-		
-	}	
-	
 	
 	public void remove(){
 		File f = new File(PATH+this.getName()+FORMAT);
 		f.delete();
+	}
+	
+	public static Projet loadData(String projet) {
+		try {
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
+			gsonBuilder.setPrettyPrinting();
+		    Gson gson = gsonBuilder.create(); 
+			Projet p = gson.fromJson(new FileReader(PATH+projet), Projet.class);
+			return p;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static Projet load(String projet){
@@ -195,5 +231,6 @@ public class Projet implements Serializable {
 	public void setEntretiens(LinkedList<DescriptionEntretien> entretiens) {
 		this.entretiens = entretiens;
 	}
+
 	
 }

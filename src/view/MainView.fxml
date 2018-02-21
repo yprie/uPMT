@@ -5,6 +5,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -55,14 +56,24 @@
                   </StackPane>
                </center>
                <top>
-                  <BorderPane prefHeight="64.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <BorderPane fx:id="topBarContainerTextInterview" prefHeight="64.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <center>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text Interview" BorderPane.alignment="CENTER">
+                        <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Text Interview" BorderPane.alignment="CENTER">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Text>
                      </center>
+                     <left>
+                        <ImageView fx:id="buttonTextInterview" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                           <image>
+                              <Image url="@../../resources/images/closeMenuBlack.png" />
+                           </image>
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                        </ImageView>
+                     </left>
                   </BorderPane>
                </top>
             </BorderPane>

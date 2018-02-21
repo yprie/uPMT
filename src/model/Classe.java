@@ -21,6 +21,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Classe extends Type implements Serializable, Cloneable {
@@ -28,6 +29,8 @@ public class Classe extends Type implements Serializable, Cloneable {
 	public Classe(String nom) {
 		super(nom);
 	}
+	
+
 	
 	/*public Classe clone() {
 		Classe ret = new Classe(new String(nom));

@@ -89,6 +89,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -107,9 +108,11 @@ import utils.Utils;
 
 public class MainViewController implements Initializable, Observer {
 
+	private @FXML SplitPane mainSplitPane;
 	private @FXML TreeView<TypeController> treeViewSchema;
 	private @FXML TreeView<DescriptionEntretien> treeViewInterview;
 	private @FXML ImageView ajoutMomentButton;
+	private @FXML BorderPane topBarContainerTextInterview;
 
 	private @FXML Button choixExtrait;
 	private @FXML Button ajoutExtrait;
@@ -117,6 +120,8 @@ public class MainViewController implements Initializable, Observer {
 	private @FXML TextArea droppableText;
 	private @FXML BorderPane paneOfTextArea;
 	private @FXML StackPane stackForDragDrop;
+	private @FXML ImageView buttonTextInterview;
+	private @FXML Text textInterviewTitle;
 	private Pane paneDragText;
 	
 	private @FXML ScrollPane gridScrollPane;
@@ -238,8 +243,32 @@ public class MainViewController implements Initializable, Observer {
 				}
 			}
 		});
+		buttonTextInterview.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(droppableText.isDisabled()) {
+					buttonTextInterview.setImage(ResourceLoader.loadImage("closeMenuBlack.png"));
+					droppableText.setDisable(false);
+					mainSplitPane.setDividerPosition(1, splitPos);
+					stackForDragDrop.getChildren().add(droppableText);
+					topBarContainerTextInterview.setCenter(textInterviewTitle);
+					paneOfTextArea.setMaxWidth(paneOfTextArea.USE_COMPUTED_SIZE);
+				}else {
+					buttonTextInterview.setImage(ResourceLoader.loadImage("openMenuBlack.png"));
+					droppableText.deselect();
+					droppableText.setDisable(true);
+					splitPos = mainSplitPane.getDividers().get(1).getPosition();
+					mainSplitPane.setDividerPosition(1, 1);
+					stackForDragDrop.getChildren().clear();
+					topBarContainerTextInterview.setCenter(null);
+					paneOfTextArea.setMaxWidth(35);
+				}
+			}
+		});
 		
 	}
+	
+	private double splitPos =0;
 	
 	public void setDroppableText(String text) {
 		//droppableText.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
