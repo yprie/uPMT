@@ -88,7 +88,7 @@ public class LaunchingScreenController implements Initializable{
 		// TODO: This prompt a new stage to help create a new project
 		
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setAlwaysOnTop(true);
+		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		promptWindow.setTitle(m_main._langBundle.getString("new_project"));
 		

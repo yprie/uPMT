@@ -206,7 +206,7 @@ public class Main extends Application {
     public void showLaunchingScreen(){
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle(get_langBundle().getString("welcome"));
-		promptWindow.setAlwaysOnTop(true);
+		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -293,8 +293,7 @@ public class Main extends Application {
 	public void setCurrentMoment(MomentExpVBox s){
 		//render to the inspector
 		if(this.getCurrentMoment() != s) {
-			currentMoment = s;	
-			mainViewController.renderInspector();
+			currentMoment = s;
 		}	
 	}
 	

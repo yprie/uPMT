@@ -129,7 +129,6 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 						main.setCurrentDescription(desc);
 						main.getTreeViewInterview().refresh();
 						main.getMainViewController().updateGrid();
-						main.getMainViewController().closeInspector();
 					}
 				});
 				

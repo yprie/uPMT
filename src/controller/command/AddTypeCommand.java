@@ -83,10 +83,6 @@ public class AddTypeCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		this.momentExpBorder.getMomentAddTypeController().update(null);
-		
-		if (main.getMainViewController().isInspectorOpen()) {
-			main.getMainViewController().renderInspector();
-		}
 		main.needToSave();
 	}
 
@@ -113,10 +109,6 @@ public class AddTypeCommand implements Command,Undoable{
 	public void execute() {
 
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
-		
-		if (main.getMainViewController().isInspectorOpen()) {
-			main.getMainViewController().renderInspector();
-		}
 		main.needToSave();
 	}
 

@@ -137,7 +137,11 @@ public abstract class MainViewTransformations {
 		    	}	
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
 		    		//Add Moment to a Moment : int: index in sous-moment / Moment: parentMoment / Main
-			    	AddMomentCommand cmd = new AddMomentCommand(moment.getMoment().getSousMoments().size(),moment.getMoment(),main);
+		    		MomentExperience newMoment = newMoment = new MomentExperience();
+		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
+		    			newMoment.setMorceauDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    		}
+			    	AddMomentCommand cmd = new AddMomentCommand(moment.getMoment().getSousMoments().size(),newMoment,moment.getMoment(),main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
@@ -256,11 +260,16 @@ public abstract class MainViewTransformations {
 		    	//int pos = main.getGrid().getColumnIndex(p)/2;
 		    	int pos = p.getCol();
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
+		    		
 		    		AddMomentCommand cmd=null;
+		    		MomentExperience moment = moment = new MomentExperience();
+		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
+		    			moment.setMorceauDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    		}
 		    		if(p.hasMomentParent())
-		    			cmd = new AddMomentCommand(pos, p.getMomentParent().getMoment() ,main);
+		    			cmd = new AddMomentCommand(pos, moment, p.getMomentParent().getMoment() ,main);
 		    		else
-		    			cmd = new AddMomentCommand(pos ,main);
+		    			cmd = new AddMomentCommand(pos, moment ,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
@@ -289,57 +298,6 @@ public abstract class MainViewTransformations {
 		    } 
 		});
 	}
-	
-	/*public static void addMomentExpBorderPaneListener(MomentExpVBox mp, Main main){
-		addBorderPaneMomentListener(mp, main);
-		mp.setOnDragDropped(new EventHandler<DragEvent>() {
-			@Override
-			public void handle(DragEvent event) {
-				Integer colIndex = GridPane.getColumnIndex((Node) event.getSource());		        
-		        // If the drag action is meant to add a Moment
-		        if(event.getDragboard().getString().equals("ajoutMoment")){
-			        //mp.setCol(colIndex);
-			        // Add moment to selected gridArea
-			        AddMomentCommand cmd = new AddMomentCommand(mp.getMoment(),main);
-					cmd.execute();
-					UndoCollector.INSTANCE.add(cmd);
-			        event.setDropCompleted(true); 
-			    	event.consume();
-				}
-		        if(event.getDragboard().getString().equals("moveMoment")){
-		        	MomentExperience serial=null;
-					try {
-						serial = (MomentExperience)Serializer.deserialize((byte[])event.getDragboard().getContent(MomentExpVBox.df));
-					} catch (ClassNotFoundException | IOException e) {
-						e.printStackTrace();
-					}
-			        //System.out.println("On est la");
-			        mp.setMoment(serial);
-			        //System.out.println("Nom: "+mp.getMoment().getNom());
-			        mp.setCol(colIndex);
-			        // Add moment to selected gridArea
-			        AddMomentCommand cmd = new AddMomentCommand(mp,main);
-					cmd.execute();
-					UndoCollector.INSTANCE.add(cmd);
-			        event.setDropCompleted(true); 
-			    	event.consume();
-				}
-		    }
-		});
-		
-		mp.setOnDragOver(new EventHandler<DragEvent>() {
-		    public void handle(DragEvent event) {
-		    	Integer colIndex = GridPane.getColumnIndex((Node) event.getSource());
-		    	try {
-			        MomentExpVBox tmp = (MomentExpVBox) main.getGrid().getChildren().get(colIndex);
-			    	if((event.getDragboard().getString().equals("ajoutMoment")||event.getDragboard().getString().equals("moveMoment")) && mp.getChildren().size() < 2){
-			    		event.acceptTransferModes(TransferMode.ANY);
-				        event.consume();
-			    	}
-		    	}catch(ClassCastException e) {}
-		    }
-		});
-	}*/
 	
 	public static void addTypeListener(TypeClassRepresentationController boutType,MomentExpVBox m,Type type,Main main){
 		boutType.focusedProperty().addListener(new ChangeListener<Boolean>()

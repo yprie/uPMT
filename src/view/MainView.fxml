@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.5, 0.5">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639, 0.7314629258517034">
          <items>
             <SplitPane dividerPositions="0.7" maxWidth="400.0" orientation="VERTICAL" prefWidth="400.0">
                <items>
@@ -33,7 +27,7 @@
                <children>
                   <BorderPane layoutX="176.0" layoutY="192.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <top>
-                        <HBox prefWidth="331.0" styleClass="topVBox" BorderPane.alignment="CENTER">
+                        <HBox maxHeight="64.0" minHeight="64.0" prefHeight="64.0" prefWidth="331.0" styleClass="topVBox" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fx:id="ajoutMomentButton" fitHeight="50.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
@@ -52,65 +46,26 @@
                   </BorderPane>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="inspector_pane" fitToHeight="true" fitToWidth="true" maxWidth="300.0">
-               <content>
-                  <VBox fx:id="vboxInspecteur" spacing="7.0" styleClass="rightVBox">
+            <BorderPane fx:id="paneOfTextArea" prefHeight="200.0" prefWidth="200.0">
+               <center>
+                  <StackPane fx:id="stackForDragDrop" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <HBox fx:id="vBoxLabel" prefHeight="25.0">
-                           <children>
-                              <Label fx:id="nomMoment" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Nom Du Moment" textAlignment="RIGHT">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                                <!--
-                              <Button fx:id="editName" mnemonicParsing="false" onAction="#editNameLabel" prefHeight="30.0" prefWidth="30.0">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Button> -->
-                              <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="closeBtn" mnemonicParsing="false" onAction="#closeInspector" prefHeight="30.0" prefWidth="30.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="30.0" top="5.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="CENTER">
-                           <children>
-                              <Label text="%color" />
-                              <Region HBox.hgrow="ALWAYS" />
-                              <ColorPicker fx:id="couleurMoment" maxHeight="-Infinity" minHeight="30.0" onAction="#pickColor" prefHeight="30.0" />
-                           </children>
-                        </HBox>
-                        <Label text="%extract" />
-                        <TextArea fx:id="extraitEntretien" maxHeight="150.0" minHeight="100.0" prefHeight="120.0" />
-                        <HBox>
-                           <children>
-                              <Button fx:id="choixExtrait" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#pickExtract" text="%define_ex" />
-                              <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="showExtractButton" mnemonicParsing="false" onAction="#showExtract" />
-                           </children>
-                        </HBox>
-                        <Separator maxHeight="30.0" minHeight="30.0" prefHeight="30.0" />
-                        <!--
-                        <Label text="%start_time" />
-                        <TextField fx:id="debut" />
-                        <Label layoutX="20.0" layoutY="299.0" text="%end_time" />
-                        <TextField fx:id="fin" />
-                        <Label layoutX="20.0" layoutY="465.0" text="%type" />
-                        -->
-                        <Label text="%duration" />
-                        <TextField fx:id="duree" prefHeight="24.0" />
-                        <FlowPane fx:id="typesArea" hgap="3.0" prefHeight="200.0" vgap="3.0" />
+                        <TextArea id="textInterview" fx:id="droppableText" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                      </children>
-<!-- <<<<<<< HEAD -->
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="7.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </ScrollPane>
+                  </StackPane>
+               </center>
+               <top>
+                  <BorderPane prefHeight="64.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <center>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text Interview" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                     </center>
+                  </BorderPane>
+               </top>
+            </BorderPane>
          </items>
       </SplitPane>
    </center>

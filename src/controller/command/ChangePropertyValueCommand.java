@@ -49,10 +49,6 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 	@Override
 	public void undo() {
 		property.getPropertyController().getChangePropertyValueController().update(oldName);
-		
-		if(property.getMain().getMainViewController().isInspectorOpen()) {
-			property.getMain().getMainViewController().renderInspector();
-		}
 		main.needToSave();
 	}
 
@@ -69,10 +65,6 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		property.getPropertyController().getChangePropertyValueController().update(newName);
-		
-		if(property.getMain().getMainViewController().isInspectorOpen()) {
-			property.getMain().getMainViewController().renderInspector();
-		}	
 		main.needToSave();
 	}
 

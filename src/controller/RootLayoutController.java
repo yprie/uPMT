@@ -105,7 +105,7 @@ public class RootLayoutController implements Initializable{
 		Stage helpWindow = new Stage(StageStyle.UTILITY);
 		helpWindow.setTitle("Help");
 		helpWindow.setResizable(false);
-		helpWindow.setAlwaysOnTop(true);
+		//helpWindow.setAlwaysOnTop(true);
 		helpWindow.initModality(Modality.APPLICATION_MODAL);
 		//helpWindow.setWidth(610);  
 		//helpWindow.setHeight(350);    
@@ -146,7 +146,7 @@ public class RootLayoutController implements Initializable{
 				e.printStackTrace();
 			}  
         });
-	     web.setAlwaysOnTop(true); 
+	     //web.setAlwaysOnTop(true); 
 	     web.centerOnScreen();
 	     web.close(); 
 	}
@@ -157,7 +157,7 @@ public class RootLayoutController implements Initializable{
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Nouvel Entretien");
 		promptWindow.setResizable(false);
-		promptWindow.setAlwaysOnTop(true);
+		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();

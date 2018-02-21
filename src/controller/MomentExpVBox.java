@@ -161,6 +161,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    public void handle(MouseEvent event) {
 		    	hasExtractImage.setCursor(Cursor.HAND);
 		        javafx.geometry.Point2D p = hasExtractImage.localToScreen(hasExtractImage.getLayoutBounds().getMaxX(), hasExtractImage.getLayoutBounds().getMaxY()); 
+		        extractTooltip.setOpacity(1);
 		        extractTooltip.show(hasExtractImage, p.getX(), p.getY());
 		    }
 		});
@@ -168,11 +169,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	hasExtractImage.setCursor(Cursor.DEFAULT);
+		    	extractTooltip.setOpacity(0);
 		    	extractTooltip.hide();
 		    }
 		});
-		//extractTooltip.setOpacity(0);
-		//extractTooltip.hide();
+		extractTooltip.setOpacity(0);
+		extractTooltip.hide();
 		this.hideExtractIcon();
 		
 		
@@ -372,7 +374,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("buttonMomentView");
 		
 		extractTooltip.setText(tooltip);
-		extractTooltip.setOpacity(1);
 	}
 	
 	public void hideExtractIcon(){
@@ -381,7 +382,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
 		
 		extractTooltip.setText("No Descripteme");
-		extractTooltip.setOpacity(1);
 	}
 
 	public void deleteMoment(){
@@ -483,9 +483,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			this.typeSpace.getChildren().remove(tcrc);
 			this.moment.getTypes().remove(tcrc.getClasse());
 			stack.push(tcrc);
-			if(main.getMainViewController().isInspectorOpen()) {
-				main.getMainViewController().renderInspector();
-			}
 		}
 	}
 	
@@ -500,9 +497,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-						if(main.getMainViewController().isInspectorOpen()) {
+						/*if(main.getMainViewController().isInspectorOpen()) {
 							main.getMainViewController().renderInspector();
-						}
+						}*/
 					}
 				});		
 			}
@@ -721,7 +718,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		main.setCurrentMoment(this);
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Selection de l'extrait");
-		promptWindow.setAlwaysOnTop(true);
+		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();

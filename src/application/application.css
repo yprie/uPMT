@@ -186,6 +186,10 @@
 }
 
 
+#textInterview:disabled, #textInterview:disabled > * {
+  -fx-opacity: 0.9 ;
+}
+
 
 
 

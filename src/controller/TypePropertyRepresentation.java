@@ -175,7 +175,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	private void pickPropertyExtract() {
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle("Selection de l'extrait");
-		promptWindow.setAlwaysOnTop(true);
+		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			main.getCurrentMoment().setCurrentProperty(property);

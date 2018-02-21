@@ -46,15 +46,15 @@ public class AddMomentCommand implements Command,Undoable{
 	private int indexInterview;
 	private int index;
 	
-	public AddMomentCommand(int index, Main main){
-		this.moment = new MomentExperience();
+	public AddMomentCommand(int index, MomentExperience moment, Main main){
+		this.moment = moment;
 		this.main = main;
 		this.index = index;
 		
 	}
 	
-	public AddMomentCommand(int index, MomentExperience parentMoment, Main main){
-		this(index, main);
+	public AddMomentCommand(int index, MomentExperience moment, MomentExperience parentMoment, Main main){
+		this(index, moment, main);
 		this.parentMoment = parentMoment;
 	}
 
@@ -95,9 +95,10 @@ public class AddMomentCommand implements Command,Undoable{
 			
 			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 			//indexInterview = new Integer(main.getProjects().indexOf(main.getCurrentDescription()));
-			
-			if(parentMoment!=null)
+			System.out.println("On veut ajouter un moment à l'index");
+			if(parentMoment!=null) {
 				parentMoment.addSousMoment(index, moment);
+			}
 			else
 				main.getCurrentDescription().addMoment(index, moment);
 			MainViewTransformations.updateGrid(main);

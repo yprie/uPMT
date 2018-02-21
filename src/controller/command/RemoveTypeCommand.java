@@ -42,10 +42,6 @@ public class RemoveTypeCommand implements Command,Undoable {
 	@Override
 	public void undo() {
 		moment.getMomentRemoveTypeController().update(classRep);
-		
-		if (main.getMainViewController().isInspectorOpen()) {
-			main.getMainViewController().renderInspector();
-		}
 		main.needToSave();
 	}
 
@@ -62,10 +58,6 @@ public class RemoveTypeCommand implements Command,Undoable {
 	@Override
 	public void execute() {
 		moment.getMomentRemoveTypeController().update(classRep);
-		
-		if (main.getMainViewController().isInspectorOpen()) {
-			main.getMainViewController().renderInspector();
-		}
 		main.needToSave();
 	}
 

@@ -46,11 +46,13 @@ import controller.interviewTreeView.InterviewTreeView;
 import controller.typeTreeView.TypeTreeView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -69,18 +71,22 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -108,26 +114,16 @@ public class MainViewController implements Initializable, Observer {
 	private @FXML Button choixExtrait;
 	private @FXML Button ajoutExtrait;
 	private @FXML Button ajoutMomentSimilaire;
+	private @FXML TextArea droppableText;
+	private @FXML BorderPane paneOfTextArea;
+	private @FXML StackPane stackForDragDrop;
+	private Pane paneDragText;
 	
 	private @FXML ScrollPane gridScrollPane;
 	
 	private HashMap<DescriptionEntretien, GridPane> interviewsPane;
 	
-	// Inspector
-	private @FXML Label nomMoment;
-//	private @FXML TextField debut;
-//	private @FXML TextField fin;
-	private @FXML TextField duree;
-	private @FXML TextArea extraitEntretien;
-	private @FXML ScrollPane inspector_pane;
-	private @FXML Button closeBtn;
-	private @FXML VBox vboxInspecteur;
-	private @FXML ColorPicker couleurMoment;
-	private @FXML FlowPane typesArea;
-	private @FXML Button showExtractButton;
-//	private @FXML Button editName;
-	private @FXML HBox vBoxLabel;
-	private @FXML SplitPane mainSplitPane;
+
 	
 	
 	Main main;
@@ -140,11 +136,6 @@ public class MainViewController implements Initializable, Observer {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		this.setLabelChangeName(main,this);
-		//mainSplitPane.setDividerPosition(0,0.15);
-		//mainSplitPane.setDividerPosition(1,0.85);
-		
 		Image image = ResourceLoader.loadImage("momentIcon.png");
 		this.ajoutMomentButton.setImage(image);
 
@@ -208,134 +199,52 @@ public class MainViewController implements Initializable, Observer {
 				}
 			}
 		});
+		if(main.getCurrentDescription()!=null)
+			setDroppableText(main.getCurrentDescription().getDescripteme().getTexte().trim());
+		paneDragText = new Pane();
+		paneDragText.setStyle("-fx-background-color:#f4f4f4;");
+		paneDragText.setCursor(Cursor.MOVE);
+		paneDragText.setOpacity(0.2);
 		
-		
-		initInspector();
-	}
-	
-	private void setLabelChangeName(Main main,MainViewController thiss){
-		nomMoment.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		//Quand on selectionne du texte, on met un panel devant le text pour pouvoir le dragger
+		droppableText.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent mouseEvent) {
+		    	if(!droppableText.getSelectedText().equals("") && !droppableText.getSelectedText().equals(" ") && !droppableText.getSelectedText().equals("\n"))
+		    		stackForDragDrop.getChildren().add(paneDragText);
+		    }
+		});
 
+		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour à nouveau rendre le texte selectionnable
+		paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				if(arg0.getClickCount() == 2){
-					//System.out.println("DoubleClick");
-					editNameMode();
-				}
+				droppableText.deselect();
+				stackForDragDrop.getChildren().clear();
+				stackForDragDrop.getChildren().add(droppableText);
 			}
 		});
-	}
-	
-	//modifier 
-	private void editNameMode() {
-		TextField t = new TextField();
-		t.setText(main.getCurrentMoment().getMoment().getNom());
-		t.requestFocus();
-		Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-            	//Le Textfield demande le Focus
-            	t.requestFocus();
-            	//Si le text n'est pas vide, on selectionne tout.
-            	if(!t.getText().isEmpty())
-            		t.selectAll();
-            }
-        });
-		
-		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
-			 @Override
-			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-			    {
-			        if (!newPropertyValue)
-			        {
-			        	RenameMomentCommand cmd = new RenameMomentCommand(
-			        			main.getCurrentMoment().getMomentNameController(),
-								main.getCurrentMoment().getMoment().getNom(),
-								t.getText(),
-								main);
-						cmd.execute();
-						UndoCollector.INSTANCE.add(cmd);
-						vBoxLabel.getChildren().remove(t);
-						vBoxLabel.getChildren().add(0,nomMoment);
-						t.focusedProperty().removeListener(this);
-			        }
-			    }
-		};
-		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
+		//Quand on drag le panel qui s'est mit par dessus le text
+		paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.ENTER){
-					t.setText(t.getText());
-					vBoxLabel.getChildren().remove(t);
-				}
-				if(event.getCode() == KeyCode.ESCAPE){
-					vBoxLabel.getChildren().remove(t);
-					vBoxLabel.getChildren().add(0, nomMoment);
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if (main.getCurrentDescription() != null) {
+					Dragboard db = ajoutMomentButton.startDragAndDrop(TransferMode.ANY);
+					ClipboardContent content = new ClipboardContent();
+					content.putString("ajoutMoment");
+					content.put(DataFormat.HTML, droppableText.getSelectedText());
+					db.setContent(content);
 				}
 			}
 		});
-		t.focusedProperty().addListener(listener);
-//		Platform.runLater(()->t.requestFocus());
-//		Platform.runLater(()->t.selectAll());
-		vBoxLabel.getChildren().add(0, t);
-		vBoxLabel.getChildren().remove(nomMoment);
+		
 	}
 	
-//	@FXML
-//	public void editNameLabel() {
-//		TextField t = new TextField();
-//		t.setText(main.getCurrentMoment().getMoment().getNom());
-//		
-//		Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//            	//Le Textfield demande le Focus
-//            	t.requestFocus();
-//            	//Si le text n'est pas vide, on selectionne tout.
-//            	if(!t.getText().isEmpty())
-//            		t.selectAll();
-//            }
-//        });
-//		
-//		ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
-//			 @Override
-//			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-//			    {
-//			        if (!newPropertyValue)
-//			        {
-//			        	RenameMomentCommand cmd = new RenameMomentCommand(main.getCurrentMoment().getMomentNameController(),
-//						main.getCurrentMoment().getMoment().getNom(),t.getText());
-//						cmd.execute();
-//						UndoCollector.INSTANCE.add(cmd);
-//						vBoxLabel.getChildren().remove(t);
-//						vBoxLabel.getChildren().add(0,nomMoment);
-//						editName.setDisable(false);
-//						t.focusedProperty().removeListener(this);
-//			        }
-//			    }
-//		};
-//		t.setOnKeyPressed(new EventHandler<KeyEvent>() {
-//
-//			@Override
-//			public void handle(KeyEvent event) {
-//				if (event.getCode() == KeyCode.ENTER) {
-//					t.setText(t.getText());
-//					vBoxLabel.getChildren().remove(t);
-//				}
-//				if (event.getCode() == KeyCode.ESCAPE) {
-//					vBoxLabel.getChildren().remove(t);
-//					vBoxLabel.getChildren().add(0, nomMoment);
-//					editName.setDisable(false);
-//
-//				}
-//			}
-//		});
-//		t.focusedProperty().addListener(listener);
-//		vBoxLabel.getChildren().add(0, t);
-//		vBoxLabel.getChildren().remove(nomMoment);
-//		editName.setDisable(true);
-//	}
+	public void setDroppableText(String text) {
+		//droppableText.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
+		droppableText.setText(text);
+	}
 	
 	public void updateGrid() {
 		gridScrollPane.setContent((interviewsPane.get(main.getCurrentDescription())));
@@ -352,10 +261,6 @@ public class MainViewController implements Initializable, Observer {
 		interviewsPane.put(d, gp);
 	}
 	
-	public void setNameInsepctor(String name){
-		this.nomMoment.setText(name);
-	}
-
 	public void addLinesToGrid(GridPane g) {
 
 		g.setOnDragEntered(new EventHandler<DragEvent>() {
@@ -384,61 +289,6 @@ public class MainViewController implements Initializable, Observer {
 		});
 	}
 
-	private void initInspector() {
-
-		inspector_pane.setManaged(false);
-		inspector_pane.setVisible(false);
-		this.extraitEntretien.setEditable(false);
-		this.extraitEntretien.setText("");
-		extraitEntretien.textProperty().addListener((observable, oldValue, newValue) -> {
-			//System.out.println("textfield changed from " + oldValue + " to " + newValue);
-			main.getCurrentMoment().getMoment().setMorceauDescripteme(newValue);
-
-		});
-//		debut.textProperty().addListener((observable, oldValue, newValue) -> {
-//		//System.out.println("debut changed from " + oldValue + " to " + newValue);
-//			main.getCurrentMoment().getMoment().setDebut(newValue);
-//
-//		});
-//		fin.textProperty().addListener((observable, oldValue, newValue) -> {
-//		//System.out.println("fin changed from " + oldValue + " to " + newValue);
-//			main.getCurrentMoment().getMoment().setFin(newValue);
-//		});
-		duree.textProperty().addListener((observable, oldValue, newValue) -> {
-			//System.out.println("duree changed from " + oldValue + " to " + newValue);
-			main.getCurrentMoment().getMoment().setDuree(newValue);
-
-		});
-
-	}
-
-	public void renderInspector() {
-		openInspector();
-		Node icon2 = new ImageView(ResourceLoader.loadImage("close.gif"));
-		this.closeBtn.setGraphic(icon2);
-		
-		Node icon3 = new ImageView(ResourceLoader.loadImage("show.png"));
-		this.showExtractButton.setGraphic(icon3);
-		
-		// setting the value of the color Picker
-		//System.out.println("id: "+main.getCurrentMoment().getMoment().getID()+" - row: "+main.getCurrentMoment().getMoment().getRow()+" - col:"+main.getCurrentMoment().getMoment().getGridCol());
-
-		if (main.getCurrentMoment().getMoment().getCouleur() != null) {
-			couleurMoment.setValue(Color.valueOf(main.getCurrentMoment().getMoment().getCouleur()));
-		} else {
-			couleurMoment.setValue(Color.WHITE);
-		}
-
-		MomentExperience currentMoment = main.getCurrentMoment().getMoment();
-		nomMoment.setText(currentMoment.getNom());
-//		debut.setText(currentMoment.getDebut());
-//		fin.setText(currentMoment.getFin());
-		duree.setText(currentMoment.getDuree());
-		extraitEntretien.setText(currentMoment.getMorceauDescripteme());
-
-		typesArea.getChildren().clear();
-		loadInspectorType();
-	}
 	
 	private Classe duplicate(Classe c){
 		Classe newc = new Classe(c.getName());
@@ -449,113 +299,14 @@ public class MainViewController implements Initializable, Observer {
 		return newc;
 	}
 
-	public void loadInspectorType() {
+
+
 	
-	for (Type t : main.getCurrentMoment().getMoment().getTypes()) {
-			Classe dup = (Classe) t;
-			TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Classe) dup,main.getCurrentMoment(),main);
-			MainViewTransformations.addTypeListener(elementPane, main.getCurrentMoment(), (Type) dup, main);
-			typesArea.getChildren().add(elementPane);
-		}
-	}
 
-	public void openInspector() {
-		inspector_pane.setManaged(true);
-		inspector_pane.setVisible(true);
-	}
-
-	public void closeInspector() {
-		inspector_pane.setManaged(false);
-		inspector_pane.setVisible(false);
-	}
-
-	public boolean isInspectorOpen() {
-		return inspector_pane.isVisible();
-	}
-
-	// function called by the button to choose the extract
-	@FXML
-	public void pickExtract() {
-		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle("Selection de l'extrait");
-		promptWindow.setAlwaysOnTop(true);
-		promptWindow.initModality(Modality.APPLICATION_MODAL);
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien.toString()));
-			loader.setResources(main._langBundle);
-			BorderPane layout = (BorderPane) loader.load();
-			Scene launchingScene = new Scene(layout);
-			promptWindow.setScene(launchingScene);
-			promptWindow.show();
-
-		} catch (IOException e) {
-			// TODO Exit Program
-			e.printStackTrace();
-		}
-	}
-	
-	@FXML
-	public void pickExtractAttribute() {
-		/*Stage promptWindow = new Stage();
-		promptWindow.setTitle("Selection de l'extrait");
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, this.extraitEntretien));
-			loader.setResources(main._langBundle);
-			BorderPane layout = (BorderPane) loader.load();
-			Scene launchingScene = new Scene(layout);
-			promptWindow.setScene(launchingScene);
-			promptWindow.show();
-
-		} catch (IOException e) {
-			// TODO Exit Program
-			e.printStackTrace();
-		}*/
-	}
-
-	// function used to select a color for the moment
-	@FXML
-	public void pickColor() {
-		Color couleur = couleurMoment.getValue();
-		String colorString = Utils.toRGBCode(couleur);
-		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
-				main.getCurrentMoment().getMomentColorController(),
-				main.getCurrentMoment().getMoment().getCouleur(),
-				colorString,
-				main);
-		cmd.execute();
-		UndoCollector.INSTANCE.add(cmd);
-		main.getCurrentMoment().getMomentColorController().update(colorString);
-	}
-
-
-	@FXML
-	public void showExtract() {
-		try {
-			if (!extraitEntretien.getText().isEmpty()) {
-				ShowTextWindow win = new ShowTextWindow(extraitEntretien.getText());
-				win.show();
-			}
-		} catch (Exception e) {
-			//System.out.println("No DATA to display");
-		}
-	}
 
 	@Override
 	public void updateVue(Observable obs, Object value) {
 		// TODO Auto-generated method stub
-		if(obs.getClass().equals(new MomentNameController(null).getClass())) {
-			nomMoment.setText((String) value);
-		}
-		if(obs.getClass().equals(new MomentColorController(null).getClass())) {
-			couleurMoment.setValue(Color.valueOf((String) value));
-		}
-		if(obs.getClass().equals(new MomentExtractController(null).getClass())) {
-			this.extraitEntretien.setText((String) value);
-		}
 	}
 	
 	public void alertRecovery(){
@@ -580,6 +331,11 @@ public class MainViewController implements Initializable, Observer {
     		//System.out.println("IL SEST PASSE UN TRUC");
     	    alert.close();
     	}
+	}
+
+	public String getDroppableText() {
+		if(droppableText==null) return null;
+		else return this.droppableText.getText();
 	}
 
 }
