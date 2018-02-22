@@ -75,6 +75,7 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -220,6 +221,7 @@ public class MainViewController implements Initializable, Observer {
 		    }
 		});
 
+
 		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour à nouveau rendre le texte selectionnable
 		paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -261,7 +263,7 @@ public class MainViewController implements Initializable, Observer {
 					mainSplitPane.setDividerPosition(1, 1);
 					stackForDragDrop.getChildren().clear();
 					topBarContainerTextInterview.setCenter(null);
-					paneOfTextArea.setMaxWidth(35);
+					paneOfTextArea.setMaxWidth(buttonTextInterview.getFitWidth());
 				}
 			}
 		});

@@ -112,13 +112,13 @@ public class Projet implements Serializable {
 		gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 		gsonBuilder.setPrettyPrinting();
 	    Gson gson = gsonBuilder.create(); 
-		String jsonInString = gson.toJson(this);
-		System.out.println(jsonInString);
 
 		try (Writer writer = new FileWriter(filename)) {
 		    gson.toJson(this, writer);
 		}catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("lol");
+			
 		}
 	}
 	
@@ -160,7 +160,8 @@ public class Projet implements Serializable {
 			Projet p = gson.fromJson(new FileReader(PATH+projet), Projet.class);
 			return p;
 		}catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}

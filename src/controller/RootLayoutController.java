@@ -161,10 +161,14 @@ public class RootLayoutController implements Initializable{
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
 			FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));
-            loader.setController(new NewInterviewDialogController(main,promptWindow));
+            //loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));
+			loader.setLocation(getClass().getResource("/view/NewInterview.fxml"));
+            //loader.setController(new NewInterviewDialogController(main,promptWindow));
+			loader.setController(new NewInterviewDialogTestController(main,promptWindow));
             loader.setResources(main._langBundle);
-            BorderPane layout = (BorderPane) loader.load();
+            
+            //BorderPane layout = (BorderPane) loader.load();
+            AnchorPane layout = (AnchorPane) loader.load();
 			Scene main = new Scene(layout);
 			promptWindow.setScene(main);
 			promptWindow.showAndWait();

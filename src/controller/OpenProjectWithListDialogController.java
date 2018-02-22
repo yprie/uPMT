@@ -62,9 +62,10 @@ public class OpenProjectWithListDialogController implements Initializable{
 	}
 	
 	public void openProject(){
+		window.close();
 		main.getPrimaryStage().show();
 		main.setCurrentProject(tousLesProjets.getFocusModel().getFocusedItem());
-		window.close();
+		
 	}
 	
 

@@ -477,6 +477,7 @@ public abstract class MainViewTransformations {
 		grid.add(p,d.getNumberOfMoments()*2,0);
 	}
 	
+	
 	public static void deleteMoment(MomentExperience toCompare, Main main) {
 		for(MomentExperience current:main.getCurrentDescription().getMoments()) {
 		//System.out.println("On compare "+current.getNom()+" � "+toCompare.getNom());

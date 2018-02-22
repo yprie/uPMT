@@ -33,10 +33,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.Projet;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
@@ -54,6 +57,13 @@ public class LaunchingScreenController implements Initializable{
 		// TODO Auto-generated constructor stub
 		m_main = main;
 		this.window = window;
+		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	          public void handle(WindowEvent we) {
+	        	  Platform.exit();
+	              System.exit(0);
+	          }
+	      }); 
+		
 	}
 	
 	@Override

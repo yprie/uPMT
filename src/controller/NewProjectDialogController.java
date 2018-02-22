@@ -75,6 +75,7 @@ public class NewProjectDialogController implements Initializable{
 				return new Schema(string);
 			}
 		});
+		choixSchema.setValue(main.getDefaultSchema());
 	}
 	
 	public void createProject(){
@@ -85,13 +86,19 @@ public class NewProjectDialogController implements Initializable{
 		p.save();
 		window.close();
 		launchingScreenWindow.close();
+		// in case the center was set to null because of automatic interview Creation
+		if (main.getRootLayout().getCenter() == null) {
+			main.launchMainView();
+		}
 		main.launchMainView();
 		main.refreshDataTreeView();
 		main.needToSave();
+		
 	}
 	
 	public void closeWindow(){
 		window.close();
+		launchingScreenWindow.close();
 	}
 
 }

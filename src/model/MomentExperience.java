@@ -42,7 +42,8 @@ public class MomentExperience implements Serializable, Cloneable {
 	private LinkedList<Type> types;
 	private LinkedList<Enregistrement> enregistrements;
 	private LinkedList<MomentExperience> sousMoments;
-	private MomentExperience parentMoment=null;
+	private transient MomentExperience parentMoment=null;
+	private int parentMomentID=-1;
 	private int gridCol;
 	private String couleur = "#D3D3D3";
 	private Propriete currentProperty =null;
