@@ -14,116 +14,137 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="520.0">
+      <VBox prefHeight="450.0" prefWidth="800.0">
          <children>
-            <HBox>
+            <HBox prefHeight="128.0" prefWidth="780.0">
                <children>
                   <Label id="wel" text="%Welcome" textFill="#9a1111">
                      <font>
-                        <Font size="40.0" />
+                        <Font size="32.0" />
                      </font>
                      <padding>
                         <Insets bottom="20.0" top="30.0" />
                      </padding>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="20.0" top="10.0" />
+                        <Insets left="40.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <GridPane vgap="25.0">
+            <GridPane vgap="50.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="342.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="508.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="155.5" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="234.5" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="32.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="24.0" minHeight="10.0" prefHeight="13.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />             
               </rowConstraints>
                <children>
-                  <Label id="particip" text="%Participants" GridPane.rowIndex="2">
+                  <Label id="particip" text="%Participants" GridPane.rowIndex="1">
                      <font>
-                        <Font size="26.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label id="dateEnt" text="%Date" GridPane.rowIndex="3">
+                  <Label id="dateEnt" text="%Date" GridPane.rowIndex="2">
                      <font>
-                        <Font size="26.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label id="nom" fx:id="nomFichier" text="%Name(ID)" GridPane.rowIndex="1">
+                  <Label id="nom" text="%Name(ID)">
                      <font>
-                        <Font size="26.0" />
+                        <Font size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <DatePicker id="date" fx:id="dateEntretien" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField id="partiEnt" fx:id="nomEntretien" prefHeight="48.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField id="nameId" fx:id="participantEntretien" prefHeight="48.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label id="addFile" text="%Add_fichier">
+                  <DatePicker id="date" prefHeight="48.0" prefWidth="417.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField id="partiEnt" prefHeight="48.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <TextField id="nameId" prefHeight="48.0" prefWidth="411.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label id="addFile" text="%Add_fichier" GridPane.rowIndex="3">
                      <font>
-                        <Font size="26.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
                   <Label id="comm" text="%Commentaire" GridPane.rowIndex="4">
                      <font>
-                        <Font size="26.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextArea id="commentaire" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1">
+                  <TextArea id="commentaire" prefHeight="73.0" prefWidth="572.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <HBox prefWidth="509.0">
-                           <children>
-                              <Button id="btnSelectFile" fx:id="btnChoisirFichir" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" text="%select_fichier" />
-                              <Label fx:id="extraitFile" prefHeight="48.0">
-                                 <opaqueInsets>
-                                    <Insets left="10.0" />
-                                 </opaqueInsets>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label id="newIntFileName" fx:id="newEntrFileName" prefHeight="32.0" text="/">
+                        <Button id="btnSelectFile" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" prefWidth="292.0" text="%select_fichier" />
+                        <Label id="format" prefHeight="15.0" prefWidth="154.0" text="%Format">
+                           <HBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </HBox.margin>
                            <padding>
-                              <Insets left="40.0" right="10.0" />
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label id="newIntFileName" prefHeight="15.0" prefWidth="19.0" text="/">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
                            </padding>
                         </Label>
                      </children>
-                  </VBox>
-                  <Button id="btnAnnu" fx:id="btnAnnuler" mnemonicParsing="false" onAction="#annulerClick" text="%annuler" GridPane.rowIndex="6">
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="40.0" left="50.0" right="50.0" top="15.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="30.0" top="15.0" />
+               </padding>
+            </GridPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="438.0" minWidth="10.0" prefWidth="400.5" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.5" minWidth="10.0" prefWidth="379.5" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints maxHeight="10.5" minHeight="4.5" prefHeight="10.5" />
+                  <RowConstraints maxHeight="31.5" minHeight="25.5" prefHeight="25.5" />
+
+              </rowConstraints>
+               <children>
+                  <Button id="btnAnnu" mnemonicParsing="false" onAction="#annulerClick" prefHeight="15.0" prefWidth="106.0" text="%annuler" GridPane.rowIndex="6">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="16.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="190.0" />
+                        <Insets left="200.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="48.0" prefWidth="142.0" text="%verifier" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                  <Button id="btnVeri" mnemonicParsing="false" onAction="#verifierClick" prefHeight="15.0" prefWidth="106.0" text="%verifier" GridPane.columnIndex="1" GridPane.rowIndex="6">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="16.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="160.0" />
+                        <Insets left="60.0" />
                      </GridPane.margin>
                   </Button>
                </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets left="20.0" right="20.0" />
-               </padding>
             </GridPane>
          </children>
+         <padding>
+            <Insets bottom="40.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>
