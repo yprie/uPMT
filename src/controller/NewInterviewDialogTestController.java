@@ -34,12 +34,12 @@ public class NewInterviewDialogTestController  implements Initializable{
 
 	private @FXML TextField nomEntretien;
 	private @FXML TextField participantEntretien;
+	private @FXML TextField commentaireEntretien;
 	private @FXML DatePicker dateEntretien;
 
 	private @FXML Button btnChoisirFichir;
 	private @FXML Button btnValider;
 	private @FXML Button btnAnnuler;
-	private @FXML Label nomFichier;
 	private @FXML Label newEntrFileName;
 	private @FXML Label extraitFile;
 	
@@ -152,6 +152,10 @@ public class NewInterviewDialogTestController  implements Initializable{
 		
 		DescriptionEntretien de = new DescriptionEntretien(new Descripteme(text), nomEntretien.getText());
 		de.setDateEntretien(d);
+		if(!participantEntretien.getText().replaceAll(" ", "").equals(""))
+			de.setParticipant(participantEntretien.getText());
+		if(!commentaireEntretien.getText().replaceAll(" ", "").equals(""))
+			de.setCommentaire(commentaireEntretien.getText());
 		main.getCurrentProject().addEntretiens(de);
 		main.setCurrentDescription(de);
 		main.refreshDataTreeView();

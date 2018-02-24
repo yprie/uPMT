@@ -158,12 +158,17 @@ public class Projet implements Serializable {
 			gsonBuilder.setPrettyPrinting();
 		    Gson gson = gsonBuilder.create(); 
 			Projet p = gson.fromJson(new FileReader(PATH+projet), Projet.class);
+			p.reloadMomentParentLost();
 			return p;
 		}catch(Exception e) {
 			//e.printStackTrace();
 			System.out.println(e.getMessage());
 			return null;
 		}
+	}
+	
+	protected void reloadMomentParentLost() {
+		
 	}
 	
 	public static Projet load(String projet){

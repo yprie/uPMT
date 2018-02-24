@@ -31,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+import application.Main;
 import javafx.scene.paint.Color;
+import utils.MainViewTransformations;
 
 public class MomentExperience implements Serializable, Cloneable {
 
@@ -42,8 +44,8 @@ public class MomentExperience implements Serializable, Cloneable {
 	private LinkedList<Type> types;
 	private LinkedList<Enregistrement> enregistrements;
 	private LinkedList<MomentExperience> sousMoments;
-	private transient MomentExperience parentMoment=null;
 	private int parentMomentID=-1;
+	private int parentCol=-1;
 	private int gridCol;
 	private String couleur = "#D3D3D3";
 	private Propriete currentProperty =null;
@@ -220,40 +222,54 @@ public class MomentExperience implements Serializable, Cloneable {
 	}
 	
 	public boolean hasParent() {
-		if(this.parentMoment==null)return false;
-		else return true;
+		return (this.parentMomentID>=0);
 	}
 	
 	protected void updateSousMomentPos() {
 		for(int i=0; i<sousMoments.size(); i++) {
 		//System.out.println("Moment "+sousMoments.get(i).getNom()+", id:"+sousMoments.get(i).getID()+" ["+i+";0]");
+			sousMoments.get(i).setParent(this);
 			sousMoments.get(i).setGridCol(i);
 			sousMoments.get(i).setRow(row+1);
 			sousMoments.get(i).updateSousMomentPos();
+			sousMoments.get(i).setParentCol(this.parentCol);
 		}
 	}
 	
 	public int getParentCol() {
-		if(this.parentMoment==null) {
+		if(!this.hasParent()) {
 			return this.gridCol;
 		}
-		else return parentMoment.getParentCol();
+		else return this.parentCol;
 	}
 	
 	public void setParent(MomentExperience m) {
-		this.parentMoment = m;
-		if(parentMoment!=null) {
-			setRow(parentMoment.getRow()+1);
-			this.setGridCol(parentMoment.getGridCol());
+		if(m!=null) {
+			this.parentMomentID = m.getID();
+			this.parentCol = m.getParentCol();
+			setRow(m.getRow()+1);
+			this.setGridCol(m.getGridCol());
 		}
-		else setRow(0);
+		else{
+			this.parentMomentID=-1;
+			this.parentCol = this.gridCol;
+			setRow(0);
+		}
+	}
+	
+	protected void setParentCol(int col) {
+		this.parentCol = col;
 	}
 	
 	public int getRow() {return row;}
 	public void setRow(int r) {row = r;}
 	
-	public MomentExperience getParent() {
-		return this.parentMoment;
+	public int getParentID() {
+		return this.parentMomentID;
+	}
+	
+	public MomentExperience getParent(Main main) {
+		return MainViewTransformations.getMomentByID(this.parentMomentID, main);
 	}
 	
 	public void setSousMoments(LinkedList<MomentExperience> sousMoments) {
@@ -285,6 +301,5 @@ public class MomentExperience implements Serializable, Cloneable {
 	public Propriete getCurrentProperty() {
 		return currentProperty;
 	}
-	
-	
+
 }

@@ -205,7 +205,7 @@ public class Main extends Application {
      */
     public void showLaunchingScreen(){
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle(get_langBundle().getString("welcome"));
+		promptWindow.setTitle(get_langBundle().getString("home"));
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {

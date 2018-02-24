@@ -179,7 +179,10 @@ public abstract class MainViewTransformations {
 					if(!childHasFocus){
 						moment.requestFocus();
 					}
-					System.out.println("row: "+moment.getMoment().getRow()+"; column: "+moment.getMoment().getGridCol());
+					String print = "row: "+moment.getMoment().getRow()+"; column: "+moment.getMoment().getGridCol()+"; parent: balek";
+					/*if(moment.hasParent()) print+=moment.getMoment().getParent(main).getNom();
+					else print+=" null";*/
+					System.out.println(print);
 				}
 				
 			}
@@ -224,19 +227,23 @@ public abstract class MainViewTransformations {
 					int i = ((Integer)event.getDragboard().getContent(MomentExpVBox.realCol));
 					if(draggedMoment!=null) {
 						if(!draggedMoment.hasParent()) {
+							System.out.println("le moment n'a pas de parent");
 							//int pos = main.getGrid().getChildren().indexOf(p)/2;
 							if(p.hasMomentParent()) { 
 								if(p.getMomentParent().getMoment().equals(draggedMoment)) 
+									cond=false;
+								else if(p.getMomentParent().isAChildOf(draggedMoment))
 									cond=false;
 							}
 							else cond = ((pos-i) > 1) || ((pos-i)<0) ;
 						//System.out.println("pos-i="+(pos-i)+" -- 1 < "+(pos-i)+" < 0 ?"+cond);
 						}else {
 							if(p.hasMomentParent()) {
-								if(p.getMomentParent().getMoment().equals(draggedMoment.getParent())) {
+								if(p.getMomentParent().getMoment().getID()==draggedMoment.getParentID()) {
 									cond = ((pos-i) > 1) || ((pos-i)<0) ;
 								}
 							}
+							else cond=true;
 						}
 					}
 					else cond = false;
@@ -248,7 +255,8 @@ public abstract class MainViewTransformations {
 		        if ((event.getDragboard().getString().equals("ajoutMoment")) || 
 		          (event.getDragboard().getString().equals("moveMoment") && cond) ) {
 		          event.acceptTransferModes(TransferMode.ANY);
-		          p.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+		          //p.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+		          p.onDragOver(event.getDragboard().getString());
 		        }
 		        
 		        event.consume();
@@ -257,6 +265,7 @@ public abstract class MainViewTransformations {
 		
 		p.setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
+		    	p.onDragExited();
 		    	//int pos = main.getGrid().getColumnIndex(p)/2;
 		    	int pos = p.getCol();
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
@@ -293,9 +302,17 @@ public abstract class MainViewTransformations {
 					}
 			    	
 				}
-		    	p.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+		    	//p.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 		    	event.consume();
 		    } 
+		});
+		
+		p.setOnDragExited(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent arg0) {
+				p.onDragExited();
+			}
+			
 		});
 	}
 	
@@ -394,7 +411,7 @@ public abstract class MainViewTransformations {
 		return ret;
 	}
 	
-	private static int PANELSIZE = 20;
+	//private static int PANELSIZE = 20;
 	
 	// Method used to load the grid related to a certain Interview
 	public static void loadGridData(GridPane grid,Main main, DescriptionEntretien d){
@@ -406,9 +423,11 @@ public abstract class MainViewTransformations {
 		for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute deux colonnes, "+d.getNumberOfMoments());
 				ColumnConstraints c = new ColumnConstraints();
-				c.setMinWidth(PANELSIZE);
-				c.setPrefWidth(PANELSIZE);
-				c.setMaxWidth(PANELSIZE);
+				//c.setMinWidth(PANELSIZE);
+				//c.setPrefWidth(PANELSIZE);
+				//c.setMaxWidth(PANELSIZE);
+				c.setPrefWidth(Control.USE_COMPUTED_SIZE);
+				c.setMaxWidth(Control.USE_COMPUTED_SIZE);
 				grid.getColumnConstraints().add(c);
 				
 				ColumnConstraints c2 = new ColumnConstraints();
@@ -428,12 +447,13 @@ public abstract class MainViewTransformations {
 			for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute un panel");
 				// Creation of the Moment box
-				int width = PANELSIZE;
 				//if(j>=d.getNumberOfMoments()-1)width=180;
-				DropPane p = new DropPane(j);
-				p.setPrefWidth(width);
-				p.setMaxWidth(width);
-				p.setMinWidth(width);
+				DropPane p = new DropPane(j, DropPane.PANELSIZE, main);
+				/*p.setPrefWidth(PANELSIZE);
+				p.setMaxWidth(PANELSIZE);
+				p.setMinWidth(PANELSIZE);*/
+				p.setPrefWidth(Control.USE_COMPUTED_SIZE);
+				p.setMaxWidth(Control.USE_COMPUTED_SIZE);
 				p.setPrefHeight(200);
 				p.setMinHeight(200);
 				//p.setStyle("-fx-background-color:black;");
@@ -466,10 +486,10 @@ public abstract class MainViewTransformations {
 				grid.add(mp,(j*2)+1,i);
 			}
 		}
-		DropPane p = new DropPane(d.getNumberOfMoments());
-		p.setPrefWidth(180);
+		DropPane p = new DropPane(d.getNumberOfMoments(), DropPane.DRAGGEDPANELSIZE, main);
+		/*p.setPrefWidth(180);
 		p.setMaxWidth(180);
-		p.setMinWidth(180);
+		p.setMinWidth(180);*/
 		p.setPrefHeight(200);
 		p.setMinHeight(200);
 		//p.setStyle("-fx-background-color:black;");
@@ -501,12 +521,14 @@ public abstract class MainViewTransformations {
 		//Ajout >
 		if(mev.getMoment().getSousMoments().size()>0) {
 			ColumnConstraints cP = new ColumnConstraints();
-			cP.setMinWidth(PANELSIZE);
+			/*cP.setMinWidth(PANELSIZE);
 			cP.setPrefWidth(PANELSIZE);
-			cP.setMaxWidth(PANELSIZE);
+			cP.setMaxWidth(PANELSIZE);*/
+			cP.setPrefWidth(Control.USE_COMPUTED_SIZE);
+			cP.setMaxWidth(Control.USE_COMPUTED_SIZE);
 			mev.getSousMomentPane().getColumnConstraints().add(cP);
 			
-			DropPane p = new DropPane(mev, 0);
+			DropPane p = new DropPane(mev, 0, DropPane.PANELSIZE, main);
 			addPaneOnDragListener(p, main);
 			mev.getSousMomentPane().add(p,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
 		}
@@ -527,12 +549,14 @@ public abstract class MainViewTransformations {
 			
 			//Ajout>
 			ColumnConstraints cP = new ColumnConstraints();
-			cP.setMinWidth(PANELSIZE);
+			/*cP.setMinWidth(PANELSIZE);
 			cP.setPrefWidth(PANELSIZE);
-			cP.setMaxWidth(PANELSIZE);
+			cP.setMaxWidth(PANELSIZE);*/
+			cP.setPrefWidth(Control.USE_COMPUTED_SIZE);
+			cP.setMaxWidth(Control.USE_COMPUTED_SIZE);
 			mev.getSousMomentPane().getColumnConstraints().add(cP);
 			//<
-			DropPane p = new DropPane(mev,i);
+			DropPane p = new DropPane(mev,i, DropPane.PANELSIZE, main);
 			addPaneOnDragListener(p, main);
 			mev.getSousMomentPane().add(p,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
 			MainViewTransformations.addBorderPaneMomentListener(tmp, main);
@@ -610,5 +634,25 @@ public abstract class MainViewTransformations {
 			});
 		}
 
+		public static MomentExperience getMomentByID(int id, Main main) {
+			MomentExperience ret = null;
+			for(MomentExperience moment: main.getCurrentDescription().getMoments()) {
+				if(ret!=null) break;
+				if(moment.getID() == id)ret = moment;
+				else if(moment.getSousMoments().size()>0)
+						ret = getMomentByIDFromParent(moment,  id,  main);
+			}
+			return ret;
+		}
 		
+		private static MomentExperience getMomentByIDFromParent(MomentExperience parent, int id, Main main) {
+			MomentExperience ret = null;
+			for(MomentExperience moment: parent.getSousMoments()) {
+				if(ret!=null) break;
+				if(moment.getID() == id) ret = moment;
+				else if(moment.getSousMoments().size()>0)
+						ret = getMomentByIDFromParent(moment,  id,  main);
+			}
+			return ret;
+		}
 }

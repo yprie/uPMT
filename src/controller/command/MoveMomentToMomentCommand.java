@@ -58,7 +58,7 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 		dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
 		indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 		if(moment.hasParent()) 
-			if(  (moment.getParent().equals(newParent))  &&  (moment.getGridCol()<toCol)  ) toCol--;
+			if(  (moment.getParent(main).equals(newParent))  &&  (moment.getGridCol()<toCol)  ) toCol--;
 		System.out.println("Enleve le moment à la position "+moment.getGridCol()+" et l'ajoute à la col "+toCol);
 		MainViewTransformations.deleteMoment(moment, main);
 		
