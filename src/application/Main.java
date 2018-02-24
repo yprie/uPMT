@@ -256,7 +256,7 @@ public class Main extends Application {
      * should be improved if desired
      */
     private void createBasicSchema(){
-    	Type s = new Schema("Schema par default");
+    	Type s = new Schema((_langBundle.getString("default_scheme")));
     	Type general = new Dossier("general");
     	Type autre = new Dossier("autre");
 		Type visuel = new Classe("visuel");

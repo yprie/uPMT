@@ -80,7 +80,7 @@ public class NewProjectDialogController implements Initializable{
 	
 	public void createProject(){
 		Projet p = new Projet(nomProjet.getText(), this.choixSchema.getValue());
-		p.getSchemaProjet().setName("Schema de "+nomProjet.getText());
+		p.getSchemaProjet().setName(nomProjet.getText());
 		main.getProjects().add(p);
 		main.setCurrentProject(p);
 		p.save();
