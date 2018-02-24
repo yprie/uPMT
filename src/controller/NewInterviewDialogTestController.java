@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.InputMethodEvent;
@@ -34,7 +35,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 
 	private @FXML TextField nomEntretien;
 	private @FXML TextField participantEntretien;
-	private @FXML TextField commentaireEntretien;
+	private @FXML TextArea commentaireEntretien;
 	private @FXML DatePicker dateEntretien;
 
 	private @FXML Button btnChoisirFichir;
