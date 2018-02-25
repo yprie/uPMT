@@ -42,8 +42,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 	private @FXML Button btnValider;
 	private @FXML Button btnAnnuler;
 	private @FXML Label newEntrFileName;
-	private @FXML Label extraitFile;
-	
+	private @FXML Label extraitFile;	
 	
 	private TitledPane current_step;
 	private Main main;
@@ -53,26 +52,32 @@ public class NewInterviewDialogTestController  implements Initializable{
 	public NewInterviewDialogTestController(Main main,Stage window) {
 		this.main = main;
 		this.window = window;
-		
 	}
 
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		checkIfCanCreate();
 		nomEntretien.textProperty().addListener((observable, oldValue, newValue) -> {
 			checkIfCanCreate();
 		});
+		
+		participantEntretien.setOnAction(new EventHandler<ActionEvent>(){ 
+			public void handle(ActionEvent event){	
+				if(nomEntretien.getText().equals("") && !"".equals(dateEntretien.getValue().toString())) {
+					nomEntretien.setText(participantEntretien.getText() 
+							+ "_" + dateEntretien.getValue().toString());
+				}
+				}});
+		
 		dateEntretien.setOnAction(new EventHandler<ActionEvent>(){ 
 			public void handle(ActionEvent event){	
-				LocalDate date = dateEntretien.getValue();
-				if(nomEntretien.getText()!="") {
-					nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", "")
+//				LocalDate date = dateEntretien.getValue();
+				if(nomEntretien.getText().equals("") && !"".equals(participantEntretien.getText())) {
+					nomEntretien.setText(participantEntretien.getText()
 							+ "_" + dateEntretien.getValue().toString());
 				}
 				}});
 	}
-	
 	
 	public void openFileChooser(){
 		FileChooser fileChooser = new FileChooser();
@@ -87,11 +92,10 @@ public class NewInterviewDialogTestController  implements Initializable{
 		if(fichierChoisi != null){
 			newEntrFileName.setText(fichierChoisi.getPath());
 			
-			if(nomEntretien.getText().equals("")&& dateEntretien.getValue().toString()!= null) {
-				nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", "")
-						+ "_" + dateEntretien.getValue().toString());
-			}
-			
+//			if(nomEntretien.getText().equals("")&& dateEntretien.getValue().toString()!= null) {
+//				nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", "")
+//						+ "_" + dateEntretien.getValue().toString());
+//			}
 			extraitFile.setText(getExtrait());
 			checkIfCanCreate();
 		}
@@ -130,12 +134,10 @@ public class NewInterviewDialogTestController  implements Initializable{
 				if (fr != null)fr.close();
 			} catch (IOException ex) {}
 		}
-		
 		return ret;
 	}
 	
 	public void annulerClick(){
-		
 		window.close();
 	}
 	
@@ -154,8 +156,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 		        text = text + line + "\n";
 	            line=br.readLine();
 	        }
-
-	                br.close();
+	        br.close();
 		    }catch (Exception e) {
 	    //System.out.println(e.getMessage());
 	    }
@@ -183,5 +184,4 @@ public class NewInterviewDialogTestController  implements Initializable{
 		main.needToSave();
 		window.close();
 	}
-
 }
