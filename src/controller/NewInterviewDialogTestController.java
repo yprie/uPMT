@@ -63,6 +63,14 @@ public class NewInterviewDialogTestController  implements Initializable{
 		nomEntretien.textProperty().addListener((observable, oldValue, newValue) -> {
 			checkIfCanCreate();
 		});
+		dateEntretien.setOnAction(new EventHandler<ActionEvent>(){ 
+			public void handle(ActionEvent event){	
+				LocalDate date = dateEntretien.getValue();
+				if(nomEntretien.getText()!="") {
+					nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", "")
+							+ "_" + dateEntretien.getValue().toString());
+				}
+				}});
 	}
 	
 	
@@ -78,9 +86,12 @@ public class NewInterviewDialogTestController  implements Initializable{
 		fichierChoisi = fileChooser.showOpenDialog(null);
 		if(fichierChoisi != null){
 			newEntrFileName.setText(fichierChoisi.getPath());
-			if(nomEntretien.getText().equals("")) {
-				nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", ""));
+			
+			if(nomEntretien.getText().equals("")&& dateEntretien.getValue().toString()!= null) {
+				nomEntretien.setText(fichierChoisi.getName().replaceFirst("[.][^.]+$", "")
+						+ "_" + dateEntretien.getValue().toString());
 			}
+			
 			extraitFile.setText(getExtrait());
 			checkIfCanCreate();
 		}
@@ -90,7 +101,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 			checkIfCanCreate();
 		}
 	}
-	
+
 	private void checkIfCanCreate() {
 		btnValider.setDisable(		newEntrFileName.getText().equals("/")
 								|| 	nomEntretien.getText().replaceAll(" ", "").equals("")
@@ -127,6 +138,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 		
 		window.close();
 	}
+	
 	public void validerClick(){
 		LocalDate d = dateEntretien.getValue();	
 		String text="";
@@ -136,8 +148,6 @@ public class NewInterviewDialogTestController  implements Initializable{
 			BufferedReader br = new BufferedReader(
 			   new InputStreamReader(
 	                      new FileInputStream(fileDir), "UTF8"));
-
-			
 
 			String line = br.readLine();
 	        while (line != null || !line.equals(null)) {
