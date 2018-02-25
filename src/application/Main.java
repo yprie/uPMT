@@ -257,17 +257,17 @@ public class Main extends Application {
      */
     private void createBasicSchema(){
     	Type s = new Schema((_langBundle.getString("default_scheme")));
-    	Type general = new Dossier("general");
-    	Type autre = new Dossier("autre");
-		Type visuel = new Classe("visuel");
-		Type image = new Propriete("image");
-		Type sensoriel = new Classe("sensoriel");
-		Type emmotionnel = new Classe("emotionnel");
-		Type sonore = new Classe("sonore");
+    	Type general = new Dossier(_langBundle.getString("general"));
+    	Type autre = new Dossier(_langBundle.getString("other"));
+		Type visuel = new Classe(_langBundle.getString("visual"));
+		Type image = new Propriete(_langBundle.getString("picture"));
+		Type sensoriel = new Classe(_langBundle.getString("sensory"));
+		Type emotionnel = new Classe(_langBundle.getString("emotional"));
+		Type sonore = new Classe(_langBundle.getString("acoustic"));
 		visuel.addType(image);
 		general.addType(visuel);
 		general.addType(sensoriel);
-		general.addType(emmotionnel);
+		general.addType(emotionnel);
 		general.addType(sonore);
 		s.addType(general);
 		s.addType(autre);
