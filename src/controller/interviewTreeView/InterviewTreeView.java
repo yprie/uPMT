@@ -57,11 +57,11 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 	
 	public void deleteInterview(DescriptionEntretien interview){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Supression Entretien");
-		alert.setHeaderText("Vous allez supprimer "+interview.getNom());
+		alert.setTitle(main._langBundle.getString("delete_interview"));
+		alert.setHeaderText(main._langBundle.getString("delete_interview_text_alert")+interview.getNom());
 		
-		ButtonType buttonTypeOne = new ButtonType("Valider");
-		ButtonType buttonTypeCancel = new ButtonType("cancel", ButtonData.CANCEL_CLOSE);
+		ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("confirm"));
+		ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"), ButtonData.CANCEL_CLOSE);
 
 		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 

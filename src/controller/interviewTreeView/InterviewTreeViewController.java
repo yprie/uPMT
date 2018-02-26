@@ -77,12 +77,15 @@ public class InterviewTreeViewController extends TreeViewController implements I
 		this.renameInterview.setGraphic(iconRename);
 		
 		Tooltip affDescrip = new Tooltip("Afficher le Verbatim de l'entretien");
+		//Tooltip affDescrip = new Tooltip(main._langBundle.getString("display_verbatim"));
 		afficherDescritpeme.setTooltip(affDescrip);
 		
 		Tooltip rename = new Tooltip("Renommer l'entretien");
+		//Tooltip affDescrip = new Tooltip(main._langBundle.getString("rename_interview"));
 		renameInterview.setTooltip(rename);
 		
 		Tooltip delete = new Tooltip("Supprimer l'entretien");
+		//Tooltip affDescrip = new Tooltip(main._langBundle.getString("delete_interview"));
 		deleteInterview.setTooltip(delete);
 		
 		hideButtons();

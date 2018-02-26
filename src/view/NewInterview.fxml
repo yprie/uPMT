@@ -94,7 +94,7 @@
                       <children>
                          <HBox prefWidth="509.0">
                             <children>
-                               <Button id="btnSelectFile" fx:id="btnChoisirFichir" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" text="%select_fichier">
+                               <Button id="btnSelectFile" fx:id="btnChoisirFichir" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" text="%select_file">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin></Button>
@@ -143,7 +143,7 @@
                          <Insets left="210.0" />
                       </GridPane.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" text="%check" GridPane.columnIndex="1">
+                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" text="%confirm" GridPane.columnIndex="1">
                       <font>
                          <Font size="18.0" />
                       </font>

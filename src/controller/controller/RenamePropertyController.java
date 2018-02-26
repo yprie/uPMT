@@ -63,9 +63,11 @@ public class RenamePropertyController implements controller.controller.Observabl
 				@Override
 				public void run() {
 					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Invalid Name");
+					alert.setTitle("Invalid name");
+					//alert.setTitle(main._langBundle.getString("invalid_name");
 					alert.setHeaderText(null);
 					alert.setContentText("Properties from the same class cannot have the same name");
+					//alert.setTitle(main._langBundle.getString("properties_name_invalid");
 					alert.showAndWait();
 				}
 			});

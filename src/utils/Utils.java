@@ -54,8 +54,11 @@ public abstract class Utils {
 					if(p==null) {
 						Alert alert = new Alert(AlertType.CONFIRMATION);
 				        alert.setTitle("Error, version conflict");
+				      //alert.setTitle(main._langBundle.getString("error_version");
 				        alert.setHeaderText("Your saves are in conflict with this new version.");
-				        alert.setContentText("Please contact us in the github repo.");
+				      //alert.setTitle(main._langBundle.getString("error_version_text_alarm");
+				        alert.setContentText("Please contact us in the github repository.");
+				      //alert.setTitle(main._langBundle.getString("error_version_text_contact");
 
 				        Optional<ButtonType> result = alert.showAndWait();
 				        if (result.get() == ButtonType.OK){

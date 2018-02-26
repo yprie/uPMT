@@ -103,7 +103,7 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void aboutUs(){
 		Stage helpWindow = new Stage(StageStyle.UTILITY);
-		helpWindow.setTitle("Help");
+		helpWindow.setTitle(main._langBundle.getString("help"));
 		helpWindow.setResizable(false);
 		//helpWindow.setAlwaysOnTop(true);
 		helpWindow.initModality(Modality.APPLICATION_MODAL);
@@ -155,7 +155,7 @@ public class RootLayoutController implements Initializable{
 	public void newInterview(){
 
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle("Nouvel Entretien");
+		promptWindow.setTitle(main._langBundle.getString("new_interview"));
 		promptWindow.setResizable(false);
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);

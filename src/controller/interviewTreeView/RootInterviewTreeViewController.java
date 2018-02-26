@@ -59,7 +59,7 @@ public class RootInterviewTreeViewController extends TreeViewController implemen
 		
 		rootIcon.setImage(ResourceLoader.loadImage("rootInterview.gif"));
 		
-		Tooltip addInter = new Tooltip("Ajouter une interview");
+		Tooltip addInter = new Tooltip(main._langBundle.getString("add_interview"));
 		addInterview.setTooltip(addInter);
 	}
 

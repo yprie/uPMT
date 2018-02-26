@@ -164,7 +164,7 @@ public class MainViewController implements Initializable, Observer {
 		Schemaroot.getChildren()
 				.add(SchemaTransformations.SchemaToTreeView(main.getCurrentProject().getSchemaProjet()));
 		Interviewroot.getChildren()
-				.add(SchemaTransformations.EntretienToTreeView(main, main.getCurrentProject().getEntretiens()));
+				.add(SchemaTransformations.EntretienToTreeView(main.getCurrentProject().getEntretiens()));
 		treeViewSchema.setRoot(Schemaroot);
 		treeViewSchema.setShowRoot(false);
 		treeViewInterview.setRoot(Interviewroot);
@@ -342,10 +342,8 @@ public class MainViewController implements Initializable, Observer {
 	
 	public void alertRecovery(){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-    	/*alert.setTitle(main._langBundle.getString("recovery"));
-    	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));*/
-		alert.setTitle("TRADUCTION NEEDED: Recovery");
-    	alert.setHeaderText("TRADUCTION NEEDED: We detected that the application did not close properly. Do you want to recover a copy of the project that was interrupted?");
+		alert.setTitle(main._langBundle.getString("recovery"));
+    	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));
     	ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("ok"));
     	ButtonType buttonTypeTwo = new ButtonType(main._langBundle.getString("no"));
     	

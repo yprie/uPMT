@@ -137,7 +137,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	if(!propertiesHaveDescriptem()) {
-		    		extractTooltip.setText("Double-click to add an extract.");
+		    		extractTooltip.setText(main._langBundle.getString("double_click_add_extract"));
 			    	javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
 			        extractTooltip.show(propertyName, p.getX(), p.getY());
 		    	}
@@ -174,7 +174,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 
 	private void pickPropertyExtract() {
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle("Selection de l'extrait");
+		promptWindow.setTitle(main._langBundle.getString("select_extract"));
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {

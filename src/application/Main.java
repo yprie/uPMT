@@ -281,7 +281,7 @@ public class Main extends Application {
 		TreeItem<TypeController> schemaRoot = new TreeItem<TypeController>();
 		TreeItem<DescriptionEntretien> interviewRoot = new TreeItem<DescriptionEntretien>();
 		schemaRoot.getChildren().add(SchemaTransformations.SchemaToTreeView(this.currentProject.getSchemaProjet()));
-		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this, this.currentProject.getEntretiens()));
+		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this.currentProject.getEntretiens()));
 		this.treeViewSchema.setRoot(schemaRoot);
 		this.treeViewInterview.setRoot(interviewRoot);
 	}
@@ -318,9 +318,9 @@ public class Main extends Application {
 	public void changeLocaleAndReload(String locale){
 		saveCurrentProject();
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("This will take effect after reboot");
-        alert.setContentText("Are you ok with this?");
+        alert.setTitle(_langBundle.getString("confirmation_dialog"));
+        alert.setHeaderText(_langBundle.getString("take_effect_text"));
+        alert.setContentText(_langBundle.getString("ok_text"));
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){

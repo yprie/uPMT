@@ -222,14 +222,14 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         
         
         momentMenuAction.getItems().clear();
-        MenuItem menu1 = new MenuItem("Delete");
+        MenuItem menu1 = new MenuItem(main._langBundle.getString("delete"));
         menu1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				deleteMoment();
 			}
         });
-        MenuItem menu2 = new MenuItem("Change color");
+        MenuItem menu2 = new MenuItem(main._langBundle.getString("change_color"));
         menu2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -246,7 +246,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				});
 			}
         });
-        MenuItem menu3 = new MenuItem("Add comment");
+        MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
         menu3.setDisable(true);
         menuTime = new MenuItem("Edit Time ('"+moment.getDateString()+"')");
         menuTime.setOnAction(new EventHandler<ActionEvent>(){
@@ -258,7 +258,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				dialog.getDialogPane().getButtonTypes().clear();
 				dialog.getDialogPane().getButtonTypes().addAll(edit, close);
 				dialog.setTitle("Time");
-				dialog.setHeaderText("The time of "+moment.getNom()+" is "+moment.getDateString());
+				dialog.setHeaderText(main._langBundle.getString("time_alert") + " " + moment.getNom() + " " + main._langBundle.getString("is") + " " + moment.getDateString());
 				dialog.initModality(Modality.APPLICATION_MODAL);
 				Optional<String> result = dialog.showAndWait();
 				if (result.isPresent()) {
@@ -285,7 +285,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void editMenuTime(String text) {
-		menuTime.setText("Edit time ("+text+")");
+		menuTime.setText(main._langBundle.getString("edit_time") + " ("+text+")");
 	}
 	private MenuItem menuTime;
 	
@@ -381,15 +381,15 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
 		
-		extractTooltip.setText("No Descripteme");
+		extractTooltip.setText(main._langBundle.getString("no_descripteme"));
 	}
 
 	public void deleteMoment(){
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
-    	alert.setTitle("Avertissement suppression");
-    	alert.setHeaderText("Vous allez supprimer le moment et tous ses sous-moments");
-    	alert.setContentText("Voulez-vous continuer ?");
+    	alert.setTitle(main._langBundle.getString("delete_warning"));
+    	alert.setHeaderText(main._langBundle.getString("delete_moment_text_alert"));
+    	alert.setContentText(main._langBundle.getString("continue_alert"));
     	alert.initStyle(StageStyle.UTILITY);
 
     	Optional<ButtonType> result = alert.showAndWait();
@@ -717,7 +717,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void pickExtract() {
 		main.setCurrentMoment(this);
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle("Selection de l'extrait");
+		promptWindow.setTitle(main._langBundle.getString("select_extract"));
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {

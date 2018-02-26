@@ -44,9 +44,10 @@ public abstract class SchemaTransformations {
 		return schema;
 	}
 	
-	public static TreeItem<DescriptionEntretien> EntretienToTreeView(Main main, LinkedList<DescriptionEntretien> entretiens){
+	public static TreeItem<DescriptionEntretien> EntretienToTreeView(LinkedList<DescriptionEntretien> entretiens){
 		TreeItem<DescriptionEntretien> entres;
-		entres = new TreeItem<DescriptionEntretien>(new DescriptionEntretien(null, main._langBundle.getString("interview")));
+		entres = new TreeItem<DescriptionEntretien>(new DescriptionEntretien(null,"Interviews"));
+		//entres = new TreeItem<DescriptionEntretien>(new DescriptionEntretien(null,main._langBundle.getString("interview")));
 		entres.setExpanded(true);
 		for (DescriptionEntretien d : entretiens) {
 			entres.getChildren().add(new TreeItem<DescriptionEntretien>(d));
