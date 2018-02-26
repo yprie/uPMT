@@ -25,10 +25,14 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import model.Projet;
 
@@ -46,7 +50,23 @@ public abstract class Utils {
 			for (String s : projectNames) {
 				if(s.contains(Projet.FORMAT)) {
 					//projects.add(Projet.load(s));
-					projects.add(Projet.loadData(s));
+					Projet p = Projet.loadData(s);
+					if(p==null) {
+						Alert alert = new Alert(AlertType.CONFIRMATION);
+				        alert.setTitle("Error, version conflict");
+				        alert.setHeaderText("Your saves are in conflict with this new version.");
+				        alert.setContentText("Please contact us in the github repo.");
+
+				        Optional<ButtonType> result = alert.showAndWait();
+				        if (result.get() == ButtonType.OK){
+				    		alert.close();
+				        } else {
+				            alert.close();
+				        }
+					}
+					else
+						projects.add(p);
+					
 				}
 			}
 		}

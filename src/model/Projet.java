@@ -183,17 +183,7 @@ public class Projet implements Serializable {
 
 		}
 		catch(InvalidClassException e) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-	        alert.setTitle("Error, version conflict");
-	        alert.setHeaderText("Your saves are in conflict with this new version.");
-	        alert.setContentText("Please delete your saves \""+PATH+projet+"\" to fix the problem.\n");
-
-	        Optional<ButtonType> result = alert.showAndWait();
-	        if (result.get() == ButtonType.OK){
-	    		alert.close();
-	        } else {
-	            alert.close();
-	        }
+	        return null;
 		}
 		catch (final java.io.IOException e) {
 			e.printStackTrace();
