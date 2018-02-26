@@ -17,7 +17,7 @@
    <bottom>
       <ButtonBar prefHeight="48.0" prefWidth="590.0" BorderPane.alignment="CENTER">
         <buttons>
-            <Button fx:id="btnAnnuler" mnemonicParsing="false" onAction="#annulerClick" text="%cancel" />
+            <Button fx:id="btncancel" mnemonicParsing="false" onAction="#cancelClick" text="%cancel" />
           <Button fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" text="%ok" />
         </buttons>
          <BorderPane.margin>

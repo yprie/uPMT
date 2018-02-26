@@ -36,7 +36,7 @@
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <buttons>
             <Button fx:id="valider" mnemonicParsing="false" onAction="#createProject" text="%ok" />
-            <Button fx:id="annuler" mnemonicParsing="false" onAction="#closeWindow" text="%cancel" />
+            <Button fx:id="cancel" mnemonicParsing="false" onAction="#closeWindow" text="%cancel" />
          </buttons>
          <BorderPane.margin>
             <Insets bottom="10.0" right="20.0" />

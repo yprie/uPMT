@@ -164,7 +164,7 @@ public class MainViewController implements Initializable, Observer {
 		Schemaroot.getChildren()
 				.add(SchemaTransformations.SchemaToTreeView(main.getCurrentProject().getSchemaProjet()));
 		Interviewroot.getChildren()
-				.add(SchemaTransformations.EntretienToTreeView(main.getCurrentProject().getEntretiens()));
+				.add(SchemaTransformations.EntretienToTreeView(main, main.getCurrentProject().getEntretiens()));
 		treeViewSchema.setRoot(Schemaroot);
 		treeViewSchema.setShowRoot(false);
 		treeViewInterview.setRoot(Interviewroot);

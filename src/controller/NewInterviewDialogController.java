@@ -61,7 +61,7 @@ public class NewInterviewDialogController implements Initializable{
 
 	private @FXML Button btnChoisirFichir;
 	private @FXML Button btnValider;
-	private @FXML Button btnAnnuler;
+	private @FXML Button btncancel;
 	private @FXML Label nomFichier;
 	private @FXML Label newEntrFileName;
 	private @FXML TitledPane collapse_step1;
@@ -145,7 +145,7 @@ public class NewInterviewDialogController implements Initializable{
         }
 	}
 	
-	public void annulerClick(){
+	public void cancelClick(){
 		
 		main.showLaunchingScreen();
 		window.close();

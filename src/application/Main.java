@@ -281,7 +281,7 @@ public class Main extends Application {
 		TreeItem<TypeController> schemaRoot = new TreeItem<TypeController>();
 		TreeItem<DescriptionEntretien> interviewRoot = new TreeItem<DescriptionEntretien>();
 		schemaRoot.getChildren().add(SchemaTransformations.SchemaToTreeView(this.currentProject.getSchemaProjet()));
-		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this.currentProject.getEntretiens()));
+		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this, this.currentProject.getEntretiens()));
 		this.treeViewSchema.setRoot(schemaRoot);
 		this.treeViewInterview.setRoot(interviewRoot);
 	}

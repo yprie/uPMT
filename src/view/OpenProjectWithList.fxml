@@ -12,7 +12,7 @@
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
           <Button fx:id="btn_ouvrir" mnemonicParsing="false" onAction="#openProject" text="Ouvrir" />
-            <Button fx:id="btn_annuler" mnemonicParsing="false" onAction="#closeDialog" text="Annuler" />
+            <Button fx:id="btn_cancel" mnemonicParsing="false" onAction="#closeDialog" text="%cancel" />
         </buttons>
          <BorderPane.margin>
             <Insets right="20.0" />

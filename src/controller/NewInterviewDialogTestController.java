@@ -40,7 +40,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 
 	private @FXML Button btnChoisirFichir;
 	private @FXML Button btnValider;
-	private @FXML Button btnAnnuler;
+	private @FXML Button btncancel;
 	private @FXML Label newEntrFileName;
 	private @FXML Label extraitFile;
 	
@@ -134,7 +134,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 		return ret;
 	}
 	
-	public void annulerClick(){
+	public void cancelClick(){
 		
 		window.close();
 	}
@@ -166,7 +166,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 		if(!participantEntretien.getText().replaceAll(" ", "").equals(""))
 			de.setParticipant(participantEntretien.getText());
 		if(!commentaireEntretien.getText().replaceAll(" ", "").equals(""))
-			de.setCommentaire(commentaireEntretien.getText());
+			de.setcommentaire(commentaireEntretien.getText());
 		main.getCurrentProject().addEntretiens(de);
 		main.setCurrentDescription(de);
 		main.refreshDataTreeView();

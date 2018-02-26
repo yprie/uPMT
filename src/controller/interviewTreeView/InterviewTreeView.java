@@ -61,7 +61,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 		alert.setHeaderText("Vous allez supprimer "+interview.getNom());
 		
 		ButtonType buttonTypeOne = new ButtonType("Valider");
-		ButtonType buttonTypeCancel = new ButtonType("Annuler", ButtonData.CANCEL_CLOSE);
+		ButtonType buttonTypeCancel = new ButtonType("cancel", ButtonData.CANCEL_CLOSE);
 
 		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 

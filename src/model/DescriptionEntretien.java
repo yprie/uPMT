@@ -85,7 +85,7 @@ public class DescriptionEntretien implements Serializable, Cloneable{
 	
 	/*public DescriptionEntretien clone() {
 		DescriptionEntretien ret = new DescriptionEntretien(descripteme.clone(), new String(nom));
-		ret.setCommentaire(commentaire);
+		ret.setcommentaire(commentaire);
 		ret.setDateEntretien(dateEntretien);
 		ret.setParticipant(participant);
 		for(int i=0;i<moments.size(); i++) {
@@ -190,11 +190,11 @@ public class DescriptionEntretien implements Serializable, Cloneable{
 	public String getParticipant(){
 		return participant;
 	}
-	public void setCommentaire(String s){
+	public void setcommentaire(String s){
 		commentaire = s;
 	}
 
-	public String getCommentaire(){
+	public String getcommentaire(){
 		return commentaire;
 	}
 	public String toString(){

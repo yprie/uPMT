@@ -39,7 +39,7 @@ public class OpenProjectWithListDialogController implements Initializable{
 
 	private @FXML ListView<Projet> tousLesProjets;
 	private @FXML Button btn_ouvrir;
-	private @FXML Button btn_annuler;
+	private @FXML Button btn_cancel;
 	private LinkedList<Projet> m_projectList;
 	private Main main;
 	private Stage window;

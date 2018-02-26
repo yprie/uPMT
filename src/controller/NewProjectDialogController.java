@@ -39,7 +39,7 @@ import model.Schema;
 public class NewProjectDialogController implements Initializable{
 
 	private @FXML Button valider;
-	private @FXML Button annuler;
+	private @FXML Button cancel;
 	private @FXML ChoiceBox<Schema> choixSchema;
 	private @FXML TextField nomProjet;
 	

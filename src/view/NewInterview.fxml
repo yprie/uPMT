@@ -19,7 +19,7 @@
           <children>
              <HBox>
                 <children>
-                  <Label id="wel" text="%Welcome" textFill="#9a1111">
+                  <Label id="wel" text="%welcome" textFill="#9a1111">
                       <font>
                          <Font size="32.0" />
                       </font>
@@ -46,17 +46,17 @@
                 
                </rowConstraints>
                 <children>
-                   <Label id="particip" text="%Participants">
+                   <Label id="particip" text="%participants">
                       <font>
                          <Font size="20.0" />
                       </font>
                    </Label>
-                  <Label id="dateEnt" text="%Date" GridPane.rowIndex="1">
+                  <Label id="dateEnt" text="%date" GridPane.rowIndex="1">
                       <font>
                          <Font size="20.0" />
                       </font>
                    </Label>
-                   <Label id="nom" text="%Name(ID)" GridPane.rowIndex="2">
+                   <Label id="nom" text="%name(ID)" GridPane.rowIndex="2">
                       <font>
                          <Font size="20.0" />
                       </font>
@@ -76,12 +76,12 @@
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin></TextField>
-                   <Label id="addFile" text="%Add_fichier" GridPane.rowIndex="3">
+                   <Label id="addFile" text="%add_file" GridPane.rowIndex="3">
                       <font>
                          <Font size="20.0" />
                       </font>
                    </Label>
-                   <Label id="comm" text="%Commentaire" GridPane.rowIndex="4">
+                   <Label id="comm" text="%commentaire" GridPane.rowIndex="4">
                       <font>
                          <Font size="20.0" />
                       </font>
@@ -135,7 +135,7 @@
                   <RowConstraints maxHeight="31.5" minHeight="0.0" prefHeight="0.0" />
               </rowConstraints>
                <children>
-                   <Button id="btnAnnu" fx:id="btnAnnuler" mnemonicParsing="false" onAction="#annulerClick" prefHeight="25.0" prefWidth="120.0" text="%annuler">
+                   <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="120.0" text="%cancel">
                      <font>
                         <Font size="18.0" />
                       </font>
@@ -143,7 +143,7 @@
                          <Insets left="210.0" />
                       </GridPane.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" text="%verifier" GridPane.columnIndex="1">
+                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" text="%check" GridPane.columnIndex="1">
                       <font>
                          <Font size="18.0" />
                       </font>
