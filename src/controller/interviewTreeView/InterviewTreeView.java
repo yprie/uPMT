@@ -55,6 +55,10 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 	public void startEdit() {
 	} 
 	
+	protected Main getMain() {
+		return main;
+	}
+	
 	public void deleteInterview(DescriptionEntretien interview){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(main._langBundle.getString("delete_interview"));

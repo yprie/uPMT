@@ -137,7 +137,7 @@ public class NewInterviewDialogTestController  implements Initializable{
 		return ret;
 	}
 	
-	public void annulerClick(){
+	public void cancelClick(){
 		window.close();
 	}
 	

@@ -171,7 +171,7 @@ public class Main extends Application {
 		if(Utils.checkRecovery()) {
 			this.mainViewController.alertRecovery();
 		}
-		Utils.loadProjects(projects);
+		Utils.loadProjects(projects, this);
 	}
 	
 	/**

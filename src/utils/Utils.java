@@ -30,6 +30,7 @@ import java.util.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import application.Main;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
@@ -38,7 +39,7 @@ import model.Projet;
 
 public abstract class Utils {
 	
-	public static void loadProjects(LinkedList<Projet> projects){
+	public static void loadProjects(LinkedList<Projet> projects, Main main){
 		HashSet<String> projectNames = loadProjectsNames();
 		
 		
@@ -53,12 +54,12 @@ public abstract class Utils {
 					Projet p = Projet.loadData(s);
 					if(p==null) {
 						Alert alert = new Alert(AlertType.CONFIRMATION);
-				        alert.setTitle("Error, version conflict");
-				      //alert.setTitle(main._langBundle.getString("error_version");
-				        alert.setHeaderText("Your saves are in conflict with this new version.");
-				      //alert.setTitle(main._langBundle.getString("error_version_text_alarm");
-				        alert.setContentText("Please contact us in the github repository.");
-				      //alert.setTitle(main._langBundle.getString("error_version_text_contact");
+				        //alert.setTitle("Error, version conflict");
+						alert.setTitle(main._langBundle.getString("error_version"));
+				        //alert.setHeaderText("Your saves are in conflict with this new version.");
+						alert.setHeaderText(main._langBundle.getString("error_version_text_alarm"));
+				        //alert.setContentText("Please contact us in the github repository.");
+						alert.setContentText(main._langBundle.getString("error_version_text_contact"));
 
 				        Optional<ButtonType> result = alert.showAndWait();
 				        if (result.get() == ButtonType.OK){
