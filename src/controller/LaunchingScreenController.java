@@ -59,8 +59,14 @@ public class LaunchingScreenController implements Initializable{
 		this.window = window;
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 	          public void handle(WindowEvent we) {
-	        	  Platform.exit();
-	              System.exit(0);
+	        	  if(m_main.haveCurrentProject()) {
+	        		  System.out.println(m_main.getCurrentProject().getName());
+	        		  window.close();
+	        	  }
+	        	  else {
+		        	  Platform.exit();
+		              System.exit(0);
+	        	  }
 	          }
 	      }); 
 		

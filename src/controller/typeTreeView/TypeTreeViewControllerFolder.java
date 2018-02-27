@@ -35,14 +35,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import model.Type;
 import utils.ResourceLoader;
 import utils.UndoCollector;
 
@@ -101,25 +104,43 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	public void rename() {
 		super.rename();
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
-			 @Override
-			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-			    {
-			        if (!newPropertyValue)
-			        {
-						if(type.getType().isFolder()){
-							RenameFolderSchemeCommand cmd = new RenameFolderSchemeCommand(
-									ref, 
-									type.getType().getName(), 
-									textField.getText(),
-									main);
-							cmd.execute();
-							UndoCollector.INSTANCE.add(cmd);
-						}			        	
-						typePane.setLeft(nomType);
-						rename.setDisable(false);
-						textField.focusedProperty().removeListener(this);
+			@Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (!newPropertyValue){
+					if(type.getType().isFolder()){
+						String oldName = new String(type.getType().getName());
+						if(!oldName.equals(textField.getText())) {
+							boolean hasName = false;
+							for(Type folder : type.getParent().getTypes()) {
+								if(folder.getName().equals(textField.getText())) {
+									hasName = true;
+									break;
+								}	
+							}
+							if(!hasName) {
+								RenameFolderSchemeCommand cmd = new RenameFolderSchemeCommand(
+										ref, 
+										type.getType().getName(), 
+										textField.getText(),
+										main);
+								cmd.execute();
+								UndoCollector.INSTANCE.add(cmd);
+							}
+							else {
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle(main._langBundle.getString("invalid_name"));
+								alert.setHeaderText(null);
+								alert.setContentText(main._langBundle.getString("folder_name_invalid"));
+								alert.show();
+							}
+						}	
 			        }
+					typePane.setLeft(nomType);
+					rename.setDisable(false);
+					textField.focusedProperty().removeListener(this);
 			    }
+		    }
 		};
 		
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {

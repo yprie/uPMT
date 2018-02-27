@@ -81,24 +81,25 @@ public class NewProjectDialogController implements Initializable{
 	public void createProject(){
 		Projet p = new Projet(nomProjet.getText(), this.choixSchema.getValue());
 		p.getSchemaProjet().setName(nomProjet.getText());
-		main.getProjects().add(p);
-		main.setCurrentProject(p);
-		p.save();
+		main.setProjectInCreation(p);
+		//main.getProjects().add(p);
+		//main.setCurrentProject(p);
+		//p.save();
 		window.close();
 		launchingScreenWindow.close();
 		// in case the center was set to null because of automatic interview Creation
-		if (main.getRootLayout().getCenter() == null) {
+		/*if (main.getRootLayout().getCenter() == null) {
 			main.launchMainView();
-		}
-		main.launchMainView();
-		main.refreshDataTreeView();
-		main.needToSave();
+		}*/
+		//main.launchMainView();
+		//main.refreshDataTreeView();
+		//main.needToSave();
 		
 	}
 	
 	public void closeWindow(){
 		window.close();
-		launchingScreenWindow.close();
+		//launchingScreenWindow.close();
 	}
 
 }

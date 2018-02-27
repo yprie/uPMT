@@ -146,7 +146,6 @@ public class NewInterviewDialogController implements Initializable{
 	}
 	
 	public void cancelClick(){
-		
 		main.showLaunchingScreen();
 		window.close();
 	}

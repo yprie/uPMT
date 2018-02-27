@@ -114,13 +114,14 @@ public class Main extends Application {
 		initProjects();
 		createBasicSchema();
 		
-		if(!projects.isEmpty()){
+		/*if(!projects.isEmpty()){
 			currentProject = projects.getFirst();
 			//System.out.println(currentProject.getSchemaProjet());
 		}
 		else {
 			currentProject = new Projet("projetTMP", new Schema("SchemaTemporaire"));
-		}
+		}*/
+		currentProject = new Projet("--emptyProject--", new Schema("SchemaTemporaire"));
 		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
@@ -222,8 +223,10 @@ public class Main extends Application {
 			promptWindow.showAndWait();
 			
 			// if project empty -> launch interview creation
-			if(this.getCurrentProject().getEntretiens().isEmpty()){
-				rootLayout.setCenter(null);
+			//if(this.getCurrentProject().getEntretiens().isEmpty()){
+			//if(this.getCurrentProject()==null){
+			if(this.getProjectInCreation()!=null) {
+				//rootLayout.setCenter(null);
 				this.getRootLayoutController().newInterview();
 			}
 		} catch (IOException e) {
@@ -285,7 +288,18 @@ public class Main extends Application {
 		this.treeViewSchema.setRoot(schemaRoot);
 		this.treeViewInterview.setRoot(interviewRoot);
 	}
-	
+	private Projet projetInCreation=null;
+    public void setProjectInCreation(Projet p) {
+    	projetInCreation = p;
+    }
+    public Projet getProjectInCreation() {
+    	return this.projetInCreation;
+    }
+    
+    public boolean haveCurrentProject() {
+    	return !currentProject.getName().equals("--emptyProject--");
+    }
+    
     /**
      * Method used to change the current moment
      * also updates the inspector
@@ -441,6 +455,12 @@ public class Main extends Application {
 	
 	public void setCurrentProject(Projet current){
 		currentProject = current;
+		if(currentProject!=null) {
+			System.out.println("SET ! : "+this.currentProject.getName());
+		}
+		else {
+			System.out.println("SET ! : null");
+		}
 	}
 	
 	public Schema getDefaultSchema(){

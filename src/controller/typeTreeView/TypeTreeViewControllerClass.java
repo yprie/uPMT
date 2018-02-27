@@ -22,6 +22,7 @@ package controller.typeTreeView;
 
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,9 +45,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -120,13 +123,31 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			        {
 			        	if(type.getType().isClass()){
 							String oldName = new String(type.getType().getName());
-							RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
-									type.getClassNameController(), 
-									oldName, 
-									textField.getText(),
-									main);
-							cmd.execute();
-							UndoCollector.INSTANCE.add(cmd);
+							if(!oldName.equals(textField.getText())) {
+								boolean hasName = false;
+								for(Type classe : type.getParent().getTypes()) {
+									if(classe.getName().equals(textField.getText())) {
+										hasName = true;
+										break;
+									}	
+								}
+								if(!hasName) {
+									RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
+											type.getClassNameController(), 
+											oldName, 
+											textField.getText(),
+											main);
+									cmd.execute();
+									UndoCollector.INSTANCE.add(cmd);
+								}
+								else {
+									Alert alert = new Alert(AlertType.INFORMATION);
+									alert.setTitle(main._langBundle.getString("invalid_name"));
+									alert.setHeaderText(null);
+									alert.setContentText(main._langBundle.getString("class_name_invalid"));
+									alert.show();
+								}
+							}
 						}		        	
 						typePane.setLeft(nomType);
 						rename.setDisable(false);

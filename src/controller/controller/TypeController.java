@@ -64,6 +64,10 @@ public class TypeController {
 	public Type getType() {
 		return type;
 	}
+	
+	public Type getParent() {
+		return parent;
+	}
 
 	public void setType(Type type) {
 		this.type = type;

@@ -22,12 +22,14 @@ package controller.typeTreeView;
 
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import application.Main;
 import controller.command.RemovePropertyFromClassCommand;
+import controller.command.RenameClassSchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
 import controller.controller.Observable;
 import controller.controller.Observer;
@@ -41,9 +43,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -94,25 +98,43 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		super.rename();
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override
-			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-			    {
-			        if (!newPropertyValue)
-			        {
-						if(type.getType().isProperty()){
-							String oldName = new String(type.getType().getName());
-							RenamePropertySchemeCommand cmd = new RenamePropertySchemeCommand(
-									type.getRenamePropertyController(), 
-									oldName, 
-									textField.getText(),
-									main);
-							cmd.execute();
-							UndoCollector.INSTANCE.add(cmd);
-						}			        	
-						typePane.setLeft(nomType);
-						rename.setDisable(false);
-						textField.focusedProperty().removeListener(this);
-			        }
-			    }
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
+		    {
+		        if (!newPropertyValue){
+					if(type.getType().isProperty()){
+						String oldName = new String(type.getType().getName());
+						if(!oldName.equals(textField.getText())) {
+							boolean hasName = false;
+							for(Type propriete : type.getParent().getTypes()) {
+								if(propriete.getName().equals(textField.getText())) {
+									hasName = true;
+									break;
+								}
+							}	
+						
+							if(!hasName) {
+								RenamePropertySchemeCommand cmd = new RenamePropertySchemeCommand(
+										type.getRenamePropertyController(), 
+										oldName, 
+										textField.getText(),
+										main);
+								cmd.execute();
+								UndoCollector.INSTANCE.add(cmd);
+							}
+							else {
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle(main._langBundle.getString("invalid_name"));
+								alert.setHeaderText(null);
+								alert.setContentText(main._langBundle.getString("properties_name_invalid"));
+								alert.show();
+							}
+						}
+					}
+					typePane.setLeft(nomType);
+					rename.setDisable(false);
+					textField.focusedProperty().removeListener(this);
+				}	
+		    }
 		};
 		
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {

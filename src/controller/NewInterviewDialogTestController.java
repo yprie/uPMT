@@ -168,6 +168,15 @@ public class NewInterviewDialogTestController  implements Initializable{
 			de.setParticipant(participantEntretien.getText());
 		if(!commentaireEntretien.getText().replaceAll(" ", "").equals(""))
 			de.setcommentaire(commentaireEntretien.getText());
+		
+		if(main.getProjectInCreation()!=null) {
+			main.getProjects().add(main.getProjectInCreation());
+			main.setCurrentProject(main.getProjectInCreation());
+			main.getCurrentProject().save();
+			main.setProjectInCreation(null);
+			main.launchMainView();
+		}
+		
 		main.getCurrentProject().addEntretiens(de);
 		main.setCurrentDescription(de);
 		main.refreshDataTreeView();

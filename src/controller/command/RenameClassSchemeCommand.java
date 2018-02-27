@@ -63,30 +63,8 @@ public class RenameClassSchemeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		boolean hasName = false;
-		LinkedList<Type> folders = main.getCurrentProject().getSchemaProjet().getTypes();
-		for(Type folder : folders) {
-			for(Type classe : folder.getTypes()) {
-				if(classe.getName().equals(newName)) {
-					hasName = true;
-					break;
-				}
-				if(hasName) break;
-			}	
-		}
-		if(!hasName) {
-			observable.update(newName);
-			main.needToSave();
-		}
-		else {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			//alert.setTitle("Invalid name");
-			alert.setTitle(main._langBundle.getString("invalid_name"));
-			alert.setHeaderText(null);
-			//alert.setContentText("Properties from the same class cannot have the same name");
-			alert.setContentText(main._langBundle.getString("properties_name_invalid"));
-			alert.show();
-		}
+		observable.update(newName);
+		main.needToSave();
 	}
 
 	@Override
