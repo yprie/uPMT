@@ -164,7 +164,7 @@ public class RootLayoutController implements Initializable{
             //loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));
 			loader.setLocation(getClass().getResource("/view/NewInterview.fxml"));
             //loader.setController(new NewInterviewDialogController(main,promptWindow));
-			loader.setController(new NewInterviewDialogTestController(main,promptWindow));
+			loader.setController(new NewInterviewDialogController(main,promptWindow));
             loader.setResources(main._langBundle);
             
             //BorderPane layout = (BorderPane) loader.load();
