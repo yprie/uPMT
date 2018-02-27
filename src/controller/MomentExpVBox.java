@@ -248,16 +248,16 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         });
         MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
         menu3.setDisable(true);
-        menuTime = new MenuItem("Edit Time ('"+moment.getDateString()+"')");
+        menuTime = new MenuItem(main._langBundle.getString("edit_time") + " ('"+moment.getDateString()+"')");
         menuTime.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				ButtonType edit = new ButtonType("Edit", ButtonData.OK_DONE);
-				ButtonType close = new ButtonType("Close", ButtonData.CANCEL_CLOSE);
+				ButtonType edit = new ButtonType(main._langBundle.getString("edit"), ButtonData.OK_DONE);
+				ButtonType close = new ButtonType(main._langBundle.getString("close"), ButtonData.CANCEL_CLOSE);
 				Dialog dialog = new TextInputDialog(moment.getDateString());
 				dialog.getDialogPane().getButtonTypes().clear();
 				dialog.getDialogPane().getButtonTypes().addAll(edit, close);
-				dialog.setTitle("Time");
+				dialog.setTitle(main._langBundle.getString("time"));
 				dialog.setHeaderText(main._langBundle.getString("time_alert") + " " + moment.getNom() + " " + main._langBundle.getString("is") + " " + moment.getDateString());
 				dialog.initModality(Modality.APPLICATION_MODAL);
 				Optional<String> result = dialog.showAndWait();
