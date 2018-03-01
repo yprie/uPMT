@@ -125,7 +125,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 							String oldName = new String(type.getType().getName());
 							if(!oldName.equals(textField.getText())) {
 								boolean hasName = false;
+								System.out.println("Moi: "+type.getType().getName());
+								System.out.println("Parent: "+type.getParent().getName());
 								for(Type classe : type.getParent().getTypes()) {
+									System.out.println("Classes: "+classe.getName());
 									if(classe.getName().equals(textField.getText())) {
 										hasName = true;
 										break;
