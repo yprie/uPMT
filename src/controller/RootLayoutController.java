@@ -103,24 +103,24 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void aboutUs(){
 		Stage helpWindow = new Stage(StageStyle.UTILITY);
-		helpWindow.setTitle(main._langBundle.getString("help"));
+		helpWindow.setTitle(main._langBundle.getString("about_us"));
 		helpWindow.setResizable(false);
 		//helpWindow.setAlwaysOnTop(true);
 		helpWindow.initModality(Modality.APPLICATION_MODAL);
 		//helpWindow.setWidth(610);  
-		//helpWindow.setHeight(350);    
+		//helpWindow.setHeight(350);
  
 		try {
 			FXMLLoader loader = new FXMLLoader();
+			
             loader.setLocation(getClass().getResource("/view/HelpView.fxml"));
+            loader.setController(new HelpController(main, helpWindow));
+            
 //          loader.setController(new HelpController(main, helpWindow, this.document));
             loader.setResources(main._langBundle);
             AnchorPane layout = (AnchorPane) loader.load();
             Scene sc = new Scene(layout);
 			helpWindow.setScene(sc);
-			
-            loader.setController(new HelpController(main, helpWindow));
-            helpWindow.showAndWait();
 			
 			
 		} catch (IOException e) {

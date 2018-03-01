@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 public class HelpController implements Initializable{
 
 	private @FXML TextArea document;
+	private @FXML Button buttonCloseHelp;
 
 	private Main main;
 	private Stage window;
@@ -48,6 +50,7 @@ public class HelpController implements Initializable{
 
 //		this.document.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
 //		this.document.setEditable(false);
+		buttonCloseHelp.setText(main._langBundle.getString("close"));
 		window.show();
 
 	}
@@ -55,6 +58,12 @@ public class HelpController implements Initializable{
 	public TextArea getDocument() {
 		return document;
 	}
+	
+	@FXML
+    private void closeAbout() {
+       window.close();
+    };
+
 
 
 	public void setDocument(TextArea document) {
