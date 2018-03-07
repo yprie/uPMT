@@ -204,8 +204,8 @@ public abstract class MainViewTransformations {
 		    }
 		});
 	}
-	
-	
+	 
+
 	/*
 	 * Listener du panel qu'il y a entre plusieurs moment
 	 * */
@@ -266,6 +266,10 @@ public abstract class MainViewTransformations {
 		p.setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	p.onDragExited();
+		    	if (main.getCurrentDescription().getNumberOfMoments() == 0) {
+					
+					p.emptyProjectPane();
+				}
 		    	//int pos = main.getGrid().getColumnIndex(p)/2;
 		    	int pos = p.getCol();
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
@@ -311,6 +315,10 @@ public abstract class MainViewTransformations {
 			@Override
 			public void handle(DragEvent arg0) {
 				p.onDragExited();
+				if (main.getCurrentDescription().getNumberOfMoments() == 0) {
+					
+					p.emptyProjectPane();
+				}
 			}
 			
 		});
@@ -420,6 +428,7 @@ public abstract class MainViewTransformations {
 		grid.getColumnConstraints().clear();
 		// Grid Creation
 		// for each moment of the interview we add a collumn
+	
 		for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute deux colonnes, "+d.getNumberOfMoments());
 				ColumnConstraints c = new ColumnConstraints();
@@ -495,6 +504,10 @@ public abstract class MainViewTransformations {
 		//p.setStyle("-fx-background-color:black;");
 		addPaneOnDragListener(p, main);
 		grid.add(p,d.getNumberOfMoments()*2,0);
+
+		if (d.getNumberOfMoments() == 0) {
+			p.emptyProjectPane();
+		}
 	}
 	
 	

@@ -26,7 +26,7 @@ public class DropPane extends StackPane{
 		mPane=new Pane();
 		mTextContainer= new BorderPane();
 		mText=new Text();
-		mText.setText("Add a moment here");
+		mText.setText(main._langBundle.getString("add_moment_here"));
 		mText.setStyle("-fx-fill:white;");
 		mText.setTextAlignment(TextAlignment.CENTER);
 		mTextContainer.setCenter(mText);
@@ -97,6 +97,17 @@ public class DropPane extends StackPane{
 		//this.setHeight(size);
 	}
 	
+	public void emptyProjectPane() {
+		this.getChildren().clear();
+		mText.setText(main._langBundle.getString("add_moment_here_empty_project"));
+		this.getChildren().addAll(mPane,mTextContainer);
+		mPane.setStyle(
+				"-fx-background-color:black;"
+			+ 	"-fx-opacity:0.6;"
+			+ 	"-fx-background-radius: 10;");
+
+		this.setPaneWidth(DRAGGEDPANELSIZE);
+	}
 	
 	public MomentExpVBox getMomentParent() {
 		return parent;
@@ -109,4 +120,6 @@ public class DropPane extends StackPane{
 	public boolean hasMomentParent() {
 		return (parent!=null);
 	}
+	
+	
 }
