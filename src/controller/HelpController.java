@@ -34,7 +34,7 @@ public class HelpController implements Initializable{
 
 
 	public HelpController(Main main, Stage window) {
-		super();
+		//super();
 		this.main = main;
 		this.window = window;
 //		Text t = new Text();
@@ -51,7 +51,7 @@ public class HelpController implements Initializable{
 //		this.document.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
 //		this.document.setEditable(false);
 		buttonCloseHelp.setText(main._langBundle.getString("close"));
-		window.show();
+		//window.show();
 
 	}
 	
