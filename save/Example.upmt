@@ -1,0 +1,431 @@
+{
+  "nom": "Example",
+  "schemaProjet": {
+    "types": [
+      {
+        "type": "model.Dossier",
+        "data": {
+          "types": [
+            {
+              "type": "model.Classe",
+              "data": {
+                "types": [
+                  {
+                    "type": "model.Propriete",
+                    "data": {
+                      "types": [],
+                      "description": "",
+                      "couleur": "#000000",
+                      "nom": "density"
+                    }
+                  },
+                  {
+                    "type": "model.Propriete",
+                    "data": {
+                      "types": [],
+                      "description": "",
+                      "couleur": "#000000",
+                      "nom": "temperature"
+                    }
+                  },
+                  {
+                    "type": "model.Propriete",
+                    "data": {
+                      "types": [],
+                      "description": "",
+                      "couleur": "#000000",
+                      "nom": "shape"
+                    }
+                  },
+                  {
+                    "type": "model.Propriete",
+                    "data": {
+                      "types": [],
+                      "description": "",
+                      "couleur": "#000000",
+                      "nom": "location"
+                    }
+                  }
+                ],
+                "description": "",
+                "couleur": "#FFE666",
+                "nom": "Bodily feeling"
+              }
+            },
+            {
+              "type": "model.Classe",
+              "data": {
+                "types": [],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "Classe 2"
+              }
+            },
+            {
+              "type": "model.Classe",
+              "data": {
+                "types": [],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "Classe 3"
+              }
+            },
+            {
+              "type": "model.Classe",
+              "data": {
+                "types": [
+                  {
+                    "type": "model.Propriete",
+                    "data": {
+                      "types": [],
+                      "description": "",
+                      "couleur": "#000000",
+                      "nom": "type"
+                    }
+                  }
+                ],
+                "description": "",
+                "couleur": "#E699B3",
+                "nom": "Emotion"
+              }
+            },
+            {
+              "type": "model.Dossier",
+              "data": {
+                "types": [
+                  {
+                    "type": "model.Classe",
+                    "data": {
+                      "types": [
+                        {
+                          "type": "model.Propriete",
+                          "data": {
+                            "types": [],
+                            "description": "",
+                            "couleur": "#000000",
+                            "nom": "source"
+                          }
+                        },
+                        {
+                          "type": "model.Propriete",
+                          "data": {
+                            "types": [],
+                            "description": "",
+                            "couleur": "#000000",
+                            "nom": "location"
+                          }
+                        }
+                      ],
+                      "description": "",
+                      "couleur": "#80B380",
+                      "nom": "Auditory sensation"
+                    }
+                  }
+                ],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "Sensation"
+              }
+            }
+          ],
+          "description": "",
+          "couleur": "#000000",
+          "nom": "General"
+        }
+      }
+    ],
+    "description": "",
+    "couleur": "#000000",
+    "nom": "Example"
+  },
+  "entretiens": [
+    {
+      "descripteme": {
+        "texte": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.\n"
+      },
+      "moments": [
+        {
+          "date": "Jan 1, 1970 12:00:00 AM",
+          "nom": "April morning",
+          "morceauDescripteme": "It was in Puiseaux one April morning, last spring.",
+          "types": [],
+          "enregistrements": [],
+          "sousMoments": [
+            {
+              "date": "Jan 1, 1970 12:00:00 AM",
+              "nom": "Tightening phase",
+              "morceauDescripteme": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest.",
+              "types": [
+                {
+                  "type": "model.Classe",
+                  "data": {
+                    "types": [
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "sadness",
+                          "extract": {
+                            "texte": "sad"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "type"
+                        }
+                      }
+                    ],
+                    "description": "",
+                    "couleur": "#E699B3",
+                    "nom": "Emotion"
+                  }
+                },
+                {
+                  "type": "model.Classe",
+                  "data": {
+                    "types": [
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "compact",
+                          "extract": {
+                            "texte": "tight"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "density"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "cold",
+                          "extract": {
+                            "texte": "frozen"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "temperature"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "ball",
+                          "extract": {
+                            "texte": "ball"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "shape"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "chest",
+                          "extract": {
+                            "texte": "in the middle of my chest"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "location"
+                        }
+                      }
+                    ],
+                    "description": "",
+                    "couleur": "#FFE666",
+                    "nom": "Bodily feeling"
+                  }
+                }
+              ],
+              "enregistrements": [],
+              "sousMoments": [],
+              "parentMomentID": 1763325,
+              "parentCol": 0,
+              "gridCol": 0,
+              "couleur": "#D3D3D3",
+              "currentProperty": {
+                "valeur": "chest",
+                "extract": {
+                  "texte": "in the middle of my chest"
+                },
+                "types": [],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "location"
+              },
+              "id": 2567451,
+              "row": 1
+            },
+            {
+              "date": "Jan 1, 1970 12:00:00 AM",
+              "nom": "Transitional event",
+              "morceauDescripteme": "At one point, the song of a turtle-dove comes through the open window.",
+              "types": [
+                {
+                  "type": "model.Classe",
+                  "data": {
+                    "types": [
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "turtle-dove",
+                          "extract": {
+                            "texte": "the song of a turtle-dove"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "source"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "outside",
+                          "extract": {
+                            "texte": "comes through the open window"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "location"
+                        }
+                      }
+                    ],
+                    "description": "",
+                    "couleur": "#80B380",
+                    "nom": "Auditory sensation"
+                  }
+                }
+              ],
+              "enregistrements": [],
+              "sousMoments": [],
+              "parentMomentID": 1763325,
+              "parentCol": 0,
+              "gridCol": 1,
+              "couleur": "#83CDF7",
+              "currentProperty": {
+                "valeur": "outside",
+                "extract": {
+                  "texte": "comes through the open window"
+                },
+                "types": [],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "location"
+              },
+              "id": 8724382,
+              "row": 1
+            },
+            {
+              "date": "Jan 1, 1970 12:00:00 AM",
+              "nom": "Loosening phase",
+              "morceauDescripteme": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.",
+              "types": [
+                {
+                  "type": "model.Classe",
+                  "data": {
+                    "types": [
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "fluid",
+                          "extract": {
+                            "texte": "melt, to dilute"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "density"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "warm",
+                          "extract": {
+                            "texte": "heat"
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "temperature"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "undefined",
+                          "extract": {
+                            "texte": ""
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "shape"
+                        }
+                      },
+                      {
+                        "type": "model.Propriete",
+                        "data": {
+                          "valeur": "body",
+                          "extract": {
+                            "texte": "body."
+                          },
+                          "types": [],
+                          "description": "",
+                          "couleur": "#000000",
+                          "nom": "location"
+                        }
+                      }
+                    ],
+                    "description": "",
+                    "couleur": "#FFE666",
+                    "nom": "Bodily feeling"
+                  }
+                }
+              ],
+              "enregistrements": [],
+              "sousMoments": [],
+              "parentMomentID": 1763325,
+              "parentCol": 0,
+              "gridCol": 2,
+              "couleur": "#FF2F2F",
+              "currentProperty": {
+                "valeur": "body",
+                "extract": {
+                  "texte": "body."
+                },
+                "types": [],
+                "description": "",
+                "couleur": "#000000",
+                "nom": "location"
+              },
+              "id": 6595994,
+              "row": 1
+            }
+          ],
+          "parentMomentID": -1,
+          "parentCol": 0,
+          "gridCol": 0,
+          "couleur": "#F49BF7",
+          "id": 1763325,
+          "row": 0
+        }
+      ],
+      "dateEntretien": {
+        "year": 2017,
+        "month": 4,
+        "day": 4
+      },
+      "participant": "Participant",
+      "commentaire": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
+      "nom": "Participant_2017-04-04"
+    }
+  ]
+}
