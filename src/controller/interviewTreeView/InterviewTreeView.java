@@ -110,8 +110,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
-			
-			if (desc.getNom() == "Entretiens") {
+			if (desc.getNom().equals("Interviews")) {
 				try {
 			    	FXMLLoader loader = new FXMLLoader();
 			        loader.setLocation(getClass().getResource("/view/RootEntretienTreeView.fxml"));

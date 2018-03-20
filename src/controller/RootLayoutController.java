@@ -121,7 +121,7 @@ public class RootLayoutController implements Initializable{
             AnchorPane layout = (AnchorPane) loader.load();
             Scene sc = new Scene(layout);
 			helpWindow.setScene(sc);
-			
+			helpWindow.showAndWait();
 			
 		} catch (IOException e) {
 			// TODO Exit Program
