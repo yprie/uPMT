@@ -40,13 +40,7 @@ public class Propriete extends Type implements Serializable, Cloneable{
 		ret.setDescriptemeTxt(extract.getTexte());
 		return ret;
 	}*/
-	
-	public Object clone() {
-		Propriete ret = null;
-	    ret = (Propriete) super.clone();
-	    ret.extract = (Descripteme) extract.clone();
-	    return ret;
-	}
+
 	
 	public Propriete(String nom) {
 		super(nom);

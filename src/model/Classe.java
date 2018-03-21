@@ -30,24 +30,13 @@ public class Classe extends Type implements Serializable, Cloneable {
 		super(nom);
 	}
 	
-
-	
-	/*public Classe clone() {
-		Classe ret = new Classe(new String(nom));
-		ret.setDescription(description);
-		ret.setCouleur(couleur);
-		LinkedList<Type> retTypes = new LinkedList<Type>();
-		for(int i=0;i<types.size();i++) {
-			ret.addType(types.get(i).clone());
+	public Classe clone(){
+		Classe newc = new Classe(this.getName());
+		newc.setCouleur(this.getCouleur());
+		for(Type t : this.getTypes()){
+			newc.addType(new Propriete(t.getName()));
 		}
-		//ret.setDescriptemeTxt(new String(extract.getTexte()));
-		return ret;
-	}*/
-	
-	public Object clone() {
-	    Classe classe = null;
-	    classe = (Classe) super.clone();
-	    return classe;
+		return newc;
 	}
 	
 	@Override

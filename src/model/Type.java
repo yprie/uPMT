@@ -36,22 +36,7 @@ public abstract class Type implements Serializable, Cloneable{
 	
 
 	
-	
-	public Object clone() {
-		Type t = null;
-	    try {
-	    	// On récupère l'instance à renvoyer par l'appel de la 
-	      	// méthode super.clone()
-	    	t = (Type) super.clone();
-	    } catch(CloneNotSupportedException cnse) {
-	      	// Ne devrait jamais arriver car nous implémentons 
-	      	// l'interface Cloneable
-	      	cnse.printStackTrace(System.err);
-	    }
-	    t.types = (LinkedList<Type>) types.clone();
-	    // on renvoie le clone
-	    return t;
-	}
+
 	
 	public Type(String nom) {
 		super();

@@ -182,7 +182,7 @@ public abstract class MainViewTransformations {
 					String print = "row: "+moment.getMoment().getRow()+"; column: "+moment.getMoment().getGridCol()+"; parent: balek";
 					/*if(moment.hasParent()) print+=moment.getMoment().getParent(main).getNom();
 					else print+=" null";*/
-					System.out.println(print);
+					//System.out.println(print);
 				}
 				
 			}

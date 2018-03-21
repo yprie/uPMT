@@ -20,7 +20,6 @@
 
 package controller;
 
-import java.awt.ScrollPane;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
@@ -73,6 +72,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
@@ -88,7 +88,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -122,6 +125,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private @FXML Button hasExtractImage;
 	private Tooltip extractTooltip;
 	private @FXML MenuButton momentMenuAction;
+	private @FXML ScrollPane scrollTypesPane;
 	
 	//Controllers
 	private MomentNameController nameController;
@@ -359,13 +363,18 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 	}
 	
+	private String cssShadow="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); ";
+	
 	public void setColor(String col){
 		String styleLabel = "-fx-background-color: "+col+"; ";
 		if(Main.activateBetaDesign)
-			styleLabel+= 		"-fx-border-color: transparent;";
+			styleLabel+= 		"-fx-border-color: "+col+"; ";
 		else
 			styleLabel+= 		"-fx-border-color: black;";
-		this.borderPaneLabel.setStyle(styleLabel);
+		//this.borderPaneLabel.setStyle(cssShadow+styleLabel);
+		this.scrollTypesPane.setStyle(styleLabel);
+		this.setBorderColor(col);
+		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 	}
 	
 	public void showExtractIcon(String tooltip){
@@ -472,6 +481,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		for(Node n : typeSpace.getChildren()){
 			TypeClassRepresentationController tcr = (TypeClassRepresentationController) n;
 			if(tcr.getClasse().equals(item)){
+				System.out.println("lol");
 				return tcr;
 			}
 		}
@@ -537,7 +547,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		if(obs.getClass().equals(MomentColorController.class)) {
 			this.setColor((String) value);
-			label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			//System.out.println("Changement détecté !");
@@ -576,7 +585,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void setBorderColor(String couleur) {
-		if(Main.activateBetaDesign && couleur == "black") couleur = "transparent";
+		if(Main.activateBetaDesign && couleur == "black") couleur = moment.getCouleur();
 		momentPane.setStyle("-fx-border-color : "+couleur);
 		String styleLabel = "-fx-background-color: "+moment.getCouleur()+"; -fx-border-color:"+couleur +";";
 		this.borderPaneLabel.setStyle(styleLabel);

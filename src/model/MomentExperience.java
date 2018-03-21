@@ -37,7 +37,7 @@ import utils.MainViewTransformations;
 
 public class MomentExperience implements Serializable, Cloneable {
 
-	private Date date = new Date();
+	private Date date;
 	private String duree;
 	private String nom;
 	private String morceauDescripteme;
@@ -47,7 +47,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	private int parentMomentID=-1;
 	private int parentCol=-1;
 	private int gridCol;
-	private String couleur = "#D3D3D3";
+	private String couleur = "#FFFFFF";
 	private Propriete currentProperty =null;
 	private int id;
 	private int row;
@@ -103,6 +103,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.nom = nom;
 		this.row = row;
 		this.gridCol = col;
+		this.date = new Date();
 		try {
 			this.date = this.formater.parse("00:00:00");
 		} catch (ParseException e) {

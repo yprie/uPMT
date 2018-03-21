@@ -48,7 +48,8 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 	
 	@Override
 	public void undo() {
-		property.getPropertyController().getChangePropertyValueController().update(oldName);
+		//property.getPropertyController().getChangePropertyValueController().update(oldName);
+		property.setValue(oldName);
 		main.needToSave();
 	}
 
@@ -64,7 +65,9 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		property.getPropertyController().getChangePropertyValueController().update(newName);
+		//System.out.println(property.getProperty().getName()+" - "+property.getProperty().getValeur());
+		//property.getPropertyController().getChangePropertyValueController().update(newName);
+		property.setValue(newName);
 		main.needToSave();
 	}
 

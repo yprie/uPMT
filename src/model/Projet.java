@@ -55,6 +55,7 @@ public class Projet implements Serializable {
 	public static final String PATH = "./save/";
 	public static final String RECOVERY = "recovery_";
 	
+	private int SAVE_VERSION=1;
 	private String nom;
 	private Schema schemaProjet;
 	private LinkedList<DescriptionEntretien> entretiens;
@@ -228,5 +229,8 @@ public class Projet implements Serializable {
 		this.entretiens = entretiens;
 	}
 
+	public int getVersion() {
+		return this.SAVE_VERSION;
+	}
 	
 }

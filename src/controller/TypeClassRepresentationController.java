@@ -137,7 +137,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		if(!classe.getTypes().isEmpty()){
 			for(Type p : classe.getTypes()){
 				Propriete prop = (Propriete)p;
-				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop, treeClassTreeItem, main);
+				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main);
 				this.properties.getChildren().add(controller);
 			}
 		}
@@ -182,7 +182,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 
 	public void addProperty(Propriete p) {
 		this.classe.getTypes().add(p);
-		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, treeClassTreeItem, main);
+		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, moment, treeClassTreeItem, main);
 		this.properties.getChildren().add(controller);
 	}
 

@@ -40,11 +40,5 @@ public class Schema extends Type implements Serializable, Cloneable{
 		//ret.setDescriptemeTxt(new String(extract.getTexte()));
 		return ret;
 	}*/
-	
-	public Schema clone() {
-		Schema ret = null;
-	    ret = (Schema) super.clone();
-	    return ret;
-	}
-	
+
 }

@@ -41,10 +41,5 @@ public class Dossier extends Type implements Serializable, Cloneable{
 		return ret;
 	}*/
 	
-	public Object clone() {
-		Dossier ret = null;
-	    ret = (Dossier) super.clone();
-	    return ret;
-	}
 
 }

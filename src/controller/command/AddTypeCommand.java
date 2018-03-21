@@ -34,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import model.Classe;
+import model.Dossier;
 import model.Propriete;
 import model.Type;
 import utils.MainViewTransformations;
@@ -55,7 +56,7 @@ public class AddTypeCommand implements Command,Undoable{
 		this.momentExpBorder = moment;
 		this.main = main;
 
-		for(Type t : main.getCurrentProject().getSchemaProjet().getTypes()){
+		/*for(Type t : main.getCurrentProject().getSchemaProjet().getTypes()){
 			if(t.getName().equals(typeName)){
 				type = (Classe) t;
 			}
@@ -63,8 +64,19 @@ public class AddTypeCommand implements Command,Undoable{
 				setClassByName(t);
 			}
 		}
-		setClassByName(main.getCurrentProject().getSchemaProjet());
-		dup = duplicate(type);
+		setClassByName(main.getCurrentProject().getSchemaProjet());*/
+		
+		for(Type dossier : main.getCurrentProject().getSchemaProjet().getTypes()) {
+			for(Type classe : dossier.getTypes()) {
+				if(classe.getName().equals(typeName)) {
+					type = (Classe) classe;
+					break;
+				}
+			}
+			if(type!=null)break;
+		}
+		
+		dup = type.clone();
 	}
 	
 	private void setClassByName(Type type){
@@ -96,18 +108,10 @@ public class AddTypeCommand implements Command,Undoable{
 		return "addType";
 	}
 	
-	private Classe duplicate(Classe c){
-		Classe newc = new Classe(c.getName());
-		newc.setCouleur(c.getCouleur());
-		for(Type t : c.getTypes()){
-			newc.addType(new Propriete(t.getName()));
-		}
-		return newc;
-	}
 
 	@Override
 	public void execute() {
-
+		System.out.println(momentExpBorder.getMoment().getNom());
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
 		main.needToSave();
 	}

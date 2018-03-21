@@ -74,13 +74,16 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	private Propriete property;
 	private TreeItem<TypeController> propertyTypeTreeItem;
 	
+	private MomentExpVBox momentBox;
+	
 	private TypeController propertyController;
 	
 	private Tooltip extractTooltip;
 	
 	private PropertyExtractController propertyExtractController;
 	
-	public TypePropertyRepresentation(Propriete t,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
+	public TypePropertyRepresentation(Propriete t, MomentExpVBox m,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
+		momentBox = m;
 		this.property = t;
 		this.propertyTypeTreeItem = propertyTypeTreeItem;
 		this.main = main;
@@ -241,6 +244,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 
 			@Override
 			public void handle(MouseEvent arg0) {
+				
 				if(arg0.getClickCount() == 2){
 					TextField t = new TextField(propertyValue.getText());
 					t.setMaxWidth(70);
