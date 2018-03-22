@@ -23,61 +23,48 @@ package model;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Propriete extends Type implements Serializable, Cloneable{
+public class Property extends Type implements Serializable, Cloneable{
 	
-	private String valeur;
-	private Descripteme extract;
-
-
-	/*public Propriete clone() {
-		Propriete ret = new Propriete(nom);
-		ret.setDescription(description);
-		ret.setCouleur(couleur);
-		LinkedList<Type> retTypes = new LinkedList<Type>();
-		for(int i=0;i<types.size();i++) {
-			ret.addType(types.get(i).clone());
-		}
-		ret.setDescriptemeTxt(extract.getTexte());
-		return ret;
-	}*/
+	private String mValue;
+	private Descripteme mExtract;
 
 	
-	public Propriete(String nom) {
+	public Property(String nom) {
 		super(nom);
 	}
 	
-	public void setValeur(String valeur){
-		this.valeur = valeur;
+	public void setValue(String valeur){
+		this.mValue = valeur;
 	}
 	
-	public String getValeur(){
-		return this.valeur;
+	public String getValue(){
+		return this.mValue;
 	}
 	
-	public Descripteme getDescripteme(){
-		if(extract==null) {
-			extract= new Descripteme("");
+	public Descripteme getExtract(){
+		if(mExtract==null) {
+			mExtract= new Descripteme("");
 		}
-		return this.extract;
+		return this.mExtract;
 	}
 	
-	public void setDescriptemeTxt(String texte){
-		if(extract==null) {
-			extract= new Descripteme(texte);
+	public void setExtract(String texte){
+		if(mExtract==null) {
+			mExtract= new Descripteme(texte);
 		}
 		else
-			this.extract.setTexte(texte);
+			this.mExtract.setTexte(texte);
 	}
 	
 	@Override
 	public String toString(){
-		return this.nom + " : " + this.valeur;
+		return this.mName + " : " + this.mValue;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		try {
-			Propriete other = (Propriete) obj;
+			Property other = (Property) obj;
 			if(other.getName().equals(this.getName())) return true;
 			else return false;
 		}catch(Exception e) {return false;}

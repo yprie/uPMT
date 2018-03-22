@@ -28,9 +28,9 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import model.MomentExperience;
-import model.Propriete;
+import model.Property;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
@@ -39,8 +39,8 @@ public class MoveMomentCommand implements Command,Undoable{
 	private MomentExperience moment;
 	private int toCol;
 	private Main main;
-	private DescriptionEntretien dataBefore;
-	private DescriptionEntretien dataAfter;
+	private DescriptionInterview dataBefore;
+	private DescriptionInterview dataAfter;
 	private int indexInterview;
 	
 	public MoveMomentCommand(MomentExperience moment, int toCol, Main main){
@@ -54,10 +54,10 @@ public class MoveMomentCommand implements Command,Undoable{
 	public void undo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataBefore.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataBefore.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -66,10 +66,10 @@ public class MoveMomentCommand implements Command,Undoable{
 	public void redo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataAfter.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataAfter.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -82,7 +82,7 @@ public class MoveMomentCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		try {
-			dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+			dataBefore = (DescriptionInterview)main.getCurrentDescription().clone();
 			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 
 			if(!moment.hasParent() && moment.getGridCol()<toCol) toCol--;
@@ -92,7 +92,7 @@ public class MoveMomentCommand implements Command,Undoable{
 			
 			MainViewTransformations.updateGrid(main);
 		    main.needToSave();
-		    dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+		    dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 		}catch(Exception e) {e.printStackTrace();}
 	}
 	

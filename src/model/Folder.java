@@ -1,5 +1,5 @@
 /*****************************************************************************
- * EnregistrementVideo.java
+ * Dossier.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -21,16 +21,12 @@
 package model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
-public class EnregistrementVideo extends Enregistrement implements Serializable, Cloneable{
-	
-	public EnregistrementVideo(String link){
-		this.link = link;
+public class Folder extends Type implements Serializable, Cloneable{
+
+	public Folder(String nom) {
+		super(nom);
 	}
-	
-	public Object clone() {
-		EnregistrementVideo ret = null;
-	    ret = (EnregistrementVideo) super.clone();
-	    return ret;
-	}
+
 }

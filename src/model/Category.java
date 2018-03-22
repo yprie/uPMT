@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Dossier.java
+ * Classe.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -21,25 +21,37 @@
 package model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Dossier extends Type implements Serializable, Cloneable{
+public class Category extends Type implements Serializable, Cloneable {
 
-	public Dossier(String nom) {
+	public Category(String nom) {
 		super(nom);
 	}
 	
-	/*public Dossier clone() {
-		Dossier ret = new Dossier(nom);
-		ret.setDescription(description);
-		ret.setCouleur(couleur);
-		LinkedList<Type> retTypes = new LinkedList<Type>();
-		for(int i=0;i<types.size();i++) {
-			ret.addType(types.get(i).clone());
+	public Category clone(){
+		Category newc = new Category(this.getName());
+		newc.setColor(this.getColor());
+		for(Type t : this.getTypes()){
+			newc.addType(new Property(t.getName()));
 		}
-		//ret.setDescriptemeTxt(new String(extract.getTexte()));
-		return ret;
-	}*/
+		return newc;
+	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(!o.getClass().equals(this.getClass())) {
+			return false;
+		}
+		Category tmp = (Category)o;
+		if(tmp != null){
+			return tmp.mName.equals(this.mName) &&
+					tmp.mDescription.equals(this.mDescription) &&
+					tmp.getTypes().equals(this.getTypes());
+		}else{
+			return false;
+		}		
+	}
 
 }

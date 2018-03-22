@@ -100,12 +100,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import model.Classe;
+import model.Category;
 import model.MomentExperience;
-import model.Propriete;
-import model.Serializer;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
+import utils.Serializer;
 import utils.UndoCollector;
 import utils.Utils;
 import javafx.scene.control.Tooltip;
@@ -238,7 +238,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			@Override
 			public void handle(ActionEvent arg0) {
 				CustomColorDialog dialog = new CustomColorDialog(main.getPrimaryStage());
-				dialog.setCurrentColor(Color.web(moment.getCouleur()));
+				dialog.setCurrentColor(Color.web(moment.getColor()));
 				dialog.setShowUseBtn(false);
 		        dialog.show();
 		        dialog.getDialog().centerOnScreen();
@@ -262,7 +262,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				dialog.getDialogPane().getButtonTypes().clear();
 				dialog.getDialogPane().getButtonTypes().addAll(edit, close);
 				dialog.setTitle(main._langBundle.getString("time"));
-				dialog.setHeaderText(main._langBundle.getString("time_alert") + " " + moment.getNom() + " " + main._langBundle.getString("is") + " " + moment.getDateString());
+				dialog.setHeaderText(main._langBundle.getString("time_alert") + " " + moment.getName() + " " + main._langBundle.getString("is") + " " + moment.getDateString());
 				dialog.initModality(Modality.APPLICATION_MODAL);
 				Optional<String> result = dialog.showAndWait();
 				if (result.isPresent()) {
@@ -300,7 +300,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		//System.out.println(moment.getCouleur());
 		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
 				this.getMomentColorController(),
-				moment.getCouleur(),
+				moment.getColor(),
 				colorString,
 				main);
 		cmd.execute();
@@ -343,24 +343,24 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	    });
 	}
 	
-	public void setCurrentProperty(Propriete n) {
+	public void setCurrentProperty(Property n) {
 		moment.setCurrentProperty(n);
 	}
 	
-	public Propriete getCurrentProperty() {
+	public Property getCurrentProperty() {
 		return moment.getCurrentProperty();
 	}
 	
 	public void LoadMomentData(){
-		label.setText(moment.getNom());
-		if (this.moment.getCouleur() != null) {
-			setColor(this.moment.getCouleur());
+		label.setText(moment.getName());
+		if (this.moment.getColor() != null) {
+			setColor(this.moment.getColor());
 		}
-		if(this.moment.getMorceauDescripteme() != null){
-			showExtractIcon(this.moment.getMorceauDescripteme());
+		if(this.moment.getDescripteme() != null){
+			showExtractIcon(this.moment.getDescripteme());
 		}
 		//Détecte si il est préférable que le texte soit en blanc ou en noir en fonction du fond.
-		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
+		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
 	}
 	
 	private String cssShadow="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); ";
@@ -374,7 +374,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		//this.borderPaneLabel.setStyle(cssShadow+styleLabel);
 		this.scrollTypesPane.setStyle(styleLabel);
 		this.setBorderColor(col);
-		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getCouleur())));
+		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
 	}
 	
 	public void showExtractIcon(String tooltip){
@@ -433,7 +433,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private void editNameMode() {
 		TextField t = new TextField();
 		t.setMaxWidth(180);
-		t.setText(moment.getNom());
+		t.setText(moment.getName());
 		t.requestFocus();
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
@@ -444,7 +444,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			        {
 			        	RenameMomentCommand cmd = new RenameMomentCommand(
 			        			nameController,
-			        			moment.getNom(),
+			        			moment.getName(),
 			        			t.getText(),
 			        			main);
 						cmd.execute();
@@ -477,7 +477,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		//borderPaneLabel.setCenter(t);
 	}
 	
-	public TypeClassRepresentationController getTypeClassRep(Classe item) {
+	public TypeClassRepresentationController getTypeClassRep(Category item) {
 		for(Node n : typeSpace.getChildren()){
 			TypeClassRepresentationController tcr = (TypeClassRepresentationController) n;
 			if(tcr.getClasse().equals(item)){
@@ -560,7 +560,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		if(obs.getClass().equals(MomentAddTypeController.class)) {
 			if(value != null) {
-				TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Classe) value,this,main);
+				TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Category) value,this,main);
 				
 					MainViewTransformations.addTypeListener(elementPane, this, (Type) value, main);
 					//((TypeTreeViewControllerClass)((TypeTreeView)Main.tempDragReference).getController()).getNameController().addObserver(elementPane);
@@ -585,9 +585,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	}
 	
 	public void setBorderColor(String couleur) {
-		if(Main.activateBetaDesign && couleur == "black") couleur = moment.getCouleur();
+		if(Main.activateBetaDesign && couleur == "black") couleur = moment.getColor();
 		momentPane.setStyle("-fx-border-color : "+couleur);
-		String styleLabel = "-fx-background-color: "+moment.getCouleur()+"; -fx-border-color:"+couleur +";";
+		String styleLabel = "-fx-background-color: "+moment.getColor()+"; -fx-border-color:"+couleur +";";
 		this.borderPaneLabel.setStyle(styleLabel);
 	}
 
@@ -713,7 +713,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	public String toString() {
 		String ret="";
-		ret="{Nom:"+this.moment.getNom()+"; Sous-Moments:[";
+		ret="{Nom:"+this.moment.getName()+"; Sous-Moments:[";
 		for(Node n : this.getSousMomentPane().getChildren()) {
 			MomentExpVBox m = (MomentExpVBox)n;
 			ret+=m.toString();
@@ -732,7 +732,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, moment.getMorceauDescripteme()));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, moment.getDescripteme()));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);

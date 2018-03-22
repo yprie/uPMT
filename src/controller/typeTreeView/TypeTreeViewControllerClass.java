@@ -57,8 +57,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import model.Classe;
-import model.Propriete;
+import model.Category;
+import model.Property;
 import model.Type;
 import utils.ResourceLoader;
 import utils.UndoCollector;
@@ -121,7 +121,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			    {
 			        if (!newPropertyValue)
 			        {
-			        	if(type.getType().isClass()){
+			        	if(type.getType().isCategory()){
 							String oldName = new String(type.getType().getName());
 							if(!oldName.equals(textField.getText())) {
 								boolean hasName = false;
@@ -189,7 +189,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 		String colorConverted = Utils.toRGBCode(colorPicked);
 		ChangeColorClassCommand cmd = new ChangeColorClassCommand(
 				type.getClassColorController(),
-				this.type.getType().getCouleur(),
+				this.type.getType().getColor(),
 				colorConverted,
 				main);
 		cmd.execute();
@@ -199,7 +199,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	@FXML
 	public void addProperty(){
 		propertiesNumber++;
-		Propriete nt = new Propriete("Propriete " + propertiesNumber);
+		Property nt = new Property("Propriete " + propertiesNumber);
 		AddPropertyToClassCommand cmd = new AddPropertyToClassCommand(type, nt, tree.getTreeItem(), this.main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
@@ -209,7 +209,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void deleteClass(){
 		RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
 				tree.getTreeItem().getValue(), 
-				(Classe) type.getType(),
+				(Category) type.getType(),
 				tree.getTreeItem().getParent(),
 				main);
 		cmd.execute();
@@ -217,10 +217,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	}
 	
 	public void setColor(){
-		if (type.getType().getCouleur() != null) {
-			couleurType.setValue(Color.valueOf(type.getType().getCouleur()));
+		if (type.getType().getColor() != null) {
+			couleurType.setValue(Color.valueOf(type.getType().getColor()));
 			if(!Main.activateBetaDesign)
-				this.nomType.setTextFill(Color.web(type.getType().getCouleur()));
+				this.nomType.setTextFill(Color.web(type.getType().getColor()));
 			else
 				this.nomType.setTextFill(Main.colorSelectedCell);
 		}

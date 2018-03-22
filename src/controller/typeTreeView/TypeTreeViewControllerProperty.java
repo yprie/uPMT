@@ -53,7 +53,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import model.Propriete;
+import model.Property;
 import model.Type;
 import utils.ResourceLoader;
 import utils.UndoCollector;
@@ -178,7 +178,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	public void deleteProperty(){
 		RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(
 				tree.getTreeItem().getParent().getValue(), 
-				(Propriete) type.getType(),
+				(Property) type.getType(),
 				tree.getTreeItem().getParent(),
 				main);
 		cmd.execute();

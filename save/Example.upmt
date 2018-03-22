@@ -1,431 +1,432 @@
 {
-  "nom": "Example",
-  "schemaProjet": {
-    "types": [
+  "SAVE_VERSION": 0,
+  "mName": "Example",
+  "mSchema": {
+    "mTypes": [
       {
-        "type": "model.Dossier",
+        "type": "model.Folder",
         "data": {
-          "types": [
+          "mTypes": [
             {
-              "type": "model.Classe",
+              "type": "model.Category",
               "data": {
-                "types": [
+                "mTypes": [
                   {
-                    "type": "model.Propriete",
+                    "type": "model.Property",
                     "data": {
-                      "types": [],
-                      "description": "",
-                      "couleur": "#000000",
-                      "nom": "density"
+                      "mTypes": [],
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "density"
                     }
                   },
                   {
-                    "type": "model.Propriete",
+                    "type": "model.Property",
                     "data": {
-                      "types": [],
-                      "description": "",
-                      "couleur": "#000000",
-                      "nom": "temperature"
+                      "mTypes": [],
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "temperature"
                     }
                   },
                   {
-                    "type": "model.Propriete",
+                    "type": "model.Property",
                     "data": {
-                      "types": [],
-                      "description": "",
-                      "couleur": "#000000",
-                      "nom": "shape"
+                      "mTypes": [],
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "shape"
                     }
                   },
                   {
-                    "type": "model.Propriete",
+                    "type": "model.Property",
                     "data": {
-                      "types": [],
-                      "description": "",
-                      "couleur": "#000000",
-                      "nom": "location"
+                      "mTypes": [],
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "location"
                     }
                   }
                 ],
-                "description": "",
-                "couleur": "#FFE666",
-                "nom": "Bodily feeling"
+                "mDescription": "",
+                "mColor": "#FFE666",
+                "mName": "Bodily feeling"
               }
             },
             {
-              "type": "model.Classe",
+              "type": "model.Category",
               "data": {
-                "types": [],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "Classe 2"
+                "mTypes": [],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "Classe 2"
               }
             },
             {
-              "type": "model.Classe",
+              "type": "model.Category",
               "data": {
-                "types": [],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "Classe 3"
+                "mTypes": [],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "Classe 3"
               }
             },
             {
-              "type": "model.Classe",
+              "type": "model.Category",
               "data": {
-                "types": [
+                "mTypes": [
                   {
-                    "type": "model.Propriete",
+                    "type": "model.Property",
                     "data": {
-                      "types": [],
-                      "description": "",
-                      "couleur": "#000000",
-                      "nom": "type"
+                      "mTypes": [],
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "type"
                     }
                   }
                 ],
-                "description": "",
-                "couleur": "#E699B3",
-                "nom": "Emotion"
+                "mDescription": "",
+                "mColor": "#E699B3",
+                "mName": "Emotion"
               }
             },
             {
-              "type": "model.Dossier",
+              "type": "model.Folder",
               "data": {
-                "types": [
+                "mTypes": [
                   {
-                    "type": "model.Classe",
+                    "type": "model.Category",
                     "data": {
-                      "types": [
+                      "mTypes": [
                         {
-                          "type": "model.Propriete",
+                          "type": "model.Property",
                           "data": {
-                            "types": [],
-                            "description": "",
-                            "couleur": "#000000",
-                            "nom": "source"
+                            "mTypes": [],
+                            "mDescription": "",
+                            "mColor": "#000000",
+                            "mName": "source"
                           }
                         },
                         {
-                          "type": "model.Propriete",
+                          "type": "model.Property",
                           "data": {
-                            "types": [],
-                            "description": "",
-                            "couleur": "#000000",
-                            "nom": "location"
+                            "mTypes": [],
+                            "mDescription": "",
+                            "mColor": "#000000",
+                            "mName": "location"
                           }
                         }
                       ],
-                      "description": "",
-                      "couleur": "#80B380",
-                      "nom": "Auditory sensation"
+                      "mDescription": "",
+                      "mColor": "#80B380",
+                      "mName": "Auditory sensation"
                     }
                   }
                 ],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "Sensation"
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "Sensation"
               }
             }
           ],
-          "description": "",
-          "couleur": "#000000",
-          "nom": "General"
+          "mDescription": "",
+          "mColor": "#000000",
+          "mName": "General"
         }
       }
     ],
-    "description": "",
-    "couleur": "#000000",
-    "nom": "Example"
+    "mDescription": "",
+    "mColor": "#000000",
+    "mName": "Example"
   },
-  "entretiens": [
+  "mInterviews": [
     {
-      "descripteme": {
-        "texte": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.\n"
+      "mDescripteme": {
+        "mText": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.\n"
       },
-      "moments": [
+      "mMoments": [
         {
-          "date": "Jan 1, 1970 12:00:00 AM",
-          "nom": "April morning",
-          "morceauDescripteme": "It was in Puiseaux one April morning, last spring.",
-          "types": [],
-          "enregistrements": [],
-          "sousMoments": [
+          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mName": "April morning",
+          "mDescripteme": "It was in Puiseaux one April morning, last spring.",
+          "mTypes": [],
+          "mRecords": [],
+          "mSubMoments": [
             {
-              "date": "Jan 1, 1970 12:00:00 AM",
-              "nom": "Tightening phase",
-              "morceauDescripteme": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest.",
-              "types": [
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "Tightening phase",
+              "mDescripteme": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest.",
+              "mTypes": [
                 {
-                  "type": "model.Classe",
+                  "type": "model.Category",
                   "data": {
-                    "types": [
+                    "mTypes": [
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "sadness",
-                          "extract": {
-                            "texte": "sad"
+                          "mValue": "sadness",
+                          "mExtract": {
+                            "mText": "sad"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "type"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "type"
                         }
                       }
                     ],
-                    "description": "",
-                    "couleur": "#E699B3",
-                    "nom": "Emotion"
+                    "mDescription": "",
+                    "mColor": "#E699B3",
+                    "mName": "Emotion"
                   }
                 },
                 {
-                  "type": "model.Classe",
+                  "type": "model.Category",
                   "data": {
-                    "types": [
+                    "mTypes": [
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "compact",
-                          "extract": {
-                            "texte": "tight"
+                          "mValue": "compact",
+                          "mExtract": {
+                            "mText": "tight"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "density"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "density"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "cold",
-                          "extract": {
-                            "texte": "frozen"
+                          "mValue": "cold",
+                          "mExtract": {
+                            "mText": "frozen"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "temperature"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "temperature"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "ball",
-                          "extract": {
-                            "texte": "ball"
+                          "mValue": "ball",
+                          "mExtract": {
+                            "mText": "ball"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "shape"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "shape"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "chest",
-                          "extract": {
-                            "texte": "in the middle of my chest"
+                          "mValue": "chest",
+                          "mExtract": {
+                            "mText": "in the middle of my chest"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "location"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "location"
                         }
                       }
                     ],
-                    "description": "",
-                    "couleur": "#FFE666",
-                    "nom": "Bodily feeling"
+                    "mDescription": "",
+                    "mColor": "#FFE666",
+                    "mName": "Bodily feeling"
                   }
                 }
               ],
-              "enregistrements": [],
-              "sousMoments": [],
-              "parentMomentID": 1763325,
-              "parentCol": 0,
-              "gridCol": 0,
-              "couleur": "#D3D3D3",
-              "currentProperty": {
-                "valeur": "chest",
-                "extract": {
-                  "texte": "in the middle of my chest"
+              "mRecords": [],
+              "mSubMoments": [],
+              "mParentMomentID": 1763325,
+              "mParentCol": 0,
+              "mGridCol": 0,
+              "mColor": "#D3D3D3",
+              "mCurrentProperty": {
+                "mValue": "chest",
+                "mExtract": {
+                  "mText": "in the middle of my chest"
                 },
-                "types": [],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "location"
+                "mTypes": [],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "location"
               },
-              "id": 2567451,
-              "row": 1
+              "mID": 2567451,
+              "mRow": 1
             },
             {
-              "date": "Jan 1, 1970 12:00:00 AM",
-              "nom": "Transitional event",
-              "morceauDescripteme": "At one point, the song of a turtle-dove comes through the open window.",
-              "types": [
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "Transitional event",
+              "mDescripteme": "At one point, the song of a turtle-dove comes through the open window.",
+              "mTypes": [
                 {
-                  "type": "model.Classe",
+                  "type": "model.Category",
                   "data": {
-                    "types": [
+                    "mTypes": [
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "turtle-dove",
-                          "extract": {
-                            "texte": "the song of a turtle-dove"
+                          "mValue": "turtle-dove",
+                          "mExtract": {
+                            "mText": "the song of a turtle-dove"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "source"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "source"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "outside",
-                          "extract": {
-                            "texte": "comes through the open window"
+                          "mValue": "outside",
+                          "mExtract": {
+                            "mText": "comes through the open window"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "location"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "location"
                         }
                       }
                     ],
-                    "description": "",
-                    "couleur": "#80B380",
-                    "nom": "Auditory sensation"
+                    "mDescription": "",
+                    "mColor": "#80B380",
+                    "mName": "Auditory sensation"
                   }
                 }
               ],
-              "enregistrements": [],
-              "sousMoments": [],
-              "parentMomentID": 1763325,
-              "parentCol": 0,
-              "gridCol": 1,
-              "couleur": "#83CDF7",
-              "currentProperty": {
-                "valeur": "outside",
-                "extract": {
-                  "texte": "comes through the open window"
+              "mRecords": [],
+              "mSubMoments": [],
+              "mParentMomentID": 1763325,
+              "mParentCol": 0,
+              "mGridCol": 1,
+              "mColor": "#83CDF7",
+              "mCurrentProperty": {
+                "mValue": "outside",
+                "mExtract": {
+                  "mText": "comes through the open window"
                 },
-                "types": [],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "location"
+                "mTypes": [],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "location"
               },
-              "id": 8724382,
-              "row": 1
+              "mID": 8724382,
+              "mRow": 1
             },
             {
-              "date": "Jan 1, 1970 12:00:00 AM",
-              "nom": "Loosening phase",
-              "morceauDescripteme": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.",
-              "types": [
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "Loosening phase",
+              "mDescripteme": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.",
+              "mTypes": [
                 {
-                  "type": "model.Classe",
+                  "type": "model.Category",
                   "data": {
-                    "types": [
+                    "mTypes": [
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "fluid",
-                          "extract": {
-                            "texte": "melt, to dilute"
+                          "mValue": "fluid",
+                          "mExtract": {
+                            "mText": "melt, to dilute"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "density"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "density"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "warm",
-                          "extract": {
-                            "texte": "heat"
+                          "mValue": "warm",
+                          "mExtract": {
+                            "mText": "heat"
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "temperature"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "temperature"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "undefined",
-                          "extract": {
-                            "texte": ""
+                          "mValue": "undefined",
+                          "mExtract": {
+                            "mText": ""
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "shape"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "shape"
                         }
                       },
                       {
-                        "type": "model.Propriete",
+                        "type": "model.Property",
                         "data": {
-                          "valeur": "body",
-                          "extract": {
-                            "texte": "body."
+                          "mValue": "body",
+                          "mExtract": {
+                            "mText": "body."
                           },
-                          "types": [],
-                          "description": "",
-                          "couleur": "#000000",
-                          "nom": "location"
+                          "mTypes": [],
+                          "mDescription": "",
+                          "mColor": "#000000",
+                          "mName": "location"
                         }
                       }
                     ],
-                    "description": "",
-                    "couleur": "#FFE666",
-                    "nom": "Bodily feeling"
+                    "mDescription": "",
+                    "mColor": "#FFE666",
+                    "mName": "Bodily feeling"
                   }
                 }
               ],
-              "enregistrements": [],
-              "sousMoments": [],
-              "parentMomentID": 1763325,
-              "parentCol": 0,
-              "gridCol": 2,
-              "couleur": "#FF2F2F",
-              "currentProperty": {
-                "valeur": "body",
-                "extract": {
-                  "texte": "body."
+              "mRecords": [],
+              "mSubMoments": [],
+              "mParentMomentID": 1763325,
+              "mParentCol": 0,
+              "mGridCol": 2,
+              "mColor": "#FF2F2F",
+              "mCurrentProperty": {
+                "mValue": "body",
+                "mExtract": {
+                  "mText": "body."
                 },
-                "types": [],
-                "description": "",
-                "couleur": "#000000",
-                "nom": "location"
+                "mTypes": [],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "location"
               },
-              "id": 6595994,
-              "row": 1
+              "mID": 6595994,
+              "mRow": 1
             }
           ],
-          "parentMomentID": -1,
-          "parentCol": 0,
-          "gridCol": 0,
-          "couleur": "#F49BF7",
-          "id": 1763325,
-          "row": 0
+          "mParentMomentID": -1,
+          "mParentCol": 0,
+          "mGridCol": 0,
+          "mColor": "#F49BF7",
+          "mID": 1763325,
+          "mRow": 0
         }
       ],
-      "dateEntretien": {
+      "mDateInterview": {
         "year": 2017,
         "month": 4,
         "day": 4
       },
-      "participant": "Participant",
-      "commentaire": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
-      "nom": "Participant_2017-04-04"
+      "mParticipant": "Participant",
+      "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
+      "mName": "Participant_2017-04-04"
     }
   ]
 }

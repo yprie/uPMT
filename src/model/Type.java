@@ -29,84 +29,81 @@ import controller.typeTreeView.TypeTreeViewController;
 
 public abstract class Type implements Serializable, Cloneable{
 	
-	protected LinkedList<Type> types;
-	protected String description;
-	protected String couleur = "#000000";
-	protected String nom;
+	protected LinkedList<Type> mTypes;
+	protected String mDescription;
+	protected String mColor = "#000000";
+	protected String mName;
 	
-
 	
-
-	
-	public Type(String nom) {
+	public Type(String mName) {
 		super();
-		this.nom = nom;
-		this.types = new LinkedList<Type>();
-		this.description = "";
+		this.mName = mName;
+		this.mTypes = new LinkedList<Type>();
+		this.mDescription = "";
 	}
 	
 	public void addType(Type s){
-		this.types.add(s);
+		this.mTypes.add(s);
 	}
 	
 	public LinkedList<Type> getTypes(){
-		return this.types;
+		return this.mTypes;
 	}
 	
 	public String toString(){
-		return this.nom + this.types;
+		return this.mName + this.mTypes;
 	}
 	
 	public String getName(){
-		return this.nom;
+		return this.mName;
 	}
 	
 	public void setName(String name){
-		this.nom = name;
+		this.mName = name;
 	}
 	
 	public String getDescription() {
-		return description;
+		return mDescription;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String mDescription) {
+		this.mDescription = mDescription;
 	}
 
 	@Override
 	public boolean equals(Object o){
 		Type tmp = (Type)o;
 		if(tmp != null){
-			return tmp.nom.equals(this.nom) &&
-					tmp.description.equals(this.description) &&
+			return tmp.mName.equals(this.mName) &&
+					tmp.mDescription.equals(this.mDescription) &&
 					tmp.getTypes().equals(this.getTypes());
 		}else{
 			return false;
 		}		
 	}
 
-	public String getCouleur() {
-		return couleur;
+	public String getColor() {
+		return mColor;
 	}
 
-	public void setCouleur(String couleur) {
-		this.couleur = couleur;
+	public void setColor(String mColor) {
+		this.mColor = mColor;
 	}
 	
     // Functions used to define the layout for the different kind of Types
 	public boolean isFolder()
 	{
-		return this.getClass().equals(new Dossier("").getClass());
+		return this.getClass().equals(new Folder("").getClass());
 	}
 	
-	public boolean isClass()
+	public boolean isCategory()
 	{
-		return this.getClass().equals(new Classe("").getClass());
+		return this.getClass().equals(new Category("").getClass());
 	}
 	
 	public boolean isProperty()
 	{
-		return this.getClass().equals(new Propriete("").getClass());
+		return this.getClass().equals(new Property("").getClass());
 	}
 	
 	

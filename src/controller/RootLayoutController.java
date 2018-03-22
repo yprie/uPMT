@@ -114,7 +114,7 @@ public class RootLayoutController implements Initializable{
 			FXMLLoader loader = new FXMLLoader();
 			
             loader.setLocation(getClass().getResource("/view/HelpView.fxml"));
-            loader.setController(new HelpController(main, helpWindow));
+            loader.setController(new AboutController(main, helpWindow));
             
 //          loader.setController(new HelpController(main, helpWindow, this.document));
             loader.setResources(main._langBundle);

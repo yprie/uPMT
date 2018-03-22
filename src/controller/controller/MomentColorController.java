@@ -36,7 +36,7 @@ public class MomentColorController implements controller.controller.Observable{
 
 	@Override
 	public void update(Object value) {
-		momentExp.setCouleur((String) value);
+		momentExp.setColor((String) value);
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);
 		}

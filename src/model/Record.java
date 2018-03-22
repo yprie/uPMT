@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Classe.java
+ * Enregistrement.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -21,37 +21,21 @@
 package model;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedList;
 
-public class Classe extends Type implements Serializable, Cloneable {
+public abstract class Record implements Serializable,Cloneable {
+	public final static String MOMENT = "moment";
+	public final static String PROPERTY = "property";
+	protected String mLink;
 
-	public Classe(String nom) {
-		super(nom);
+	public Object clone() {
+		Record ret = null;
+	    try {
+			ret = (Record) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return ret;
 	}
 	
-	public Classe clone(){
-		Classe newc = new Classe(this.getName());
-		newc.setCouleur(this.getCouleur());
-		for(Type t : this.getTypes()){
-			newc.addType(new Propriete(t.getName()));
-		}
-		return newc;
-	}
-	
-	@Override
-	public boolean equals(Object o){
-		if(!o.getClass().equals(this.getClass())) {
-			return false;
-		}
-		Classe tmp = (Classe)o;
-		if(tmp != null){
-			return tmp.nom.equals(this.nom) &&
-					tmp.description.equals(this.description) &&
-					tmp.getTypes().equals(this.getTypes());
-		}else{
-			return false;
-		}		
-	}
-
 }

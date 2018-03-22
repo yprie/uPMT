@@ -31,50 +31,50 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-public class DescriptionEntretien implements Serializable, Cloneable{
+public class DescriptionInterview implements Serializable, Cloneable{
 	
-	private Descripteme descripteme;
-	private LinkedList<MomentExperience> moments;
-	private LocalDate dateEntretien;
-	private String participant;
-	private String commentaire;
-	private String nom;
+	private Descripteme mDescripteme;
+	private LinkedList<MomentExperience> mMoments;
+	private LocalDate mDateInterview;
+	private String mParticipant;
+	private String mComment;
+	private String mName;
 	
 	@Override
 	public boolean equals(Object o) {
 		boolean ret=false;
 		try {
-			DescriptionEntretien d = (DescriptionEntretien)o;
+			DescriptionInterview d = (DescriptionInterview)o;
 
 			
-			if(descripteme==null && d.descripteme==null) ret=true;
-			else if(d.descripteme.equals(descripteme)) ret=true;
+			if(mDescripteme==null && d.mDescripteme==null) ret=true;
+			else if(d.mDescripteme.equals(mDescripteme)) ret=true;
 			//System.out.println("a "+ret);
 			
 				
-			if(moments==null && d.moments==null) ret=true;
-			else if(!(ret && d.moments.equals(moments))) ret=false;
+			if(mMoments==null && d.mMoments==null) ret=true;
+			else if(!(ret && d.mMoments.equals(mMoments))) ret=false;
 			//System.out.println("b "+ret);
 
 			
-			if(dateEntretien==null && d.dateEntretien==null) ret=true;
-			else if(!(ret && d.dateEntretien.equals(dateEntretien))) ret=false;
+			if(mDateInterview==null && d.mDateInterview==null) ret=true;
+			else if(!(ret && d.mDateInterview.equals(mDateInterview))) ret=false;
 			//System.out.println("c "+ret);
 			
 
 			
-			if(participant==null && d.participant==null) ret=true;
-			else if(!(ret && d.participant.equals(participant))) ret=false;
+			if(mParticipant==null && d.mParticipant==null) ret=true;
+			else if(!(ret && d.mParticipant.equals(mParticipant))) ret=false;
 			//System.out.println("d "+ret);
 
 			
-			if(commentaire==null && d.commentaire==null) ret=true;
-			else if(!(ret && d.commentaire.equals(commentaire))) ret=false;
+			if(mComment==null && d.mComment==null) ret=true;
+			else if(!(ret && d.mComment.equals(mComment))) ret=false;
 			//System.out.println("e "+ret);
 
 			
-			if(nom==null && d.nom==null) ret=true;
-			else if(!(ret && d.nom.equals(nom))) ret=false;
+			if(mName==null && d.mName==null) ret=true;
+			else if(!(ret && d.mName.equals(mName))) ret=false;
 			//System.out.println("f "+ret);
 			
 		}catch (Exception e) {ret = false;
@@ -83,28 +83,7 @@ public class DescriptionEntretien implements Serializable, Cloneable{
 		return ret;
 	}
 	
-	/*public DescriptionEntretien clone() {
-		DescriptionEntretien ret = new DescriptionEntretien(descripteme.clone(), new String(nom));
-		ret.setcommentaire(commentaire);
-		ret.setDateEntretien(dateEntretien);
-		ret.setParticipant(participant);
-		for(int i=0;i<moments.size(); i++) {
-			ret.addMoment(moments.get(i).clone());
-		}
-		return ret;
-	}*/
-	
-	/*public Object clone() {
-		DescriptionEntretien ret = null;
-	    try {
-			ret = (DescriptionEntretien) super.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    ret.descripteme = (Descripteme)descripteme.clone();
-	    return ret;
-	}*/
+
 	public Object clone() {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -121,88 +100,88 @@ public class DescriptionEntretien implements Serializable, Cloneable{
 		}
 	}
 	
-	public DescriptionEntretien(Descripteme d,String nomEntretiens){
-		this.moments = new LinkedList<MomentExperience>();
-		this.nom = nomEntretiens;
-		this.descripteme = d;
+	public DescriptionInterview(Descripteme d,String mNameEntretiens){
+		this.mMoments = new LinkedList<MomentExperience>();
+		this.mName = mNameEntretiens;
+		this.mDescripteme = d;
 	}
 	
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return mName;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String mName) {
+		this.mName = mName;
 	}
 
 	public Descripteme getDescripteme() {
-		return descripteme;
+		return mDescripteme;
 	}
 
-	public void setDescripteme(Descripteme descripteme) {
-		this.descripteme = descripteme;
+	public void setDescripteme(Descripteme mDescripteme) {
+		this.mDescripteme = mDescripteme;
 	}
 
-	public void setMoments(LinkedList<MomentExperience> moments) {
-		this.moments = moments;
+	public void setMoments(LinkedList<MomentExperience> mMoments) {
+		this.mMoments = mMoments;
 	}
 
 	public void addMoment(MomentExperience m){
-		this.moments.add(m);
+		this.mMoments.add(m);
 		m.setRow(0);
 		updateMomentsPos();
 	}
 	
 	public void addMoment(int index, MomentExperience m){
-		this.moments.add(index, m);
+		this.mMoments.add(index, m);
 		updateMomentsPos();
 	}
 	
 	public void removeMomentExp(MomentExperience m) {
-		this.moments.remove(m);
+		this.mMoments.remove(m);
 		updateMomentsPos();
 	}
 	
 	
 	private void updateMomentsPos() {
-		for(int i=0; i<moments.size(); i++) {
-		//System.out.println("Moment "+moments.get(i).getNom()+", id:"+moments.get(i).getID()+":["+i+";0]");
-			moments.get(i).setGridCol(i);
-			moments.get(i).setRow(0);
-			moments.get(i).setParent(null);
-			moments.get(i).updateSousMomentPos();
+		for(int i=0; i<mMoments.size(); i++) {
+		//System.out.println("Moment "+mMoments.get(i).getNom()+", id:"+mMoments.get(i).getID()+":["+i+";0]");
+			mMoments.get(i).setGridCol(i);
+			mMoments.get(i).setRow(0);
+			mMoments.get(i).setParent(null);
+			mMoments.get(i).updateSubMomentPos();
 		}
 	}
 	
 	public LinkedList<MomentExperience> getMoments(){
-		return this.moments;
+		return this.mMoments;
 	}
 	
-	public void setDateEntretien(LocalDate ld){
-		dateEntretien = ld;
+	public void setDateInterview(LocalDate ld){
+		mDateInterview = ld;
 	}
-	public LocalDate getDateEntretien(){
-		return dateEntretien;
+	public LocalDate getDateInterview(){
+		return mDateInterview;
 	}
 	public void setParticipant(String s){
-		participant = s;
+		mParticipant = s;
 	}
 	public String getParticipant(){
-		return participant;
+		return mParticipant;
 	}
-	public void setcommentaire(String s){
-		commentaire = s;
+	public void setComment(String s){
+		mComment = s;
 	}
 
-	public String getcommentaire(){
-		return commentaire;
+	public String getComment(){
+		return mComment;
 	}
 	public String toString(){
-		return this.nom;
+		return this.mName;
 	}
 	
 	public int getNumberOfMoments() {
-		return moments.size();
+		return mMoments.size();
 	}
 
 	

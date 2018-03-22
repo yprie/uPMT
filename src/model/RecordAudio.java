@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Enregistrement.java
+ * EnregistrementAudio.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -22,20 +22,15 @@ package model;
 
 import java.io.Serializable;
 
-public abstract class Enregistrement implements Serializable,Cloneable {
-	public final static String MOMENT = "moment";
-	public final static String PROPERTY = "property";
-	protected String link;
-
-	public Object clone() {
-		Enregistrement ret = null;
-	    try {
-			ret = (Enregistrement) super.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return ret;
+public class RecordAudio extends Record implements Serializable, Cloneable{
+	
+	public RecordAudio(String link){
+		this.mLink = link;
 	}
 	
+	public Object clone() {
+		RecordAudio ret = null;
+	    ret = (RecordAudio) super.clone();
+	    return ret;
+	}
 }

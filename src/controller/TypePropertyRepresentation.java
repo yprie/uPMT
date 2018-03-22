@@ -59,8 +59,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Enregistrement;
-import model.Propriete;
+import model.Record;
+import model.Property;
 import utils.ResourceLoader;
 import utils.UndoCollector;
 
@@ -71,7 +71,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	private @FXML ImageView hasExtractImageProperties;
 	private @FXML HBox propertyPane;
 	private Main main;
-	private Propriete property;
+	private Property property;
 	private TreeItem<TypeController> propertyTypeTreeItem;
 	
 	private MomentExpVBox momentBox;
@@ -82,7 +82,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	
 	private PropertyExtractController propertyExtractController;
 	
-	public TypePropertyRepresentation(Propriete t, MomentExpVBox m,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
+	public TypePropertyRepresentation(Property t, MomentExpVBox m,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
 		momentBox = m;
 		this.property = t;
 		this.propertyTypeTreeItem = propertyTypeTreeItem;
@@ -118,7 +118,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		    @Override
 		    public void handle(MouseEvent event) {
 		    	if(propertiesHaveDescriptem()) {
-			    	extractTooltip.setText(property.getDescripteme().getTexte());
+			    	extractTooltip.setText(property.getExtract().getTexte());
 			        javafx.geometry.Point2D p = hasExtractImageProperties.localToScreen(hasExtractImageProperties.getLayoutBounds().getMaxX(), hasExtractImageProperties.getLayoutBounds().getMaxY()); 
 			        extractTooltip.show(hasExtractImageProperties, p.getX(), p.getY());
 		    	}
@@ -156,7 +156,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
         
         LinkToTreeProperty();
         if(this.propertiesHaveDescriptem()) {
-        	this.showExtractIcon(property.getDescripteme().getTexte());
+        	this.showExtractIcon(property.getExtract().getTexte());
         	//System.out.println("Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
         }
         else{
@@ -166,10 +166,10 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	}
 	
 	private boolean propertiesHaveDescriptem() {
-		if(property.getDescripteme().getTexte()==null) {
+		if(property.getExtract().getTexte()==null) {
     		return false;
     	}
-    	else if(property.getDescripteme().getTexte().length()==0) {
+    	else if(property.getExtract().getTexte().length()==0) {
     		return false;
     	}
     	else return true;
@@ -187,7 +187,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 			loader.setController(new SelectDescriptemePartController(
 					main,
 					promptWindow,
-					property.getDescripteme().toString(),
+					property.getExtract().toString(),
 					propertyExtractController));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
@@ -213,15 +213,15 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		}		
 	}
 
-	public Propriete getProperty(){
+	public Property getProperty(){
 		return this.property;
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.propertyName.setText(property.getName());
-		if(this.property.getValeur() != null){
-			this.propertyValue.setText(property.getValeur());
+		if(this.property.getValue() != null){
+			this.propertyValue.setText(property.getValue());
 		}else{
 			this.propertyValue.setText("____");
 		}
@@ -234,7 +234,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	
 	public void setValue(String value) {
 		propertyValue.setText(value);
-		property.setValeur(value);
+		property.setValue(value);
 	}
 	
 	private void setLabelChangeName(HBox propertyPane2, TypePropertyRepresentation tpr){
@@ -258,7 +258,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 						        {
 						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
 						        			tpr,
-						        			property.getValeur(), 
+						        			property.getValue(), 
 						        			t.getText(),
 						        			main);
 						        	cmd.execute();

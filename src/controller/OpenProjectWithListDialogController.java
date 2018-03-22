@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import application.Main;
-import model.Projet;
+import model.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -37,10 +37,10 @@ import javafx.collections.FXCollections;
 
 public class OpenProjectWithListDialogController implements Initializable{
 
-	private @FXML ListView<Projet> tousLesProjets;
+	private @FXML ListView<Project> tousLesProjets;
 	private @FXML Button btn_ouvrir;
 	private @FXML Button btn_cancel;
-	private LinkedList<Projet> m_projectList;
+	private LinkedList<Project> m_projectList;
 	private Main main;
 	private Stage window;
 	
@@ -52,7 +52,7 @@ public class OpenProjectWithListDialogController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ObservableList<Projet> items = FXCollections.observableArrayList (m_projectList);
+		ObservableList<Project> items = FXCollections.observableArrayList (m_projectList);
 		tousLesProjets.setItems(items);
 		tousLesProjets.getFocusModel().focus(0);
 	}

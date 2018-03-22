@@ -44,7 +44,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import utils.ResourceLoader;
 
 public class InterviewTreeViewController extends TreeViewController implements Initializable {
@@ -54,17 +54,17 @@ public class InterviewTreeViewController extends TreeViewController implements I
 	private @FXML Button deleteInterview;
 	private @FXML Label nomEntretien;
 	private @FXML BorderPane interviewPane;
-	private DescriptionEntretien interview;
+	private DescriptionInterview interview;
 	private InterviewTreeView interviewTreeView;
 
-	public InterviewTreeViewController(DescriptionEntretien interview, InterviewTreeView interviewTreeView) {
+	public InterviewTreeViewController(DescriptionInterview interview, InterviewTreeView interviewTreeView) {
 		this.interview = interview;
 		this.interviewTreeView = interviewTreeView;
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		nomEntretien.setText(interview.getNom());
+		nomEntretien.setText(interview.getName());
 		
 
 		Node icon = new ImageView(ResourceLoader.loadImage("show.png"));
@@ -104,7 +104,7 @@ public class InterviewTreeViewController extends TreeViewController implements I
 	public void renameInter(){
 		renameInterview.setDisable(true);
 		TextField textField = new TextField();
-		textField.setText(interview.getNom());
+		textField.setText(interview.getName());
 		textField.setMaxWidth(100);
 		textField.requestFocus();
 		textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -114,7 +114,7 @@ public class InterviewTreeViewController extends TreeViewController implements I
 			        if (!newPropertyValue)
 			        {
 			        	nomEntretien.setText(textField.getText());
-			        	interview.setNom(textField.getText());
+			        	interview.setName(textField.getText());
 						interviewPane.setLeft(nomEntretien);
 						renameInterview.setDisable(false);
 			        }
@@ -126,7 +126,7 @@ public class InterviewTreeViewController extends TreeViewController implements I
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.ENTER){
 					nomEntretien.setText(textField.getText());
-					interview.setNom(textField.getText());
+					interview.setName(textField.getText());
 					interviewPane.setLeft(nomEntretien);
 					renameInterview.setDisable(true);
 				}

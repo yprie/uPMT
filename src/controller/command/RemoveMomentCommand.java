@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import application.Main;
 import controller.MomentExpVBox;
 import javafx.scene.Node;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import model.MomentExperience;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -14,8 +14,8 @@ public class RemoveMomentCommand implements Command,Undoable{
 
 	private MomentExperience moment;
 	private Main main;
-	private DescriptionEntretien dataBefore;
-	private DescriptionEntretien dataAfter;
+	private DescriptionInterview dataBefore;
+	private DescriptionInterview dataAfter;
 	private int indexInterview;
 	
 	public RemoveMomentCommand(MomentExperience moment, Main main){
@@ -28,10 +28,10 @@ public class RemoveMomentCommand implements Command,Undoable{
 	public void undo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataBefore.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataBefore.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -40,10 +40,10 @@ public class RemoveMomentCommand implements Command,Undoable{
 	public void redo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataAfter.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataAfter.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -55,13 +55,13 @@ public class RemoveMomentCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+		dataBefore = (DescriptionInterview)main.getCurrentDescription().clone();
 		indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 		MainViewTransformations.deleteMoment(moment, main);
 		
 		MainViewTransformations.updateGrid(main);
 	    main.needToSave();
-	    dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+	    dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 	    main.needToSave();
 	}
 	

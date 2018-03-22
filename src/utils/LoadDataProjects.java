@@ -22,12 +22,12 @@ package utils;
 
 import java.util.LinkedList;
 
-import model.Projet;
+import model.Project;
 
 public class LoadDataProjects {
 	private static LoadDataProjects m_instance;
 	
-	private LinkedList<Projet> projets;
+	private LinkedList<Project> projets;
 	
 	private LoadDataProjects(){
 		
@@ -39,10 +39,10 @@ public class LoadDataProjects {
 		return m_instance;
 	}
 	
-	public LinkedList<Projet> getProjets() {
+	public LinkedList<Project> getProjets() {
 		return projets;
 	}
-	public void setProjets(LinkedList<Projet> projets) {
+	public void setProjets(LinkedList<Project> projets) {
 		this.projets = projets;
 	}
 	

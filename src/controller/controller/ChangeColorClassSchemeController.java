@@ -38,7 +38,7 @@ public class ChangeColorClassSchemeController implements controller.controller.O
 
 	@Override
 	public void update(Object value) {
-		classe.setCouleur((String) value);
+		classe.setColor((String) value);
 		
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);

@@ -44,7 +44,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import model.Propriete;
+import model.Property;
 import model.Type;
 import utils.UndoCollector;
 

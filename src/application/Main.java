@@ -59,15 +59,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Classe;
-import model.DescriptionEntretien;
-import model.Dossier;
+import model.Category;
+import model.DescriptionInterview;
+import model.Folder;
 import model.MomentExperience;
-import model.Projet;
-import model.Propriete;
+import model.Project;
+import model.Property;
 import model.Schema;
 import model.Type;
 import utils.LoadDataProjects;
+import utils.MomentID;
 import utils.ResourceLoader;
 import utils.SchemaTransformations;
 import utils.Utils;
@@ -88,12 +89,12 @@ public class Main extends Application {
 	public ResourceBundle _langBundle;
 	
 	// Main Model references and containers
-	private LinkedList<Projet> projects = new LinkedList<Projet>();
-	private Projet currentProject;
-	private DescriptionEntretien currentDescription;
+	private LinkedList<Project> projects = new LinkedList<Project>();
+	private Project currentProject;
+	private DescriptionInterview currentDescription;
 	private Schema BasicSchema;
 	private TreeView<TypeController> treeViewSchema;
-	private TreeView<DescriptionEntretien> treeViewInterview;
+	private TreeView<DescriptionInterview> treeViewInterview;
 	private GridPane grid;
 	
 	private MainViewController mainViewController = new MainViewController(this);
@@ -121,7 +122,7 @@ public class Main extends Application {
 		else {
 			currentProject = new Projet("projetTMP", new Schema("SchemaTemporaire"));
 		}*/
-		currentProject = new Projet("--emptyProject--", new Schema("SchemaTemporaire"));
+		currentProject = new Project("--emptyProject--", new Schema("SchemaTemporaire"));
 		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
@@ -166,7 +167,7 @@ public class Main extends Application {
 	 * Method used to load all the projects
 	 */
 	private void initProjects(){
-		this.projects = new LinkedList<Projet>();
+		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
 		if(Utils.checkRecovery()) {
@@ -260,13 +261,13 @@ public class Main extends Application {
      */
     private void createBasicSchema(){
     	Type s = new Schema((_langBundle.getString("default_scheme")));
-    	Type general = new Dossier(_langBundle.getString("general"));
-    	Type autre = new Dossier(_langBundle.getString("other"));
-		Type visuel = new Classe(_langBundle.getString("visual"));
-		Type image = new Propriete(_langBundle.getString("picture"));
-		Type sensoriel = new Classe(_langBundle.getString("sensory"));
-		Type emotionnel = new Classe(_langBundle.getString("emotional"));
-		Type sonore = new Classe(_langBundle.getString("acoustic"));
+    	Type general = new Folder(_langBundle.getString("general"));
+    	Type autre = new Folder(_langBundle.getString("other"));
+		Type visuel = new Category(_langBundle.getString("visual"));
+		Type image = new Property(_langBundle.getString("picture"));
+		Type sensoriel = new Category(_langBundle.getString("sensory"));
+		Type emotionnel = new Category(_langBundle.getString("emotional"));
+		Type sonore = new Category(_langBundle.getString("acoustic"));
 		visuel.addType(image);
 		general.addType(visuel);
 		general.addType(sensoriel);
@@ -282,17 +283,17 @@ public class Main extends Application {
      */
     public void refreshDataTreeView(){
 		TreeItem<TypeController> schemaRoot = new TreeItem<TypeController>();
-		TreeItem<DescriptionEntretien> interviewRoot = new TreeItem<DescriptionEntretien>();
-		schemaRoot.getChildren().add(SchemaTransformations.SchemaToTreeView(this.currentProject.getSchemaProjet()));
-		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this.currentProject.getEntretiens()));
+		TreeItem<DescriptionInterview> interviewRoot = new TreeItem<DescriptionInterview>();
+		schemaRoot.getChildren().add(SchemaTransformations.SchemaToTreeView(this.currentProject.getSchema()));
+		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this.currentProject.getInterviews()));
 		this.treeViewSchema.setRoot(schemaRoot);
 		this.treeViewInterview.setRoot(interviewRoot);
 	}
-	private Projet projetInCreation=null;
-    public void setProjectInCreation(Projet p) {
+	private Project projetInCreation=null;
+    public void setProjectInCreation(Project p) {
     	projetInCreation = p;
     }
-    public Projet getProjectInCreation() {
+    public Project getProjectInCreation() {
     	return this.projetInCreation;
     }
     
@@ -366,12 +367,12 @@ public class Main extends Application {
 	/**
 	 * Recursive method used to recursively transform a Moment and its sub Moments into CSV compatible DATAZ
 	 */
-	private void writeMoment(DescriptionEntretien ent, MomentExperience m, PrintWriter writer, String hierarchy){
+	private void writeMoment(DescriptionInterview ent, MomentExperience m, PrintWriter writer, String hierarchy){
 		LinkedList<String> classes = new LinkedList<String>();
 		for(Type t : m.getTypes()){
 			for(Type prop : t.getTypes()){
-				Propriete p = (Propriete) prop;
-				classes.add(format(t.getName())+","+format(p.getName())+","+format(p.getValeur()));
+				Property p = (Property) prop;
+				classes.add(format(t.getName())+","+format(p.getName())+","+format(p.getValue()));
 			}
 		}
 		
@@ -387,16 +388,16 @@ public class Main extends Application {
 
 		if(!classes.isEmpty()){
 			for(String s : classes){
-				writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","
-			+format(m.getCouleur())+","+format(m.getDuree())+","+s);
+				writer.println(format(ent.getName())+",\""+hierarchy+"\""+","+format(m.getName())+","+format(m.getDescripteme())+","
+			+format(m.getColor())+","+format(m.getDuration())+","+s);
 			}
 		}else{
-			writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","
-		+format(m.getCouleur())+","+format(m.getDuree())+",\"\",\"\",\"\"");
+			writer.println(format(ent.getName())+",\""+hierarchy+"\""+","+format(m.getName())+","+format(m.getDescripteme())+","
+		+format(m.getColor())+","+format(m.getDuration())+",\"\",\"\",\"\"");
 		}
 		
-		for (int i = 0; i < m.getSousMoments().size(); i++) {
-			MomentExperience sub = m.getSousMoments().get(i);
+		for (int i = 0; i < m.getSubMoments().size(); i++) {
+			MomentExperience sub = m.getSubMoments().get(i);
 			writeMoment(ent,sub, writer, hierarchy+"."+(i+1));
 		}
 	}	
@@ -404,12 +405,12 @@ public class Main extends Application {
 	/**
 	 * Exports the project p into a CSV file
 	 */
-	public void export(Projet p){
+	public void export(Project p){
 		ObjectOutputStream oos = null;
 		try {
 			PrintWriter writer = new PrintWriter("exports/"+p.getName()+".csv", "UTF-8");
 		    writer.println("\"ENTRETIEN\",\"ID\",\"NOM\",\"EXTRAIT\",\"COULEUR\",\"DEBUT\",\"FIN\",\"CLASSE\",\"PROP\",\"VALEUR\"");
-			for(DescriptionEntretien ent : p.getEntretiens()){
+			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);
 					writeMoment(ent, m, writer,Integer.toString(i+1));
@@ -445,15 +446,15 @@ public class Main extends Application {
 		return primaryStage;
 	}
 	
-	public LinkedList<Projet> getProjects() {
+	public LinkedList<Project> getProjects() {
 		return projects;
 	}
 	
-	public Projet getCurrentProject() {
+	public Project getCurrentProject() {
 		return currentProject;
 	}
 	
-	public void setCurrentProject(Projet current){
+	public void setCurrentProject(Project current){
 		currentProject = current;
 		if(currentProject!=null) {
 			System.out.println("SET ! : "+this.currentProject.getName());
@@ -486,20 +487,21 @@ public class Main extends Application {
 
 	}
 	
-	public TreeView<DescriptionEntretien> getTreeViewInterview() {
+	public TreeView<DescriptionInterview> getTreeViewInterview() {
 		return treeViewInterview;
 	}
 	
-	public void setTreeViewInterview(TreeView<DescriptionEntretien> treeViewInterview) {
+	public void setTreeViewInterview(TreeView<DescriptionInterview> treeViewInterview) {
 		this.treeViewInterview = treeViewInterview;
 	}
 	
-	public DescriptionEntretien getCurrentDescription() {
+	public DescriptionInterview getCurrentDescription() {
 		return currentDescription;
 	}
 	
-	public void setCurrentDescription(DescriptionEntretien currentDescription) {
+	public void setCurrentDescription(DescriptionInterview currentDescription) {
 		this.currentDescription = currentDescription;
+		MomentID.initID(currentDescription.getMoments());
 	}
 	
 	public void setGrid(GridPane g){

@@ -37,11 +37,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import model.Classe;
-import model.DescriptionEntretien;
+import model.Category;
+import model.DescriptionInterview;
 import utils.MainViewTransformations;
 
-public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
+public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 	
 	private Main main;
 	private TreeViewController controller;
@@ -59,10 +59,10 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 		return main;
 	}
 	
-	public void deleteInterview(DescriptionEntretien interview){
+	public void deleteInterview(DescriptionInterview interview){
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(main._langBundle.getString("delete_interview"));
-		alert.setHeaderText(main._langBundle.getString("delete_interview_text_alert")+interview.getNom());
+		alert.setHeaderText(main._langBundle.getString("delete_interview_text_alert")+interview.getName());
 		
 		ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("confirm"));
 		ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"), ButtonData.CANCEL_CLOSE);
@@ -88,7 +88,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
     }
 	
 	@Override
-    protected void updateItem(DescriptionEntretien elem, boolean empty) {
+    protected void updateItem(DescriptionInterview elem, boolean empty) {
 		super.updateItem(elem, empty);
 		
 		if(empty || elem == null) {
@@ -97,7 +97,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 		}
 		else{
 			// if elem is an interview of the project
-			DescriptionEntretien desc = ((DescriptionEntretien)elem);
+			DescriptionInterview desc = ((DescriptionInterview)elem);
 			try {
 		    	FXMLLoader loader = new FXMLLoader();
 		        loader.setLocation(getClass().getResource("/view/EntretienTreeView.fxml"));
@@ -110,7 +110,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 	    	catch (IOException e) {
 	    		e.printStackTrace();
 	    	}
-			if (desc.getNom().equals("Interviews")) {
+			if (desc.getName().equals("Interviews")) {
 				try {
 			    	FXMLLoader loader = new FXMLLoader();
 			        loader.setLocation(getClass().getResource("/view/RootEntretienTreeView.fxml"));
@@ -135,7 +135,7 @@ public class InterviewTreeView extends TreeCell<DescriptionEntretien>{
 					}
 				});
 				
-				if((!main.getCurrentProject().getEntretiens().isEmpty()) && desc.equals(main.getCurrentDescription())){
+				if((!main.getCurrentProject().getInterviews().isEmpty()) && desc.equals(main.getCurrentDescription())){
 					((InterviewTreeViewController)controller).setSelected("blue");
 				}else{
 					((InterviewTreeViewController)controller).setSelected("black");

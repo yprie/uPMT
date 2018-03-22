@@ -35,11 +35,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
-import model.Projet;
+import model.Project;
 
 public abstract class Utils {
 	
-	public static void loadProjects(LinkedList<Projet> projects, Main main){
+	public static void loadProjects(LinkedList<Project> projects, Main main){
 		HashSet<String> projectNames = loadProjectsNames();
 		
 		
@@ -49,9 +49,9 @@ public abstract class Utils {
 		}else{
 			////System.out.println("Loading projects");
 			for (String s : projectNames) {
-				if(s.contains(Projet.FORMAT)) {
+				if(s.contains(Project.FORMAT)) {
 					//projects.add(Projet.load(s));
-					Projet p = Projet.loadData(s);
+					Project p = Project.loadData(s);
 					if(p==null) {
 						Alert alert = new Alert(AlertType.CONFIRMATION);
 				        //alert.setTitle("Error, version conflict");
@@ -87,8 +87,8 @@ public abstract class Utils {
 		}else{
 			////System.out.println("Loading projects");
 			for (String s : projectNames) {
-				if(s.contains(Projet.FORMAT)) {
-					if(projectNames.contains(Projet.RECOVERY+s)) {
+				if(s.contains(Project.FORMAT)) {
+					if(projectNames.contains(Project.RECOVERY+s)) {
 						ret=true;
 						break;
 					}
@@ -101,10 +101,10 @@ public abstract class Utils {
 	private static HashSet<String> loadProjectsNames() {
 		HashSet<String> results = new HashSet<String>();
 
-		File[] files = new File(Projet.PATH).listFiles();
+		File[] files = new File(Project.PATH).listFiles();
 		if(files==null) {
-			new File(Projet.PATH).mkdir();
-			files = new File(Projet.PATH).listFiles();
+			new File(Project.PATH).mkdir();
+			files = new File(Project.PATH).listFiles();
 		}
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 
@@ -121,12 +121,12 @@ public abstract class Utils {
 	}
 	
 	public static void deleteRecovery() {
-		File[] files = new File(Projet.PATH).listFiles();
+		File[] files = new File(Project.PATH).listFiles();
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 
 		for (File file : files) {
 		    if (file.isFile()) {
-		    	if(file.getName().contains(Projet.RECOVERY))
+		    	if(file.getName().contains(Project.RECOVERY))
 		    		file.delete();
 		    }
 		}
@@ -135,16 +135,16 @@ public abstract class Utils {
 	public static void replaceRecovery() {
 
 		//Search RecpveryFiles
-		File[] files = new File(Projet.PATH).listFiles();
+		File[] files = new File(Project.PATH).listFiles();
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 		for (File file : files)
 		    if (file.isFile()) 
-		    	if(file.getName().contains(Projet.RECOVERY)) {
-		    		String fileName = file.getName().replace(Projet.RECOVERY, "");
+		    	if(file.getName().contains(Project.RECOVERY)) {
+		    		String fileName = file.getName().replace(Project.RECOVERY, "");
 		    		//System.out.println();
-		    		File fileToDelete = new File(Projet.PATH+fileName);
+		    		File fileToDelete = new File(Project.PATH+fileName);
 		    		fileToDelete.delete();
-		    		file.renameTo(new File(Projet.PATH+fileName));
+		    		file.renameTo(new File(Project.PATH+fileName));
 		    	}
 		
 		

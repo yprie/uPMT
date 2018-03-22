@@ -26,7 +26,7 @@ import controller.controller.TypeController;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import model.Schema;
 import model.Type;
 
@@ -44,13 +44,13 @@ public abstract class SchemaTransformations {
 		return schema;
 	}
 	
-	public static TreeItem<DescriptionEntretien> EntretienToTreeView(LinkedList<DescriptionEntretien> entretiens){
-		TreeItem<DescriptionEntretien> entres;
-		entres = new TreeItem<DescriptionEntretien>(new DescriptionEntretien(null,"Interviews"));
+	public static TreeItem<DescriptionInterview> EntretienToTreeView(LinkedList<DescriptionInterview> entretiens){
+		TreeItem<DescriptionInterview> entres;
+		entres = new TreeItem<DescriptionInterview>(new DescriptionInterview(null,"Interviews"));
 		//entres = new TreeItem<DescriptionEntretien>(new DescriptionEntretien(null,main._langBundle.getString("interview")));
 		entres.setExpanded(true);
-		for (DescriptionEntretien d : entretiens) {
-			entres.getChildren().add(new TreeItem<DescriptionEntretien>(d));
+		for (DescriptionInterview d : entretiens) {
+			entres.getChildren().add(new TreeItem<DescriptionInterview>(d));
 		}
 		return entres;
 	}

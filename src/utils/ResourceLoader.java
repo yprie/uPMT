@@ -14,7 +14,7 @@ import com.sun.javafx.tk.Toolkit;
 
 import application.Main;
 import javafx.scene.image.Image;
-import model.Projet;
+import model.Project;
 
 public class ResourceLoader {
  

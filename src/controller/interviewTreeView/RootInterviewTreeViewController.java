@@ -34,7 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import utils.ResourceLoader;
 
 public class RootInterviewTreeViewController extends TreeViewController implements Initializable {
@@ -42,17 +42,17 @@ public class RootInterviewTreeViewController extends TreeViewController implemen
 	private @FXML Label nomRoot;
 	private @FXML Button addInterview;
 	private @FXML ImageView rootIcon;
-	private DescriptionEntretien interview;
+	private DescriptionInterview interview;
 	private Main main;
 
-	public RootInterviewTreeViewController(DescriptionEntretien interview,Main  main) {
+	public RootInterviewTreeViewController(DescriptionInterview interview,Main  main) {
 		this.interview = interview;
 		this.main = main;
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		nomRoot.setText(interview.getNom());
+		nomRoot.setText(interview.getName());
 
 		Node icon = new ImageView(ResourceLoader.loadImage("new.png"));
 		this.addInterview.setGraphic(icon);

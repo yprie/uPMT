@@ -36,7 +36,7 @@ public class MomentNameController implements controller.controller.Observable{
 
 	@Override
 	public void update(Object value) {
-		momentExp.setNom(((String) value));
+		momentExp.setName(((String) value));
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);
 		}

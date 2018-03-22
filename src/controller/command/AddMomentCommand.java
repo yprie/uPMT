@@ -30,9 +30,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import model.MomentExperience;
-import model.Propriete;
+import model.Property;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
@@ -41,8 +41,8 @@ public class AddMomentCommand implements Command,Undoable{
 	private MomentExperience moment;
 	private MomentExperience parentMoment=null;
 	private Main main;
-	private DescriptionEntretien dataBefore;
-	private DescriptionEntretien dataAfter;
+	private DescriptionInterview dataBefore;
+	private DescriptionInterview dataAfter;
 	private int indexInterview;
 	private int index;
 	
@@ -62,10 +62,10 @@ public class AddMomentCommand implements Command,Undoable{
 	public void undo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataBefore.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataBefore.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -74,10 +74,10 @@ public class AddMomentCommand implements Command,Undoable{
 	public void redo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataAfter.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataAfter.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -91,20 +91,20 @@ public class AddMomentCommand implements Command,Undoable{
 	public void execute() {
 		try {
 			//System.out.println("Execute de "+id);
-			this.dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+			this.dataBefore = (DescriptionInterview)main.getCurrentDescription().clone();
 			
 			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 			//indexInterview = new Integer(main.getProjects().indexOf(main.getCurrentDescription()));
 			System.out.println("On veut ajouter un moment à l'index");
 			if(parentMoment!=null) {
-				parentMoment.addSousMoment(index, moment);
+				parentMoment.addSubMoment(index, moment);
 			}
 			else
 				main.getCurrentDescription().addMoment(index, moment);
 			MainViewTransformations.updateGrid(main);
 			//System.out.println("update");
 		    main.needToSave();
-		    this.dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+		    this.dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 		}catch(Exception e) {e.printStackTrace();}
 	}
 	

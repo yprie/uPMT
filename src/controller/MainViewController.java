@@ -95,11 +95,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import model.Classe;
-import model.DescriptionEntretien;
-import model.Enregistrement;
+import model.Category;
+import model.DescriptionInterview;
+import model.Record;
 import model.MomentExperience;
-import model.Propriete;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.ResourceLoader;
@@ -111,7 +111,7 @@ public class MainViewController implements Initializable, Observer {
 
 	private @FXML SplitPane mainSplitPane;
 	private @FXML TreeView<TypeController> treeViewSchema;
-	private @FXML TreeView<DescriptionEntretien> treeViewInterview;
+	private @FXML TreeView<DescriptionInterview> treeViewInterview;
 	private @FXML ImageView ajoutMomentButton;
 	private @FXML BorderPane topBarContainerTextInterview;
 
@@ -127,7 +127,7 @@ public class MainViewController implements Initializable, Observer {
 	
 	private @FXML ScrollPane gridScrollPane;
 	
-	private HashMap<DescriptionEntretien, GridPane> interviewsPane;
+	private HashMap<DescriptionInterview, GridPane> interviewsPane;
 	
 
 	
@@ -137,7 +137,7 @@ public class MainViewController implements Initializable, Observer {
 	public MainViewController(Main main) {
 		// TODO Auto-generated constructor stub
 		this.main = main;
-		this.interviewsPane = new HashMap<DescriptionEntretien, GridPane>();
+		this.interviewsPane = new HashMap<DescriptionInterview, GridPane>();
 	}
 
 	@Override
@@ -145,8 +145,8 @@ public class MainViewController implements Initializable, Observer {
 		Image image = ResourceLoader.loadImage("momentIcon.png");
 		this.ajoutMomentButton.setImage(image);
 
-		if (!main.getCurrentProject().getEntretiens().isEmpty()) {
-			main.setCurrentDescription(main.getCurrentProject().getEntretiens().getFirst());
+		if (!main.getCurrentProject().getInterviews().isEmpty()) {
+			main.setCurrentDescription(main.getCurrentProject().getInterviews().getFirst());
 		}
 
 		treeViewSchema.setEditable(true);
@@ -154,17 +154,17 @@ public class MainViewController implements Initializable, Observer {
 		treeViewInterview.setEditable(true);
 
 		treeViewSchema.setCellFactory((TreeView<TypeController> t) -> new TypeTreeView(main));
-		treeViewInterview.setCellFactory((TreeView<DescriptionEntretien> t) -> new InterviewTreeView(main));
+		treeViewInterview.setCellFactory((TreeView<DescriptionInterview> t) -> new InterviewTreeView(main));
 
 		TreeItem<TypeController> Schemaroot;
-		TreeItem<DescriptionEntretien> Interviewroot;
+		TreeItem<DescriptionInterview> Interviewroot;
 		Schemaroot = new TreeItem<TypeController>();
-		Interviewroot = new TreeItem<DescriptionEntretien>();
+		Interviewroot = new TreeItem<DescriptionInterview>();
 
 		Schemaroot.getChildren()
-				.add(SchemaTransformations.SchemaToTreeView(main.getCurrentProject().getSchemaProjet()));
+				.add(SchemaTransformations.SchemaToTreeView(main.getCurrentProject().getSchema()));
 		Interviewroot.getChildren()
-				.add(SchemaTransformations.EntretienToTreeView(main.getCurrentProject().getEntretiens()));
+				.add(SchemaTransformations.EntretienToTreeView(main.getCurrentProject().getInterviews()));
 		treeViewSchema.setRoot(Schemaroot);
 		treeViewSchema.setShowRoot(false);
 		treeViewInterview.setRoot(Interviewroot);
@@ -177,7 +177,7 @@ public class MainViewController implements Initializable, Observer {
 			// Give time to end initializing the scheme on the left
 			Platform.runLater(new Runnable() {
                 @Override public void run() {
-                	for(DescriptionEntretien d : main.getCurrentProject().getEntretiens()) {
+                	for(DescriptionInterview d : main.getCurrentProject().getInterviews()) {
                 		
                 		GridPane gp = new GridPane();
                 		gp.setMinHeight(200);
@@ -282,7 +282,7 @@ public class MainViewController implements Initializable, Observer {
 		main.setGrid(interviewsPane.get(main.getCurrentDescription()));
 	}
 	
-	public void addGridPaneInterview(DescriptionEntretien d) {
+	public void addGridPaneInterview(DescriptionInterview d) {
 		GridPane gp = new GridPane();
 		gp.setMinHeight(200);
 		gp.setPadding(new Insets(100, 0, 0, 0));
@@ -321,9 +321,9 @@ public class MainViewController implements Initializable, Observer {
 	}
 
 	
-	private Classe duplicate(Classe c){
-		Classe newc = new Classe(c.getName());
-		newc.setCouleur(c.getCouleur());
+	private Category duplicate(Category c){
+		Category newc = new Category(c.getName());
+		newc.setColor(c.getColor());
 		for(Type t : c.getTypes()){
 			newc.addType(t);
 		}

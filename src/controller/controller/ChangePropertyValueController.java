@@ -26,9 +26,9 @@ import controller.TypeClassRepresentationController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import model.Classe;
+import model.Category;
 import model.MomentExperience;
-import model.Propriete;
+import model.Property;
 import model.Type;
 
 public class ChangePropertyValueController implements controller.controller.Observable{
@@ -43,7 +43,7 @@ public class ChangePropertyValueController implements controller.controller.Obse
 
 	@Override
 	public void update(Object value) {
-		((Propriete) property).setValeur((String) value);
+		((Property) property).setValue((String) value);
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);
 		}
@@ -59,9 +59,9 @@ public class ChangePropertyValueController implements controller.controller.Obse
 		if(property==null)
 			System.out.println("Ancien: null");
 		else
-			System.out.println("Ancien: "+((Propriete)property).getValeur());
-		this.property = (Propriete) value;
-		System.out.println("Nouveau: "+((Propriete)property).getValeur());
+			System.out.println("Ancien: "+((Property)property).getValue());
+		this.property = (Property) value;
+		System.out.println("Nouveau: "+((Property)property).getValue());
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class ChangePropertyValueController implements controller.controller.Obse
 		ObsTypesNames.remove(o);
 	}
 	
-	public Propriete getProperty() {
-		return (Propriete) this.property;
+	public Property getProperty() {
+		return (Property) this.property;
 	}
 }

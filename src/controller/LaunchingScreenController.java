@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import model.Projet;
+import model.Project;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,7 +50,7 @@ public class LaunchingScreenController implements Initializable{
 	private @FXML Button btn_nouveauProjet;
 	private @FXML Button btn_ouvrirProjet;
 	private Main m_main;
-	private @FXML ListView<Projet> tousLesProjets;
+	private @FXML ListView<Project> tousLesProjets;
 	private Stage window;
 	
 	public LaunchingScreenController(Main main,Stage window) {
@@ -76,17 +76,17 @@ public class LaunchingScreenController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		//TODO: in this part, we prompt a lauchingScreen Dialog for open or create new project
-		ObservableList<Projet> items = FXCollections.observableArrayList (m_main.getProjects());
+		ObservableList<Project> items = FXCollections.observableArrayList (m_main.getProjects());
 		tousLesProjets.setItems(items);
 		tousLesProjets.getFocusModel().focus(0);
-		tousLesProjets.setCellFactory(new Callback<ListView<Projet>, ListCell<Projet>>() {
+		tousLesProjets.setCellFactory(new Callback<ListView<Project>, ListCell<Project>>() {
 	        @Override
-	        public ListCell<Projet> call(ListView<Projet> param) {
+	        public ListCell<Project> call(ListView<Project> param) {
 	            
-	        	ListCell<Projet> cell = new ListCell<Projet>() {
+	        	ListCell<Project> cell = new ListCell<Project>() {
 
 	                @Override
-	                protected void updateItem(Projet item, boolean empty) {
+	                protected void updateItem(Project item, boolean empty) {
 	                    super.updateItem(item, empty);
 	                    if (item != null) {
 	                    	setText(item.getName());

@@ -38,8 +38,8 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import model.Classe;
-import model.Propriete;
+import model.Category;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -47,11 +47,11 @@ import utils.Undoable;
 public class RemovePropertyFromClassCommand implements Command,Undoable{
 	
 	private TypeController controller;
-	private Propriete oldp;
+	private Property oldp;
 	private TreeItem<TypeController> tree;
 	private Main main;
 	
-	public RemovePropertyFromClassCommand(TypeController controller, Propriete oldp, TreeItem<TypeController> treeItem, Main m) {
+	public RemovePropertyFromClassCommand(TypeController controller, Property oldp, TreeItem<TypeController> treeItem, Main m) {
 		this.oldp = oldp;
 		this.controller = controller;
 		this.tree = treeItem;

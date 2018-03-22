@@ -24,7 +24,7 @@ import java.io.Serializable;
 
 public class Descripteme implements Serializable, Cloneable{
 	
-	private String texte;
+	private String mText;
 	
 	public Object clone() {
 		Descripteme ret = null;
@@ -41,27 +41,27 @@ public class Descripteme implements Serializable, Cloneable{
 	public boolean equals(Object o) {
 		try {
 			Descripteme d = (Descripteme) o;
-			return d.texte.equals(texte);
+			return d.mText.equals(mText);
 		}
 		catch(Exception e) {
 			return false;
 		}
 	}
 	
-	public Descripteme(String texte){
-		this.texte = texte;
+	public Descripteme(String text){
+		this.mText = text;
 	}
 	
 	public void setTexte(String t){
-		this.texte = t;
+		this.mText = t;
 	}
 	
 	public String getTexte(){
-		return this.texte;
+		return this.mText;
 	}
 
 	public String toString(){
-		return this.texte;
+		return this.mText;
 	}
 	
 	

@@ -38,8 +38,8 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import model.Classe;
-import model.Propriete;
+import model.Category;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -47,11 +47,11 @@ import utils.Undoable;
 public class AddPropertyToClassCommand implements Command,Undoable{
 	
 	private TypeController controller;
-	private Propriete newp;
+	private Property newp;
 	private TreeItem<TypeController> tree;
 	private Main main;
 	
-	public AddPropertyToClassCommand(TypeController controller, Propriete newp, TreeItem<TypeController> treeItem, Main m) {
+	public AddPropertyToClassCommand(TypeController controller, Property newp, TreeItem<TypeController> treeItem, Main m) {
 		this.newp = newp;
 		this.controller = controller;
 		this.tree = treeItem;

@@ -33,9 +33,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import model.Classe;
-import model.Dossier;
-import model.Propriete;
+import model.Category;
+import model.Folder;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -46,9 +46,9 @@ public class AddTypeCommand implements Command,Undoable{
 	private DragEvent event;
 	private String typeName ;
 	private MomentExpVBox momentExpBorder;
-	private Classe type;
+	private Category type;
 	private Main main;
-	private Classe dup;
+	private Category dup;
 	
 	public AddTypeCommand(MomentExpVBox moment, DragEvent event, Main main) {
 		this.event = event;
@@ -66,10 +66,10 @@ public class AddTypeCommand implements Command,Undoable{
 		}
 		setClassByName(main.getCurrentProject().getSchemaProjet());*/
 		
-		for(Type dossier : main.getCurrentProject().getSchemaProjet().getTypes()) {
+		for(Type dossier : main.getCurrentProject().getSchema().getTypes()) {
 			for(Type classe : dossier.getTypes()) {
 				if(classe.getName().equals(typeName)) {
-					type = (Classe) classe;
+					type = (Category) classe;
 					break;
 				}
 			}
@@ -83,7 +83,7 @@ public class AddTypeCommand implements Command,Undoable{
 		for(Type t : type.getTypes()){
 
 			if(t.getName().equals(typeName)){
-				this.type = (Classe) t;
+				this.type = (Category) t;
 			}
 			
 			for(Type t2: t.getTypes()){
@@ -111,7 +111,7 @@ public class AddTypeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		System.out.println(momentExpBorder.getMoment().getNom());
+		System.out.println(momentExpBorder.getMoment().getName());
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
 		main.needToSave();
 	}

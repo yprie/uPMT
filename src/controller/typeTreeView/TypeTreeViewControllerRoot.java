@@ -42,7 +42,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import model.Dossier;
+import model.Folder;
 import model.Type;
 import utils.ResourceLoader;
 import utils.Utils;
@@ -105,7 +105,7 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 			        {
 			        	nomType.setText(textField.getText());
 						type.getType().setName(textField.getText());
-						main.getCurrentProject().getSchemaProjet().setName(textField.getText());
+						main.getCurrentProject().getSchema().setName(textField.getText());
 						typePane.setLeft(nomType);
 						rename.setDisable(false);
 			        }
@@ -120,7 +120,7 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 					type.getType().setName(textField.getText());
 					typePane.setLeft(nomType);
 					rename.setDisable(true);
-					main.getCurrentProject().getSchemaProjet().setName(textField.getText());
+					main.getCurrentProject().getSchema().setName(textField.getText());
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					typePane.setLeft(nomType);

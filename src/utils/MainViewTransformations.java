@@ -65,10 +65,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import model.Classe;
-import model.DescriptionEntretien;
+import model.Category;
+import model.DescriptionInterview;
 import model.MomentExperience;
-import model.Serializer;
 import model.Type;
 
 public abstract class MainViewTransformations {
@@ -139,9 +138,9 @@ public abstract class MainViewTransformations {
 		    		//Add Moment to a Moment : int: index in sous-moment / Moment: parentMoment / Main
 		    		MomentExperience newMoment = newMoment = new MomentExperience();
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
-		    			newMoment.setMorceauDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    			newMoment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
-			    	AddMomentCommand cmd = new AddMomentCommand(moment.getMoment().getSousMoments().size(),newMoment,moment.getMoment(),main);
+			    	AddMomentCommand cmd = new AddMomentCommand(moment.getMoment().getSubMoments().size(),newMoment,moment.getMoment(),main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
@@ -152,7 +151,7 @@ public abstract class MainViewTransformations {
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();
 					}
-			    	MoveMomentToMomentCommand cmd = new MoveMomentToMomentCommand(serial, moment.getMoment(),moment.getMoment().getSousMoments().size() ,main);
+			    	MoveMomentToMomentCommand cmd = new MoveMomentToMomentCommand(serial, moment.getMoment(),moment.getMoment().getSubMoments().size() ,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 				}
@@ -277,7 +276,7 @@ public abstract class MainViewTransformations {
 		    		AddMomentCommand cmd=null;
 		    		MomentExperience moment = moment = new MomentExperience();
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
-		    			moment.setMorceauDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    			moment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
 		    		if(p.hasMomentParent())
 		    			cmd = new AddMomentCommand(pos, moment, p.getMomentParent().getMoment() ,main);
@@ -367,7 +366,7 @@ public abstract class MainViewTransformations {
 		//System.out.println("------------------------------------");
 		//System.out.println(mp.getMoment().getNom()+": ");
 		for (Type t : mp.getMoment().getTypes()) {
-			TypeClassRepresentationController classe = new TypeClassRepresentationController((Classe) t,mp,main);
+			TypeClassRepresentationController classe = new TypeClassRepresentationController((Category) t,mp,main);
 			mp.getTypeSpace().getChildren().add(classe);
 			addTypeListener(classe, mp, t, main);
 			//System.out.println(t.toString());
@@ -404,8 +403,8 @@ public abstract class MainViewTransformations {
 		return ret;
 	}
 	
-	public static int getInterviewIndex(DescriptionEntretien e, Main main) {
-		LinkedList<DescriptionEntretien> tmp = main.getCurrentProject().getEntretiens();
+	public static int getInterviewIndex(DescriptionInterview e, Main main) {
+		LinkedList<DescriptionInterview> tmp = main.getCurrentProject().getInterviews();
 		int ret=-1;
 		for(int i=0; i<tmp.size();i++) {
 			//System.out.println(main.getCurrentDescription().toString() +" - "+ tmp.get(i).toString());
@@ -422,7 +421,7 @@ public abstract class MainViewTransformations {
 	//private static int PANELSIZE = 20;
 	
 	// Method used to load the grid related to a certain Interview
-	public static void loadGridData(GridPane grid,Main main, DescriptionEntretien d){
+	public static void loadGridData(GridPane grid,Main main, DescriptionInterview d){
 		// Grid initialisation ( reset )
 		grid.getChildren().clear();
 		grid.getColumnConstraints().clear();
@@ -532,7 +531,7 @@ public abstract class MainViewTransformations {
 		}
 
 		//Ajout >
-		if(mev.getMoment().getSousMoments().size()>0) {
+		if(mev.getMoment().getSubMoments().size()>0) {
 			ColumnConstraints cP = new ColumnConstraints();
 			/*cP.setMinWidth(PANELSIZE);
 			cP.setPrefWidth(PANELSIZE);
@@ -546,7 +545,7 @@ public abstract class MainViewTransformations {
 			mev.getSousMomentPane().add(p,mev.getSousMomentPane().getColumnConstraints().size()-1,0);
 		}
 		int i=0;
-		for (MomentExperience m: mev.getMoment().getSousMoments()) {
+		for (MomentExperience m: mev.getMoment().getSubMoments()) {
 			i++;
 			MomentExpVBox tmp = new MomentExpVBox(main);
 			tmp.setMoment(m);
@@ -579,10 +578,10 @@ public abstract class MainViewTransformations {
 	}
 	
 	public static void deleteMomentFromParent(MomentExperience parent, MomentExperience toCompare) {
-		for(MomentExperience current:parent.getSousMoments()) {
+		for(MomentExperience current:parent.getSubMoments()) {
 		//System.out.println("**On compare "+current.getNom()+" � "+toCompare.getNom());
 			if(current.equals(toCompare)) {
-				parent.removeSousMoment(current);
+				parent.removeSubMoment(current);
 			//System.out.println("**On supprime "+current.getNom());
 				break;
 			}
@@ -652,7 +651,7 @@ public abstract class MainViewTransformations {
 			for(MomentExperience moment: main.getCurrentDescription().getMoments()) {
 				if(ret!=null) break;
 				if(moment.getID() == id)ret = moment;
-				else if(moment.getSousMoments().size()>0)
+				else if(moment.getSubMoments().size()>0)
 						ret = getMomentByIDFromParent(moment,  id,  main);
 			}
 			return ret;
@@ -660,10 +659,10 @@ public abstract class MainViewTransformations {
 		
 		private static MomentExperience getMomentByIDFromParent(MomentExperience parent, int id, Main main) {
 			MomentExperience ret = null;
-			for(MomentExperience moment: parent.getSousMoments()) {
+			for(MomentExperience moment: parent.getSubMoments()) {
 				if(ret!=null) break;
 				if(moment.getID() == id) ret = moment;
-				else if(moment.getSousMoments().size()>0)
+				else if(moment.getSubMoments().size()>0)
 						ret = getMomentByIDFromParent(moment,  id,  main);
 			}
 			return ret;

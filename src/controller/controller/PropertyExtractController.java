@@ -3,14 +3,14 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import model.Propriete;
+import model.Property;
 
 public class PropertyExtractController implements controller.controller.Observable{
 
-	private Propriete mPropriete;
+	private Property mPropriete;
 	private LinkedList<Observer> ObsMomentNames;
 	
-	public PropertyExtractController(Propriete moment) {
+	public PropertyExtractController(Property moment) {
 		this.mPropriete = moment;
 		ObsMomentNames = new LinkedList<Observer>();
 	}
@@ -29,13 +29,13 @@ public class PropertyExtractController implements controller.controller.Observab
 		ObsMomentNames.add(o);
 	}
 	
-	public void setPropriete(Propriete p) {
+	public void setPropriete(Property p) {
 		this.mPropriete = p;
 	}
 
 	@Override
 	public void updateModel(Object value) {
-		this.mPropriete = (Propriete) value;
+		this.mPropriete = (Property) value;
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class PropertyExtractController implements controller.controller.Observab
 		ObsMomentNames.remove(o);
 	}
 	
-	public Propriete getProperty() {
+	public Property getProperty() {
 		return mPropriete;
 	}
 }

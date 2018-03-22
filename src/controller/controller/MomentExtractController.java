@@ -36,7 +36,7 @@ public class MomentExtractController implements controller.controller.Observable
 
 	@Override
 	public void update(Object value) {
-		momentExp.setMorceauDescripteme(((String) value));
+		momentExp.setDescripteme(((String) value));
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);
 		}

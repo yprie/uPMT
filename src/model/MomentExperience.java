@@ -34,51 +34,26 @@ import java.util.LinkedList;
 import application.Main;
 import javafx.scene.paint.Color;
 import utils.MainViewTransformations;
+import utils.MomentID;
 
 public class MomentExperience implements Serializable, Cloneable {
 
-	private Date date;
-	private String duree;
-	private String nom;
-	private String morceauDescripteme;
-	private LinkedList<Type> types;
-	private LinkedList<Enregistrement> enregistrements;
-	private LinkedList<MomentExperience> sousMoments;
-	private int parentMomentID=-1;
-	private int parentCol=-1;
-	private int gridCol;
-	private String couleur = "#FFFFFF";
-	private Propriete currentProperty =null;
-	private int id;
-	private int row;
-	private transient SimpleDateFormat formater = new SimpleDateFormat("HH:mm:ss");
+	private Date mDate;
+	private String mDuration;
+	private String mName;
+	private String mDescripteme;
+	private LinkedList<Type> mTypes;
+	private LinkedList<Record> mRecords;
+	private LinkedList<MomentExperience> mSubMoments;
+	private int mParentMomentID=-1;
+	private int mParentCol=-1;
+	private int mGridCol;
+	private String mColor = "#FFFFFF";
+	private Property mCurrentProperty =null;
+	private int mID;
+	private int mRow;
+	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
-	/*public MomentExperience clone() {
-		MomentExperience ret = new MomentExperience(nom, row, gridCol);
-		if(date!=null)
-			ret.setDate((Date)date.clone());
-		ret.setDuree(duree);
-		ret.setMorceauDescripteme(morceauDescripteme);
-		//Types
-		LinkedList<Type> retTypes = new LinkedList<Type>();
-		for(int i=0;i<types.size();i++) {
-			retTypes.add(types.get(i).clone());
-		}
-		ret.setTypes(retTypes);
-		//Enregistrements
-		LinkedList<Enregistrement> retEnregistrements = new LinkedList<Enregistrement>();
-		for(int i=0;i<enregistrements.size();i++) {
-			retEnregistrements.add(enregistrements.get(i).clone());
-		}
-		ret.setEnregistrements(retEnregistrements);
-		for(int i=0;i<sousMoments.size(); i++) {
-			ret.addSousMoment(sousMoments.get(i).clone());
-		}
-		ret.setGridCol(gridCol);
-		ret.setID(id);
-		ret.setCouleur(couleur);
-		return ret;
-	}*/
 	
 	public Object clone() {
 		try {
@@ -96,19 +71,19 @@ public class MomentExperience implements Serializable, Cloneable {
 		}
 	}
 
-	public MomentExperience(String nom,int row,int col){
-		this.sousMoments = new LinkedList<MomentExperience>();
-		this.enregistrements = new LinkedList<Enregistrement>();
-		this.types = new LinkedList<Type>();
-		this.nom = nom;
-		this.row = row;
-		this.gridCol = col;
-		this.date = new Date();
+	public MomentExperience(String mName,int row,int col){
+		this.mSubMoments = new LinkedList<MomentExperience>();
+		this.mRecords = new LinkedList<Record>();
+		this.mTypes = new LinkedList<Type>();
+		this.mName = mName;
+		this.mRow = row;
+		this.mGridCol = col;
+		this.mDate = new Date();
 		try {
-			this.date = this.formater.parse("00:00:00");
+			this.mDate = this.mFormater.parse("00:00:00");
 		} catch (ParseException e) {
 		}
-		id=MomentID.generateID();
+		mID=MomentID.generateID();
 	}
 	
 	
@@ -118,163 +93,163 @@ public class MomentExperience implements Serializable, Cloneable {
 
 
 	public int getID() {
-		return id;
+		return mID;
 	}
 	
 	protected void setID(int id) {
-		this.id = id;
+		this.mID = id;
 	}
 	
 	public Date getDate() {
-		return date;
+		return mDate;
 	}
 	
 	public String getDateString() {
-		return formater.format(date);
+		return mFormater.format(mDate);
 	}
 
-	public void setDate(String date) throws ParseException {
+	public void setDate(String mDate) throws ParseException {
 		try {
-			this.date = this.formater.parse(date);
+			this.mDate = this.mFormater.parse(mDate);
 		} catch (ParseException e) {
 			throw e;
 		}
 	}
 	
-	public String getDuree() {
-		return duree;
+	public String getDuration() {
+		return mDuration;
 	}
 
-	public void setDuree(String d) {
-		duree = d;
+	public void setDuration(String d) {
+		mDuration = d;
 	}
 
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return mName;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String n) {
+		this.mName = n;
 	}
 
-	public String getMorceauDescripteme() {
-		return morceauDescripteme;
+	public String getDescripteme() {
+		return mDescripteme;
 	}
 
-	public void setMorceauDescripteme(String morceauDescripteme) {
-		this.morceauDescripteme = morceauDescripteme;
+	public void setDescripteme(String d) {
+		this.mDescripteme = d;
 	}
 
 	public LinkedList<Type> getTypes() {
-		return types;
+		return mTypes;
 	}
 
 	public void setTypes(LinkedList<Type> caracteristiques) {
-		this.types = caracteristiques;
+		this.mTypes = caracteristiques;
 	}
 
-	public LinkedList<Enregistrement> getEnregistrements() {
-		return enregistrements;
+	public LinkedList<Record> getRecords() {
+		return mRecords;
 	}
 
-	public void setEnregistrements(LinkedList<Enregistrement> enregistrements) {
-		this.enregistrements = enregistrements;
+	public void setRecords(LinkedList<Record> r) {
+		this.mRecords = r;
 	}
 
 	public int getGridCol() {
-		return gridCol;
+		return mGridCol;
 	}
 
-	public void setGridCol(int gridCol) {
-		this.gridCol = gridCol;
+	public void setGridCol(int mGridCol) {
+		this.mGridCol = mGridCol;
 	}
 	
 
-	public LinkedList<MomentExperience> getSousMoments() {
-		return sousMoments;
+	public LinkedList<MomentExperience> getSubMoments() {
+		return mSubMoments;
 	}
 	
 	public void addSousMoment(MomentExperience m) {
-		if(!this.sousMoments.contains(m)) {
+		if(!this.mSubMoments.contains(m)) {
 			m.setParent(this);
-			this.sousMoments.add(m);
-			updateSousMomentPos();
+			this.mSubMoments.add(m);
+			updateSubMomentPos();
 		}
 	}
 	
-	public void addSousMoment(int index, MomentExperience m) {
-		if(!this.sousMoments.contains(m)) {
+	public void addSubMoment(int index, MomentExperience m) {
+		if(!this.mSubMoments.contains(m)) {
 			m.setParent(this);
-			this.sousMoments.add(index, m);
-			updateSousMomentPos();
+			this.mSubMoments.add(index, m);
+			updateSubMomentPos();
 		}
 	}
 	
-	public MomentExperience removeSousMoment(MomentExperience m) {
-		return removeSousMoment(m.getGridCol());
+	public MomentExperience removeSubMoment(MomentExperience m) {
+		return removeSubMoment(m.getGridCol());
 	}
 	
-	public MomentExperience removeSousMoment(int index) {
-		MomentExperience m = this.sousMoments.remove(index);
+	public MomentExperience removeSubMoment(int index) {
+		MomentExperience m = this.mSubMoments.remove(index);
 		m.setParent(null);
-		updateSousMomentPos();
+		updateSubMomentPos();
 		return m;
 	}
 	
 	public boolean hasParent() {
-		return (this.parentMomentID>=0);
+		return (this.mParentMomentID>=0);
 	}
 	
-	protected void updateSousMomentPos() {
-		for(int i=0; i<sousMoments.size(); i++) {
-		//System.out.println("Moment "+sousMoments.get(i).getNom()+", id:"+sousMoments.get(i).getID()+" ["+i+";0]");
-			sousMoments.get(i).setParent(this);
-			sousMoments.get(i).setGridCol(i);
-			sousMoments.get(i).setRow(row+1);
-			sousMoments.get(i).updateSousMomentPos();
-			sousMoments.get(i).setParentCol(this.parentCol);
+	protected void updateSubMomentPos() {
+		for(int i=0; i<mSubMoments.size(); i++) {
+		//System.out.println("Moment "+mSubMoments.get(i).getNom()+", id:"+mSubMoments.get(i).getID()+" ["+i+";0]");
+			mSubMoments.get(i).setParent(this);
+			mSubMoments.get(i).setGridCol(i);
+			mSubMoments.get(i).setRow(mRow+1);
+			mSubMoments.get(i).updateSubMomentPos();
+			mSubMoments.get(i).setParentCol(this.mParentCol);
 		}
 	}
 	
 	public int getParentCol() {
 		if(!this.hasParent()) {
-			return this.gridCol;
+			return this.mGridCol;
 		}
-		else return this.parentCol;
+		else return this.mParentCol;
 	}
 	
 	public void setParent(MomentExperience m) {
 		if(m!=null) {
-			this.parentMomentID = m.getID();
-			this.parentCol = m.getParentCol();
+			this.mParentMomentID = m.getID();
+			this.mParentCol = m.getParentCol();
 			setRow(m.getRow()+1);
 			this.setGridCol(m.getGridCol());
 		}
 		else{
-			this.parentMomentID=-1;
-			this.parentCol = this.gridCol;
+			this.mParentMomentID=-1;
+			this.mParentCol = this.mGridCol;
 			setRow(0);
 		}
 	}
 	
 	protected void setParentCol(int col) {
-		this.parentCol = col;
+		this.mParentCol = col;
 	}
 	
-	public int getRow() {return row;}
-	public void setRow(int r) {row = r;}
+	public int getRow() {return mRow;}
+	public void setRow(int r) {mRow = r;}
 	
 	public int getParentID() {
-		return this.parentMomentID;
+		return this.mParentMomentID;
 	}
 	
 	public MomentExperience getParent(Main main) {
-		return MainViewTransformations.getMomentByID(this.parentMomentID, main);
+		return MainViewTransformations.getMomentByID(this.mParentMomentID, main);
 	}
 	
-	public void setSousMoments(LinkedList<MomentExperience> sousMoments) {
-		this.sousMoments = sousMoments;
+	public void setSubMoments(LinkedList<MomentExperience> sm) {
+		this.mSubMoments = sm;
 	}
 
 	@Override
@@ -287,20 +262,20 @@ public class MomentExperience implements Serializable, Cloneable {
 		}
 	}
 
-	public String getCouleur() {
-		return couleur;
+	public String getColor() {
+		return mColor;
 	}
 
-	public void setCouleur(String couleur) {
-		this.couleur = couleur;
+	public void setColor(String mColor) {
+		this.mColor = mColor;
 	}
 	
-	public void setCurrentProperty(Propriete n) {
-		currentProperty = n;
+	public void setCurrentProperty(Property n) {
+		mCurrentProperty = n;
 	}
 	
-	public Propriete getCurrentProperty() {
-		return currentProperty;
+	public Property getCurrentProperty() {
+		return mCurrentProperty;
 	}
 
 }

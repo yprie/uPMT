@@ -39,8 +39,8 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import model.Classe;
-import model.Propriete;
+import model.Category;
+import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -83,7 +83,7 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 						public void run() {
 							RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
 									classe.getValue(), 
-									(Classe) classe.getValue().getType(),
+									(Category) classe.getValue().getType(),
 									child,
 									main);
 							listeCommandes.add(cmd);
@@ -91,13 +91,13 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 						}
 					});
 				}		
-			}else if (child.getValue().getType().isClass()) {
+			}else if (child.getValue().getType().isCategory()) {
 				Platform.runLater(new Runnable() {	
 					@Override
 					public void run() {
 						RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
 								child.getValue(), 
-								(Classe) child.getValue().getType(),
+								(Category) child.getValue().getType(),
 								parentTree,
 								main);
 						listeCommandes.add(cmd);

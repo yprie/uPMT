@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class HelpController implements Initializable{
+public class AboutController implements Initializable{
 
 	private @FXML TextArea document;
 	private @FXML Button buttonCloseHelp;
@@ -33,7 +33,7 @@ public class HelpController implements Initializable{
 //	}
 
 
-	public HelpController(Main main, Stage window) {
+	public AboutController(Main main, Stage window) {
 		//super();
 		this.main = main;
 		this.window = window;

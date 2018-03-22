@@ -33,7 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import model.Projet;
+import model.Project;
 import model.Schema;
 
 public class NewProjectDialogController implements Initializable{
@@ -57,8 +57,8 @@ public class NewProjectDialogController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		choixSchema.getItems().add(main.getDefaultSchema());
-		for (Projet p : main.getProjects()) {
-			choixSchema.getItems().add(p.getSchemaProjet());
+		for (Project p : main.getProjects()) {
+			choixSchema.getItems().add(p.getSchema());
 		}
 		// change the text to make it pretty
 		choixSchema.setConverter(new StringConverter<Schema>() {
@@ -79,8 +79,8 @@ public class NewProjectDialogController implements Initializable{
 	}
 	
 	public void createProject(){
-		Projet p = new Projet(nomProjet.getText(), this.choixSchema.getValue());
-		p.getSchemaProjet().setName(nomProjet.getText());
+		Project p = new Project(nomProjet.getText(), this.choixSchema.getValue());
+		p.getSchema().setName(nomProjet.getText());
 		main.setProjectInCreation(p);
 		//main.getProjects().add(p);
 		//main.setCurrentProject(p);

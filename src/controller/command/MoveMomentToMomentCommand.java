@@ -2,7 +2,7 @@ package controller.command;
 
 import application.Main;
 import controller.MomentExpVBox;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 import model.MomentExperience;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -12,8 +12,8 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 	private MomentExperience newParent;
 	private int toCol;
 	private Main main;
-	private DescriptionEntretien dataBefore;
-	private DescriptionEntretien dataAfter;
+	private DescriptionInterview dataBefore;
+	private DescriptionInterview dataAfter;
 	private int indexInterview;
 	
 	public MoveMomentToMomentCommand(MomentExperience moment, MomentExperience parent, int toCol, Main main){
@@ -28,10 +28,10 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 	public void undo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataBefore.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataBefore.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataBefore.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataBefore.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -40,10 +40,10 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 	public void redo() {
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
-		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionEntretien)this.dataAfter.clone());
+		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataAfter.clone());
 		
 		//Edit Current Interview
-		main.setCurrentDescription((DescriptionEntretien)this.dataAfter.clone());
+		main.setCurrentDescription((DescriptionInterview)this.dataAfter.clone());
 		MainViewTransformations.updateGrid(main);
 		main.needToSave();
 	}
@@ -55,18 +55,17 @@ public class MoveMomentToMomentCommand  implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		dataBefore = (DescriptionEntretien)main.getCurrentDescription().clone();
+		dataBefore = (DescriptionInterview)main.getCurrentDescription().clone();
 		indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 		if(moment.hasParent()) 
 			if(  (moment.getParent(main).equals(newParent))  &&  (moment.getGridCol()<toCol)  ) toCol--;
-		System.out.println("Enleve le moment à la position "+moment.getGridCol()+" et l'ajoute à la col "+toCol);
 		MainViewTransformations.deleteMoment(moment, main);
 		
-		this.newParent.addSousMoment(toCol, moment);
+		this.newParent.addSubMoment(toCol, moment);
 		
 		MainViewTransformations.updateGrid(main);
 	    main.needToSave();
-	    dataAfter  = (DescriptionEntretien)main.getCurrentDescription().clone();
+	    dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 	}
 	
 	@Override

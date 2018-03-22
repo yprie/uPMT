@@ -29,7 +29,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Descripteme;
-import model.DescriptionEntretien;
+import model.DescriptionInterview;
 
 public class NewInterviewDialogController  implements Initializable{
 
@@ -162,12 +162,12 @@ public class NewInterviewDialogController  implements Initializable{
 	    }
 	    //System.out.println(text);
 		
-		DescriptionEntretien de = new DescriptionEntretien(new Descripteme(text), nomEntretien.getText());
-		de.setDateEntretien(d);
+		DescriptionInterview de = new DescriptionInterview(new Descripteme(text), nomEntretien.getText());
+		de.setDateInterview(d);
 		if(!participantEntretien.getText().replaceAll(" ", "").equals(""))
 			de.setParticipant(participantEntretien.getText());
 		if(!commentaireEntretien.getText().replaceAll(" ", "").equals(""))
-			de.setcommentaire(commentaireEntretien.getText());
+			de.setComment(commentaireEntretien.getText());
 		
 		if(main.getProjectInCreation()!=null) {
 			main.getProjects().add(main.getProjectInCreation());

@@ -29,16 +29,4 @@ public class Schema extends Type implements Serializable, Cloneable{
 		super(nom);
 	}
 
-	/*public Schema clone() {
-		Schema ret = new Schema(nom);
-		ret.setDescription(description);
-		ret.setCouleur(couleur);
-		LinkedList<Type> retTypes = new LinkedList<Type>();
-		for(int i=0;i<types.size();i++) {
-			ret.addType(types.get(i).clone());
-		}
-		//ret.setDescriptemeTxt(new String(extract.getTexte()));
-		return ret;
-	}*/
-
 }

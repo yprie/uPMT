@@ -64,8 +64,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.Classe;
-import model.Propriete;
+import model.Category;
+import model.Property;
 import model.Type;
 import utils.UndoCollector;
 
@@ -73,7 +73,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	
 	private @FXML Label className;
 	private @FXML VBox properties;
-	private Classe classe;
+	private Category classe;
 	
 	private MomentExpVBox moment;
 	private Main main;
@@ -81,9 +81,9 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	private TypeController treeClass;
 	private TreeItem<TypeController> treeClassTreeItem;
 	
-	private Deque<Propriete> stack = new ArrayDeque<Propriete>();
+	private Deque<Property> stack = new ArrayDeque<Property>();
 	
-	public TypeClassRepresentationController(Classe classe,MomentExpVBox moment,Main main) {
+	public TypeClassRepresentationController(Category classe,MomentExpVBox moment,Main main) {
 		
 		this.classe = classe;
         this.moment = moment;
@@ -101,8 +101,8 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
         LinkToTreeClass(this.main.getTreeViewSchema().getRoot());
         
 		this.className.setText(classe.getName());	
-		if(classe.getCouleur() != null){
-			setColor(classe.getCouleur());
+		if(classe.getColor() != null){
+			setColor(classe.getColor());
 		}
 		loadProperties();
 	}
@@ -136,7 +136,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		// for each Property, add a representation
 		if(!classe.getTypes().isEmpty()){
 			for(Type p : classe.getTypes()){
-				Propriete prop = (Propriete)p;
+				Property prop = (Property)p;
 				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main);
 				this.properties.getChildren().add(controller);
 			}
@@ -145,10 +145,10 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	
 	public void setColor(String color){
 		className.setTextFill(Color.web(color));
-		classe.setCouleur(color);
+		classe.setColor(color);
 	}
 	
-	public Classe getClasse(){
+	public Category getClasse(){
 		return this.classe;
 	}
 
@@ -161,12 +161,12 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 
 	}
 
-	public void RemoveProperty(Propriete p){
+	public void RemoveProperty(Property p){
 		for(Type t : this.classe.getTypes()) {
 			if(t.getName().equals(p.getName())) {
 				this.classe.getTypes().remove(t);
 			//System.out.println("TESTEST "+t.hashCode()+ " , "+t);
-				stack.push((Propriete) t);
+				stack.push((Property) t);
 				break;
 			}
 		}
@@ -180,13 +180,13 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		}
 	}
 
-	public void addProperty(Propriete p) {
+	public void addProperty(Property p) {
 		this.classe.getTypes().add(p);
 		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, moment, treeClassTreeItem, main);
 		this.properties.getChildren().add(controller);
 	}
 
-	public void renameProperty(Propriete p, String text) {
+	public void renameProperty(Property p, String text) {
 		for(Node n : properties.getChildren()){
 			TypePropertyRepresentation t = (TypePropertyRepresentation) n;
 			if(t.getProperty().equals(p)){
@@ -233,7 +233,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 			setColor((String) value);
 		}
 		if(obs.getClass().equals(AddPropertySchemeController.class)) {
-			Propriete n = new Propriete(((Propriete)value).getName());
+			Property n = new Property(((Property)value).getName());
 			boolean contain = false;
 			for(Type t : classe.getTypes()) {
 				if(t.getName().equals(n.getName())) {
@@ -244,14 +244,14 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		//System.out.println("contains ? "+contain);
 			
 			if(!this.classe.getTypes().contains(n)) {
-				addProperty((Propriete) n);
+				addProperty((Property) n);
 			}
 			else {
 			//System.out.println("AH BAH VOILA !!!!!");
 			}
 		}
 		if(obs.getClass().equals(RemovePropertySchemeController.class)) {
-			Propriete toRemove = (Propriete) value;
+			Property toRemove = (Property) value;
 		//System.out.println("Remove dans TypeClassRpzCtrl "+toRemove.getName());
 			RemoveProperty(toRemove);
 		}

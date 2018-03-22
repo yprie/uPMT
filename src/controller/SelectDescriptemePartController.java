@@ -33,7 +33,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import model.Enregistrement;
+import model.Record;
 import utils.UndoCollector;
 
 public class SelectDescriptemePartController implements Initializable {
@@ -78,17 +78,17 @@ public class SelectDescriptemePartController implements Initializable {
 		//System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
 			ChangeExtractProperty cmd = new ChangeExtractProperty(
 					propertyExtractController,
-					propertyExtractController.getProperty().getDescripteme().getTexte(),
+					propertyExtractController.getProperty().getExtract().getTexte(),
 					newExtract,
 					main);
-			main.getCurrentMoment().getCurrentProperty().getDescripteme().setTexte(newExtract);
+			main.getCurrentMoment().getCurrentProperty().setExtract(newExtract);
 			cmd.execute();
 			UndoCollector.INSTANCE.add(cmd);
 		}else{
 		//System.out.println("Moment: "+main.getCurrentMoment().getMoment().getNom());
 			RenameMomentCommand cmd = new RenameMomentCommand(
 					main.getCurrentMoment().getMomentExtractController(),
-					main.getCurrentMoment().getMoment().getMorceauDescripteme(),
+					main.getCurrentMoment().getMoment().getDescripteme(),
 					newExtract,
 					main);
 			cmd.execute();

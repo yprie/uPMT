@@ -66,11 +66,11 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.StageStyle;
-import model.Classe;
-import model.DescriptionEntretien;
-import model.Dossier;
+import model.Category;
+import model.DescriptionInterview;
+import model.Folder;
 import model.MomentExperience;
-import model.Propriete;
+import model.Property;
 import model.Schema;
 import model.Type;
 import utils.UndoCollector;
@@ -89,7 +89,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	// method used to add a class to the current cell
 	public void addClass(int classNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
-        Type nt = new Classe("Classe "+classNumber);
+        Type nt = new Category("Classe "+classNumber);
         TypeController tc;
         if(getItem().getType().getClass().equals(Schema.class)){
         	tc = new TypeController(nt, getTreeItem().getValue().getType());
@@ -105,7 +105,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	// method used to add a folder to the current cell
 	public void addFolder(int folderNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
-        Type nt = new Dossier("Dossier "+folderNumber);
+        Type nt = new Folder("Dossier "+folderNumber);
         TypeController tc;
         if(getItem().getType().getClass().equals(Schema.class)){
         	tc = new TypeController(nt, getTreeItem().getValue().getType());
@@ -130,8 +130,8 @@ public class TypeTreeView extends TreeCell<TypeController>{
         System.out.println("On a essayé de la renommer");
 	}
 	
-	private Propriete dupProperty(Propriete p){
-		Propriete newp = new Propriete(p.getName());
+	private Property dupProperty(Property p){
+		Property newp = new Property(p.getName());
 		return newp;
 	}
 	
@@ -188,7 +188,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewProperty.fxml"));
         			     controller =  new TypeTreeViewControllerProperty(elem,this, main);
     				 }
-    				 if(elem.getType().isClass()){
+    				 if(elem.getType().isCategory()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewClass.fxml"));
         			     controller =  new TypeTreeViewControllerClass(elem,this, main);
     				 }
@@ -215,7 +215,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
 				public void handle(MouseEvent event) {
 					
 					if(main.getCurrentDescription() != null){
-						if(elem.getType().isClass()){
+						if(elem.getType().isCategory()){
 							Dragboard db = ((TypeTreeView)event.getSource()).startDragAndDrop(TransferMode.ANY);
 							ClipboardContent content = new ClipboardContent();
 				            content.putString("ajoutType");
