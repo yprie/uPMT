@@ -42,7 +42,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -68,7 +70,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	
 	private @FXML Label propertyValue;
 	private @FXML Label propertyName;
-	private @FXML ImageView hasExtractImageProperties;
+	private @FXML Button hasExtractImageProperties;
 	private @FXML HBox propertyPane;
 	private Main main;
 	private Property property;
@@ -101,27 +103,17 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
         propertyExtractController.addObserver(this);
         propertyExtractController.addObserver(main.getMainViewController());
         
-        propertyName.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent mouseEvent) {
-		        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-		            if(mouseEvent.getClickCount() == 2){
-		            	pickPropertyExtract();
-		            }
-		        }
-		    }
-		});
         extractTooltip = new Tooltip();
         extractTooltip.setWrapText(true);
 		extractTooltip.setMaxWidth(500);
         hasExtractImageProperties.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		    	if(propertiesHaveDescriptem()) {
-			    	extractTooltip.setText(property.getExtract().getTexte());
-			        javafx.geometry.Point2D p = hasExtractImageProperties.localToScreen(hasExtractImageProperties.getLayoutBounds().getMaxX(), hasExtractImageProperties.getLayoutBounds().getMaxY()); 
-			        extractTooltip.show(hasExtractImageProperties, p.getX(), p.getY());
-		    	}
+		    	hasExtractImageProperties.setCursor(Cursor.HAND);
+		    	javafx.geometry.Point2D p = hasExtractImageProperties.localToScreen(hasExtractImageProperties.getLayoutBounds().getMaxX(), hasExtractImageProperties.getLayoutBounds().getMaxY()); 
+		    	extractTooltip.setOpacity(1);
+		    	extractTooltip.show(hasExtractImageProperties, p.getX(), p.getY());
+	    	
 		    }
 		});
         
@@ -129,40 +121,18 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
         hasExtractImageProperties.setOnMouseExited(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
-		    	if(propertiesHaveDescriptem())
-		    		extractTooltip.hide();
+		    	hasExtractImageProperties.setCursor(Cursor.DEFAULT);
+		    	extractTooltip.setOpacity(0);
+		    	extractTooltip.hide();
 		    }
 		});
-        
-        
-
-        propertyName.setOnMouseEntered(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent event) {
-		    	if(!propertiesHaveDescriptem()) {
-		    		extractTooltip.setText(main._langBundle.getString("double_click_add_extract"));
-			    	javafx.geometry.Point2D p = propertyName.localToScreen(propertyName.getLayoutBounds().getMaxX(), propertyName.getLayoutBounds().getMaxY()); 
-			        extractTooltip.show(propertyName, p.getX(), p.getY());
-		    	}
-		    }
-		});
-        propertyName.setOnMouseExited(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent event) {
-		    	if(!propertiesHaveDescriptem())
-		    		extractTooltip.hide();
-		    }
-		});
+    	this.hideExtractIcon();
         
         LinkToTreeProperty();
-        if(this.propertiesHaveDescriptem()) {
+        if(this.propertiesHaveDescriptem()) 
         	this.showExtractIcon(property.getExtract().getTexte());
-        	//System.out.println("Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
-        }
-        else{
-        	//System.out.println("Hide icon: Propriete "+property.getName()+": "+property.getDescripteme().getTexte());
-        	this.hideExtractIcon();
-        }
+        else this.hideExtractIcon();
+        
 	}
 	
 	private boolean propertiesHaveDescriptem() {
@@ -175,13 +145,15 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
     	else return true;
 	}
 
+	@FXML
 	private void pickPropertyExtract() {
 		Stage promptWindow = new Stage(StageStyle.UTILITY);
 		promptWindow.setTitle(main._langBundle.getString("select_extract"));
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
 		try {
-			main.getCurrentMoment().setCurrentProperty(property);
+			main.setCurrentMoment(momentBox);
+			momentBox.setCurrentProperty(property);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
 			loader.setController(new SelectDescriptemePartController(
@@ -313,7 +285,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		}
 		if(obs.getClass().equals(PropertyExtractController.class)) {
 			if(value != null) {
-			//System.out.println("Have Value");
+				System.out.println("Have Value :"+(String) value);
 				this.showExtractIcon((String) value);
 
 			}else {
@@ -324,20 +296,23 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	}
 	
 	public void showExtractIcon(String tooltip){
-		Image icon = ResourceLoader.loadImage("hasExtractIcon.png");
-		this.hasExtractImageProperties.setManaged(true);
-		this.hasExtractImageProperties.setVisible(true);
-		this.hasExtractImageProperties.setImage(icon);
+		this.hasExtractImageProperties.getStyleClass().clear();
+		this.hasExtractImageProperties.getStyleClass().add("button");
+		this.hasExtractImageProperties.getStyleClass().add("buttonMomentView");
+		//this.property.setExtract(tooltip);
 		extractTooltip.setText(tooltip);
-		extractTooltip.setOpacity(1);
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
 	}
 	
-	
 	public void hideExtractIcon(){
-		this.hasExtractImageProperties.setImage(null);
-		this.hasExtractImageProperties.setVisible(false);
-		this.hasExtractImageProperties.setManaged(false);
-		//extractTooltip.setOpacity(0);
+		this.hasExtractImageProperties.getStyleClass().clear();
+		this.hasExtractImageProperties.getStyleClass().add("button");
+		this.hasExtractImageProperties.getStyleClass().add("buttonMomentViewDisabled");
+		
+		extractTooltip.setText(main._langBundle.getString("no_descripteme"));
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
 	}
 	
 	public TypeController getPropertyController() {

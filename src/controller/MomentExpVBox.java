@@ -177,8 +177,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    	extractTooltip.hide();
 		    }
 		});
-		extractTooltip.setOpacity(0);
-		extractTooltip.hide();
 		this.hideExtractIcon();
 		
 		
@@ -381,8 +379,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().clear();
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentView");
-		
 		extractTooltip.setText(tooltip);
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
 	}
 	
 	public void hideExtractIcon(){
@@ -391,6 +390,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
 		
 		extractTooltip.setText(main._langBundle.getString("no_descripteme"));
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
 	}
 
 	public void deleteMoment(){

@@ -2,10 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
 
 
 <fx:root fx:id="propertyPane" maxHeight="20.0" maxWidth="145.0" minHeight="20.0" minWidth="145.0" prefHeight="20.0" prefWidth="145.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
@@ -22,7 +22,7 @@
             </Label>
          </center>
          <left>
-            <ImageView fx:id="hasExtractImageProperties" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+            <Button fx:id="hasExtractImageProperties" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#pickPropertyExtract" prefHeight="20.0" prefWidth="20.0" styleClass="buttonMomentView" stylesheets="@../application/application.css" BorderPane.alignment="CENTER" />
          </left>
       </BorderPane>
       <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="20.0" maxWidth="15.0" minHeight="20.0" minWidth="15.0" prefHeight="20.0" prefWidth="15.0" text="  :  ">
