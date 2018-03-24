@@ -88,7 +88,7 @@ public class NewInterviewDialogController  implements Initializable{
                 new FileChooser.ExtensionFilter(main._langBundle.getString("text_files"),l)
             );
 		fileChooser.setTitle(main._langBundle.getString("select_verbatim"));
-		fichierChoisi = fileChooser.showOpenDialog(null);
+		fichierChoisi = fileChooser.showOpenDialog(this.window);
 		if(fichierChoisi != null){
 			newEntrFileName.setText(fichierChoisi.getPath());
 			
