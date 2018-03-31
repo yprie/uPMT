@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerProperty.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import application.Main;
+import controller.MomentExpVBox;
 import controller.command.RemovePropertyFromClassCommand;
 import controller.command.RenameClassSchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
@@ -52,6 +53,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import model.Property;
 import model.Type;
@@ -76,6 +78,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		nomType.setText(type.getType().getName());
 		/*if(Main.activateBetaDesign)
 			this.nomType.setTextFill(Color.BLACK);*/
+		this.setLabelChangeName(main,this);  //double click
 
 		Image icon = ResourceLoader.loadImage("property.png");
 		this.propertyIcon.setImage(icon);
@@ -86,9 +89,9 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteProperty.setGraphic(iconDelete);
 		
-		Tooltip deletePropertyTip = new Tooltip("Suppression de la proprieté");
+		Tooltip deletePropertyTip = new Tooltip("Suppression de la proprietï¿½");
 		deleteProperty.setTooltip(deletePropertyTip);
-		Tooltip renameTip = new Tooltip("Renommer la proprieté");
+		Tooltip renameTip = new Tooltip("Renommer la proprietï¿½");
 		rename.setTooltip(renameTip);
 		initNumber();
 	}
@@ -136,6 +139,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 				}	
 		    }
 		};
+		
 		
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -202,6 +206,19 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		if(obs.getClass().equals(RenamePropertyController.class)) {
 			this.nomType.setText((String) value);
 		}
+	}
+	
+	public void setLabelChangeName(Main main,TypeTreeViewControllerProperty thiss){
+		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if(arg0.getClickCount() == 2){
+					//System.out.println("DoubleClick");
+					rename();
+				}
+			}
+		});
 	}
 
 }
