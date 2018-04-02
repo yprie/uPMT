@@ -226,7 +226,7 @@ public abstract class MainViewTransformations {
 					int i = ((Integer)event.getDragboard().getContent(MomentExpVBox.realCol));
 					if(draggedMoment!=null) {
 						if(!draggedMoment.hasParent()) {
-							System.out.println("le moment n'a pas de parent");
+							//System.out.println("le moment n'a pas de parent");
 							//int pos = main.getGrid().getChildren().indexOf(p)/2;
 							if(p.hasMomentParent()) { 
 								if(p.getMomentParent().getMoment().equals(draggedMoment)) 

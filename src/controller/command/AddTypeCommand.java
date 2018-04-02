@@ -111,7 +111,7 @@ public class AddTypeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		System.out.println(momentExpBorder.getMoment().getName());
+		//System.out.println(momentExpBorder.getMoment().getName());
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
 		main.needToSave();
 	}

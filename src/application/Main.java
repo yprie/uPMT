@@ -457,10 +457,10 @@ public class Main extends Application {
 	public void setCurrentProject(Project current){
 		currentProject = current;
 		if(currentProject!=null) {
-			System.out.println("SET ! : "+this.currentProject.getName());
+			//System.out.println("SET ! : "+this.currentProject.getName());
 		}
 		else {
-			System.out.println("SET ! : null");
+			//System.out.println("SET ! : null");
 		}
 	}
 	

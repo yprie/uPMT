@@ -121,7 +121,7 @@ public class Project implements Serializable {
 		    gson.toJson(this, writer);
 		}catch(Exception e) {
 			//e.printStackTrace();
-			System.out.println("lol");
+			//System.out.println("lol");
 			
 		}
 	}
@@ -164,7 +164,7 @@ public class Project implements Serializable {
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 			gsonBuilder.setPrettyPrinting();
-		    Gson gson = gsonBuilder.create();
+			Gson gson = gsonBuilder.create();
 		    Project p;
 		    int projectVersion = getVersionProj(PATH+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
@@ -180,7 +180,7 @@ public class Project implements Serializable {
 			return p;
 		}catch(Exception e) {
 			//e.printStackTrace();
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
 			return null;
 		}
 	}
@@ -267,7 +267,7 @@ public class Project implements Serializable {
 		//Record
 		ret = ret.replaceAll("\"link\"", "\"mLink\"");
 		
-		System.out.println(ret);
+		//System.out.println(ret);
 		return ret;
 	}
 	

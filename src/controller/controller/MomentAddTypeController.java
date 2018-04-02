@@ -37,7 +37,7 @@ public class MomentAddTypeController implements controller.controller.Observable
 
 	@Override
 	public void update(Object value) {
-		System.out.println("Moment update: "+momentExp.getName());
+		//System.out.println("Moment update: "+momentExp.getName());
 		if(value != null) {
 			momentExp.getTypes().add((Type) value);
 			
@@ -56,9 +56,9 @@ public class MomentAddTypeController implements controller.controller.Observable
 
 	@Override
 	public void updateModel(Object value) {
-		System.out.println("Ancien m: "+momentExp.getName());
+		//System.out.println("Ancien m: "+momentExp.getName());
 		this.momentExp = (MomentExperience) value;
-		System.out.println("Nouveau m: "+momentExp.getName());
+		//System.out.println("Nouveau m: "+momentExp.getName());
 	}
 	
 	@Override

@@ -285,7 +285,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		}
 		if(obs.getClass().equals(PropertyExtractController.class)) {
 			if(value != null) {
-				System.out.println("Have Value :"+(String) value);
+				//System.out.println("Have Value :"+(String) value);
 				this.showExtractIcon((String) value);
 
 			}else {

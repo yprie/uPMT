@@ -60,7 +60,7 @@ public class LaunchingScreenController implements Initializable{
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 	          public void handle(WindowEvent we) {
 	        	  if(m_main.haveCurrentProject()) {
-	        		  System.out.println(m_main.getCurrentProject().getName());
+	        		  //System.out.println(m_main.getCurrentProject().getName());
 	        		  window.close();
 	        	  }
 	        	  else {

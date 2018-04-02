@@ -18,7 +18,7 @@ public class PropertyExtractController implements controller.controller.Observab
 	@Override
 	public void update(Object value) {
 		
-		System.out.println("UPDATE "+value);
+		//System.out.println("UPDATE "+value);
 		for(Observer obs : ObsMomentNames) {
 			mPropriete.setExtract(((String) value));
 			obs.updateVue(this, value);

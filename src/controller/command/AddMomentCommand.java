@@ -95,7 +95,7 @@ public class AddMomentCommand implements Command,Undoable{
 			
 			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
 			//indexInterview = new Integer(main.getProjects().indexOf(main.getCurrentDescription()));
-			System.out.println("On veut ajouter un moment à l'index");
+			//System.out.println("On veut ajouter un moment à l'index");
 			if(parentMoment!=null) {
 				parentMoment.addSubMoment(index, moment);
 			}

@@ -56,12 +56,14 @@ public class ChangePropertyValueController implements controller.controller.Obse
 
 	@Override
 	public void updateModel(Object value) {
-		if(property==null)
-			System.out.println("Ancien: null");
-		else
-			System.out.println("Ancien: "+((Property)property).getValue());
-		this.property = (Property) value;
-		System.out.println("Nouveau: "+((Property)property).getValue());
+		if(property==null) {
+			//System.out.println("Ancien: null");
+		}
+		else {
+			//System.out.println("Ancien: "+((Property)property).getValue());
+			this.property = (Property) value;
+			//System.out.println("Nouveau: "+((Property)property).getValue());
+		}
 	}
 	
 	@Override

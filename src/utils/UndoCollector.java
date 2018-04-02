@@ -122,7 +122,7 @@ public final class UndoCollector {
 	
 	// For debug purposes
 	public void showUndoRedoStack(){
-		/*System.out.println("undo Stack" + this.redo);
+		/*//System.out.println("undo Stack" + this.redo);
 	//System.out.println("redo Stack" + this.undo);*/
 	}
 }

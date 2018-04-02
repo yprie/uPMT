@@ -482,7 +482,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		for(Node n : typeSpace.getChildren()){
 			TypeClassRepresentationController tcr = (TypeClassRepresentationController) n;
 			if(tcr.getClasse().equals(item)){
-				System.out.println("lol");
+				//System.out.println("lol");
 				return tcr;
 			}
 		}

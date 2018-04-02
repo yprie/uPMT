@@ -64,6 +64,7 @@ public class RootLayoutController implements Initializable{
 	private @FXML MenuItem aboutUs; 
 //	private @FXML TextArea document;
 	private @FXML MenuItem link;
+	private @FXML MenuItem stats;
 	
 	private Main main;
 	private Stage window;
@@ -212,6 +213,33 @@ public class RootLayoutController implements Initializable{
 				//System.out.println("no event, exit normally");
 				}
 	    	}
+		}
+	}
+	
+	@FXML
+	public void stats(){
+		Stage statsWindow = new Stage(StageStyle.UTILITY);
+		statsWindow.setTitle(main._langBundle.getString("stats"));
+		statsWindow.setResizable(false);
+		statsWindow.initModality(Modality.APPLICATION_MODAL);
+ 
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			
+            loader.setLocation(getClass().getResource("/view/StatsView.fxml"));
+            loader.setController(new StatsController(main, statsWindow));
+           
+            loader.setResources(main._langBundle);
+    		
+            //////////
+            AnchorPane layout = (AnchorPane) loader.load();
+            Scene sc = new Scene(layout);
+            statsWindow.setScene(sc);
+			statsWindow.showAndWait();
+			
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
 		}
 	}
 	

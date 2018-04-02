@@ -45,9 +45,9 @@ public abstract class Utils {
 		
 		if(projectNames.isEmpty()){
 			// For debug purposes
-			////System.out.println("No projects to load");
+			//System.out.println("No projects to load");
 		}else{
-			////System.out.println("Loading projects");
+			System.out.println("Loading projects");
 			for (String s : projectNames) {
 				if(s.contains(Project.FORMAT)) {
 					//projects.add(Projet.load(s));
@@ -83,9 +83,9 @@ public abstract class Utils {
 		
 		if(projectNames.isEmpty()){
 			// For debug purposes
-			////System.out.println("No projects to load");
+			//System.out.println("No projects to load");
 		}else{
-			////System.out.println("Loading projects");
+			//System.out.println("Loading projects");
 			for (String s : projectNames) {
 				if(s.contains(Project.FORMAT)) {
 					if(projectNames.contains(Project.RECOVERY+s)) {
@@ -111,7 +111,7 @@ public abstract class Utils {
 		for (File file : files) {
 		    if (file.isFile()) {
 		        results.add(file.getName());
-		        ////System.out.println(file.getName());
+		        //System.out.println(file.getName());
 		    }
 		}
 		
