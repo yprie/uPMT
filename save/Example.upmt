@@ -1,5 +1,5 @@
 {
-  "SAVE_VERSION": 0,
+  "SAVE_VERSION": 1,
   "mName": "Example",
   "mSchema": {
     "mTypes": [
@@ -51,24 +51,6 @@
                 "mDescription": "",
                 "mColor": "#FFE666",
                 "mName": "Bodily feeling"
-              }
-            },
-            {
-              "type": "model.Category",
-              "data": {
-                "mTypes": [],
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "Classe 2"
-              }
-            },
-            {
-              "type": "model.Category",
-              "data": {
-                "mTypes": [],
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "Classe 3"
               }
             },
             {
