@@ -25,8 +25,55 @@ import java.util.LinkedList;
 
 public class Folder extends Type implements Serializable, Cloneable{
 
+	protected LinkedList<Folder> mFolders;
+	protected LinkedList<Category> mCategories;
+	
 	public Folder(String nom) {
 		super(nom);
+		mFolders  = new LinkedList<Folder>();
+		mCategories  = new LinkedList<Category>();
+	}
+	
+	public Folder clone() {
+		Folder ret = new Folder(mName);
+		ret.setDescription(mDescription);
+		ret.setColor(mColor);
+		for(Folder folder: mFolders) {
+			ret.addFolder(folder.clone());
+		}
+		for(Category category: mCategories) {
+			ret.addCategory(category.clone());
+		}
+		return ret;
+	}
+	
+	@Override
+	public boolean equals(Object c) {
+		if(c.getClass()!=this.getClass()) {
+			return false;
+		}
+		else {
+			boolean ret = true;
+			Folder f = (Folder)c;
+			if(!f.mName.equals(mName)) ret=false;
+			return ret;
+		}
+	}
+	
+	public void addFolder(Folder f) {
+		mFolders.add(f);
+	}
+	
+	public LinkedList<Folder> getFolders(){
+		return this.mFolders;
+	}
+	
+	public LinkedList<Category> getCategories(){
+		return this.mCategories;
+	}
+	
+	public void addCategory(Category c) {
+		mCategories.add(c);
 	}
 
 }

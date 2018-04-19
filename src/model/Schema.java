@@ -25,8 +25,28 @@ import java.util.LinkedList;
 
 public class Schema extends Type implements Serializable, Cloneable{
 	
+	protected LinkedList<Folder> mFolders;
+	
 	public Schema(String nom){
 		super(nom);
+		mFolders  = new LinkedList<Folder>();
 	}
-
+	
+	public void addFolder(Folder f) {
+		mFolders.add(f);
+	}
+	
+	public LinkedList<Folder> getFolders(){
+		return this.mFolders;
+	}
+	
+	public Schema clone() {
+		Schema news = new Schema(mName);
+		news.setColor(mColor);
+		news.setDescription(mDescription);
+		for(Folder folder: mFolders) {
+			news.addFolder(folder.clone());
+		}
+		return news;
+	}
 }

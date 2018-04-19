@@ -23,22 +23,23 @@ package controller.controller;
 import java.util.LinkedList;
 
 import controller.TypeClassRepresentationController;
+import model.Category;
 import model.MomentExperience;
 import model.Type;
 
 public class RemovePropertySchemeController implements controller.controller.Observable{
 
-	private Type classe;
+	private Category mCategory;
 	private LinkedList<Observer> ObsTypesNames;
 	
-	public RemovePropertySchemeController(Type classe) {
-		this.classe = classe;
+	public RemovePropertySchemeController(Category mCategory) {
+		this.mCategory = mCategory;
 		ObsTypesNames = new LinkedList<Observer>();
 	}
 
 	@Override
 	public void update(Object value) {
-		classe.getTypes().remove(((Type) value));
+		mCategory.getProperties().remove(((Type) value));
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);
 		}
@@ -53,7 +54,7 @@ public class RemovePropertySchemeController implements controller.controller.Obs
 
 	@Override
 	public void updateModel(Object value) {
-		this.classe = (Type) value;
+		this.mCategory = (Category) value;
 	}
 
 	@Override

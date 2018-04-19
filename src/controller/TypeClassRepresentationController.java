@@ -134,9 +134,8 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	
 	public void loadProperties(){
 		// for each Property, add a representation
-		if(!classe.getTypes().isEmpty()){
-			for(Type p : classe.getTypes()){
-				Property prop = (Property)p;
+		if(!classe.getProperties().isEmpty()){
+			for(Property prop : classe.getProperties()){
 				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main);
 				this.properties.getChildren().add(controller);
 			}
@@ -162,9 +161,9 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	}
 
 	public void RemoveProperty(Property p){
-		for(Type t : this.classe.getTypes()) {
+		for(Type t : this.classe.getProperties()) {
 			if(t.getName().equals(p.getName())) {
-				this.classe.getTypes().remove(t);
+				this.classe.getProperties().remove(t);
 			//System.out.println("TESTEST "+t.hashCode()+ " , "+t);
 				stack.push((Property) t);
 				break;
@@ -181,7 +180,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	}
 
 	public void addProperty(Property p) {
-		this.classe.getTypes().add(p);
+		this.classe.addProperty(p);
 		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, moment, treeClassTreeItem, main);
 		this.properties.getChildren().add(controller);
 	}
@@ -235,7 +234,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		if(obs.getClass().equals(AddPropertySchemeController.class)) {
 			Property n = new Property(((Property)value).getName());
 			boolean contain = false;
-			for(Type t : classe.getTypes()) {
+			for(Type t : classe.getProperties()) {
 				if(t.getName().equals(n.getName())) {
 					contain = true;
 					break;
@@ -243,7 +242,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 			}
 		//System.out.println("contains ? "+contain);
 			
-			if(!this.classe.getTypes().contains(n)) {
+			if(!this.classe.getProperties().contains(n)) {
 				addProperty((Property) n);
 			}
 			else {

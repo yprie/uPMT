@@ -26,7 +26,10 @@ import controller.controller.TypeController;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import model.Category;
 import model.DescriptionInterview;
+import model.Folder;
+import model.Property;
 import model.Schema;
 import model.Type;
 
@@ -38,8 +41,8 @@ public abstract class SchemaTransformations {
 		schema = new TreeItem<TypeController>(ss);
 		schema.setExpanded(true);
 		
-		for (Type c : s.getTypes()) {
-			addTypeTreeView(schema, c);			
+		for (Folder f : s.getFolders()) {
+			addTypeTreeView(schema, f);			
 		}
 		return schema;
 	}
@@ -56,17 +59,45 @@ public abstract class SchemaTransformations {
 	}
 
 	private static void addTypeTreeView(TreeItem<TypeController> tree, Type t){
-		if(!t.getTypes().isEmpty()){
-			
-			TypeController tc = new TypeController(t, tree.getValue().getType());
-			TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
-			node.setExpanded(true);
-			tree.getChildren().add(node);
-			
-			for (Type s : t.getTypes()) {
-				addTypeTreeView(node, s);
+		
+		if(t.isFolder()) {
+			if(!((Folder)t).getCategories().isEmpty() || !((Folder)t).getFolders().isEmpty()){
+				TypeController tc = new TypeController(t, tree.getValue().getType());
+				TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
+				node.setExpanded(true);
+				tree.getChildren().add(node);
+				
+				for (Category c : ((Folder)t).getCategories()) {
+					addTypeTreeView(node, c);
+				}
+				for (Folder f : ((Folder)t).getFolders()) {
+					addTypeTreeView(node, f);
+				}
 			}
-		}else{
+			else{
+				TypeController tc = new TypeController(t, tree.getValue().getType());
+				TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
+				tree.getChildren().add(node);
+			}
+		}
+		else if(t.isCategory()) {
+			if(!((Category)t).getProperties().isEmpty()) {
+				TypeController tc = new TypeController(t, tree.getValue().getType());
+				TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
+				node.setExpanded(true);
+				tree.getChildren().add(node);
+				
+				for (Property p : ((Category)t).getProperties()) {
+					addTypeTreeView(node, p);
+				}
+			}
+			else{
+				TypeController tc = new TypeController(t, tree.getValue().getType());
+				TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
+				tree.getChildren().add(node);
+			}
+		}
+		else {
 			TypeController tc = new TypeController(t, tree.getValue().getType());
 			TreeItem<TypeController> node = new TreeItem<TypeController>(tc);
 			tree.getChildren().add(node);

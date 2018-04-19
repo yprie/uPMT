@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="momentCardPane" maxHeight="220.0" minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="220.0" prefWidth="180.0" styleClass="momentCard" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="momentCardPane" maxHeight="220.0" minHeight="200.0" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="220.0" prefWidth="180.0" styleClass="momentCard" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <BorderPane fx:id="borderPaneLabel" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" prefHeight="25.0">
          <center>

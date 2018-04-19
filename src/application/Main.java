@@ -260,22 +260,22 @@ public class Main extends Application {
      * should be improved if desired
      */
     private void createBasicSchema(){
-    	Type s = new Schema((_langBundle.getString("default_scheme")));
-    	Type general = new Folder(_langBundle.getString("general"));
-    	Type autre = new Folder(_langBundle.getString("other"));
-		Type visuel = new Category(_langBundle.getString("visual"));
-		Type image = new Property(_langBundle.getString("picture"));
-		Type sensoriel = new Category(_langBundle.getString("sensory"));
-		Type emotionnel = new Category(_langBundle.getString("emotional"));
-		Type sonore = new Category(_langBundle.getString("acoustic"));
-		visuel.addType(image);
-		general.addType(visuel);
-		general.addType(sensoriel);
-		general.addType(emotionnel);
-		general.addType(sonore);
-		s.addType(general);
-		s.addType(autre);
-		this.BasicSchema = (Schema) s;
+    	Schema s = new Schema((_langBundle.getString("default_scheme")));
+    	Folder general = new Folder(_langBundle.getString("general"));
+    	Folder autre = new Folder(_langBundle.getString("other"));
+    	Category visuel = new Category(_langBundle.getString("visual"));
+    	Property image = new Property(_langBundle.getString("picture"));
+		Category sensoriel = new Category(_langBundle.getString("sensory"));
+		Category emotionnel = new Category(_langBundle.getString("emotional"));
+		Category sonore = new Category(_langBundle.getString("acoustic"));
+		visuel.addProperty(image);
+		general.addCategory(visuel);
+		general.addCategory(sensoriel);
+		general.addCategory(emotionnel);
+		general.addCategory(sonore);
+		s.addFolder(general);
+		s.addFolder(autre);
+		this.BasicSchema = s;
     }
     
     /**
@@ -369,10 +369,9 @@ public class Main extends Application {
 	 */
 	private void writeMoment(DescriptionInterview ent, MomentExperience m, PrintWriter writer, String hierarchy){
 		LinkedList<String> classes = new LinkedList<String>();
-		for(Type t : m.getTypes()){
-			for(Type prop : t.getTypes()){
-				Property p = (Property) prop;
-				classes.add(format(t.getName())+","+format(p.getName())+","+format(p.getValue()));
+		for(Category c : m.getCategories()){
+			for(Property p : c.getProperties()){
+				classes.add(format(c.getName())+","+format(p.getName())+","+format(p.getValue()));
 			}
 		}
 		

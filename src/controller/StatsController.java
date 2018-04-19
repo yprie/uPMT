@@ -160,7 +160,7 @@ public class StatsController implements Initializable{
     private void setPropertyMenu() {
     	ArrayList<Category> list = IStats.getInstance().getCategories();
     	for (Category category : list) {
-    		for (Type p : category.getTypes()) {
+    		for (Property p : category.getProperties()) {
         		CheckMenuItem add = new CheckMenuItem(category.getName() + " : " + p.getName());
         		add.setOnAction(e -> {
         			if (!add.isSelected()) {

@@ -26,17 +26,28 @@ import java.util.LinkedList;
 
 public class Category extends Type implements Serializable, Cloneable {
 
+	protected LinkedList<Property> mProperties;
+	
 	public Category(String nom) {
 		super(nom);
+		mProperties  = new LinkedList<Property>();
 	}
 	
 	public Category clone(){
 		Category newc = new Category(this.getName());
 		newc.setColor(this.getColor());
-		for(Type t : this.getTypes()){
-			newc.addType(new Property(t.getName()));
+		for(Property t : this.getProperties()){
+			newc.addProperty(t.clone());
 		}
 		return newc;
+	}
+	
+	public void addProperty(Property s){
+		this.mProperties.add(s);
+	}
+	
+	public LinkedList<Property> getProperties(){
+		return this.mProperties;
 	}
 	
 	@Override
@@ -48,7 +59,7 @@ public class Category extends Type implements Serializable, Cloneable {
 		if(tmp != null){
 			return tmp.mName.equals(this.mName) &&
 					tmp.mDescription.equals(this.mDescription) &&
-					tmp.getTypes().equals(this.getTypes());
+					tmp.getProperties().equals(this.getProperties());
 		}else{
 			return false;
 		}		

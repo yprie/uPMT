@@ -89,51 +89,59 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	// method used to add a class to the current cell
 	public void addClass(int classNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
-        Type nt = new Category("Classe "+classNumber);
+        Category nt = new Category("Category "+classNumber);
         TypeController tc;
-        if(getItem().getType().getClass().equals(Schema.class)){
+        /*if(getItem().getType().getClass().equals(Schema.class)){
         	tc = new TypeController(nt, getTreeItem().getValue().getType());
         }else{
         	tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
-        }
+        }*/
+        tc = new TypeController(nt, getTreeItem().getValue().getType());
+        System.out.println("Le parent de la categorie est "+getTreeItem().getValue().getType());
         newTypeController.setValue(tc);
         getTreeItem().getChildren().add(newTypeController);
-        getItem().getType().getTypes().add(nt);
+        ((Folder)getItem().getType()).addCategory(nt);
         this.getTreeItem().setExpanded(true);
 	}
 	
 	// method used to add a folder to the current cell
 	public void addFolder(int folderNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
-        Type nt = new Folder("Dossier "+folderNumber);
+        Folder nt = new Folder("Folder "+folderNumber);
         TypeController tc;
-        if(getItem().getType().getClass().equals(Schema.class)){
+        /*if(getItem().getType().getClass().equals(Schema.class)){
         	tc = new TypeController(nt, getTreeItem().getValue().getType());
         }else{
         	tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
-        }
+        	System.out.println("Le parent est "+getTreeItem().getParent().getValue().getType().getName());
+        }*/
+        System.out.println("Le parent du dossier est "+getTreeItem().getValue().getType());
         tc = new TypeController(nt, getTreeItem().getValue().getType());
+        //tc = new TypeController(nt, getTreeItem().getValue().getType());
         newTypeController.setValue(tc);
         getTreeItem().getChildren().add(newTypeController);
-        getItem().getType().getTypes().add(nt);
+        if(getItem().getType().isSchema()) {
+        	((Schema)getItem().getType()).addFolder(nt);
+        }
+        else
+        	((Folder)getItem().getType()).addFolder(nt);
+        System.out.println("2. Le parent est "+getItem().getType().getName());
         this.getTreeItem().setExpanded(true);
 	}
 
 	// method used to add a property to the current cell
-	public void addProperty(Type nt){
+	public void addProperty(Property nt){
 		TreeItem<TypeController> newType = new TreeItem<TypeController>();
-		TypeController tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
-        newType.setValue(tc);
+		//TypeController tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
+		TypeController tc = new TypeController(nt, getTreeItem().getValue().getType());
+		System.out.println("Le parent de la propriete est "+getTreeItem().getValue().getType());
+		newType.setValue(tc);
         getTreeItem().getChildren().add(newType);
         this.getTreeItem().setExpanded(true);
         //System.out.println("On ajoute une propriete !");
         //System.out.println("On a essayé de la renommer");
 	}
-	
-	private Property dupProperty(Property p){
-		Property newp = new Property(p.getName());
-		return newp;
-	}
+
 	
 	public TypeTreeViewController getController() {
 		return this.controller;

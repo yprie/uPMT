@@ -40,7 +40,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import model.Category;
+import model.Folder;
 import model.Property;
+import model.Schema;
 import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
@@ -108,12 +110,22 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 		}
 		parentFolder = tree.getParent();
 		parentFolder.getChildren().remove(tree);
-		parentFolder.getValue().getType().getTypes().remove(tree.getValue().getType());
+		LinkedList<Folder> folders;
+		if(parentFolder.getValue().getType().isSchema())
+			folders = ((Schema)parentFolder.getValue().getType()).getFolders();
+		else
+			folders = ((Folder)parentFolder.getValue().getType()).getFolders();
+		folders.remove(tree.getValue().getType());
 	}
 	
 	public void RebuildFolderRec() {
+		LinkedList<Folder> folders;
+		if(parentFolder.getValue().getType().isSchema())
+			folders = ((Schema)parentFolder.getValue().getType()).getFolders();
+		else
+			folders = ((Folder)parentFolder.getValue().getType()).getFolders();
 		parentFolder.getChildren().add(folderPos,tree);
-		parentFolder.getValue().getType().getTypes().add(folderPos,tree.getValue().getType());
+		folders.add(folderPos,(Folder)tree.getValue().getType());
 		for (Command cmd : listeCommandes) {
 			((Undoable) cmd).undo();
 		}

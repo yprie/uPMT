@@ -492,7 +492,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void removeTypeClassRep(TypeClassRepresentationController tcrc) {
 		if(this.typeSpace.getChildren().contains(tcrc)) {
 			this.typeSpace.getChildren().remove(tcrc);
-			this.moment.getTypes().remove(tcrc.getClasse());
+			this.moment.getCategories().remove(tcrc.getClasse());
 			stack.push(tcrc);
 		}
 	}
@@ -502,7 +502,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			TypeClassRepresentationController tcrc = stack.getFirst();
 			if(!this.typeSpace.getChildren().contains(tcrc)) {
 				this.typeSpace.getChildren().add(tcrc);
-				this.moment.getTypes().add(tcrc.getClasse());
+				this.moment.getCategories().add(tcrc.getClasse());
 				stack.pop();
 				Platform.runLater(new Runnable() {
 					@Override

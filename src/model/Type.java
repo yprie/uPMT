@@ -29,7 +29,6 @@ import controller.typeTreeView.TypeTreeViewController;
 
 public abstract class Type implements Serializable, Cloneable{
 	
-	protected LinkedList<Type> mTypes;
 	protected String mDescription;
 	protected String mColor = "#000000";
 	protected String mName;
@@ -38,20 +37,11 @@ public abstract class Type implements Serializable, Cloneable{
 	public Type(String mName) {
 		super();
 		this.mName = mName;
-		this.mTypes = new LinkedList<Type>();
 		this.mDescription = "";
 	}
 	
-	public void addType(Type s){
-		this.mTypes.add(s);
-	}
-	
-	public LinkedList<Type> getTypes(){
-		return this.mTypes;
-	}
-	
 	public String toString(){
-		return this.mName + this.mTypes;
+		return this.mName;
 	}
 	
 	public String getName(){
@@ -70,17 +60,6 @@ public abstract class Type implements Serializable, Cloneable{
 		this.mDescription = mDescription;
 	}
 
-	@Override
-	public boolean equals(Object o){
-		Type tmp = (Type)o;
-		if(tmp != null){
-			return tmp.mName.equals(this.mName) &&
-					tmp.mDescription.equals(this.mDescription) &&
-					tmp.getTypes().equals(this.getTypes());
-		}else{
-			return false;
-		}		
-	}
 
 	public String getColor() {
 		return mColor;
@@ -93,17 +72,22 @@ public abstract class Type implements Serializable, Cloneable{
     // Functions used to define the layout for the different kind of Types
 	public boolean isFolder()
 	{
-		return this.getClass().equals(new Folder("").getClass());
+		return this.getClass().equals(Folder.class);
 	}
 	
 	public boolean isCategory()
 	{
-		return this.getClass().equals(new Category("").getClass());
+		return this.getClass().equals(Category.class);
 	}
 	
 	public boolean isProperty()
 	{
-		return this.getClass().equals(new Property("").getClass());
+		return this.getClass().equals(Property.class);
+	}
+	
+	public boolean isSchema()
+	{
+		return this.getClass().equals(Schema.class);
 	}
 	
 	

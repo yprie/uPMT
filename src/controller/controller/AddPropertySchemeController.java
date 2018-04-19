@@ -23,23 +23,25 @@ package controller.controller;
 import java.util.LinkedList;
 
 import controller.TypeClassRepresentationController;
+import model.Category;
 import model.MomentExperience;
+import model.Property;
 import model.Type;
 
 public class AddPropertySchemeController implements controller.controller.Observable{
 
-	private Type classe;
+	private Category mCategory;
 	private LinkedList<Observer> ObsTypesNames;
 	
-	public AddPropertySchemeController(Type classe) {
-		this.classe = classe;
+	public AddPropertySchemeController(Category mCategory) {
+		this.mCategory = mCategory;
 		ObsTypesNames = new LinkedList<Observer>();
 	}
 
 	@Override
 	public void update(Object value) {
 		//System.out.println("On ajoute " + ((Type)value).toString());
-		classe.addType((Type) value);
+		mCategory.addProperty((Property) value);
 		for(Observer obs : ObsTypesNames) {
 			//System.out.println("Nom: "+obs.toString());
 			obs.updateVue(this, value);
@@ -55,7 +57,7 @@ public class AddPropertySchemeController implements controller.controller.Observ
 
 	@Override
 	public void updateModel(Object value) {
-		this.classe = (Type) value;
+		this.mCategory = (Category) value;
 	}
 
 	@Override

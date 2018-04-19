@@ -22,6 +22,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
+import model.Category;
 import model.MomentExperience;
 import model.Type;
 
@@ -39,10 +40,9 @@ public class MomentAddTypeController implements controller.controller.Observable
 	public void update(Object value) {
 		//System.out.println("Moment update: "+momentExp.getName());
 		if(value != null) {
-			momentExp.getTypes().add((Type) value);
-			
+			momentExp.getCategories().add((Category) value);
 		}else {
-			momentExp.getTypes().removeLast();
+			momentExp.getCategories().removeLast();
 		}
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);

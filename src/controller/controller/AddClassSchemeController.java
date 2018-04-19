@@ -23,15 +23,17 @@ package controller.controller;
 import java.util.LinkedList;
 
 import controller.TypeClassRepresentationController;
+import model.Category;
+import model.Folder;
 import model.MomentExperience;
 import model.Type;
 
 public class AddClassSchemeController implements controller.controller.Observable{
 
-	private Type parent;
+	private Folder parent;
 	private LinkedList<Observer> ObsTypesNames;
 	
-	public AddClassSchemeController(Type parent) {
+	public AddClassSchemeController(Folder parent) {
 		this.parent = parent;
 		ObsTypesNames = new LinkedList<Observer>();
 	}
@@ -39,7 +41,7 @@ public class AddClassSchemeController implements controller.controller.Observabl
 	@Override
 	public void update(Object value) {
 
-		parent.getTypes().add(((Type) value));
+		parent.addCategory((Category) value);
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);
 		}
@@ -54,7 +56,7 @@ public class AddClassSchemeController implements controller.controller.Observabl
 
 	@Override
 	public void updateModel(Object value) {
-		this.parent = (Type) value;
+		this.parent = (Folder) value;
 	}
 
 	@Override

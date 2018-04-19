@@ -58,8 +58,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import model.Category;
+import model.Folder;
 import model.Property;
 import model.Type;
+import utils.MainViewTransformations;
 import utils.ResourceLoader;
 import utils.UndoCollector;
 import utils.Utils;
@@ -119,38 +121,26 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			 @Override
 			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
 			    {
-			        if (!newPropertyValue)
-			        {
+			        if (!newPropertyValue){
 			        	if(type.getType().isCategory()){
-							String oldName = new String(type.getType().getName());
-							if(!oldName.equals(textField.getText())) {
-								boolean hasName = false;
-								//System.out.println("Moi: "+type.getType().getName());
-								//System.out.println("Parent: "+type.getParent().getName());
-								for(Type classe : type.getParent().getTypes()) {
-									//System.out.println("Classes: "+classe.getName());
-									if(classe.getName().equals(textField.getText())) {
-										hasName = true;
-										break;
-									}	
-								}
-								if(!hasName) {
-									RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
-											type.getClassNameController(), 
-											oldName, 
-											textField.getText(),
-											main);
-									cmd.execute();
-									UndoCollector.INSTANCE.add(cmd);
-								}
-								else {
+			        		if(MainViewTransformations.getCategory(textField.getText(), main.getCurrentProject().getSchema())==null) {
+			        			String oldName = new String(type.getType().getName());
+			        			RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
+										type.getClassNameController(), 
+										oldName, 
+										textField.getText(),
+										main);
+								cmd.execute();
+								UndoCollector.INSTANCE.add(cmd);
+			        		}
+							else {
 									Alert alert = new Alert(AlertType.INFORMATION);
 									alert.setTitle(main._langBundle.getString("invalid_name"));
 									alert.setHeaderText(null);
 									alert.setContentText(main._langBundle.getString("class_name_invalid"));
 									alert.show();
 								}
-							}
+							
 						}		        	
 						typePane.setLeft(nomType);
 						rename.setDisable(false);

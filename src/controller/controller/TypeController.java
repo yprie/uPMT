@@ -21,6 +21,8 @@
 package controller.controller;
 
 import controller.typeTreeView.TypeTreeViewController;
+import model.Category;
+import model.Folder;
 import model.Type;
 
 public class TypeController {
@@ -44,13 +46,23 @@ public class TypeController {
 		this.parent = parent;
 		this.classNameController = new RenameClassSchemeController(t);
 		this.classColorController = new ChangeColorClassSchemeController(t);
-		this.addPropertyController = new AddPropertySchemeController(t);
-		this.removePropertySchemeController = new RemovePropertySchemeController(t);
-		this.addPropertySchemeWithValueController = new AddPropertySchemeWithValueController(t);
 		this.propertyNameController = new RenamePropertyController(t, parent);
 		this.changePropertyValueController = new ChangePropertyValueController(t);
-		this.removeClassSchemeController = new RemoveClassSchemeController(parent);
-		this.addClassSchemeController = new AddClassSchemeController(parent);
+		if(t.isCategory()) {
+			System.out.println("C'est en effet une categorie du nom de "+t.getName());
+			this.removePropertySchemeController = new RemovePropertySchemeController((Category)t);
+			this.addPropertyController = new AddPropertySchemeController((Category)t);
+			this.addPropertySchemeWithValueController = new AddPropertySchemeWithValueController((Category)t);
+		}
+		if(parent!=null) {
+			if(parent.isFolder()) {
+				this.addClassSchemeController = new AddClassSchemeController((Folder)parent);
+				this.removeClassSchemeController = new RemoveClassSchemeController((Folder)parent);
+			}
+			else if(t.isCategory()) System.out.println("Mais son père n'est pas un dossier ? :"+parent.getName());
+		}else {
+			if(t.isCategory()) System.out.println("Mais son père est null ???");
+		}
 	}
 	
 	public TypeTreeViewController getTypeTreeViewController() {

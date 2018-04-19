@@ -22,6 +22,7 @@ package controller.typeTreeView;
 
 import java.io.File;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -45,6 +46,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import model.Folder;
+import model.Schema;
 import model.Type;
 import utils.ResourceLoader;
 import utils.UndoCollector;
@@ -112,7 +115,12 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 						String oldName = new String(type.getType().getName());
 						if(!oldName.equals(textField.getText())) {
 							boolean hasName = false;
-							for(Type folder : type.getParent().getTypes()) {
+							LinkedList<Folder> folders;
+							if(type.getParent().isSchema())
+								folders = ((Schema)type.getParent()).getFolders();
+							else
+								folders = ((Folder)type.getParent()).getFolders();
+							for(Type folder : folders) {
 								if(folder.getName().equals(textField.getText())) {
 									hasName = true;
 									break;

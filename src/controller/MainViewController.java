@@ -320,21 +320,6 @@ public class MainViewController implements Initializable, Observer {
 		});
 	}
 
-	
-	private Category duplicate(Category c){
-		Category newc = new Category(c.getName());
-		newc.setColor(c.getColor());
-		for(Type t : c.getTypes()){
-			newc.addType(t);
-		}
-		return newc;
-	}
-
-
-
-	
-
-
 	@Override
 	public void updateVue(Observable obs, Object value) {
 		// TODO Auto-generated method stub

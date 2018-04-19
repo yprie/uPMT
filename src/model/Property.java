@@ -71,6 +71,14 @@ public class Property extends Type implements Serializable, Cloneable{
 		
 	}
 	
+	public Property clone(){
+		Property newp = new Property(this.getName());
+		newp.setDescription(mDescription);
+		newp.setColor(mColor);
+		newp.setValue(mValue);
+		return newp;
+	}
+	
 	
 
 }

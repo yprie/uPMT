@@ -53,42 +53,29 @@ public class AddTypeCommand implements Command,Undoable{
 	public AddTypeCommand(MomentExpVBox moment, DragEvent event, Main main) {
 		this.event = event;
 		typeName = event.getDragboard().getRtf();
+		System.out.println("Le nom de la categorie:"+typeName);
 		this.momentExpBorder = moment;
 		this.main = main;
-
-		/*for(Type t : main.getCurrentProject().getSchemaProjet().getTypes()){
-			if(t.getName().equals(typeName)){
-				type = (Classe) t;
-			}
-			else{
-				setClassByName(t);
-			}
+		type = MainViewTransformations.getCategory(typeName, main.getCurrentProject().getSchema());
+		if(type==null) {
+			System.out.println("Le type est null !");
 		}
-		setClassByName(main.getCurrentProject().getSchemaProjet());*/
-		
-		for(Type dossier : main.getCurrentProject().getSchema().getTypes()) {
-			for(Type classe : dossier.getTypes()) {
-				if(classe.getName().equals(typeName)) {
-					type = (Category) classe;
-					break;
-				}
-			}
-			if(type!=null)break;
+		else {
+			System.out.println("Le type n'est pas null: "+type.getName());
 		}
-		
 		dup = type.clone();
 	}
 	
-	private void setClassByName(Type type){
-		for(Type t : type.getTypes()){
-
+	
+	
+	private void setClassByName(Folder f){
+		for(Category t : f.getCategories()){
 			if(t.getName().equals(typeName)){
-				this.type = (Category) t;
+				this.type = t;
 			}
-			
-			for(Type t2: t.getTypes()){
+			/*for(Type t2: t.getTypes()){
 				setClassByName(t2);
-			}
+			}*/
 		}
 	}
 

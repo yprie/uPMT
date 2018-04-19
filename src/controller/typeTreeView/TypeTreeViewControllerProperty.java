@@ -55,6 +55,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import model.Category;
 import model.Property;
 import model.Type;
 import utils.ResourceLoader;
@@ -108,7 +109,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 						String oldName = new String(type.getType().getName());
 						if(!oldName.equals(textField.getText())) {
 							boolean hasName = false;
-							for(Type propriete : type.getParent().getTypes()) {
+							for(Property propriete : ((Category)type.getParent()).getProperties()) {
 								if(propriete.getName().equals(textField.getText())) {
 									hasName = true;
 									break;

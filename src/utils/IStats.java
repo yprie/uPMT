@@ -14,6 +14,7 @@ import model.Category;
 import model.DescriptionInterview;
 import model.Folder;
 import model.MomentExperience;
+import model.Schema;
 import model.Type;
 
 public class IStats {
@@ -48,17 +49,15 @@ public class IStats {
      * @param t the current type of the scheme
      */
     private static void lookingForCategories(Type t) {
-    	
-    	for (Type t_it : t.getTypes()) { //for each type of the same level of the scheme
-    					
-		   	if(t_it.isCategory()) {
-		   		instance.mCategories.add((Category) t_it); // if it is a category, we can store it (that is what we are looking for)
-		   	}
-    	
-	    	else {
-	    		instance.lookingForCategories(t_it); // because one category can not be parent of an other one, we stop here and we do it again for the other types
-	    	}
-    	}	   	
+    	if(t.isSchema()) 
+    		for(Folder f : ((Schema)t).getFolders()) 
+    			instance.lookingForCategories(f);
+    	else if(t.isFolder()) {
+			for(Category c : ((Folder)t).getCategories())
+				instance.mCategories.add(c);
+			for(Folder fs : ((Folder)t).getFolders())
+				instance.lookingForCategories(fs);
+    	}   	
     }
     
     
@@ -126,7 +125,7 @@ public class IStats {
     	}
     	
     	for (MomentExperience moment : instance.mItwMoments.get(interview)) {
-	    	if (moment.getTypes().contains(category)) { //then we compare if we find any category of the scheme in the model
+	    	if (moment.getCategories().contains(category)) { //then we compare if we find any category of the scheme in the model
 				cpt++;
 			}
     	}

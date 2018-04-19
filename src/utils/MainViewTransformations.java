@@ -67,7 +67,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import model.Category;
 import model.DescriptionInterview;
+import model.Folder;
 import model.MomentExperience;
+import model.Schema;
 import model.Type;
 
 public abstract class MainViewTransformations {
@@ -130,6 +132,7 @@ public abstract class MainViewTransformations {
 		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	if(event.getDragboard().getString().equals("ajoutType")){
+		    		System.out.println("On va essayer d'ajouter le type");
 		    		AddTypeCommand cmd = new AddTypeCommand(moment,event,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
@@ -323,6 +326,33 @@ public abstract class MainViewTransformations {
 		});
 	}
 	
+	public static Category getCategory(String name, Type s) {
+		Category ret=null;
+		if(s.isSchema()) {
+			for(Folder f: ((Schema)s).getFolders()) {
+				ret = getCategory(name, f);
+				if(ret!=null) break;
+			}
+		}
+		else {
+			for(Category c: ((Folder)s).getCategories()) {
+				if(c.getName().equals(name)) {
+					ret = c;
+					break;
+				}
+			}
+			if(ret==null) {
+				for(Folder f: ((Folder)s).getFolders()) {
+					ret = getCategory(name, f);
+					if(ret!=null) break;
+				}
+			}
+		}
+		
+		return ret;
+	}
+	
+	
 	public static void addTypeListener(TypeClassRepresentationController boutType,MomentExpVBox m,Type type,Main main){
 		boutType.focusedProperty().addListener(new ChangeListener<Boolean>()
 		{
@@ -365,7 +395,7 @@ public abstract class MainViewTransformations {
 	public static void loadTypes(MomentExpVBox mp,Main main){
 		//System.out.println("------------------------------------");
 		//System.out.println(mp.getMoment().getNom()+": ");
-		for (Type t : mp.getMoment().getTypes()) {
+		for (Type t : mp.getMoment().getCategories()) {
 			TypeClassRepresentationController classe = new TypeClassRepresentationController((Category) t,mp,main);
 			mp.getTypeSpace().getChildren().add(classe);
 			addTypeListener(classe, mp, t, main);

@@ -38,10 +38,10 @@ public class MomentRemoveTypeController implements controller.controller.Observa
 
 	@Override
 	public void update(Object value) {
-		if(momentExp.getTypes().contains(((TypeClassRepresentationController) value).getClasse())) {
-			momentExp.getTypes().remove(((TypeClassRepresentationController) value).getClasse());
+		if(momentExp.getCategories().contains(((TypeClassRepresentationController) value).getClasse())) {
+			momentExp.getCategories().remove(((TypeClassRepresentationController) value).getClasse());
 		}else {
-			momentExp.getTypes().add(((TypeClassRepresentationController) value).getClasse());
+			momentExp.getCategories().add(((TypeClassRepresentationController) value).getClasse());
 		}
 		
 		for(Observer obs : ObsMomentNames) {
