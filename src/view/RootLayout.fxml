@@ -43,11 +43,11 @@
                	  <MenuItem fx:id="link" mnemonicParsing="false" onAction="#openALink" text="%link_to_github" />               
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="%tools">
+            <!-- <Menu mnemonicParsing="false" text="%tools">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#stats" text="%stats" />
               </items>
-            </Menu>
+            </Menu> -->
         </menus>
       </MenuBar>
    </top>
