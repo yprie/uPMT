@@ -49,6 +49,7 @@ import com.google.gson.JsonIOException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import utils.InterfaceAdapter;
+import utils.Utils;
 import javafx.scene.control.Alert.AlertType;
 
 public class Project implements Serializable {
@@ -56,12 +57,11 @@ public class Project implements Serializable {
 	public static final String FORMAT = ".upmt";
 	public static final String PATH = "./save/";
 	public static final String RECOVERY = "recovery_";
+	public static int VERSION_OF_APP = 2;
 	
-	private static int VERSION_OF_APP = 1;
+	//--------------------------------------------
 	
-	
-	private int SAVE_VERSION=0;
-	
+	private int SAVE_VERSION=2;
 	private String mName;
 	private Schema mSchema;
 	private LinkedList<DescriptionInterview> mInterviews;
@@ -176,6 +176,7 @@ public class Project implements Serializable {
 		    	p = gson.fromJson(new FileReader(PATH+projet), Project.class);
 		    }
 			p.setVersion(Project.VERSION_OF_APP);
+			p.save();
 			p.reloadMomentParentLost();
 			return p;
 		}catch(Exception e) {
@@ -212,8 +213,8 @@ public class Project implements Serializable {
 			ret = new String (Files.readAllBytes(Paths.get(path)));
 			int i;
 			for(i=projVersion; i<Project.VERSION_OF_APP;i++) {
-				if(i==0) ret = version0To1(ret);
-				//if(i==1) ret = version1To2(ret);
+				if(i==0) ret = Utils.version0To1(ret);
+				if(i==1) ret = Utils.version1To2(ret);
 			}
 	
 		} catch (IOException e) {
@@ -223,53 +224,7 @@ public class Project implements Serializable {
 		return ret;
 	}
 	
-	private static String version0To1(String json) {
-		String ret = json;
-		//Renommage des classes
-		ret = ret.replaceAll("model.Dossier", "model.Folder");
-		ret = ret.replaceAll("model.Classe", "model.Category");
-		ret = ret.replaceAll("model.Propriete", "model.Property");
-		
-		//Project
-		ret = ret.replaceAll("\"nom\"", "\"mName\"");
-		ret = ret.replaceAll("\"schemaProjet\"", "\"mSchema\"");
-		ret = ret.replaceAll("\"entretiens\"", "\"mInterviews\"");
-		
-		//DescriptionInterview
-		ret = ret.replaceAll("\"descripteme\"", "\"mDescripteme\"");
-		ret = ret.replaceAll("\"moments\"", "\"mMoments\"");
-		ret = ret.replaceAll("\"dateEntretien\"", "\"mDateInterview\"");
-		ret = ret.replaceAll("\"participant\"", "\"mParticipant\"");
-		ret = ret.replaceAll("\"commentaire\"", "\"mComment\"");
-		
-		//MomentExperience
-		ret = ret.replaceAll("\"date\"", "\"mDate\"");
-		ret = ret.replaceAll("\"types\"", "\"mTypes\"");
-		ret = ret.replaceAll("\"enregistrements\"", "\"mRecords\"");
-		ret = ret.replaceAll("\"sousMoments\"", "\"mSubMoments\"");
-		ret = ret.replaceAll("\"parentMomentID\"", "\"mParentMomentID\"");
-		ret = ret.replaceAll("\"parentCol\"", "\"mParentCol\"");
-		ret = ret.replaceAll("\"gridCol\"", "\"mGridCol\"");
-		ret = ret.replaceAll("\"couleur\"", "\"mColor\"");
-		ret = ret.replaceAll("\"id\"", "\"mID\"");
-		ret = ret.replaceAll("\"row\"", "\"mRow\"");
-		ret = ret.replaceAll("\"currentProperty\"", "\"mCurrentProperty\"");
-		ret = ret.replaceAll("\"morceauDescripteme\"", "\"mDescripteme\"");
-		
-		//Type
-		ret = ret.replaceAll("\"description\"", "\"mDescription\"");
-		ret = ret.replaceAll("\"valeur\"", "\"mValue\"");
-		ret = ret.replaceAll("\"extract\"", "\"mExtract\"");
-		
-		//Descripteme
-		ret = ret.replaceAll("\"texte\"", "\"mText\"");
-		
-		//Record
-		ret = ret.replaceAll("\"link\"", "\"mLink\"");
-		
-		//System.out.println(ret);
-		return ret;
-	}
+	
 	
 	protected void reloadMomentParentLost() {
 		

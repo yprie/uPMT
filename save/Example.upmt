@@ -1,120 +1,80 @@
 {
-  "SAVE_VERSION": 1,
+  "SAVE_VERSION": 2,
   "mName": "Example",
   "mSchema": {
-    "mTypes": [
+    "mFolders": [
       {
-        "type": "model.Folder",
-        "data": {
-          "mTypes": [
-            {
-              "type": "model.Category",
-              "data": {
-                "mTypes": [
+        "mFolders": [
+          {
+            "mFolders": [],
+            "mCategories": [
+              {
+                "mProperties": [
                   {
-                    "type": "model.Property",
-                    "data": {
-                      "mTypes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "density"
-                    }
+                    "mDescription": "",
+                    "mColor": "#000000",
+                    "mName": "source"
                   },
                   {
-                    "type": "model.Property",
-                    "data": {
-                      "mTypes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "temperature"
-                    }
-                  },
-                  {
-                    "type": "model.Property",
-                    "data": {
-                      "mTypes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "shape"
-                    }
-                  },
-                  {
-                    "type": "model.Property",
-                    "data": {
-                      "mTypes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "location"
-                    }
+                    "mDescription": "",
+                    "mColor": "#000000",
+                    "mName": "location"
                   }
                 ],
                 "mDescription": "",
-                "mColor": "#FFE666",
-                "mName": "Bodily feeling"
+                "mColor": "#80B380",
+                "mName": "Auditory sensation"
               }
-            },
-            {
-              "type": "model.Category",
-              "data": {
-                "mTypes": [
-                  {
-                    "type": "model.Property",
-                    "data": {
-                      "mTypes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "type"
-                    }
-                  }
-                ],
-                "mDescription": "",
-                "mColor": "#E699B3",
-                "mName": "Emotion"
-              }
-            },
-            {
-              "type": "model.Folder",
-              "data": {
-                "mTypes": [
-                  {
-                    "type": "model.Category",
-                    "data": {
-                      "mTypes": [
-                        {
-                          "type": "model.Property",
-                          "data": {
-                            "mTypes": [],
-                            "mDescription": "",
-                            "mColor": "#000000",
-                            "mName": "source"
-                          }
-                        },
-                        {
-                          "type": "model.Property",
-                          "data": {
-                            "mTypes": [],
-                            "mDescription": "",
-                            "mColor": "#000000",
-                            "mName": "location"
-                          }
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#80B380",
-                      "mName": "Auditory sensation"
-                    }
-                  }
-                ],
+            ],
+            "mDescription": "",
+            "mColor": "#000000",
+            "mName": "Sensation"
+          }
+        ],
+        "mCategories": [
+          {
+            "mProperties": [
+              {
                 "mDescription": "",
                 "mColor": "#000000",
-                "mName": "Sensation"
+                "mName": "density"
+              },
+              {
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "temperature"
+              },
+              {
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "shape"
+              },
+              {
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "location"
               }
-            }
-          ],
-          "mDescription": "",
-          "mColor": "#000000",
-          "mName": "General"
-        }
+            ],
+            "mDescription": "",
+            "mColor": "#FFE666",
+            "mName": "Bodily feeling"
+          },
+          {
+            "mProperties": [
+              {
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "type"
+              }
+            ],
+            "mDescription": "",
+            "mColor": "#E699B3",
+            "mName": "Emotion"
+          }
+        ],
+        "mDescription": "",
+        "mColor": "#000000",
+        "mName": "General"
       }
     ],
     "mDescription": "",
@@ -131,98 +91,72 @@
           "mDate": "Jan 1, 1970 12:00:00 AM",
           "mName": "April morning",
           "mDescripteme": "It was in Puiseaux one April morning, last spring.",
-          "mTypes": [],
+          "mCategories": [],
           "mRecords": [],
           "mSubMoments": [
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Tightening phase",
               "mDescripteme": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest.",
-              "mTypes": [
+              "mCategories": [
                 {
-                  "type": "model.Category",
-                  "data": {
-                    "mTypes": [
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "sadness",
-                          "mExtract": {
-                            "mText": "sad"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "type"
-                        }
-                      }
-                    ],
-                    "mDescription": "",
-                    "mColor": "#E699B3",
-                    "mName": "Emotion"
-                  }
+                  "mProperties": [
+                    {
+                      "mValue": "sadness",
+                      "mExtract": {
+                        "mText": "sad"
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "type"
+                    }
+                  ],
+                  "mDescription": "",
+                  "mColor": "#E699B3",
+                  "mName": "Emotion"
                 },
                 {
-                  "type": "model.Category",
-                  "data": {
-                    "mTypes": [
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "compact",
-                          "mExtract": {
-                            "mText": "tight"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "density"
-                        }
+                  "mProperties": [
+                    {
+                      "mValue": "compact",
+                      "mExtract": {
+                        "mText": "tight"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "cold",
-                          "mExtract": {
-                            "mText": "frozen"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "temperature"
-                        }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "density"
+                    },
+                    {
+                      "mValue": "cold",
+                      "mExtract": {
+                        "mText": "frozen"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "ball",
-                          "mExtract": {
-                            "mText": "ball"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "shape"
-                        }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "temperature"
+                    },
+                    {
+                      "mValue": "ball",
+                      "mExtract": {
+                        "mText": "ball"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "chest",
-                          "mExtract": {
-                            "mText": "in the middle of my chest"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "location"
-                        }
-                      }
-                    ],
-                    "mDescription": "",
-                    "mColor": "#FFE666",
-                    "mName": "Bodily feeling"
-                  }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "shape"
+                    },
+                    {
+                      "mValue": "chest",
+                      "mExtract": {
+                        "mText": "in the middle of my chest"
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "location"
+                    }
+                  ],
+                  "mDescription": "",
+                  "mColor": "#FFE666",
+                  "mName": "Bodily feeling"
                 }
               ],
               "mRecords": [],
@@ -236,7 +170,6 @@
                 "mExtract": {
                   "mText": "in the middle of my chest"
                 },
-                "mTypes": [],
                 "mDescription": "",
                 "mColor": "#000000",
                 "mName": "location"
@@ -248,42 +181,31 @@
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Transitional event",
               "mDescripteme": "At one point, the song of a turtle-dove comes through the open window.",
-              "mTypes": [
+              "mCategories": [
                 {
-                  "type": "model.Category",
-                  "data": {
-                    "mTypes": [
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "turtle-dove",
-                          "mExtract": {
-                            "mText": "the song of a turtle-dove"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "source"
-                        }
+                  "mProperties": [
+                    {
+                      "mValue": "turtle-dove",
+                      "mExtract": {
+                        "mText": "the song of a turtle-dove"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "outside",
-                          "mExtract": {
-                            "mText": "comes through the open window"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "location"
-                        }
-                      }
-                    ],
-                    "mDescription": "",
-                    "mColor": "#80B380",
-                    "mName": "Auditory sensation"
-                  }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "source"
+                    },
+                    {
+                      "mValue": "outside",
+                      "mExtract": {
+                        "mText": "comes through the open window"
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "location"
+                    }
+                  ],
+                  "mDescription": "",
+                  "mColor": "#80B380",
+                  "mName": "Auditory sensation"
                 }
               ],
               "mRecords": [],
@@ -297,7 +219,6 @@
                 "mExtract": {
                   "mText": "comes through the open window"
                 },
-                "mTypes": [],
                 "mDescription": "",
                 "mColor": "#000000",
                 "mName": "location"
@@ -309,68 +230,49 @@
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Loosening phase",
               "mDescripteme": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.",
-              "mTypes": [
+              "mCategories": [
                 {
-                  "type": "model.Category",
-                  "data": {
-                    "mTypes": [
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "fluid",
-                          "mExtract": {
-                            "mText": "melt, to dilute"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "density"
-                        }
+                  "mProperties": [
+                    {
+                      "mValue": "fluid",
+                      "mExtract": {
+                        "mText": "melt, to dilute"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "warm",
-                          "mExtract": {
-                            "mText": "heat"
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "temperature"
-                        }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "density"
+                    },
+                    {
+                      "mValue": "warm",
+                      "mExtract": {
+                        "mText": "heat"
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "undefined",
-                          "mExtract": {
-                            "mText": ""
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "shape"
-                        }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "temperature"
+                    },
+                    {
+                      "mValue": "undefined",
+                      "mExtract": {
+                        "mText": ""
                       },
-                      {
-                        "type": "model.Property",
-                        "data": {
-                          "mValue": "body",
-                          "mExtract": {
-                            "mText": "body."
-                          },
-                          "mTypes": [],
-                          "mDescription": "",
-                          "mColor": "#000000",
-                          "mName": "location"
-                        }
-                      }
-                    ],
-                    "mDescription": "",
-                    "mColor": "#FFE666",
-                    "mName": "Bodily feeling"
-                  }
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "shape"
+                    },
+                    {
+                      "mValue": "body",
+                      "mExtract": {
+                        "mText": "body."
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "location"
+                    }
+                  ],
+                  "mDescription": "",
+                  "mColor": "#FFE666",
+                  "mName": "Bodily feeling"
                 }
               ],
               "mRecords": [],
@@ -384,7 +286,6 @@
                 "mExtract": {
                   "mText": "body."
                 },
-                "mTypes": [],
                 "mDescription": "",
                 "mColor": "#000000",
                 "mName": "location"
@@ -409,6 +310,19 @@
       "mParticipant": "Participant",
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
+    },
+    {
+      "mDescripteme": {
+        "mText": "• Changement Classe -\u003e Catégorie (dans les fichiers trad)\n• Bug dnd classe\n-\u003e Refaire la treeview ?\n\n• Réflechir à la MomentUtility\n\n• Réduire l\u0027espacement entre moment\n• Indiquer ce qui se passe au DND dsur un moment\n• \"New Moment\" au lieu de \"----\"\n• Réduire intensité du gris \"no descripteme\"\n\n• DragnDrop text to descripteme\n• Simplifier ColorPicker\n• Instaurer commentaire (à afficher à peut près comme une classe)\n• Link to github doit être dans le About Us, et User Guide plutot que Link 2 Github\n"
+      },
+      "mMoments": [],
+      "mDateInterview": {
+        "year": 2018,
+        "month": 4,
+        "day": 12
+      },
+      "mParticipant": "wdvsv",
+      "mName": "wdvsv_2018-04-12"
     }
   ]
 }

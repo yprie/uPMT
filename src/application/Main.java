@@ -500,6 +500,7 @@ public class Main extends Application {
 	
 	public void setCurrentDescription(DescriptionInterview currentDescription) {
 		this.currentDescription = currentDescription;
+		mainViewController.setDroppableText(currentDescription.getDescripteme().getTexte());
 		MomentID.initID(currentDescription.getMoments());
 	}
 	
