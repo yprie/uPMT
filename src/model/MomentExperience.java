@@ -40,7 +40,7 @@ public class MomentExperience implements Serializable, Cloneable {
 
 	private Date mDate;
 	private String mDuration;
-	private static String mName;
+	private String mName;
 	private String mDescripteme;
 	private LinkedList<Category> mCategories;
 	private LinkedList<Record> mRecords;
@@ -88,7 +88,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	
 	
 	public MomentExperience() {
-		this(mName, 0,0);
+		this("New Moment", 0,0);
 	}
 
 
