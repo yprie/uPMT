@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane>
+      <BorderPane prefWidth="569.0" AnchorPane.topAnchor="14.0">
          <top>
             <Text lineSpacing="5.0" smooth="false" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="This is a tool called uPMT which is aimed at reserchers using explicitation or micropheno-menological interviews to study lived experience.&#10;It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of &quot;experience moments&quot; described with concepts and attributes.&#10;&#10;&#10;@Version1.0 of the software was implemented by Corentin Jezequel in late 2017, &#10;under the supervision of Yannick Prié and Thomas Rabeyron." textAlignment="CENTER" wrappingWidth="490.0" BorderPane.alignment="TOP_CENTER">
                <BorderPane.margin>
@@ -16,13 +16,11 @@
                </BorderPane.margin>
             </Text>
          </top>
-         <bottom>
-            <Button fx:id="buttonCloseHelp" mnemonicParsing="false" onAction="#closeAbout" text="\%close" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="20.0" />
-               </BorderPane.margin>
-            </Button>
-         </bottom>
       </BorderPane>
+      <Button fx:id="buttonCloseHelp" layoutX="331.0" layoutY="271.0" mnemonicParsing="false" onAction="#closeAbout" text="\%close" />
+      <Button fx:id="btn_link2git" layoutX="170.0" layoutY="271.0" mnemonicParsing="false" onAction="#link2github" text="%link_to_github" />
    </children>
+   <padding>
+      <Insets bottom="25.0" top="5.0" />
+   </padding>
 </AnchorPane>

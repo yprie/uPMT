@@ -40,7 +40,7 @@
              <Menu mnemonicParsing="false" text="%help">
                <items>                 
                   <MenuItem fx:id="aboutUs" mnemonicParsing="false" onAction="#aboutUs" text="%about_us" />               
-               	  <MenuItem fx:id="link" mnemonicParsing="false" onAction="#openALink" text="%link_to_github" />               
+               	  <MenuItem fx:id="userGuide" mnemonicParsing="false" onAction="#openALink" text="%userGuide" />               
                </items>
             </Menu>
             <!-- <Menu mnemonicParsing="false" text="%tools">

@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExperience.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class MomentExperience implements Serializable, Cloneable {
 
 	private Date mDate;
 	private String mDuration;
-	private String mName;
+	private static String mName;
 	private String mDescripteme;
 	private LinkedList<Category> mCategories;
 	private LinkedList<Record> mRecords;
@@ -88,7 +88,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	
 	
 	public MomentExperience() {
-		this("-----", 0,0);
+		this(mName, 0,0);
 	}
 
 

@@ -1,9 +1,13 @@
 package controller;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,6 +24,8 @@ public class AboutController implements Initializable{
 
 	private @FXML TextArea document;
 	private @FXML Button buttonCloseHelp;
+	private @FXML Button btn_link2git;
+
 
 	private Main main;
 	private Stage window;
@@ -53,6 +59,25 @@ public class AboutController implements Initializable{
 		buttonCloseHelp.setText(main._langBundle.getString("close"));
 		//window.show();
 
+	}
+	
+	public void link2github() {
+		Stage web = new Stage();
+		
+		btn_link2git.setOnAction((ActionEvent action)->{ 
+			try {
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+        });
+	     //web.setAlwaysOnTop(true); 
+	     web.centerOnScreen();
+	     web.close(); 
 	}
 	
 	public TextArea getDocument() {

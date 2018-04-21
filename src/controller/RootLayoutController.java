@@ -1,7 +1,7 @@
 /*****************************************************************************
  * RootLayoutController.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ public class RootLayoutController implements Initializable{
 	private @FXML MenuItem redo;
 	private @FXML MenuItem aboutUs; 
 //	private @FXML TextArea document;
-	private @FXML MenuItem link;
+	private @FXML MenuItem userGuide;
 	private @FXML MenuItem stats;
 	
 	private Main main;
@@ -136,9 +136,9 @@ public class RootLayoutController implements Initializable{
 		
 //		link.onActionProperty().addListener(listener);
 
-		link.setOnAction((ActionEvent action)->{ 
+		userGuide.setOnAction((ActionEvent action)->{ 
 			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT/blob/master/UserGuide.pdf"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

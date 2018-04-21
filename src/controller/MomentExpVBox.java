@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExpVBox.java
  *****************************************************************************
- * Copyright ï¿½ 2017 uPMT
+ * Copyright é”Ÿï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,6 +146,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
 
 	public MomentExpVBox(MomentExperience mexp, Main main) {
+		
+		mexp.setName(main._langBundle.getString("new_moment"));
 		this.main = main;
 		moment = mexp;
         this.setPrefWidth(USE_COMPUTED_SIZE);
@@ -357,7 +359,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(this.moment.getDescripteme() != null){
 			showExtractIcon(this.moment.getDescripteme());
 		}
-		//Détecte si il est préférable que le texte soit en blanc ou en noir en fonction du fond.
+		//Dé– ecte si il est pré–’é–žable que le texte soit en blanc ou en noir en fonction du fond.
 		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
 	}
 	
@@ -550,7 +552,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			this.setColor((String) value);
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
-			//System.out.println("Changement détecté !");
+			//System.out.println("Changement dé– ectï¿½ !");
 			if(value != null) {
 				//System.out.println("value= "+value);
 				this.showExtractIcon((String) value);
