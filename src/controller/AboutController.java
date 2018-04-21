@@ -24,21 +24,12 @@ public class AboutController implements Initializable{
 
 	private @FXML TextArea document;
 	private @FXML Button buttonCloseHelp;
-	private @FXML Button btn_link2git;
-
+	private @FXML Button buttonLink2Github;
 
 	private Main main;
 	private Stage window;
 	private TextArea doc;
 	
-//	public HelpController(Main main, Stage window, TextArea d) {
-//		super();
-//		this.main = main;
-//		this.window = window;
-//		this.doc = d;
-//	}
-
-
 	public AboutController(Main main, Stage window) {
 		//super();
 		this.main = main;
@@ -47,26 +38,20 @@ public class AboutController implements Initializable{
 //		t.setText("Micro-Phenomenology");
 	}
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		document.getContextMenu();
-//		Text t = new Text();
-//		t.setText("Micro-Phenomenology");
-
 //		this.document.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
 //		this.document.setEditable(false);
 		buttonCloseHelp.setText(main._langBundle.getString("close"));
-		//window.show();
-
+//		window.show();
 	}
-	
-	public void link2github() {
+		
+	public void link2Github() {
 		Stage web = new Stage();
 		
-		btn_link2git.setOnAction((ActionEvent action)->{ 
+		buttonLink2Github.setOnAction((ActionEvent action)->{ 
 			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT/blob/master/UserGuide.pdf"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,22 +64,20 @@ public class AboutController implements Initializable{
 	     web.centerOnScreen();
 	     web.close(); 
 	}
-	
+		
 	public TextArea getDocument() {
 		return document;
 	}
-	
+		
 	@FXML
     private void closeAbout() {
        window.close();
     };
-
-
-
+    
 	public void setDocument(TextArea document) {
 		this.document = document;
 		document.setEditable(false);
 	}
-
+	
 }
 

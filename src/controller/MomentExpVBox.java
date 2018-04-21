@@ -160,7 +160,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		extractTooltip.setMaxWidth(500);
         BorderPane.setMargin(this.momentPane,(new Insets(10,10,10,10)));
         VBox.setMargin(this,(new Insets(10,10,10,10)));
-        //implementation du tooltip
+        //tooltip implementation
         hasExtractImage.setOnMouseEntered(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent event) {
@@ -280,7 +280,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 					
 				}
 				//actionStatus.setText("Text entered: " + entered);
-
 			}
         });
         //menuTime.setDisable(true);
@@ -358,7 +357,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(this.moment.getDescripteme() != null){
 			showExtractIcon(this.moment.getDescripteme());
 		}
-		//D闁爀cte si il est pr闁掗枮able que le texte soit en blanc ou en noir en fonction du fond.
+		//Detect whether the text is likely to be white or black depending on the background.
 		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
 	}
 	
@@ -411,7 +410,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
     	}
 	}
 	
-	/* */
+	
 	public void copyMoment() {
 		Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
@@ -476,7 +475,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		Platform.runLater(()->t.requestFocus());
 		Platform.runLater(()->t.selectAll());
 		borderPaneLabel.setCenter(t);
-		//borderPaneLabel.setCenter(t);
 	}
 	
 	public TypeClassRepresentationController getTypeClassRep(Category item) {
@@ -551,7 +549,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			this.setColor((String) value);
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
-			//System.out.println("Changement d闁爀ct锟� !");
+			//System.out.println("Change detected!");
 			if(value != null) {
 				//System.out.println("value= "+value);
 				this.showExtractIcon((String) value);
@@ -574,7 +572,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			
 		}
 		if(obs.getClass().equals(MomentRemoveTypeController.class)) {
-
 			TypeClassRepresentationController t = (TypeClassRepresentationController) value;
 			boolean contains = TypeClassRepresentationController.ListcontainsTypeClassRep(this.typeSpace.getChildren(), t);
 			if(contains){
@@ -582,8 +579,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			}else {
 				this.typeSpace.getChildren().add((TypeClassRepresentationController)value);
 			}
-		}
-		 
+		}		
 	}
 	
 	public void setBorderColor(String couleur) {

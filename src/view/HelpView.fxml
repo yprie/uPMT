@@ -18,7 +18,7 @@
          </top>
       </BorderPane>
       <Button fx:id="buttonCloseHelp" layoutX="331.0" layoutY="271.0" mnemonicParsing="false" onAction="#closeAbout" text="\%close" />
-      <Button fx:id="btn_link2git" layoutX="170.0" layoutY="271.0" mnemonicParsing="false" onAction="#link2github" text="%link_to_github" />
+      <Button fx:id="buttonLink2Github" layoutX="170.0" layoutY="271.0" mnemonicParsing="false" onAction="#link2Github" text="%link_to_github" />
    </children>
    <padding>
       <Insets bottom="25.0" top="5.0" />
