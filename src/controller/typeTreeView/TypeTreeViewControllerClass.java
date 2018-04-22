@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerClass.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +107,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 		Tooltip deleteClassTip = new Tooltip("Suppression de la classe");
 		deleteClass.setTooltip(deleteClassTip);
 		
-		Tooltip addPropertyTip = new Tooltip("Ajout d'une proprieté a la classe");
+		Tooltip addPropertyTip = new Tooltip("Ajout d'une proprietï¿½ a la classe");
 		addProperty.setTooltip(addPropertyTip);
 		
 		Tooltip renameTip = new Tooltip("Renommer la classe");
@@ -137,7 +137,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 									Alert alert = new Alert(AlertType.INFORMATION);
 									alert.setTitle(main._langBundle.getString("invalid_name"));
 									alert.setHeaderText(null);
-									alert.setContentText(main._langBundle.getString("class_name_invalid"));
+									alert.setContentText(main._langBundle.getString("category_name_invalid"));
 									alert.show();
 								}
 							

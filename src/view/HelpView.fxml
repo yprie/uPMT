@@ -21,7 +21,7 @@
             <HBox alignment="CENTER" prefHeight="33.0" prefWidth="569.0" spacing="25.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="buttonCloseHelp" mnemonicParsing="false" onAction="#closeAbout" text="\%close" />
-                  <Button fx:id="btn_link2git" mnemonicParsing="false" onAction="#link2github" text="%link_to_github">
+                  <Button fx:id="buttonLink2Github" mnemonicParsing="false" onAction="#link2Github" text="%link_to_github">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -38,3 +38,4 @@
       <Insets bottom="25.0" top="5.0" />
    </padding>
 </AnchorPane>
+

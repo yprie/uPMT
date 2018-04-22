@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerFolder.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,13 +88,13 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteFolder.setGraphic(iconDelete);
 		
-		Tooltip deleteFolerTip = new Tooltip("Suppression du dossier");
+		Tooltip deleteFolerTip = new Tooltip("Delete the folder");
 		deleteFolder.setTooltip(deleteFolerTip);
-		Tooltip addClassTip = new Tooltip("Ajout d'une Classe au dossier");
+		Tooltip addClassTip = new Tooltip("Add a category to the folder");
 		addClass.setTooltip(addClassTip);
-		Tooltip addFolderTip = new Tooltip("Ajout d'un sous-dossier au dossier");
+		Tooltip addFolderTip = new Tooltip("Add a subfolder to the folder");
 		addFolder.setTooltip(addFolderTip);
-		Tooltip renameTip = new Tooltip("Renommer le dossier");
+		Tooltip renameTip = new Tooltip("Rename the folder");
 		rename.setTooltip(renameTip);
 	}
 	

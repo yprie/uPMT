@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerProperty.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,9 +90,9 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
 		this.deleteProperty.setGraphic(iconDelete);
 		
-		Tooltip deletePropertyTip = new Tooltip("Suppression de la propriet�");
+		Tooltip deletePropertyTip = new Tooltip("Delete the property");
 		deleteProperty.setTooltip(deletePropertyTip);
-		Tooltip renameTip = new Tooltip("Renommer la propriet�");
+		Tooltip renameTip = new Tooltip("Rename the property");
 		rename.setTooltip(renameTip);
 		initNumber();
 	}
