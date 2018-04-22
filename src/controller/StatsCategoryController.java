@@ -3,6 +3,7 @@ package controller;
 import java.awt.CheckboxMenuItem;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -46,6 +47,7 @@ public class StatsCategoryController implements Initializable{
 	
 	private ObservableList<Node[]> rows = FXCollections.observableArrayList();
 	private ObservableList<Node[]> columns = FXCollections.observableArrayList();
+	private ArrayList<Integer> total;
 
 	private Main main;
 	private Stage window;
@@ -89,34 +91,65 @@ public class StatsCategoryController implements Initializable{
 			Label l_cat = new Label(category.getName());
 			l_cat.setMinWidth(Region.USE_PREF_SIZE);
 			l_cat.setMaxWidth(Region.USE_PREF_SIZE);
-			l_cat.setStyle("-fx-padding: 7 10 7 10; -fx-font-weight: bold; -fx-text-fill: " + category.getColor() + ";" );
+			l_cat.setStyle("-fx-padding: 15 10 15 10; -fx-font-weight: bold; -fx-text-fill: " + category.getColor() + ";" );
 			statsGrid.setHalignment(l_cat, HPos.CENTER);
 			statsGrid.add(l_cat, i+1, 0);
 			//this.addNode(l_cat, i+1, 0);
 			
 		}
 		
-		/* init rows = interviews */
+			
+		total = new ArrayList<Integer>(Collections.nCopies(IStats.getInstance().getCategories().size(), 0));
 		
-		for (int j = 0; j < IStats.getInstance().getInterviews().size(); j++) {
-			Label l_int = new Label(IStats.getInterviews().get(j).getName());
-			l_int.setMinWidth(Region.USE_PREF_SIZE);
-			l_int.setMaxWidth(Region.USE_PREF_SIZE);
-			l_int.setStyle("-fx-padding: 5 15 5 15;");
-			statsGrid.setHalignment(l_int, HPos.CENTER);
-			statsGrid.add(l_int, 0, j+1);
-			//this.addNode(l_int, 0, j+1);
-		}
 		
 		/* set values of for each columns and rows */
-		for (int i = 0; i < IStats.getInstance().getInterviews().size(); i++) {
-			for (int j = 0; j < IStats.getInstance().getCategories().size(); j++) {
-				int val = IStats.getInstance().nbOccurrences(IStats.getInstance().getInterviews().get(i), IStats.getInstance().getCategories().get(j));
-				Label l_val = new Label(String.valueOf(val));
-				l_val.setStyle("-fx-padding: 5 10 5 10;");
-				statsGrid.setHalignment(l_val, HPos.CENTER);
-				statsGrid.add(l_val, j+1, i+1);
-				//this.addNode(l_val, j+1, i+1);
+		for (int i = 0; i <= IStats.getInstance().getInterviews().size(); i++) {
+			
+			
+			/* TOTAL */
+			
+			if(i == IStats.getInstance().getInterviews().size()) {
+				
+				/* set total label */
+				Label l_tot = new Label("Total");
+				l_tot.setMinWidth(Region.USE_PREF_SIZE);
+				l_tot.setMaxWidth(Region.USE_PREF_SIZE);
+				l_tot.setStyle("-fx-padding: 10 15 10 15; -fx-font-weight: bold;");
+				statsGrid.setHalignment(l_tot, HPos.CENTER);
+				statsGrid.add(l_tot, 0, i+1);
+				
+				/* total frequency values */
+				for(int j = 0; j < IStats.getInstance().getCategories().size(); j++) {
+					Label l_val = new Label(String.valueOf(total.get(j)));
+					l_val.setStyle("-fx-padding: 10 10 10 10; -fx-font-weight: bold;");
+					statsGrid.setHalignment(l_val, HPos.CENTER);
+					statsGrid.add(l_val, j+1, i+1);
+				}
+				
+			}
+			
+			/* INTERVIEWS */
+			
+			else {
+				
+				/* set interview label */ 
+				Label l_int = new Label(IStats.getInterviews().get(i).getName());
+				l_int.setMinWidth(Region.USE_PREF_SIZE);
+				l_int.setMaxWidth(Region.USE_PREF_SIZE);
+				l_int.setStyle("-fx-padding: 5 15 5 15;");
+				statsGrid.setHalignment(l_int, HPos.CENTER);
+				statsGrid.add(l_int, 0, i+1);
+				
+				/* frequency values */
+				for (int j = 0; j < IStats.getInstance().getCategories().size(); j++) {
+					int val = IStats.getInstance().nbOccurrences(IStats.getInstance().getInterviews().get(i), IStats.getInstance().getCategories().get(j));
+					Label l_val = new Label(String.valueOf(val));
+					l_val.setStyle("-fx-padding: 5 10 5 10;");
+					statsGrid.setHalignment(l_val, HPos.CENTER);
+					statsGrid.add(l_val, j+1, i+1);
+					total.set(j, total.get(j)+val);
+				}
+				
 			}
 				
 		}
@@ -124,7 +157,6 @@ public class StatsCategoryController implements Initializable{
 		/* display all */
 		this.centralPane.getChildren().add(statsGrid);
 		buttonCloseStats.setText(main._langBundle.getString("close"));
-		//System.out.println(statsGrid.getChildren());
 		
 	}
     
@@ -216,7 +248,7 @@ public class StatsCategoryController implements Initializable{
     	
 		l_cat.setMinWidth(Region.USE_PREF_SIZE);
 		l_cat.setMaxWidth(Region.USE_PREF_SIZE);
-		l_cat.setStyle("-fx-padding: 7 10 7 10; -fx-font-weight: bold; -fx-text-fill: " + category.getColor() + ";" );
+		l_cat.setStyle("-fx-padding: 15 10 15 10; -fx-font-weight: bold; -fx-text-fill: " + category.getColor() + ";" );
 		
 
     	int i = 1;
@@ -238,6 +270,10 @@ public class StatsCategoryController implements Initializable{
 			}
 		}
 		
+		Label l_tot = new Label(String.valueOf(total.get(index)));
+		l_tot.setStyle("-fx-padding: 10 10 10 10; -fx-font-weight: bold;");
+		statsGrid.setHalignment(l_tot, HPos.CENTER);
+		statsGrid.add(l_tot, index+1, i);
 		
     }
     
