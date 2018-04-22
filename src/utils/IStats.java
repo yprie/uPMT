@@ -143,5 +143,24 @@ public class IStats {
     public static ArrayList<DescriptionInterview> getInterviews() {
     	return instance.mInterviews;
     }
+    
+    public static Category getCategory(String s) {
+    	for (Category category : instance.mCategories) {
+    		if (category.getName() == s) {
+    			return category;
+    		}
+		}
+    	return null;
+    }
+    
+    public static DescriptionInterview getInterview(String s) {
+    	for (DescriptionInterview interview : instance.mInterviews) {
+    		if (interview.getName() == s) {
+    			return interview;
+    		}
+    	}
+    	return null;
+    }
+    
 }
 

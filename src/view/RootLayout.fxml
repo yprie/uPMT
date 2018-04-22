@@ -43,11 +43,11 @@
                	  <MenuItem fx:id="userGuide" mnemonicParsing="false" onAction="#openALink" text="%userGuide" />               
                </items>
             </Menu>
-            <!-- <Menu mnemonicParsing="false" text="%tools">
+            <Menu mnemonicParsing="false" text="%tools">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#stats" text="%stats" />
+                <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category" />
               </items>
-            </Menu> -->
+            </Menu>
         </menus>
       </MenuBar>
    </top>

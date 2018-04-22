@@ -32,21 +32,17 @@
                <children>
                   <MenuBar>
                     <menus>
-                      <Menu fx:id="interviewChoice" mnemonicParsing="false" text="Select interviews ...">
+                      <Menu fx:id="interviewChoice" mnemonicParsing="false" text="%select_interviews">
                         <items>
-                              <MenuItem fx:id="allInterview" mnemonicParsing="false" text="%all_interviews" />
+                              <MenuItem fx:id="allInterviews" mnemonicParsing="false" text="%all_interviews" />
+                              <MenuItem fx:id="noInterview" mnemonicParsing="false" text="%no_interview" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                         </items>
                       </Menu>
-                      <Menu fx:id="categoryChoice" mnemonicParsing="false" text="Select categories ...">
+                      <Menu fx:id="categoryChoice" mnemonicParsing="false" text="%select_categories">
                         <items>
                               <MenuItem fx:id="allCategories" mnemonicParsing="false" text="%all_categories" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                        </items>
-                      </Menu>
-                      <Menu fx:id="propertyChoice" mnemonicParsing="false" text="Select properties ...">
-                        <items>
-                              <MenuItem fx:id="allProperties" mnemonicParsing="false" text="%all_properties" />
+                              <MenuItem fx:id="noCategory" mnemonicParsing="false" text="%no_category" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                         </items>
                       </Menu>

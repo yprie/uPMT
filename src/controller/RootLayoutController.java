@@ -217,9 +217,9 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
-	public void stats(){
+	public void statsCategory(){
 		Stage statsWindow = new Stage(StageStyle.UTILITY);
-		statsWindow.setTitle(main._langBundle.getString("stats"));
+		statsWindow.setTitle(main._langBundle.getString("stats_category"));
 		statsWindow.setResizable(false);
 		statsWindow.initModality(Modality.APPLICATION_MODAL);
  
@@ -227,7 +227,7 @@ public class RootLayoutController implements Initializable{
 			FXMLLoader loader = new FXMLLoader();
 			
             loader.setLocation(getClass().getResource("/view/StatsView.fxml"));
-            loader.setController(new StatsController(main, statsWindow));
+            loader.setController(new StatsCategoryController(main, statsWindow));
            
             loader.setResources(main._langBundle);
     		
