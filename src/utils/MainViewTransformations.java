@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewTransformations.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,8 +123,7 @@ public abstract class MainViewTransformations {
 			        event.acceptTransferModes(TransferMode.ANY);
 			        moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 		    	}		    	
-		    	event.consume();
-		    	
+		    	event.consume();	    	
 		    }
 		});	
 		
@@ -185,8 +184,7 @@ public abstract class MainViewTransformations {
 					/*if(moment.hasParent()) print+=moment.getMoment().getParent(main).getNom();
 					else print+=" null";*/
 					//System.out.println(print);
-				}
-				
+				}				
 			}
 		});	
 		
@@ -207,7 +205,6 @@ public abstract class MainViewTransformations {
 		});
 	}
 	 
-
 	/*
 	 * Listener du panel qu'il y a entre plusieurs moment
 	 * */
@@ -321,8 +318,7 @@ public abstract class MainViewTransformations {
 					
 					p.emptyProjectPane();
 				}
-			}
-			
+			}			
 		});
 	}
 	
@@ -390,10 +386,8 @@ public abstract class MainViewTransformations {
 		});
 	}
 	
-	
-	
 	public static void loadTypes(MomentExpVBox mp,Main main){
-		//System.out.println("------------------------------------");
+		
 		//System.out.println(mp.getMoment().getNom()+": ");
 		for (Type t : mp.getMoment().getCategories()) {
 			TypeClassRepresentationController classe = new TypeClassRepresentationController((Category) t,mp,main);
@@ -401,7 +395,6 @@ public abstract class MainViewTransformations {
 			addTypeListener(classe, mp, t, main);
 			//System.out.println(t.toString());
 		}
-		//System.out.println("------------------------------------");
 	}
 	
 	/*public static Color ContrastColor(Color iColor){
@@ -452,12 +445,12 @@ public abstract class MainViewTransformations {
 	
 	// Method used to load the grid related to a certain Interview
 	public static void loadGridData(GridPane grid,Main main, DescriptionInterview d){
-		// Grid initialisation ( reset )
+		// Grid initialization ( reset )
 		grid.getChildren().clear();
 		grid.getColumnConstraints().clear();
+				
 		// Grid Creation
-		// for each moment of the interview we add a collumn
-	
+		// for each moment of the interview we add a column	
 		for (int j = 0; j < d.getNumberOfMoments(); j++) {
 				//System.out.println("On ajoute deux colonnes, "+d.getNumberOfMoments());
 				ColumnConstraints c = new ColumnConstraints();
@@ -467,7 +460,7 @@ public abstract class MainViewTransformations {
 				c.setPrefWidth(Control.USE_COMPUTED_SIZE);
 				c.setMaxWidth(Control.USE_COMPUTED_SIZE);
 				grid.getColumnConstraints().add(c);
-				
+								
 				ColumnConstraints c2 = new ColumnConstraints();
 				c2.setMinWidth(180);
 				c2.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -499,7 +492,7 @@ public abstract class MainViewTransformations {
 				grid.add(p,j*2,i);
 				
 				//System.out.println("On ajoute un moment");
-				//System.out.println("J'ajoute un moment � "+j);
+				//System.out.println("J'ajoute un moment 锟� "+j);
 				MomentExpVBox mp = new MomentExpVBox(main);
 				addBorderPaneMomentListener(mp, main);
 				
@@ -507,7 +500,7 @@ public abstract class MainViewTransformations {
 				boolean hasMoment = false;
 				if (main.getCurrentDescription() != null) {
 					for (MomentExperience m : d.getMoments()) {
-						//System.out.println(m.getNom()+" est � "+m.getGridCol()+" et j est � "+j);
+						//System.out.println(m.getNom()+" est 锟� "+m.getGridCol()+" et j est 锟� "+j);
 						if(m.getGridCol() == j){
 							mom = m;
 							mp.setMoment(mom);
@@ -538,11 +531,10 @@ public abstract class MainViewTransformations {
 			p.emptyProjectPane();
 		}
 	}
-	
-	
+		
 	public static void deleteMoment(MomentExperience toCompare, Main main) {
 		for(MomentExperience current:main.getCurrentDescription().getMoments()) {
-		//System.out.println("On compare "+current.getNom()+" � "+toCompare.getNom());
+		//System.out.println("On compare "+current.getNom()+" 锟� "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				main.getCurrentDescription().removeMomentExp(current);
 			//System.out.println("On supprime "+current.getNom());
@@ -556,6 +548,7 @@ public abstract class MainViewTransformations {
 	}
 	
 	public static void loadSousMoment(MomentExpVBox mev,Main main){
+				
 		if(mev.getChildren().size() == 1){
 			mev.getChildren().add(mev.getSousMomentPane());
 		}
@@ -609,7 +602,7 @@ public abstract class MainViewTransformations {
 	
 	public static void deleteMomentFromParent(MomentExperience parent, MomentExperience toCompare) {
 		for(MomentExperience current:parent.getSubMoments()) {
-		//System.out.println("**On compare "+current.getNom()+" � "+toCompare.getNom());
+		//System.out.println("**On compare "+current.getNom()+" 锟� "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				parent.removeSubMoment(current);
 			//System.out.println("**On supprime "+current.getNom());
