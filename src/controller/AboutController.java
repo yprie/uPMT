@@ -51,7 +51,7 @@ public class AboutController implements Initializable{
 		
 		buttonLink2Github.setOnAction((ActionEvent action)->{ 
 			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT/blob/master/UserGuide.pdf"));
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

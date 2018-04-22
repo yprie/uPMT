@@ -138,7 +138,7 @@ public class RootLayoutController implements Initializable{
 
 		userGuide.setOnAction((ActionEvent action)->{ 
 			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT/blob/master/UserGuide.pdf"));
+				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT/wiki"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
