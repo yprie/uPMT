@@ -12,7 +12,7 @@ public class DropPane extends StackPane{
 	
 	private MomentExpVBox parent=null;
 	private int col=0;
-	public static int PANELSIZE = 0;
+	public static int PANELSIZE = 5;
 	public static int DRAGGEDPANELSIZE = 120;
 	public Pane mPane;
 	public BorderPane mTextContainer;

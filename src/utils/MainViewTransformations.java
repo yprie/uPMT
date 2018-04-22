@@ -138,7 +138,7 @@ public abstract class MainViewTransformations {
 		    	}	
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
 		    		//Add Moment to a Moment : int: index in sous-moment / Moment: parentMoment / Main
-		    		MomentExperience newMoment = newMoment = new MomentExperience();
+		    		MomentExperience newMoment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
 		    			newMoment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
@@ -274,7 +274,7 @@ public abstract class MainViewTransformations {
 		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
 		    		
 		    		AddMomentCommand cmd=null;
-		    		MomentExperience moment = moment = new MomentExperience();
+		    		MomentExperience moment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
 		    			moment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
