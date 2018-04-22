@@ -448,9 +448,7 @@ public abstract class MainViewTransformations {
 		// Grid initialization ( reset )
 		grid.getChildren().clear();
 		grid.getColumnConstraints().clear();
-		
-		grid.setHgap(-8); 
-		
+				
 		// Grid Creation
 		// for each moment of the interview we add a column	
 		for (int j = 0; j < d.getNumberOfMoments(); j++) {
@@ -550,9 +548,7 @@ public abstract class MainViewTransformations {
 	}
 	
 	public static void loadSousMoment(MomentExpVBox mev,Main main){
-		
-		mev.getSousMomentPane().setHgap(-8);
-		
+				
 		if(mev.getChildren().size() == 1){
 			mev.getChildren().add(mev.getSousMomentPane());
 		}
