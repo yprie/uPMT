@@ -33,11 +33,13 @@ import controller.controller.TypeController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.Alert.AlertType;
@@ -54,18 +56,13 @@ import utils.UndoCollector;
 
 public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	
-	private @FXML Button deleteFolder;
-	private @FXML Button addClass;
-	private @FXML Button addFolder;
 	private @FXML ImageView folderIcon;
 	
-	private Main main;
 	private TypeTreeViewControllerFolder ref;
 	
 	public TypeTreeViewControllerFolder(TypeController type, TypeTreeView typeTreeView, Main m) {
-		super(type,typeTreeView);
+		super(type,typeTreeView, m);
 		ref = this;
-		main = m;
 	}
 	
 	@Override
@@ -76,26 +73,37 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 		Image icon = ResourceLoader.loadImage("folder.png");
 		this.folderIcon.setImage(icon);
 		
-		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
-		this.rename.setGraphic(iconRename);
 		
-		Node iconAddClass = new ImageView(ResourceLoader.loadImage("addclass.gif"));
-		this.addClass.setGraphic(iconAddClass);
-		
-		Node iconAddFold = new ImageView(ResourceLoader.loadImage("newfolder.gif"));
-		this.addFolder.setGraphic(iconAddFold);
-		
-		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
-		this.deleteFolder.setGraphic(iconDelete);
-		
-		Tooltip deleteFolerTip = new Tooltip("Delete the folder");
-		deleteFolder.setTooltip(deleteFolerTip);
-		Tooltip addClassTip = new Tooltip("Add a category to the folder");
-		addClass.setTooltip(addClassTip);
-		Tooltip addFolderTip = new Tooltip("Add a subfolder to the folder");
-		addFolder.setTooltip(addFolderTip);
-		Tooltip renameTip = new Tooltip("Rename the folder");
-		rename.setTooltip(renameTip);
+		treeviewMenuAction.getItems().clear();
+        MenuItem menu1 = new MenuItem(main._langBundle.getString("rename"));
+        menu1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				rename();
+			}
+        });
+        MenuItem menu2 = new MenuItem(main._langBundle.getString("delete"));
+        menu2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				deleteFolder();
+			}
+        });
+        MenuItem menu3 = new MenuItem(main._langBundle.getString("add_category"));
+        menu3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				addClass();
+			}
+        });
+        MenuItem menu4 = new MenuItem(main._langBundle.getString("add_folder"));
+        menu3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				addFolder();
+			}
+        });
+        treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
 	}
 	
 	public void setName(String newName) {
@@ -145,7 +153,6 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 						}	
 			        }
 					typePane.setLeft(nomType);
-					rename.setDisable(false);
 					textField.focusedProperty().removeListener(this);
 			    }
 		    }
@@ -161,11 +168,9 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 						textField.setText(textField.getText());
 					}
 					typePane.setLeft(nomType);
-					rename.setDisable(false);
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					typePane.setLeft(nomType);
-					rename.setDisable(true);
 				}
 			}
 		});
@@ -197,17 +202,11 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	
 	@Override
 	public void hideButtons(){
-		this.deleteFolder.setVisible(false);
-		this.addClass.setVisible(false);
-		this.addFolder.setVisible(false);
-		this.rename.setVisible(false);
+		this.treeviewMenuAction.setVisible(false);
 	}
 
 	public void showButtons() {
-		this.deleteFolder.setVisible(true);
-		this.addClass.setVisible(true);
-		this.addFolder.setVisible(true);
-		this.rename.setVisible(true);
+		this.treeviewMenuAction.setVisible(true);
 	}
 
 }

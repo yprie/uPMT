@@ -48,6 +48,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -69,19 +70,15 @@ import utils.Utils;
 public class TypeTreeViewControllerCategory extends TypeTreeViewController implements Observer{
 	
 	private @FXML ColorPicker couleurType;
-	private @FXML Button deleteClass;
-	private @FXML Button addProperty;
 	private @FXML ImageView classIcon;
 	
-	private Main main;
 	
 	public static int propertiesNumber = 1;
 	
 	public TypeTreeViewControllerCategory(TypeController type, TypeTreeView typeTreeView, Main m) {
-		super(type,typeTreeView);
+		super(type,typeTreeView, m);
 		type.getClassNameController().addObserver(this);
 		type.getClassColorController().addObserver(this);
-		main = m;
 	}
 	
 	@Override
@@ -93,25 +90,30 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 		Image icon = ResourceLoader.loadImage("class.gif");
 		this.classIcon.setImage(icon);
 
-		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
-		this.rename.setGraphic(iconRename);
 		
-
-		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
-		this.deleteClass.setGraphic(iconDelete);
-		
-		
-		Node iconAddProp = new ImageView(ResourceLoader.loadImage("addProperty.gif"));
-		this.addProperty.setGraphic(iconAddProp);
-		
-		Tooltip deleteClassTip = new Tooltip("Suppression de la classe");
-		deleteClass.setTooltip(deleteClassTip);
-		
-		Tooltip addPropertyTip = new Tooltip("Ajout d'une propriet� a la classe");
-		addProperty.setTooltip(addPropertyTip);
-		
-		Tooltip renameTip = new Tooltip("Renommer la classe");
-		rename.setTooltip(renameTip);
+		treeviewMenuAction.getItems().clear();
+        MenuItem menu1 = new MenuItem(main._langBundle.getString("rename"));
+        menu1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				rename();
+			}
+        });
+        MenuItem menu2 = new MenuItem(main._langBundle.getString("delete"));
+        menu2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				deleteClass();
+			}
+        });
+        MenuItem menu3 = new MenuItem(main._langBundle.getString("add_property"));
+        menu3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				addProperty();
+			}
+        });
+        treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
 	}
 	
 	@Override
@@ -143,7 +145,6 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 							
 						}		        	
 						typePane.setLeft(nomType);
-						rename.setDisable(false);
 						textField.focusedProperty().removeListener(this);
 			        }
 			    }
@@ -159,11 +160,9 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 						textField.setText(textField.getText());
 					}
 					typePane.setLeft(nomType);
-					rename.setDisable(false);
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					typePane.setLeft(nomType);
-					rename.setDisable(true);
 				}
 			}
 		});
@@ -219,17 +218,13 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 	@Override
 	public void hideButtons(){
 		this.couleurType.setVisible(false);
-		this.addProperty.setVisible(false);
-		this.deleteClass.setVisible(false);
-		this.rename.setVisible(false);
+		this.treeviewMenuAction.setVisible(false);
 	}
 
 	@Override
 	public void showButtons() {
 		this.couleurType.setVisible(true);
-		this.addProperty.setVisible(true);
-		this.deleteClass.setVisible(true);
-		this.rename.setVisible(true);
+		this.treeviewMenuAction.setVisible(true);
 	}
 
 	@Override

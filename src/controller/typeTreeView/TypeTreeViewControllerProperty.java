@@ -41,11 +41,13 @@ import controller.controller.TypeController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.Alert.AlertType;
@@ -64,14 +66,11 @@ import utils.Utils;
 
 public class TypeTreeViewControllerProperty extends TypeTreeViewController implements Observer{
 	
-	private @FXML Button deleteProperty;
 	private @FXML ImageView propertyIcon;
-	private Main main;
-	
+
 	public TypeTreeViewControllerProperty(TypeController type, TypeTreeView typeTreeView, Main m) {
-		super(type,typeTreeView);
+		super(type,typeTreeView, m);
 		type.getRenamePropertyController().addObserver(this);
-		main = m;
 	}
 	
 	@Override
@@ -84,16 +83,23 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		Image icon = ResourceLoader.loadImage("property.png");
 		this.propertyIcon.setImage(icon);
 		
-		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
-		this.rename.setGraphic(iconRename);
-		
-		Node iconDelete = new ImageView(ResourceLoader.loadImage("delete.gif"));
-		this.deleteProperty.setGraphic(iconDelete);
-		
-		Tooltip deletePropertyTip = new Tooltip("Delete the property");
-		deleteProperty.setTooltip(deletePropertyTip);
-		Tooltip renameTip = new Tooltip("Rename the property");
-		rename.setTooltip(renameTip);
+		treeviewMenuAction.getItems().clear();
+        MenuItem menu1 = new MenuItem(main._langBundle.getString("rename"));
+        menu1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				rename();
+			}
+        });
+        MenuItem menu2 = new MenuItem(main._langBundle.getString("delete"));
+        menu2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				deleteProperty();
+			}
+        });
+        
+        treeviewMenuAction.getItems().addAll(menu1, menu2);
 		initNumber();
 	}
 	
@@ -135,7 +141,6 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 						}
 					}
 					typePane.setLeft(nomType);
-					rename.setDisable(false);
 					textField.focusedProperty().removeListener(this);
 				}	
 		    }
@@ -152,11 +157,9 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 						textField.setText(textField.getText());
 					}
 					typePane.setLeft(nomType);
-					rename.setDisable(false);
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					typePane.setLeft(nomType);
-					rename.setDisable(true);
 				}
 			}
 		});
@@ -192,14 +195,12 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	
 	@Override
 	public void hideButtons(){
-		this.deleteProperty.setVisible(false);
-		this.rename.setVisible(false);
+		this.treeviewMenuAction.setVisible(false);
 	}
 
 	@Override
 	public void showButtons() {
-		this.deleteProperty.setVisible(true);
-		this.rename.setVisible(true);
+		this.treeviewMenuAction.setVisible(true);
 	}
 	
 	@Override

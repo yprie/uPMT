@@ -89,7 +89,7 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
         this.moment = moment;
         this.main = main;
         
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/TypeClassRepresentation.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/TypeCategoryRepresentation.fxml"));
         fxmlLoader.setController(this);
         try {
         	fxmlLoader.setRoot(this);

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="typePane" maxHeight="30.0" minWidth="300.0" prefHeight="30.0" prefWidth="300.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" maxHeight="30.0" minWidth="300.0" prefHeight="30.0" prefWidth="300.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" text="Label" BorderPane.alignment="CENTER">
          <graphic>
@@ -18,10 +19,13 @@
    <right>
       <HBox alignment="CENTER_LEFT" styleClass="tree-view-right" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="rename" mnemonicParsing="false" onAction="#rename" />
             <ColorPicker fx:id="couleurType" onAction="#pickColor" style="-fx-color-label-visible: false;" />
-            <Button fx:id="addProperty" mnemonicParsing="false" onAction="#addProperty" />
-            <Button fx:id="deleteClass" mnemonicParsing="false" onAction="#deleteClass" />
+            <MenuButton fx:id="treeviewMenuAction" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="momentMenu" stylesheets="@../../application/application.css">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+            </MenuButton>
          </children>
          <BorderPane.margin>
             <Insets left="15.0" />

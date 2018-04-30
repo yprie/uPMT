@@ -35,6 +35,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,17 +50,13 @@ import utils.Utils;
 
 public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	
-	private @FXML Button addFolder;
-	private @FXML Button addClass;
 	private @FXML ImageView rootIcon;
-	private Main main;
 	
 	private static int classNumber = 1;
 	private static int folderNumber = 1;
 	
-	public TypeTreeViewControllerRoot(TypeController type, TypeTreeView typeTreeView,Main main) {
-		super(type,typeTreeView);
-		this.main = main;
+	public TypeTreeViewControllerRoot(TypeController type, TypeTreeView typeTreeView,Main m) {
+		super(type,typeTreeView, m);
 	}
 	
 	@Override
@@ -71,29 +68,27 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 		Image icon = ResourceLoader.loadImage("schema.gif");
 		this.rootIcon.setImage(icon);
 		
-		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
-		this.rename.setGraphic(iconRename);
-		
-		Node iconAddClass = new ImageView(ResourceLoader.loadImage("addclass.gif"));
-		this.addClass.setGraphic(iconAddClass);
-		
-		Node iconAddFold = new ImageView(ResourceLoader.loadImage("newfolder.gif"));
-		this.addFolder.setGraphic(iconAddFold);
-		
-		Tooltip renameTip = new Tooltip("Renommer le schéma");
-		rename.setTooltip(renameTip);
-		
-		Tooltip addClassTip = new Tooltip("Ajouter une Classe à la racine");
-		addClass.setTooltip(addClassTip);
-		
-		Tooltip addFolderTip = new Tooltip("Ajouter un Dossier à la racine");
-		addFolder.setTooltip(addFolderTip);
+		treeviewMenuAction.getItems().clear();
+        MenuItem menu1 = new MenuItem(main._langBundle.getString("rename"));
+        menu1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				rename();
+			}
+        });
+        MenuItem menu3 = new MenuItem(main._langBundle.getString("add_folder"));
+        menu3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				addFolder();
+			}
+        });
+        treeviewMenuAction.getItems().addAll(menu1, menu3);
 		
 	}
 
 	@Override
 	public void rename() {
-		rename.setDisable(true);
 		textField.setText(type.getType().getName());
 		textField.setMaxWidth(120);
 		textField.requestFocus();
@@ -107,7 +102,6 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 						type.getType().setName(textField.getText());
 						main.getCurrentProject().getSchema().setName(textField.getText());
 						typePane.setLeft(nomType);
-						rename.setDisable(false);
 			        }
 			    }
 		});
@@ -119,12 +113,10 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 					nomType.setText(textField.getText());
 					type.getType().setName(textField.getText());
 					typePane.setLeft(nomType);
-					rename.setDisable(true);
 					main.getCurrentProject().getSchema().setName(textField.getText());
 				}
 				if(event.getCode() == KeyCode.ESCAPE){
 					typePane.setLeft(nomType);
-					rename.setDisable(true);
 				}
 			}
 		});
@@ -145,16 +137,12 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	
 	@Override
 	public void hideButtons(){
-		this.addClass.setVisible(false);
-		this.addFolder.setVisible(false);
-		this.rename.setVisible(false);
+		this.treeviewMenuAction.setVisible(false);
 	}
 
 	@Override
 	public void showButtons() {
-		this.addClass.setVisible(true);
-		this.addFolder.setVisible(true);
-		this.rename.setVisible(true);
+		this.treeviewMenuAction.setVisible(true);;
 
 	}
 

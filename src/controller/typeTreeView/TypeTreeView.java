@@ -197,7 +197,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
         			     controller =  new TypeTreeViewControllerProperty(elem,this, main);
     				 }
     				 if(elem.getType().isCategory()){
-        			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewClass.fxml"));
+        			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewCategory.fxml"));
         			     controller =  new TypeTreeViewControllerCategory(elem,this, main);
     				 }
     				 if(elem.getType().isFolder()){
