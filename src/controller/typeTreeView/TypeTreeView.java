@@ -30,7 +30,7 @@ import javax.swing.GroupLayout.Alignment;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.command.RemoveTypeCommand;
 import controller.controller.Observable;
 import controller.controller.Observer;
@@ -198,7 +198,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
     				 }
     				 if(elem.getType().isCategory()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewClass.fxml"));
-        			     controller =  new TypeTreeViewControllerClass(elem,this, main);
+        			     controller =  new TypeTreeViewControllerCategory(elem,this, main);
     				 }
     				 if(elem.getType().isFolder()){
         			     loader.setLocation(getClass().getResource("/view/typeTreeView/TypeTreeViewFolder.fxml"));

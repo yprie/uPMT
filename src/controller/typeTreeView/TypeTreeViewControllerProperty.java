@@ -30,12 +30,12 @@ import java.util.regex.Pattern;
 import application.Main;
 import controller.MomentExpVBox;
 import controller.command.RemovePropertyFromClassCommand;
-import controller.command.RenameClassSchemeCommand;
+import controller.command.RenameCategorySchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
 import controller.controller.Observable;
 import controller.controller.Observer;
 import controller.controller.RemovePropertySchemeController;
-import controller.controller.RenameClassSchemeController;
+import controller.controller.RenameCategorySchemeController;
 import controller.controller.RenamePropertyController;
 import controller.controller.TypeController;
 import javafx.application.Platform;
@@ -173,8 +173,8 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		if (matcher.find()) {
 		    String someNumberStr = matcher.group(1);
 		    int lastNumberInt = Integer.parseInt(someNumberStr);
-		    if(lastNumberInt > TypeTreeViewControllerClass.propertiesNumber) {
-		    	TypeTreeViewControllerClass.propertiesNumber = lastNumberInt;
+		    if(lastNumberInt > TypeTreeViewControllerCategory.propertiesNumber) {
+		    	TypeTreeViewControllerCategory.propertiesNumber = lastNumberInt;
 		    }
 		}
 	}

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * AddClassSchemeController.java
+ * RemoveClassSchemeController.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -22,26 +22,25 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import model.Category;
 import model.Folder;
 import model.MomentExperience;
 import model.Type;
 
-public class AddClassSchemeController implements controller.controller.Observable{
+public class RemoveCategorySchemeController implements controller.controller.Observable{
 
 	private Folder parent;
 	private LinkedList<Observer> ObsTypesNames;
 	
-	public AddClassSchemeController(Folder parent) {
+	public RemoveCategorySchemeController(Folder parent) {
 		this.parent = parent;
 		ObsTypesNames = new LinkedList<Observer>();
 	}
 
 	@Override
 	public void update(Object value) {
-
-		parent.addCategory((Category) value);
+		parent.getCategories().remove(((Category) value));
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);
 		}

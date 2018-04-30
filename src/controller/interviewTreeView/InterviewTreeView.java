@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.command.RemoveTypeCommand;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

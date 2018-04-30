@@ -29,7 +29,7 @@ import com.sun.javafx.geom.transform.GeneralTransform3D;
 import application.Main;
 import controller.DropPane;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.command.AddMomentCommand;
 import controller.command.AddTypeCommand;
 import controller.command.MoveMomentCommand;
@@ -88,7 +88,7 @@ public abstract class MainViewTransformations {
 		    	boolean doesntalreadyHasType = true;
 		    	String typeType = event.getDragboard().getRtf(); 
 		    	for (Node n : moment.getTypeSpace().getChildren()) {
-					TypeClassRepresentationController type = (TypeClassRepresentationController)n;
+					TypeCategoryRepresentationController type = (TypeCategoryRepresentationController)n;
 					if (type.getClasse().getName().equals(typeType)) {
 						doesntalreadyHasType = false;
 						break;
@@ -172,7 +172,7 @@ public abstract class MainViewTransformations {
 					main.setCurrentMoment(moment);
 					boolean childHasFocus = false; 
 					for(Node type : moment.getTypeSpace().getChildren()){
-						TypeClassRepresentationController tt = (TypeClassRepresentationController) type;
+						TypeCategoryRepresentationController tt = (TypeCategoryRepresentationController) type;
 						if (tt.isFocused()) {
 							childHasFocus = true;
 						}
@@ -349,7 +349,7 @@ public abstract class MainViewTransformations {
 	}
 	
 	
-	public static void addTypeListener(TypeClassRepresentationController boutType,MomentExpVBox m,Type type,Main main){
+	public static void addTypeListener(TypeCategoryRepresentationController boutType,MomentExpVBox m,Type type,Main main){
 		boutType.focusedProperty().addListener(new ChangeListener<Boolean>()
 		{
 		    @Override
@@ -390,7 +390,7 @@ public abstract class MainViewTransformations {
 		
 		//System.out.println(mp.getMoment().getNom()+": ");
 		for (Type t : mp.getMoment().getCategories()) {
-			TypeClassRepresentationController classe = new TypeClassRepresentationController((Category) t,mp,main);
+			TypeCategoryRepresentationController classe = new TypeCategoryRepresentationController((Category) t,mp,main);
 			mp.getTypeSpace().getChildren().add(classe);
 			addTypeListener(classe, mp, t, main);
 			//System.out.println(t.toString());

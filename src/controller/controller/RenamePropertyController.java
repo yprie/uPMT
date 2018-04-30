@@ -22,7 +22,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

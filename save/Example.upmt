@@ -310,6 +310,19 @@
       "mParticipant": "Participant",
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
+    },
+    {
+      "mDescripteme": {
+        "mText": "• Changement Classe -\u003e Catégorie (dans les fichiers trad)\n• Bug dnd classe\n-\u003e Refaire la treeview ?\n\n• Réflechir à la MomentUtility\n\n• Réduire l\u0027espacement entre moment\n• Indiquer ce qui se passe au DND dsur un moment\n• \"New Moment\" au lieu de \"----\"\n• Réduire intensité du gris \"no descripteme\"\n\n• DragnDrop text to descripteme\n• Simplifier ColorPicker\n• Instaurer commentaire (à afficher à peut près comme une classe)\n• Link to github doit être dans le About Us, et User Guide plutot que Link 2 Github\n"
+      },
+      "mMoments": [],
+      "mDateInterview": {
+        "year": 2018,
+        "month": 4,
+        "day": 24
+      },
+      "mParticipant": "ttgtg",
+      "mName": "ttgtg_2018-04-24"
     }
   ]
 }

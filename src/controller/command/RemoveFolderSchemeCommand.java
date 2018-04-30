@@ -25,7 +25,7 @@ import java.util.LinkedList;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.controller.Observable;
 import controller.controller.TypeController;
 import controller.typeTreeView.TypeTreeView;
@@ -83,7 +83,7 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 					Platform.runLater(new Runnable() {	
 						@Override
 						public void run() {
-							RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+							RemoveCategoryFromParentCommand cmd = new RemoveCategoryFromParentCommand(
 									classe.getValue(), 
 									(Category) classe.getValue().getType(),
 									child,
@@ -97,7 +97,7 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 				Platform.runLater(new Runnable() {	
 					@Override
 					public void run() {
-						RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+						RemoveCategoryFromParentCommand cmd = new RemoveCategoryFromParentCommand(
 								child.getValue(), 
 								(Category) child.getValue().getType(),
 								parentTree,

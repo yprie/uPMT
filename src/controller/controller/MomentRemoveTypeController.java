@@ -22,7 +22,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import model.MomentExperience;
 import model.Type;
 
@@ -38,10 +38,10 @@ public class MomentRemoveTypeController implements controller.controller.Observa
 
 	@Override
 	public void update(Object value) {
-		if(momentExp.getCategories().contains(((TypeClassRepresentationController) value).getClasse())) {
-			momentExp.getCategories().remove(((TypeClassRepresentationController) value).getClasse());
+		if(momentExp.getCategories().contains(((TypeCategoryRepresentationController) value).getClasse())) {
+			momentExp.getCategories().remove(((TypeCategoryRepresentationController) value).getClasse());
 		}else {
-			momentExp.getCategories().add(((TypeClassRepresentationController) value).getClasse());
+			momentExp.getCategories().add(((TypeCategoryRepresentationController) value).getClasse());
 		}
 		
 		for(Observer obs : ObsMomentNames) {

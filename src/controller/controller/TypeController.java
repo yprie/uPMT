@@ -30,22 +30,22 @@ public class TypeController {
 	private Type type;
 	private Type parent;
 	
-	private RenameClassSchemeController classNameController;
-	private ChangeColorClassSchemeController classColorController;
+	private RenameCategorySchemeController classNameController;
+	private ChangeColorCategorySchemeController classColorController;
 	private AddPropertySchemeController addPropertyController;
 	private RemovePropertySchemeController removePropertySchemeController;
 	private AddPropertySchemeWithValueController addPropertySchemeWithValueController;
 	private RenamePropertyController propertyNameController;
 	private ChangePropertyValueController changePropertyValueController;
-	private RemoveClassSchemeController removeClassSchemeController;
-	private AddClassSchemeController addClassSchemeController;
+	private RemoveCategorySchemeController removeClassSchemeController;
+	private AddCategorySchemeController addClassSchemeController;
 	private TypeTreeViewController typeTreeViewController;
 	
 	public TypeController(Type t, Type parent) {
 		this.type = t;
 		this.parent = parent;
-		this.classNameController = new RenameClassSchemeController(t);
-		this.classColorController = new ChangeColorClassSchemeController(t);
+		this.classNameController = new RenameCategorySchemeController(t);
+		this.classColorController = new ChangeColorCategorySchemeController(t);
 		this.propertyNameController = new RenamePropertyController(t, parent);
 		this.changePropertyValueController = new ChangePropertyValueController(t);
 		if(t.isCategory()) {
@@ -56,8 +56,8 @@ public class TypeController {
 		}
 		if(parent!=null) {
 			if(parent.isFolder()) {
-				this.addClassSchemeController = new AddClassSchemeController((Folder)parent);
-				this.removeClassSchemeController = new RemoveClassSchemeController((Folder)parent);
+				this.addClassSchemeController = new AddCategorySchemeController((Folder)parent);
+				this.removeClassSchemeController = new RemoveCategorySchemeController((Folder)parent);
 			}
 			else if(t.isCategory()) System.out.println("Mais son père n'est pas un dossier ? :"+parent.getName());
 		}else {
@@ -85,11 +85,11 @@ public class TypeController {
 		this.type = type;
 	}
 
-	public RenameClassSchemeController getClassNameController() {
+	public RenameCategorySchemeController getClassNameController() {
 		return classNameController;
 	}
 	
-	public ChangeColorClassSchemeController getClassColorController() {
+	public ChangeColorCategorySchemeController getClassColorController() {
 		return classColorController;
 	}
 	
@@ -113,11 +113,11 @@ public class TypeController {
 		return this.changePropertyValueController;
 	}
 	
-	public RemoveClassSchemeController getRemoveClassSchemeController() {
+	public RemoveCategorySchemeController getRemoveClassSchemeController() {
 		return removeClassSchemeController;
 	}
 
-	public AddClassSchemeController getAddClassSchemeController() {
+	public AddCategorySchemeController getAddClassSchemeController() {
 		return addClassSchemeController;
 	}
 }

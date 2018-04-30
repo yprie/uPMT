@@ -177,12 +177,12 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	
 	@FXML
 	public void addClass(){
-		tree.addClass(++TypeTreeViewControllerClass.propertiesNumber);
+		tree.addClass(++TypeTreeViewControllerCategory.propertiesNumber);
 	}
 	
 	@FXML
 	public void addFolder(){
-		tree.addFolder(++TypeTreeViewControllerClass.propertiesNumber);
+		tree.addFolder(++TypeTreeViewControllerCategory.propertiesNumber);
 	}
 	
 	@FXML

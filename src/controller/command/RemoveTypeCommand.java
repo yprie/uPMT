@@ -22,18 +22,18 @@ package controller.command;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import javafx.scene.control.Button;
 import model.Type;
 import utils.Undoable;
 
 public class RemoveTypeCommand implements Command,Undoable {
 	
-	private TypeClassRepresentationController classRep;
+	private TypeCategoryRepresentationController classRep;
 	private MomentExpVBox moment;
 	private Main main;
 	
-	public RemoveTypeCommand(TypeClassRepresentationController classRep,MomentExpVBox moment, Main main) {
+	public RemoveTypeCommand(TypeCategoryRepresentationController classRep,MomentExpVBox moment, Main main) {
 		this.classRep = classRep;
 		this.moment = moment;
 		this.main = main;

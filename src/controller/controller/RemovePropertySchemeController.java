@@ -22,7 +22,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import model.Category;
 import model.MomentExperience;
 import model.Type;

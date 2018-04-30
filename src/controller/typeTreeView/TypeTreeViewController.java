@@ -23,7 +23,7 @@ package controller.typeTreeView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import controller.command.RenameClassSchemeCommand;
+import controller.command.RenameCategorySchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
 import controller.controller.Observable;
 import controller.controller.Observer;

@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.controller.Observable;
 import controller.controller.TypeController;
 import controller.typeTreeView.TypeTreeView;

@@ -34,20 +34,20 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.TreeCell;
 import application.Main;
 import controller.command.RemoveTypeCommand;
-import controller.controller.AddClassSchemeController;
+import controller.controller.AddCategorySchemeController;
 import controller.controller.AddPropertySchemeController;
 import controller.controller.AddPropertySchemeWithValueController;
-import controller.controller.ChangeColorClassSchemeController;
+import controller.controller.ChangeColorCategorySchemeController;
 import controller.controller.MomentRemoveTypeController;
 import controller.controller.Observable;
 import controller.controller.Observer;
-import controller.controller.RemoveClassSchemeController;
+import controller.controller.RemoveCategorySchemeController;
 import controller.controller.RemovePropertySchemeController;
-import controller.controller.RenameClassSchemeController;
+import controller.controller.RenameCategorySchemeController;
 import controller.controller.TypeController;
 import controller.interviewTreeView.TreeViewController;
 import controller.typeTreeView.TypeTreeView;
-import controller.typeTreeView.TypeTreeViewControllerClass;
+import controller.typeTreeView.TypeTreeViewControllerCategory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -69,7 +69,7 @@ import model.Property;
 import model.Type;
 import utils.UndoCollector;
 
-public class TypeClassRepresentationController extends BorderPane implements Initializable, Observer{
+public class TypeCategoryRepresentationController extends BorderPane implements Initializable, Observer{
 	
 	private @FXML Label className;
 	private @FXML VBox properties;
@@ -83,7 +83,7 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	
 	private Deque<Property> stack = new ArrayDeque<Property>();
 	
-	public TypeClassRepresentationController(Category classe,MomentExpVBox moment,Main main) {
+	public TypeCategoryRepresentationController(Category classe,MomentExpVBox moment,Main main) {
 		
 		this.classe = classe;
         this.moment = moment;
@@ -200,9 +200,9 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		this.className.setText(text);
 	}
 	 
-	public static boolean ListcontainsTypeClassRep(ObservableList<Node> children, TypeClassRepresentationController t) {
+	public static boolean ListcontainsTypeClassRep(ObservableList<Node> children, TypeCategoryRepresentationController t) {
 		for (Object object : children) {
-			TypeClassRepresentationController tmp = (TypeClassRepresentationController) object;
+			TypeCategoryRepresentationController tmp = (TypeCategoryRepresentationController) object;
 			
 			if(tmp.getClasse().equals(t.getClasse())) {
 				return true;
@@ -211,9 +211,9 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		return false;
 	}
 	
-	public static void RemoveTypeClassRepFromList(ObservableList<Node> children, TypeClassRepresentationController t) {
+	public static void RemoveTypeClassRepFromList(ObservableList<Node> children, TypeCategoryRepresentationController t) {
 		for (Object object : children) {
-			TypeClassRepresentationController tmp = (TypeClassRepresentationController) object;
+			TypeCategoryRepresentationController tmp = (TypeCategoryRepresentationController) object;
 			
 			if(tmp.getClasse().equals(t.getClasse())) {
 				children.remove(tmp);
@@ -225,10 +225,10 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 	@Override
 	public void updateVue(Observable obs, Object value) {
 		// TODO Auto-generated method stub
-		if(obs.getClass().equals(RenameClassSchemeController.class)) {
+		if(obs.getClass().equals(RenameCategorySchemeController.class)) {
 			renameClass((String) value);
 		}
-		if(obs.getClass().equals(ChangeColorClassSchemeController.class)) {
+		if(obs.getClass().equals(ChangeColorCategorySchemeController.class)) {
 			setColor((String) value);
 		}
 		if(obs.getClass().equals(AddPropertySchemeController.class)) {
@@ -257,11 +257,11 @@ public class TypeClassRepresentationController extends BorderPane implements Ini
 		if(obs.getClass().equals(AddPropertySchemeWithValueController.class)) {
 			addProperty(stack.pop());
 		}
-		if(obs.getClass().equals(RemoveClassSchemeController.class)) {
+		if(obs.getClass().equals(RemoveCategorySchemeController.class)) {
 		//System.out.println("DELETINGCLASS");
 			moment.removeTypeClassRep(this);
 		}
-		if(obs.getClass().equals(AddClassSchemeController.class)) {
+		if(obs.getClass().equals(AddCategorySchemeController.class)) {
 		//System.out.println("REPUTINGCLASS");
 			moment.putPreviousClassRep();
 		}

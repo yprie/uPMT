@@ -29,14 +29,14 @@ import java.util.regex.Pattern;
 
 import application.Main;
 import controller.command.AddPropertyToClassCommand;
-import controller.command.ChangeColorClassCommand;
-import controller.command.RemoveClassFromParentCommand;
+import controller.command.ChangeColorCategoryCommand;
+import controller.command.RemoveCategoryFromParentCommand;
 import controller.command.RemovePropertyFromClassCommand;
-import controller.command.RenameClassSchemeCommand;
-import controller.controller.ChangeColorClassSchemeController;
+import controller.command.RenameCategorySchemeCommand;
+import controller.controller.ChangeColorCategorySchemeController;
 import controller.controller.Observable;
 import controller.controller.Observer;
-import controller.controller.RenameClassSchemeController;
+import controller.controller.RenameCategorySchemeController;
 import controller.controller.TypeController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -66,7 +66,7 @@ import utils.ResourceLoader;
 import utils.UndoCollector;
 import utils.Utils;
 
-public class TypeTreeViewControllerClass extends TypeTreeViewController implements Observer{
+public class TypeTreeViewControllerCategory extends TypeTreeViewController implements Observer{
 	
 	private @FXML ColorPicker couleurType;
 	private @FXML Button deleteClass;
@@ -77,7 +77,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	
 	public static int propertiesNumber = 1;
 	
-	public TypeTreeViewControllerClass(TypeController type, TypeTreeView typeTreeView, Main m) {
+	public TypeTreeViewControllerCategory(TypeController type, TypeTreeView typeTreeView, Main m) {
 		super(type,typeTreeView);
 		type.getClassNameController().addObserver(this);
 		type.getClassColorController().addObserver(this);
@@ -125,7 +125,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 			        	if(type.getType().isCategory()){
 			        		if(MainViewTransformations.getCategory(textField.getText(), main.getCurrentProject().getSchema())==null) {
 			        			String oldName = new String(type.getType().getName());
-			        			RenameClassSchemeCommand cmd = new RenameClassSchemeCommand(
+			        			RenameCategorySchemeCommand cmd = new RenameCategorySchemeCommand(
 										type.getClassNameController(), 
 										oldName, 
 										textField.getText(),
@@ -177,7 +177,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 	public void pickColor(){
 		Color colorPicked = couleurType.getValue();
 		String colorConverted = Utils.toRGBCode(colorPicked);
-		ChangeColorClassCommand cmd = new ChangeColorClassCommand(
+		ChangeColorCategoryCommand cmd = new ChangeColorCategoryCommand(
 				type.getClassColorController(),
 				this.type.getType().getColor(),
 				colorConverted,
@@ -197,7 +197,7 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 		
 	@FXML
 	public void deleteClass(){
-		RemoveClassFromParentCommand cmd = new RemoveClassFromParentCommand(
+		RemoveCategoryFromParentCommand cmd = new RemoveCategoryFromParentCommand(
 				tree.getTreeItem().getValue(), 
 				(Category) type.getType(),
 				tree.getTreeItem().getParent(),
@@ -234,10 +234,10 @@ public class TypeTreeViewControllerClass extends TypeTreeViewController implemen
 
 	@Override
 	public void updateVue(Observable obs, Object value) {
-		if(obs.getClass().equals(RenameClassSchemeController.class)) {
+		if(obs.getClass().equals(RenameCategorySchemeController.class)) {
 			this.nomType.setText((String) value);
 		}
-		if(obs.getClass().equals(ChangeColorClassSchemeController.class)) {
+		if(obs.getClass().equals(ChangeColorCategorySchemeController.class)) {
 			
 			if(!Main.activateBetaDesign)
 				this.nomType.setTextFill(Color.web((String) value));

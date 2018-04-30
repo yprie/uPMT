@@ -1,5 +1,5 @@
 /*****************************************************************************
- * ChangeColorClassCommand.java
+ * RenameClassSchemeController.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -18,52 +18,46 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-package controller.command;
 
-import controller.controller.Observer;
-import application.Main;
-import controller.controller.Observable;
-import utils.Undoable;
+package controller.controller;
 
-public class ChangeColorClassCommand implements Command,Undoable{
+import java.util.LinkedList;
 
-	private Observable observable;
-	private String oldColor;
-	private String newColor;
-	private Main main;
+import controller.TypeCategoryRepresentationController;
+import model.MomentExperience;
+import model.Type;
+
+public class RenameCategorySchemeController implements controller.controller.Observable{
+
+	private Type classe;
+	private LinkedList<Observer> ObsTypesNames;
 	
-	public ChangeColorClassCommand(Observable observable, String oldColor,String newColor, Main m) {
-		this.observable = observable;
-		this.oldColor = oldColor;
-		this.newColor = newColor;
-		main = m;
+	public RenameCategorySchemeController(Type classe) {
+		this.classe = classe;
+		ObsTypesNames = new LinkedList<Observer>();
+	}
+
+	@Override
+	public void update(Object value) {
+		classe.setName((String) value);
+		
+		for(Observer obs : ObsTypesNames) {
+			obs.updateVue(this, value);
+		}
+	}
+
+	@Override
+	public void addObserver(Observer o) {
+		ObsTypesNames.add(o);
+	}
+
+	@Override
+	public void updateModel(Object value) {
+		this.classe = (Type) value;
 	}
 	
 	@Override
-	public void undo() {
-		observable.update(oldColor);
-		main.needToSave();
+	public void RemoveObserver(Observer o) {
+		ObsTypesNames.remove(o);
 	}
-
-	@Override
-	public void redo() {
-		execute();
-	}
-
-	@Override
-	public String getUndoRedoName() {
-		return null;
-	}
-
-	@Override
-	public void execute() {
-		observable.update(newColor);
-		main.needToSave();
-	}
-
-	@Override
-	public boolean canExecute() {
-		return false;
-	}
-
 }

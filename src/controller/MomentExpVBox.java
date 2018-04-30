@@ -48,7 +48,7 @@ import controller.controller.MomentRemoveTypeController;
 import controller.controller.Observer;
 import controller.controller.PropertyExtractController;
 import controller.typeTreeView.TypeTreeView;
-import controller.typeTreeView.TypeTreeViewControllerClass;
+import controller.typeTreeView.TypeTreeViewControllerCategory;
 import controller.controller.Observable;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -143,7 +143,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 
 	
 	// Stack of redoable Classes
-	private Deque<TypeClassRepresentationController> stack = new ArrayDeque<TypeClassRepresentationController>();
+	private Deque<TypeCategoryRepresentationController> stack = new ArrayDeque<TypeCategoryRepresentationController>();
 
 	public MomentExpVBox(MomentExperience mexp, Main main) {
 		
@@ -477,9 +477,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		borderPaneLabel.setCenter(t);
 	}
 	
-	public TypeClassRepresentationController getTypeClassRep(Category item) {
+	public TypeCategoryRepresentationController getTypeClassRep(Category item) {
 		for(Node n : typeSpace.getChildren()){
-			TypeClassRepresentationController tcr = (TypeClassRepresentationController) n;
+			TypeCategoryRepresentationController tcr = (TypeCategoryRepresentationController) n;
 			if(tcr.getClasse().equals(item)){
 				//System.out.println("lol");
 				return tcr;
@@ -488,7 +488,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		return null;
 	}
 	
-	public void removeTypeClassRep(TypeClassRepresentationController tcrc) {
+	public void removeTypeClassRep(TypeCategoryRepresentationController tcrc) {
 		if(this.typeSpace.getChildren().contains(tcrc)) {
 			this.typeSpace.getChildren().remove(tcrc);
 			this.moment.getCategories().remove(tcrc.getClasse());
@@ -498,7 +498,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	public void putPreviousClassRep() {
 		if(!stack.isEmpty()) {
-			TypeClassRepresentationController tcrc = stack.getFirst();
+			TypeCategoryRepresentationController tcrc = stack.getFirst();
 			if(!this.typeSpace.getChildren().contains(tcrc)) {
 				this.typeSpace.getChildren().add(tcrc);
 				this.moment.getCategories().add(tcrc.getClasse());
@@ -560,7 +560,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		}
 		if(obs.getClass().equals(MomentAddTypeController.class)) {
 			if(value != null) {
-				TypeClassRepresentationController elementPane = new TypeClassRepresentationController((Category) value,this,main);
+				TypeCategoryRepresentationController elementPane = new TypeCategoryRepresentationController((Category) value,this,main);
 				
 					MainViewTransformations.addTypeListener(elementPane, this, (Type) value, main);
 					//((TypeTreeViewControllerClass)((TypeTreeView)Main.tempDragReference).getController()).getNameController().addObserver(elementPane);
@@ -572,12 +572,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			
 		}
 		if(obs.getClass().equals(MomentRemoveTypeController.class)) {
-			TypeClassRepresentationController t = (TypeClassRepresentationController) value;
-			boolean contains = TypeClassRepresentationController.ListcontainsTypeClassRep(this.typeSpace.getChildren(), t);
+			TypeCategoryRepresentationController t = (TypeCategoryRepresentationController) value;
+			boolean contains = TypeCategoryRepresentationController.ListcontainsTypeClassRep(this.typeSpace.getChildren(), t);
 			if(contains){
-				TypeClassRepresentationController.RemoveTypeClassRepFromList(this.typeSpace.getChildren(), t);
+				TypeCategoryRepresentationController.RemoveTypeClassRepFromList(this.typeSpace.getChildren(), t);
 			}else {
-				this.typeSpace.getChildren().add((TypeClassRepresentationController)value);
+				this.typeSpace.getChildren().add((TypeCategoryRepresentationController)value);
 			}
 		}		
 	}

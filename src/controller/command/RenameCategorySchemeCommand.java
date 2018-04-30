@@ -1,5 +1,5 @@
 /*****************************************************************************
- * RenameClassSchemeController.java
+ * RenameClassSchemeCommand.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -18,46 +18,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
+package controller.command;
 
-package controller.controller;
+import controller.controller.Observer;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import model.Type;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
-import model.MomentExperience;
-import model.Type;
+import application.Main;
+import controller.controller.Observable;
+import utils.Undoable;
 
-public class RenameClassSchemeController implements controller.controller.Observable{
+public class RenameCategorySchemeCommand implements Command,Undoable{
 
-	private Type classe;
-	private LinkedList<Observer> ObsTypesNames;
+	private Observable observable;
+	private String oldName;
+	private String newName;
+	private Main main;
 	
-	public RenameClassSchemeController(Type classe) {
-		this.classe = classe;
-		ObsTypesNames = new LinkedList<Observer>();
-	}
-
-	@Override
-	public void update(Object value) {
-		classe.setName((String) value);
-		
-		for(Observer obs : ObsTypesNames) {
-			obs.updateVue(this, value);
-		}
-	}
-
-	@Override
-	public void addObserver(Observer o) {
-		ObsTypesNames.add(o);
-	}
-
-	@Override
-	public void updateModel(Object value) {
-		this.classe = (Type) value;
+	public RenameCategorySchemeCommand(Observable observable, String oldName,String newName, Main m) {
+		this.observable = observable;
+		this.oldName = oldName;
+		this.newName = newName;
+		main = m;
 	}
 	
 	@Override
-	public void RemoveObserver(Observer o) {
-		ObsTypesNames.remove(o);
+	public void undo() {
+		observable.update(oldName);
+		main.needToSave();
 	}
+
+	@Override
+	public void redo() {
+		execute();
+	}
+
+	@Override
+	public String getUndoRedoName() {
+		return null;
+	}
+
+	@Override
+	public void execute() {
+		observable.update(newName);
+		main.needToSave();
+	}
+
+	@Override
+	public boolean canExecute() {
+		return false;
+	}
+
 }

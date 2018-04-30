@@ -1,5 +1,5 @@
 /*****************************************************************************
- * RenameClassSchemeCommand.java
+ * ChangeColorClassCommand.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -21,33 +21,27 @@
 package controller.command;
 
 import controller.controller.Observer;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import model.Type;
-
-import java.util.LinkedList;
-
 import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
-public class RenameClassSchemeCommand implements Command,Undoable{
+public class ChangeColorCategoryCommand implements Command,Undoable{
 
 	private Observable observable;
-	private String oldName;
-	private String newName;
+	private String oldColor;
+	private String newColor;
 	private Main main;
 	
-	public RenameClassSchemeCommand(Observable observable, String oldName,String newName, Main m) {
+	public ChangeColorCategoryCommand(Observable observable, String oldColor,String newColor, Main m) {
 		this.observable = observable;
-		this.oldName = oldName;
-		this.newName = newName;
+		this.oldColor = oldColor;
+		this.newColor = newColor;
 		main = m;
 	}
 	
 	@Override
 	public void undo() {
-		observable.update(oldName);
+		observable.update(oldColor);
 		main.needToSave();
 	}
 
@@ -63,7 +57,7 @@ public class RenameClassSchemeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		observable.update(newName);
+		observable.update(newColor);
 		main.needToSave();
 	}
 

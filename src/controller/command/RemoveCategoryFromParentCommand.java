@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
 import controller.controller.Observable;
 import controller.controller.TypeController;
 import controller.typeTreeView.TypeTreeView;
@@ -43,7 +43,7 @@ import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
-public class RemoveClassFromParentCommand implements Command,Undoable{
+public class RemoveCategoryFromParentCommand implements Command,Undoable{
 	
 	private TypeController controller;
 	private Category classe;
@@ -51,7 +51,7 @@ public class RemoveClassFromParentCommand implements Command,Undoable{
 	private Main main;
 	private TreeItem<TypeController> oldClassTree;
 	
-	public RemoveClassFromParentCommand(TypeController controller, Category classe, TreeItem<TypeController> parentTree, Main m) {
+	public RemoveCategoryFromParentCommand(TypeController controller, Category classe, TreeItem<TypeController> parentTree, Main m) {
 		this.classe = classe;
 		this.controller = controller;
 		this.tree = parentTree;

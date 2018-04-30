@@ -1,5 +1,5 @@
 /*****************************************************************************
- * ChangeColorClassSchemeController.java
+ * AddClassSchemeController.java
  *****************************************************************************
  * Copyright © 2017 uPMT
  *
@@ -22,24 +22,26 @@ package controller.controller;
 
 import java.util.LinkedList;
 
-import controller.TypeClassRepresentationController;
+import controller.TypeCategoryRepresentationController;
+import model.Category;
+import model.Folder;
 import model.MomentExperience;
 import model.Type;
 
-public class ChangeColorClassSchemeController implements controller.controller.Observable{
+public class AddCategorySchemeController implements controller.controller.Observable{
 
-	private Type classe;
+	private Folder parent;
 	private LinkedList<Observer> ObsTypesNames;
 	
-	public ChangeColorClassSchemeController(Type classe) {
-		this.classe = classe;
+	public AddCategorySchemeController(Folder parent) {
+		this.parent = parent;
 		ObsTypesNames = new LinkedList<Observer>();
 	}
 
 	@Override
 	public void update(Object value) {
-		classe.setColor((String) value);
-		
+
+		parent.addCategory((Category) value);
 		for(Observer obs : ObsTypesNames) {
 			obs.updateVue(this, value);
 		}
@@ -47,14 +49,16 @@ public class ChangeColorClassSchemeController implements controller.controller.O
 
 	@Override
 	public void addObserver(Observer o) {
-		ObsTypesNames.add(o);
+		if(!ObsTypesNames.contains(o)) {
+			ObsTypesNames.add(o);
+		}
 	}
 
 	@Override
 	public void updateModel(Object value) {
-		this.classe = (Type) value;
+		this.parent = (Folder) value;
 	}
-	
+
 	@Override
 	public void RemoveObserver(Observer o) {
 		ObsTypesNames.remove(o);
