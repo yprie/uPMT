@@ -115,13 +115,27 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 		if(tree.getValue() != null && tree.getValue().getType().getName().equals(this.classe.getName())) {
 			this.treeClass = tree.getValue();
 			this.treeClassTreeItem = tree;
-			tree.getValue().getClassNameController().addObserver(this);
-			tree.getValue().getClassColorController().addObserver(this);
-			tree.getValue().getAddPropertySchemeController().addObserver(this);	
-			tree.getValue().getRemovePropertySchemeController().addObserver(this);
-			tree.getValue().GetAddPropertySchemeWithValueController().addObserver(this);
-			tree.getValue().getAddClassSchemeController().addObserver(this);
-			tree.getValue().getRemoveClassSchemeController().addObserver(this);
+			try {
+				tree.getValue().getClassNameController().addObserver(this);
+			}catch(Exception e) {}
+			try {
+				tree.getValue().getClassColorController().addObserver(this);
+			}catch(Exception e) {}
+			try {
+				tree.getValue().getAddPropertySchemeController().addObserver(this);
+			}catch(Exception e) {}	
+			try {
+				tree.getValue().getRemovePropertySchemeController().addObserver(this);
+			}catch(Exception e) {}
+			try {
+				tree.getValue().GetAddPropertySchemeWithValueController().addObserver(this);
+			}catch(Exception e) {}
+			try {
+				tree.getValue().getAddClassSchemeController().addObserver(this);
+			}catch(Exception e) {}
+			try {
+				tree.getValue().getRemoveClassSchemeController().addObserver(this);
+			}catch(Exception e) {}
 			return;
 		}
 		

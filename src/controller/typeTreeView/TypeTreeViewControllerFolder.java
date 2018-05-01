@@ -96,13 +96,13 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 			}
         });
         MenuItem menu4 = new MenuItem(main._langBundle.getString("add_folder"));
-        menu3.setOnAction(new EventHandler<ActionEvent>() {
+        menu4.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				addFolder();
 			}
         });
-        treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
+        treeviewMenuAction.getItems().addAll(menu1, menu2, menu3, menu4);
 	}
 	
 	public void setName(String newName) {

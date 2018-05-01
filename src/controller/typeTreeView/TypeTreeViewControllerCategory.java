@@ -55,6 +55,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -114,6 +116,9 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 			}
         });
         treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
+        
+        
+        
 	}
 	
 	@Override
