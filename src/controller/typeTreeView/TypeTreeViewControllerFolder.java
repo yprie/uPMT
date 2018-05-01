@@ -68,8 +68,7 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomType.setText(type.getType().getName());
-		if(Main.activateBetaDesign)
-			this.nomType.setTextFill(Color.BLACK);
+		this.nomType.setTextFill(Color.BLACK);
 		Image icon = ResourceLoader.loadImage("folder.png");
 		this.folderIcon.setImage(icon);
 		

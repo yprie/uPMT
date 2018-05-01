@@ -76,8 +76,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomType.setText(type.getType().getName());
-		/*if(Main.activateBetaDesign)
-			this.nomType.setTextFill(Color.BLACK);*/
+		this.nomType.setTextFill(Color.BLACK);
 		this.setLabelChangeName(main,this);  //double click
 
 		Image icon = ResourceLoader.loadImage("property.png");
