@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerClass.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,6 +88,7 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 		nomType.setText(type.getType().getName());
 		couleurType.setStyle("-fx-color-label-visible: false ;");
 		setColor();
+		this.setLabelChangeName(main,this);  //double click
 		
 		Image icon = ResourceLoader.loadImage("class.gif");
 		this.classIcon.setImage(icon);
@@ -116,11 +117,23 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 			}
         });
         treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
-        
-        
-        
+              
 	}
 	
+	private void setLabelChangeName(Main main, TypeTreeViewControllerCategory typeTreeViewControllerCategory) {
+		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getClickCount() == 2) {
+					rename();
+				}
+			}
+			
+		});
+	}
+
 	@Override
 	public void rename() {
 		super.rename();

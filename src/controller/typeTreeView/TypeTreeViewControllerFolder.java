@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeViewControllerFolder.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright 锟� 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import model.Folder;
 import model.Schema;
@@ -71,6 +72,7 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 		this.nomType.setTextFill(Color.BLACK);
 		Image icon = ResourceLoader.loadImage("folder.png");
 		this.folderIcon.setImage(icon);
+		this.setLabelChangeName(main,this);
 		
 		
 		treeviewMenuAction.getItems().clear();
@@ -105,6 +107,20 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
         treeviewMenuAction.getItems().addAll(menu1, menu2, menu3, menu4);
 	}
 	
+	private void setLabelChangeName(Main main, TypeTreeViewControllerFolder typeTreeViewControllerFolder) {
+		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getClickCount() == 2) {
+					rename();
+				}
+			}
+			
+		});
+	}
+
 	public void setName(String newName) {
 		this.type.getType().setName(newName);
 		this.nomType.setText(newName);
