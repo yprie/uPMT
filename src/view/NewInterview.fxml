@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">    <children>
+<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">    <children>
        <VBox prefHeight="480.0" prefWidth="800.0">
           <children>
              <HBox>
@@ -46,17 +46,7 @@
                 
                </rowConstraints>
                 <children>
-                   <Label id="particip" text="%participants">
-                      <font>
-                         <Font size="20.0" />
-                      </font>
-                   </Label>
-                  <Label id="dateEnt" text="%date" GridPane.rowIndex="1">
-                      <font>
-                         <Font size="20.0" />
-                      </font>
-                   </Label>
-                   <Label id="nom" text="%name(ID)" GridPane.rowIndex="2">
+                   <Label id="nom" text="%name(ID)">
                       <font>
                          <Font size="20.0" />
                       </font>
@@ -64,32 +54,37 @@
                          <Insets top="10.0" />
                       </GridPane.margin>
                    </Label>
-                   <DatePicker id="date" fx:id="dateEntretien" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="nomEntretien" prefHeight="48.0" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                   <Label id="particip" text="%participants" GridPane.rowIndex="1">
+                      <font>
+                         <Font size="20.0" />
+                      </font>
+                   </Label>
+                   <TextField id="partiEnt" fx:id="participantEntretien" prefHeight="48.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </GridPane.margin></TextField>
+                  <Label id="dateEnt" text="%date" GridPane.rowIndex="2">
+                      <font>
+                         <Font size="20.0" />
+                      </font>
+                   </Label>
+                   <DatePicker id="date" fx:id="dateEntretien" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                      </GridPane.margin></DatePicker>
-                   <TextField id="nomEnt" fx:id="nomEntretien" prefHeight="48.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </GridPane.margin></TextField>
-                   <TextField id="partiEnt" fx:id="participantEntretien" prefHeight="48.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </GridPane.margin></TextField>
                    <Label id="addFile" text="%add_file" GridPane.rowIndex="3">
                       <font>
                          <Font size="20.0" />
                       </font>
                    </Label>
-                   <Label id="comm" text="%commentaire" GridPane.rowIndex="4">
-                      <font>
-                         <Font size="20.0" />
-                      </font>
-                   </Label>
-                   <TextArea id="commentaire" fx:id="commentaireEntretien" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <GridPane.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </GridPane.margin></TextArea>
                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                       <children>
                          <HBox prefWidth="509.0">
@@ -112,6 +107,15 @@
                          </Label>
                       </children>
                    </VBox>
+                   <Label id="comm" text="%commentaire" GridPane.rowIndex="4">
+                      <font>
+                         <Font size="20.0" />
+                      </font>
+                   </Label>
+                   <TextArea id="commentaire" fx:id="commentaireEntretien" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </GridPane.margin></TextArea>
                 </children>
                 <VBox.margin>
                    <Insets bottom="30.0" left="40.0" right="50.0" />

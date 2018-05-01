@@ -26,6 +26,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Descripteme;
@@ -33,7 +34,7 @@ import model.DescriptionInterview;
 
 public class NewInterviewDialogController  implements Initializable{
 
-	private @FXML TextField nomEntretien;
+	private @FXML Label nomEntretien;
 	private @FXML TextField participantEntretien;
 	private @FXML TextArea commentaireEntretien;
 	private @FXML DatePicker dateEntretien;
@@ -61,21 +62,42 @@ public class NewInterviewDialogController  implements Initializable{
 			checkIfCanCreate();
 		});
 		
-		participantEntretien.setOnAction(new EventHandler<ActionEvent>(){ 
-			public void handle(ActionEvent event){	
-				if(nomEntretien.getText().equals("") && !"".equals(dateEntretien.getValue().toString())) {
-					nomEntretien.setText(participantEntretien.getText() 
-							+ "_" + dateEntretien.getValue().toString());
+
+		participantEntretien.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				try {
+					if(!dateEntretien.getValue().toString().equals("")) {
+						nomEntretien.setText(participantEntretien.getText() 
+								+ "_" + dateEntretien.getValue().toString());
+					}
+					if(participantEntretien.getText().equals("")) nomEntretien.setText("");
 				}
-				}});
+				catch(Exception e) {}
+			}
+			
+		});
 		
+		dateEntretien.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				try {
+					if(dateEntretien.getValue().toString().equals("")) nomEntretien.setText("");
+				}
+				catch(Exception e) {}
+			}
+			
+		});
 		dateEntretien.setOnAction(new EventHandler<ActionEvent>(){ 
 			public void handle(ActionEvent event){	
 //				LocalDate date = dateEntretien.getValue();
-				if(nomEntretien.getText().equals("") && !"".equals(participantEntretien.getText())) {
+				try {
+				if(!participantEntretien.getText().equals("")) {
 					nomEntretien.setText(participantEntretien.getText()
 							+ "_" + dateEntretien.getValue().toString());
 				}
+				}
+				catch(Exception e) {}
 				}});
 	}
 	
