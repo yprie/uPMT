@@ -79,6 +79,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		this.nomType.setTextFill(Color.BLACK);
 		this.setLabelChangeName(main,this);  //double click
 
+		
 		Image icon = ResourceLoader.loadImage("property.png");
 		this.propertyIcon.setImage(icon);
 		
@@ -100,6 +101,12 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
         
         treeviewMenuAction.getItems().addAll(menu1, menu2);
 		initNumber();
+		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(isSelected) rename();
+			}
+        }); 
 	}
 	
 	@Override
@@ -193,13 +200,24 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	}
 	
 	@Override
-	public void hideButtons(){
-		this.treeviewMenuAction.setVisible(false);
+	public void showButtons(boolean visibility) {
+		this.treeviewMenuAction.setVisible(visibility);
 	}
-
+	
 	@Override
-	public void showButtons() {
-		this.treeviewMenuAction.setVisible(true);
+	public void isSelected() {
+		new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+            	isSelected = true;
+            }},500);
+		showButtons(true);
+	}
+	
+	@Override
+	public void isUnselected() {
+		isSelected = false;
+		showButtons(false);
 	}
 	
 	@Override

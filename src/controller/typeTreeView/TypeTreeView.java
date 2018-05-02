@@ -161,10 +161,10 @@ public class TypeTreeView extends TreeCell<TypeController>{
     public void updateSelected(boolean selected) {
     	super.updateSelected(selected);
     	if (selected) {
-        	this.controller.showButtons();
+        	this.controller.isSelected();
 		}
     	else{
-    		this.controller.hideButtons();
+    		this.controller.isUnselected();
     	}
     }
     	
@@ -210,7 +210,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
     			     loader.setController(controller);
     			     BorderPane elementPane = (BorderPane) loader.load();
     			     this.setGraphic(elementPane);
-    			     this.controller.hideButtons();
+    			     this.controller.showButtons(false);
     			 }
     			 catch (IOException e) {
     				 e.printStackTrace();

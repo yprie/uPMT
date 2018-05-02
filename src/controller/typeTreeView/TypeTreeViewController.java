@@ -70,7 +70,7 @@ public class TypeTreeViewController implements Initializable{
 	protected @FXML MenuButton treeviewMenuAction;
 	
 	protected Main main;
-	
+	protected boolean isSelected = false;
 	protected TextField textField;
 	
 	public TypeTreeViewController(TypeController type,TypeTreeView tree, Main main) {
@@ -100,13 +100,14 @@ public class TypeTreeViewController implements Initializable{
 
 	public void rename() {
 		textField.setText(type.getType().getName());
-		textField.setMaxWidth(100);
+		textField.setMaxWidth(150);
 		textField.requestFocus();
 		//System.out.println("On renomme");
 	}
-
-	protected void hideButtons() {}
-
-	protected void showButtons() {}
+	
+	protected void showButtons(boolean visibility) {}
+	protected void isSelected() {}
+	protected void isUnselected() {}
+	
 
 }

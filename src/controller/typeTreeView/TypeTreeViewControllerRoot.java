@@ -66,7 +66,7 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 		nomType.setText(type.getType().getName());
 		this.nomType.setTextFill(Color.BLACK);
 
-		Image icon = ResourceLoader.loadImage("schema.gif");
+		Image icon = ResourceLoader.loadImage("schema.png");
 		this.rootIcon.setImage(icon);
 		
 		treeviewMenuAction.getItems().clear();
@@ -85,7 +85,12 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 			}
         });
         treeviewMenuAction.getItems().addAll(menu1, menu3);
-		
+        nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(isSelected) rename();
+			}
+        }); 
 	}
 
 	@Override
@@ -137,14 +142,24 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	}
 	
 	@Override
-	public void hideButtons(){
-		this.treeviewMenuAction.setVisible(false);
+	public void showButtons(boolean visibility) {
+		this.treeviewMenuAction.setVisible(visibility);
 	}
-
+	
 	@Override
-	public void showButtons() {
-		this.treeviewMenuAction.setVisible(true);;
-
+	public void isSelected() {
+		new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+            	isSelected = true;
+            }},500);
+		showButtons(true);
+	}
+	
+	@Override
+	public void isUnselected() {
+		isSelected = false;
+		showButtons(false);
 	}
 
 }

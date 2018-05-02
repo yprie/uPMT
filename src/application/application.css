@@ -54,6 +54,10 @@
 .tree-cell {
     -fx-background-color: white ;
     -fx-text-fill: black ;
+    -fx-padding:0;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+    -fx-min-height:35px;
 }
 .tree-cell:selected {
     -fx-background-color: #eee ;
@@ -94,7 +98,34 @@
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
 
+.threedotsTreeview{
+	-fx-background-radius: 0px;
+    -fx-border-radius:0;
+	-fx-border-width: 0;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-background-color: gray;
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-size: 20;
+  	-fx-min-height:35px;
+  	-fx-min-width:35px;
+}
+.threedotsTreeview:pressed{
+	-fx-background-color: #eee;
+	-fx-background-image: url("/images/threedots.png");
+}
+.threedotsTreeview{
+	-fx-background-image: url("/images/threedots_white.png");
+}
 
+.threedotsTreeview > .arrow-button{
+	-fx-padding: 0;
+}
+
+.threedotsTreeview > .arrow-button > .arrow{
+	-fx-padding: 0;
+}
 
 /*
 .split-pane:horizontal > .split-pane-divider {

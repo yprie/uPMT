@@ -89,7 +89,7 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 		couleurType.setStyle("-fx-color-label-visible: false ;");
 		setColor();
 		
-		Image icon = ResourceLoader.loadImage("class.gif");
+		Image icon = ResourceLoader.loadImage("category.png");
 		this.classIcon.setImage(icon);
 
 		
@@ -116,7 +116,12 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 			}
         });
         treeviewMenuAction.getItems().addAll(menu1, menu2, menu3);
-              
+        nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(isSelected) rename();
+			}
+        });      
 	}
 	
 
@@ -129,24 +134,26 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 			    {
 			        if (!newPropertyValue){
 			        	if(type.getType().isCategory()){
-			        		if(MainViewTransformations.getCategory(textField.getText(), main.getCurrentProject().getSchema())==null) {
-			        			String oldName = new String(type.getType().getName());
-			        			RenameCategorySchemeCommand cmd = new RenameCategorySchemeCommand(
-										type.getClassNameController(), 
-										oldName, 
-										textField.getText(),
-										main);
-								cmd.execute();
-								UndoCollector.INSTANCE.add(cmd);
-			        		}
-							else {
+			        		String oldName = new String(type.getType().getName());
+			        		if(!oldName.equals(textField.getText())) {
+				        		if(MainViewTransformations.getCategory(textField.getText(), main.getCurrentProject().getSchema())==null) {
+				        			
+				        			RenameCategorySchemeCommand cmd = new RenameCategorySchemeCommand(
+											type.getClassNameController(), 
+											oldName, 
+											textField.getText(),
+											main);
+									cmd.execute();
+									UndoCollector.INSTANCE.add(cmd);
+				        		}
+								else {
 									Alert alert = new Alert(AlertType.INFORMATION);
 									alert.setTitle(main._langBundle.getString("invalid_name"));
 									alert.setHeaderText(null);
 									alert.setContentText(main._langBundle.getString("category_name_invalid"));
 									alert.show();
 								}
-							
+			        		}
 						}		        	
 						typePane.setLeft(nomType);
 						textField.focusedProperty().removeListener(this);
@@ -220,15 +227,26 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 	}
 	
 	@Override
-	public void hideButtons(){
-		this.couleurType.setVisible(false);
-		this.treeviewMenuAction.setVisible(false);
+	public void showButtons(boolean visibility) {
+		this.couleurType.setVisible(visibility);
+		this.treeviewMenuAction.setVisible(visibility);
 	}
-
+	
 	@Override
-	public void showButtons() {
-		this.couleurType.setVisible(true);
-		this.treeviewMenuAction.setVisible(true);
+	public void isSelected() {
+		new java.util.Timer().schedule(new java.util.TimerTask() {
+		            @Override
+		            public void run() {
+		            	isSelected = true;
+		            }},500);
+		
+		showButtons(true);
+	}
+	
+	@Override
+	public void isUnselected() {
+		isSelected = false;
+		showButtons(false);
 	}
 
 	@Override

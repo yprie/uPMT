@@ -75,18 +75,7 @@ public class InterviewTreeViewController extends TreeViewController implements I
 		
 		Node iconRename = new ImageView(ResourceLoader.loadImage("rename.png"));
 		this.renameInterview.setGraphic(iconRename);
-		
-		//Tooltip affDescrip = new Tooltip("Afficher le Verbatim de l'entretien");
-		Tooltip affDescrip = new Tooltip(this.interviewTreeView.getMain()._langBundle.getString("display_verbatim"));
-		afficherDescritpeme.setTooltip(affDescrip);
-		
-		//Tooltip rename = new Tooltip("Renommer l'entretien");
-		Tooltip rename = new Tooltip(this.interviewTreeView.getMain()._langBundle.getString("rename_interview"));
-		renameInterview.setTooltip(rename);
-		
-		//Tooltip delete = new Tooltip("Supprimer l'entretien");
-		Tooltip delete = new Tooltip(this.interviewTreeView.getMain()._langBundle.getString("delete_interview"));
-		deleteInterview.setTooltip(delete);
+	
 		
 		hideButtons();
 	}
