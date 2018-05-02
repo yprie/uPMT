@@ -88,7 +88,6 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 		nomType.setText(type.getType().getName());
 		couleurType.setStyle("-fx-color-label-visible: false ;");
 		setColor();
-		this.setLabelChangeName(main,this);  //double click
 		
 		Image icon = ResourceLoader.loadImage("class.gif");
 		this.classIcon.setImage(icon);
@@ -120,19 +119,6 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
               
 	}
 	
-	private void setLabelChangeName(Main main, TypeTreeViewControllerCategory typeTreeViewControllerCategory) {
-		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getClickCount() == 2) {
-					rename();
-				}
-			}
-			
-		});
-	}
 
 	@Override
 	public void rename() {

@@ -56,7 +56,7 @@
               }
             ],
             "mDescription": "",
-            "mColor": "#FFE666",
+            "mColor": "#FFCC66",
             "mName": "Bodily feeling"
           },
           {
@@ -155,7 +155,7 @@
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#FFE666",
+                  "mColor": "#FFCC66",
                   "mName": "Bodily feeling"
                 }
               ],
@@ -164,7 +164,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 0,
-              "mColor": "#D3D3D3",
+              "mColor": "#FFFFFF",
               "mCurrentProperty": {
                 "mValue": "chest",
                 "mExtract": {
@@ -271,7 +271,7 @@
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#FFE666",
+                  "mColor": "#FFCC66",
                   "mName": "Bodily feeling"
                 }
               ],
@@ -280,7 +280,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 2,
-              "mColor": "#FF2F2F",
+              "mColor": "#D33A3A",
               "mCurrentProperty": {
                 "mValue": "body",
                 "mExtract": {
