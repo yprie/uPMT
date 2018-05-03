@@ -39,10 +39,14 @@ public class MomentAddTypeController implements controller.controller.Observable
 	@Override
 	public void update(Object value) {
 		//System.out.println("Moment update: "+momentExp.getName());
+		
 		if(value != null) {
 			momentExp.getCategories().add((Category) value);
 		}else {
+			try {
 			momentExp.getCategories().removeLast();
+			}
+			catch(Exception e) {}
 		}
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);
