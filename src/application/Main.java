@@ -30,6 +30,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
@@ -400,7 +403,12 @@ public class Main extends Application {
 	public void export(Project p){
 		ObjectOutputStream oos = null;
 		try {
-			PrintWriter writer = new PrintWriter("exports/"+p.getName()+".csv", "UTF-8");
+			
+
+			if (!Files.exists(Paths.get("./exports/"))) {
+			    new File("./exports/").mkdir();
+			}
+			PrintWriter writer = new PrintWriter("./exports/"+p.getName()+".csv", "UTF-8");
 		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\"");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
