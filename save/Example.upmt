@@ -22,7 +22,7 @@
                   }
                 ],
                 "mDescription": "",
-                "mColor": "#80B380",
+                "mColor": "#4D804D",
                 "mName": "Auditory sensation"
               }
             ],
@@ -37,11 +37,6 @@
               {
                 "mDescription": "",
                 "mColor": "#000000",
-                "mName": "density"
-              },
-              {
-                "mDescription": "",
-                "mColor": "#000000",
                 "mName": "temperature"
               },
               {
@@ -53,10 +48,15 @@
                 "mDescription": "",
                 "mColor": "#000000",
                 "mName": "location"
+              },
+              {
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "density"
               }
             ],
             "mDescription": "",
-            "mColor": "#FFCC66",
+            "mColor": "#FFB366",
             "mName": "Bodily feeling"
           },
           {
@@ -68,7 +68,7 @@
               }
             ],
             "mDescription": "",
-            "mColor": "#E699B3",
+            "mColor": "#80334D",
             "mName": "Emotion"
           }
         ],
@@ -112,20 +112,11 @@
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#E699B3",
+                  "mColor": "#80334D",
                   "mName": "Emotion"
                 },
                 {
                   "mProperties": [
-                    {
-                      "mValue": "compact",
-                      "mExtract": {
-                        "mText": "tight"
-                      },
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "density"
-                    },
                     {
                       "mValue": "cold",
                       "mExtract": {
@@ -152,10 +143,19 @@
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "location"
+                    },
+                    {
+                      "mValue": "compact",
+                      "mExtract": {
+                        "mText": "tight"
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "density"
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#FFCC66",
+                  "mColor": "#FFB366",
                   "mName": "Bodily feeling"
                 }
               ],
@@ -164,7 +164,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 0,
-              "mColor": "#FFFFFF",
+              "mColor": "#DBEFDF",
               "mCurrentProperty": {
                 "mValue": "chest",
                 "mExtract": {
@@ -204,7 +204,7 @@
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#80B380",
+                  "mColor": "#4D804D",
                   "mName": "Auditory sensation"
                 }
               ],
@@ -213,7 +213,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 1,
-              "mColor": "#83CDF7",
+              "mColor": "#BBE4FB",
               "mCurrentProperty": {
                 "mValue": "outside",
                 "mExtract": {
@@ -233,15 +233,6 @@
               "mCategories": [
                 {
                   "mProperties": [
-                    {
-                      "mValue": "fluid",
-                      "mExtract": {
-                        "mText": "melt, to dilute"
-                      },
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "density"
-                    },
                     {
                       "mValue": "warm",
                       "mExtract": {
@@ -268,10 +259,19 @@
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "location"
+                    },
+                    {
+                      "mValue": "fluid",
+                      "mExtract": {
+                        "mText": "melt, to dilute"
+                      },
+                      "mDescription": "",
+                      "mColor": "#000000",
+                      "mName": "density"
                     }
                   ],
                   "mDescription": "",
-                  "mColor": "#FFCC66",
+                  "mColor": "#FFB366",
                   "mName": "Bodily feeling"
                 }
               ],
@@ -280,7 +280,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 2,
-              "mColor": "#D33A3A",
+              "mColor": "#F1D9D9",
               "mCurrentProperty": {
                 "mValue": "body",
                 "mExtract": {
@@ -297,7 +297,7 @@
           "mParentMomentID": -1,
           "mParentCol": 0,
           "mGridCol": 0,
-          "mColor": "#F49BF7",
+          "mColor": "#FFFFFF",
           "mID": 1763325,
           "mRow": 0
         }

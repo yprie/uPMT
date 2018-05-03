@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,9 +61,11 @@ public class AboutController implements Initializable{
 	public void link2Github() {
 		Stage web = new Stage();
 		
-		buttonLink2Github.setOnAction((ActionEvent action)->{ 
+		buttonLink2Github.setOnAction((ActionEvent action)->{
 			try {
-				java.awt.Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+				
+				Desktop.getDesktop().browse(new URI("https://github.com/coco35700/uPMT"));
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

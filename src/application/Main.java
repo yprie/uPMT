@@ -20,6 +20,7 @@
 
 package application;
 	
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -408,7 +409,7 @@ public class Main extends Application {
 		ObjectOutputStream oos = null;
 		try {
 			PrintWriter writer = new PrintWriter("exports/"+p.getName()+".csv", "UTF-8");
-		    writer.println("\"ENTRETIEN\",\"ID\",\"NOM\",\"EXTRAIT\",\"COULEUR\",\"DEBUT\",\"FIN\",\"CLASSE\",\"PROP\",\"VALEUR\"");
+		    writer.println("\"INTERVIEW\",\"ID\",\"NAME\",\"EXTRACT\",\"COLOR\",\"DURATION\",\"CATEGORY\",\"PROPERTY\",\"VALUE\"");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);
