@@ -370,30 +370,22 @@ public class Main extends Application {
 	 */
 	private void writeMoment(DescriptionInterview ent, MomentExperience m, PrintWriter writer, String hierarchy){
 		LinkedList<String> classes = new LinkedList<String>();
+		//Category, Property, Value
 		for(Category c : m.getCategories()){
 			for(Property p : c.getProperties()){
-				classes.add(format(c.getName())+","+format(p.getName())+","+format(p.getValue()));
+				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()));
 			}
 		}
 		
-//		if(!classes.isEmpty()){
-//			for(String s : classes){
-//				writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
-//				+","+format(m.getFin())+","+s);
-//			}
-//		}else{
-//			writer.println(format(ent.getNom())+",\""+hierarchy+"\""+","+format(m.getNom())+","+format(m.getMorceauDescripteme())+","+format(m.getCouleur())+","+format(m.getDebut())
-//			+","+format(m.getFin())+",\"\",\"\",\"\"");
-//		}
-
 		if(!classes.isEmpty()){
+			//Interview, ID, Name, Descripteme, Color, Duration + //Category, Property, Value
 			for(String s : classes){
-				writer.println(format(ent.getName())+",\""+hierarchy+"\""+","+format(m.getName())+","+format(m.getDescripteme())+","
-			+format(m.getColor())+","+format(m.getDuration())+","+s);
+				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescripteme())+";"
+			+format(m.getColor())+";"+format(m.getDuration())+";"+s);
 			}
 		}else{
-			writer.println(format(ent.getName())+",\""+hierarchy+"\""+","+format(m.getName())+","+format(m.getDescripteme())+","
-		+format(m.getColor())+","+format(m.getDuration())+",\"\",\"\",\"\"");
+			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescripteme())+";"
+		+format(m.getColor())+";"+format(m.getDuration())+";\"\";\"\";\"\"");
 		}
 		
 		for (int i = 0; i < m.getSubMoments().size(); i++) {
@@ -409,7 +401,7 @@ public class Main extends Application {
 		ObjectOutputStream oos = null;
 		try {
 			PrintWriter writer = new PrintWriter("exports/"+p.getName()+".csv", "UTF-8");
-		    writer.println("\"INTERVIEW\",\"ID\",\"NAME\",\"EXTRACT\",\"COLOR\",\"DURATION\",\"CATEGORY\",\"PROPERTY\",\"VALUE\"");
+		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\"");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);
@@ -417,6 +409,12 @@ public class Main extends Application {
 				}
 			}
 		    writer.close();
+		    
+		    Alert alert = new Alert(AlertType.INFORMATION);
+	        alert.setTitle(_langBundle.getString("export_project"));
+	        alert.setHeaderText(_langBundle.getString("export_ok"));
+	        alert.show();
+	        
 		} catch (final IOException ex){
 			ex.printStackTrace();
 		}
