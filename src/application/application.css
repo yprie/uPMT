@@ -73,7 +73,7 @@
     -fx-padding: 5px 0em 5px 0em;
 }*/
 
-.tree-view-right > .button, .tree-view-right > .color-picker{
+.tree-view-right > .button{
 	-fx-border-width: 1;
 	-fx-min-width:45px;
     -fx-padding: 5;
@@ -86,36 +86,55 @@
     -fx-font-weight: bold;
     -fx-font-size: 1.1em;
 }
-.tree-view-right > .button:hover, .tree-view-right > .color-picker:hover {
+.tree-view-right > .button:hover{
     -fx-background-color: white;
     -fx-text-fill: black;
 }
-.tree-view-right > .button:pressed, .tree-view-right > .color-picker:pressed {
+.tree-view-right > .button:pressed{
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 10, 0 , 0 , 0 );
 }
-.tree-view-right > .button Text, .tree-view-right > .color-picker Text {
+.tree-view-right > .button Text{
     -fx-fill: white;
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
 
-.threedotsTreeview{
+.tree-view-right > .color-picker > .arrow-button {
+    -fx-font-size: 10px;
+    -fx-fill: white;
+    -fx-mark-color: white;
+    -fx-padding:0 5 0 0;
+}
+
+.tree-view-right > .color-picker{
+	-fx-color-label-visible: false;
+	-fx-min-height:35px;
+	-fx-fill: white;
+  	-fx-min-width:45px;
+}
+.tree-view-right > .color-picker:pressed{
+	-fx-background-color: #eee;
+}
+
+.threedotsTreeview, .tree-view-right > .color-picker{
 	-fx-background-radius: 0px;
     -fx-border-radius:0;
 	-fx-border-width: 0;
     -fx-border-insets: 0px;
     -fx-background-insets: 0px;
-    -fx-background-color: gray;
+    -fx-background-color: #8c8c8c;
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
   	-fx-background-size: 20;
-  	-fx-min-height:35px;
-  	-fx-min-width:35px;
+    
 }
 .threedotsTreeview:pressed{
 	-fx-background-color: #eee;
 	-fx-background-image: url("/images/threedots.png");
 }
 .threedotsTreeview{
+	
+	-fx-min-height:35px;
+  	-fx-min-width:35px;
 	-fx-background-image: url("/images/threedots_white.png");
 }
 
@@ -218,8 +237,36 @@
 
 
 
+/*GRAY BUTTON */
+.button-gray{
+	-fx-background-radius: 3px;
+    -fx-border-radius:3;
+	-fx-border-width: 0;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-background-color: #8c8c8c;
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-size: 20;
+  	-fx-text-fill:white;
+  	-fx-fill: white;
+  	-fx-pref-height:37px;
+  	-fx-min-height:37px;
+  	-fx-mark-color: white;
+}
 
 
+.button-gray:hover{
+	-fx-background-color: #646464;
+}
+
+.button-gray:disabled{
+	-fx-background-color: #c8c8c8;
+}
+
+.button-gray:pressed{
+	-fx-background-color: #464646;
+}
 
 
 

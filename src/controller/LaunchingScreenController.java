@@ -37,6 +37,8 @@ import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.Project;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -98,6 +100,18 @@ public class LaunchingScreenController implements Initializable{
 	            return cell;
 	        }
 	    });
+		btn_ouvrirProjet.setDisable(true);
+		tousLesProjets.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
+			@Override
+			public void changed(ObservableValue<? extends Project> arg0, Project arg1, Project arg2) {
+				if (tousLesProjets.getSelectionModel().getSelectedItem() != null){
+					btn_ouvrirProjet.setDisable(false);
+				}
+				else {
+					btn_ouvrirProjet.setDisable(true);
+				}
+			}
+          });
 	}
 	
 	public void NewProjectDialog(){

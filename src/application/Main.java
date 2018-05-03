@@ -216,7 +216,7 @@ public class Main extends Application {
             loader.setController(new LaunchingScreenController(this,promptWindow));
             loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
             BorderPane layout = (BorderPane) loader.load();
-			Scene launchingScene = new Scene(layout,404,250);
+			Scene launchingScene = new Scene(layout);
 			//ENLEVER LE COMMENTAIRE POUR ACTIVER LA BETA CSS FLAT DESIGN
 			if(activateBetaDesign)
 				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

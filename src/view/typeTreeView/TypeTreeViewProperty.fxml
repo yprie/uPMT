@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="typePane" maxHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="typePane" maxHeight="35.0" prefHeight="35.0" styleClass="tree-view-right" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Label fx:id="nomType" maxWidth="210.0" text="Label" wrapText="true" BorderPane.alignment="CENTER">
          <graphic>

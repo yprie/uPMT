@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">    <children>
+<AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">    <children>
        <VBox prefHeight="480.0" prefWidth="800.0">
           <children>
              <HBox>
@@ -41,7 +41,7 @@
                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
                 
                </rowConstraints>
@@ -89,7 +89,7 @@
                       <children>
                          <HBox prefWidth="509.0">
                             <children>
-                               <Button id="btnSelectFile" fx:id="btnChoisirFichir" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" text="%select_file">
+                               <Button id="btnSelectFile" fx:id="btnChoisirFichir" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0" styleClass="button-gray" stylesheets="@../application/application.css" text="%select_file">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin></Button>
@@ -97,6 +97,9 @@
                                   <opaqueInsets>
                                      <Insets left="10.0" />
                                   </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
                                </Label>
                             </children>
                          </HBox>
@@ -139,7 +142,7 @@
                   <RowConstraints maxHeight="31.5" minHeight="0.0" prefHeight="0.0" />
               </rowConstraints>
                <children>
-                   <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="120.0" text="%cancel">
+                   <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#cancelClick" prefHeight="25.0" prefWidth="120.0" styleClass="button-gray" stylesheets="@../application/application.css" text="%cancel">
                      <font>
                         <Font size="18.0" />
                       </font>
@@ -147,7 +150,7 @@
                          <Insets left="210.0" />
                       </GridPane.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" text="%confirm" GridPane.columnIndex="1">
+                  <Button id="btnVeri" fx:id="btnValider" mnemonicParsing="false" onAction="#validerClick" prefHeight="25.0" prefWidth="120.0" styleClass="button-gray" stylesheets="@../application/application.css" text="%confirm" GridPane.columnIndex="1">
                       <font>
                          <Font size="18.0" />
                       </font>

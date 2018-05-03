@@ -5,34 +5,25 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="250.0" maxWidth="400.0" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
-   <right>
-      <VBox maxHeight="289.0" maxWidth="279.0" minHeight="248.0" minWidth="279.0" prefHeight="248.0" prefWidth="279.0" BorderPane.alignment="CENTER">
+<BorderPane maxHeight="270.0" maxWidth="400.0" minHeight="270.0" minWidth="400.0" prefHeight="270.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="%recent_project" />
             <ListView fx:id="tousLesProjets" prefHeight="172.0" prefWidth="249.0" />
-            <Button mnemonicParsing="false" onAction="#OpenProjectDialog" prefHeight="27.0" prefWidth="118.0" text="%open_project">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Button>
+            <HBox alignment="TOP_CENTER" prefHeight="37.0" prefWidth="249.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btn_ouvrirProjet" mnemonicParsing="false" onAction="#OpenProjectDialog" styleClass="button-gray" stylesheets="@../application/application.css" text="%open_project" />
+                  <Button fx:id="btn_nouveauProjet" mnemonicParsing="false" onAction="#NewProjectDialog" styleClass="button-gray" stylesheets="@../application/application.css" text="%new_project" wrapText="true" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
          </padding>
       </VBox>
-   </right>
-   <left>
-      <VBox prefHeight="289.0" prefWidth="132.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="%new_project" />
-            <Button mnemonicParsing="false" onAction="#NewProjectDialog" prefHeight="27.0" prefWidth="87.0" text="%new_project" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
-   </left>
+   </center>
 </BorderPane>
