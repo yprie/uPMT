@@ -3,21 +3,25 @@
 package controller.command;
 
 import controller.controller.Observer;
+import model.Descripteme;
+
+import java.util.LinkedList;
+
 import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
-public class ChangeExtractProperty implements Command,Undoable{
+public class ChangeExtractPropertyCommand implements Command,Undoable{
 
 	private Observable observable;
-	private String oldExtract;
-	private String newExtract;
+	private LinkedList<Descripteme> oldDescriptemes;
+	private LinkedList<Descripteme> newDescriptemes;
 	private Main main;
 	
-	public ChangeExtractProperty(Observable observable, String oldExtract,String newExtract, Main m) {
+	public ChangeExtractPropertyCommand(Observable observable, LinkedList<Descripteme> oldDescriptemes,LinkedList<Descripteme> newDescriptemes, Main m) {
 		this.observable = observable;
-		this.oldExtract = oldExtract;
-		this.newExtract = newExtract;
+		this.oldDescriptemes = oldDescriptemes;
+		this.newDescriptemes = newDescriptemes;
 		main = m;
 	}
 	
@@ -25,7 +29,7 @@ public class ChangeExtractProperty implements Command,Undoable{
 	public void undo() {
 		//System.out.println("actuellement:"+newExtract);
 		//System.out.println("change en:"+oldExtract);
-		observable.update(oldExtract);
+		observable.update(oldDescriptemes);
 		main.needToSave();
 	}
 
@@ -43,7 +47,7 @@ public class ChangeExtractProperty implements Command,Undoable{
 	public void execute() {
 		//System.out.println("nouveau:"+newExtract);
 		//System.out.println("ancien:"+oldExtract);
-		observable.update(newExtract);
+		observable.update(newDescriptemes);
 		main.needToSave();
 	}
 

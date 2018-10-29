@@ -101,6 +101,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import model.Category;
+import model.Descripteme;
 import model.MomentExperience;
 import model.Property;
 import model.Type;
@@ -354,8 +355,8 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if (this.moment.getColor() != null) {
 			setColor(this.moment.getColor());
 		}
-		if(this.moment.getDescripteme() != null){
-			showExtractIcon(this.moment.getDescripteme());
+		if(!this.moment.getDescriptemes().isEmpty()){
+			showExtractIcon(this.moment.getDescriptemes());
 		}
 		//Detect whether the text is likely to be white or black depending on the background.
 		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
@@ -375,10 +376,15 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		label.setTextFill(MainViewTransformations.ContrastColor(Color.web(moment.getColor())));
 	}
 	
-	public void showExtractIcon(String tooltip){
+	public void showExtractIcon(LinkedList<Descripteme> tooltips){
 		this.hasExtractImage.getStyleClass().clear();
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentView");
+		String tooltip = "";
+		for(int i=0; i<tooltips.size();i++) {
+			tooltip+="Descripteme "+(i+1)+": "+tooltips.get(i).getTexte();
+			if(i!=tooltips.size()-1) tooltip+="\n";
+		}
 		extractTooltip.setText(tooltip);
 		extractTooltip.setOpacity(0);
     	extractTooltip.hide();
@@ -552,7 +558,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			//System.out.println("Change detected!");
 			if(value != null) {
 				//System.out.println("value= "+value);
-				this.showExtractIcon((String) value);
+				this.showExtractIcon((LinkedList<Descripteme>) value);
 			}else {
 			//System.out.println("value est null");
 				this.hideExtractIcon();
@@ -727,10 +733,24 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		promptWindow.setTitle(main._langBundle.getString("select_extract"));
 		//promptWindow.setAlwaysOnTop(true);
 		promptWindow.initModality(Modality.APPLICATION_MODAL);
-		try {
+		/*try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(main, promptWindow, moment.getDescripteme()));
+			loader.setController(new SelectDescriptemePartController(main, promptWindow, moment.getDescriptemes()));
+			loader.setResources(main._langBundle);
+			BorderPane layout = (BorderPane) loader.load();
+			Scene launchingScene = new Scene(layout);
+			promptWindow.setScene(launchingScene);
+			promptWindow.show();
+
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}*/
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/DescriptemeViewer.fxml"));
+			loader.setController(new DescriptemeViewerController(main, promptWindow, moment, extractController));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);

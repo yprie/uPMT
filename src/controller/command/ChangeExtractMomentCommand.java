@@ -21,25 +21,32 @@
 package controller.command;
 
 import controller.controller.Observer;
+import model.Descripteme;
+
+import java.util.LinkedList;
+
 import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 
-public class AddExtractMomentCommand implements Command, Undoable{
+public class ChangeExtractMomentCommand implements Command, Undoable{
 
 	private Observable observable;
-	private String oldName;
-	private String newName;
+	private LinkedList<Descripteme> oldDescriptemes;
+	private LinkedList<Descripteme> newDescriptemes;
+	private Main main;
 	
-	public AddExtractMomentCommand(Observable observable, String oldName,String newName, Main main) {
+	public ChangeExtractMomentCommand(Observable observable, LinkedList<Descripteme> oldDescriptemes,LinkedList<Descripteme> newDescriptemes, Main main) {
 		this.observable = observable;
-		this.oldName = oldName;
-		this.newName = newName;
+		this.oldDescriptemes = oldDescriptemes;
+		this.newDescriptemes = newDescriptemes;
+		this.main = main;
 	}
 	
 	@Override
 	public void undo() {
-		observable.update(oldName);
+		observable.update(oldDescriptemes);
+		main.needToSave();
 	}
 
 	@Override
@@ -54,7 +61,8 @@ public class AddExtractMomentCommand implements Command, Undoable{
 
 	@Override
 	public void execute() {
-		observable.update(newName);
+		observable.update(newDescriptemes);
+		main.needToSave();
 	}
 
 	@Override

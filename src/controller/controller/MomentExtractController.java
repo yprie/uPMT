@@ -22,6 +22,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
+import model.Descripteme;
 import model.MomentExperience;
 
 public class MomentExtractController implements controller.controller.Observable{
@@ -36,7 +37,7 @@ public class MomentExtractController implements controller.controller.Observable
 
 	@Override
 	public void update(Object value) {
-		momentExp.setDescripteme(((String) value));
+		momentExp.setDescriptemes(((LinkedList<Descripteme>) value));
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);
 		}

@@ -41,7 +41,8 @@ public class MomentExperience implements Serializable, Cloneable {
 	private Date mDate;
 	private String mDuration;
 	private String mName;
-	private String mDescripteme;
+	//private String mDescripteme;
+	private LinkedList<Descripteme> mDescriptemes;
 	private LinkedList<Category> mCategories;
 	private LinkedList<Record> mRecords;
 	private LinkedList<MomentExperience> mSubMoments;
@@ -75,6 +76,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mSubMoments = new LinkedList<MomentExperience>();
 		this.mRecords = new LinkedList<Record>();
 		this.mCategories = new LinkedList<Category>();
+		this.mDescriptemes = new LinkedList<Descripteme>();
 		this.mName = mName;
 		this.mRow = row;
 		this.mGridCol = col;
@@ -133,12 +135,16 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mName = n;
 	}
 
-	public String getDescripteme() {
-		return mDescripteme;
+	public LinkedList<Descripteme> getDescriptemes() {
+		return mDescriptemes;
 	}
 
-	public void setDescripteme(String d) {
-		this.mDescripteme = d;
+	public void setDescriptemes(LinkedList<Descripteme> d) {
+		this.mDescriptemes = d;
+	}
+	
+	public void addDescripteme(String d) {
+		this.mDescriptemes.add(new Descripteme(d));
 	}
 
 	public LinkedList<Category> getCategories() {

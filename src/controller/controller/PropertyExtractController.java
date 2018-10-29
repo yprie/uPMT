@@ -3,6 +3,7 @@ package controller.controller;
 
 import java.util.LinkedList;
 
+import model.Descripteme;
 import model.Property;
 
 public class PropertyExtractController implements controller.controller.Observable{
@@ -19,8 +20,8 @@ public class PropertyExtractController implements controller.controller.Observab
 	public void update(Object value) {
 		
 		//System.out.println("UPDATE "+value);
+		mPropriete.setDescriptemes(((LinkedList<Descripteme>) value));
 		for(Observer obs : ObsMomentNames) {
-			mPropriete.setExtract(((String) value));
 			obs.updateVue(this, value);
 		}
 	}

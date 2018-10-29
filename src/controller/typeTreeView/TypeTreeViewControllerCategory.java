@@ -83,6 +83,8 @@ public class TypeTreeViewControllerCategory extends TypeTreeViewController imple
 		type.getClassColorController().addObserver(this);
 	}
 	
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		nomType.setText(type.getType().getName());

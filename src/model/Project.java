@@ -49,6 +49,7 @@ import com.google.gson.JsonIOException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import utils.InterfaceAdapter;
+import utils.UpdateVersions;
 import utils.Utils;
 import javafx.scene.control.Alert.AlertType;
 
@@ -57,11 +58,11 @@ public class Project implements Serializable {
 	public static final String FORMAT = ".upmt";
 	public static final String PATH = "./save/";
 	public static final String RECOVERY = "recovery_";
-	public static int VERSION_OF_APP = 2;
+	public static int VERSION_OF_APP = 3;
 	
 	//--------------------------------------------
 	
-	private int SAVE_VERSION=2;
+	private int SAVE_VERSION;
 	private String mName;
 	private Schema mSchema;
 	private LinkedList<DescriptionInterview> mInterviews;
@@ -70,6 +71,7 @@ public class Project implements Serializable {
 		this.mName = n;
 		this.mInterviews = new LinkedList<DescriptionInterview>();
 		this.mSchema = s;
+		SAVE_VERSION = VERSION_OF_APP;
 	}
 	
 	public void addEntretiens(DescriptionInterview d){
@@ -213,8 +215,9 @@ public class Project implements Serializable {
 			ret = new String (Files.readAllBytes(Paths.get(path)));
 			int i;
 			for(i=projVersion; i<Project.VERSION_OF_APP;i++) {
-				if(i==0) ret = Utils.version0To1(ret);
-				if(i==1) ret = Utils.version1To2(ret);
+				if(i==0) ret = UpdateVersions.version0To1(ret);
+				if(i==1) ret = UpdateVersions.version1To2(ret);
+				if(i==2) ret = UpdateVersions.version2To3(ret);
 			}
 	
 		} catch (IOException e) {

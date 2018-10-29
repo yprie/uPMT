@@ -25,7 +25,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
-import controller.command.ChangeExtractProperty;
+import controller.command.ChangeExtractPropertyCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.PropertyExtractController;
 import javafx.fxml.FXML;
@@ -44,19 +44,12 @@ public class SelectDescriptemePartController implements Initializable {
 	private @FXML TextArea descriptemeArea;
 	private @FXML Button acceptSelection;
 	private String inspectorText;
-	private PropertyExtractController propertyExtractController;
+	private String text = "";
 
-	public SelectDescriptemePartController(Main main, Stage s,String t) {
-		this.main = main;
-		this.stage = s;
-		this.inspectorText = t;
-	}
 	
-	public SelectDescriptemePartController(Main main, Stage s,String t, PropertyExtractController propController) {
+	public SelectDescriptemePartController(Main main, Stage s) {
 		this.main = main;
 		this.stage = s;
-		this.inspectorText = t;
-		propertyExtractController = propController;
 	}
 	
 	@Override
@@ -67,35 +60,12 @@ public class SelectDescriptemePartController implements Initializable {
 	
 	@FXML
 	public void validateSelection(){
-		String newExtract = "";
 		if(this.descriptemeArea.getSelectedText().trim().length()!=0)
-			newExtract = this.descriptemeArea.getSelectedText().trim();
-		else
-			newExtract = null;
-	
-		if(propertyExtractController!=null) {
-		//System.out.println("Description: "+main.getCurrentMoment().getCurrentProperty().getDescripteme().getTexte());
-		//System.out.println("Valeur: "+main.getCurrentMoment().getCurrentProperty().getValeur());
-			ChangeExtractProperty cmd = new ChangeExtractProperty(
-					propertyExtractController,
-					propertyExtractController.getProperty().getExtract().getTexte(),
-					newExtract,
-					main);
-			main.getCurrentMoment().getCurrentProperty().setExtract(newExtract);
-			cmd.execute();
-			UndoCollector.INSTANCE.add(cmd);
-		}else{
-		//System.out.println("Moment: "+main.getCurrentMoment().getMoment().getNom());
-			RenameMomentCommand cmd = new RenameMomentCommand(
-					main.getCurrentMoment().getMomentExtractController(),
-					main.getCurrentMoment().getMoment().getDescripteme(),
-					newExtract,
-					main);
-			cmd.execute();
-			UndoCollector.INSTANCE.add(cmd);
-		}
-		
-		main.needToSave();
+			text = this.descriptemeArea.getSelectedText().trim();
 		stage.close();
+	}
+	
+	public String getText() {
+		return text;
 	}
 }

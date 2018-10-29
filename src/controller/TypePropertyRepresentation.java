@@ -23,6 +23,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -62,6 +63,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Record;
+import model.Descripteme;
 import model.Property;
 import utils.ResourceLoader;
 import utils.UndoCollector;
@@ -130,19 +132,13 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
         
         LinkToTreeProperty();
         if(this.propertiesHaveDescriptem()) 
-        	this.showExtractIcon(property.getExtract().getTexte());
+        	this.showExtractIcon(property.getDescriptemes());
         else this.hideExtractIcon();
         
 	}
 	
 	private boolean propertiesHaveDescriptem() {
-		if(property.getExtract().getTexte()==null) {
-    		return false;
-    	}
-    	else if(property.getExtract().getTexte().length()==0) {
-    		return false;
-    	}
-    	else return true;
+		return !property.getDescriptemes().isEmpty();
 	}
 
 	@FXML
@@ -154,13 +150,10 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		try {
 			main.setCurrentMoment(momentBox);
 			momentBox.setCurrentProperty(property);
+
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/view/SelectDescriptemePart.fxml"));
-			loader.setController(new SelectDescriptemePartController(
-					main,
-					promptWindow,
-					property.getExtract().toString(),
-					propertyExtractController));
+			loader.setLocation(getClass().getResource("/view/DescriptemeViewer.fxml"));
+			loader.setController(new DescriptemeViewerController(main, promptWindow, this.property, propertyExtractController));
 			loader.setResources(main._langBundle);
 			BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);
@@ -286,7 +279,8 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		if(obs.getClass().equals(PropertyExtractController.class)) {
 			if(value != null) {
 				//System.out.println("Have Value :"+(String) value);
-				this.showExtractIcon((String) value);
+				this.showExtractIcon((LinkedList<Descripteme>) value);
+				
 
 			}else {
 			//System.out.println("Haven't Value");
@@ -295,11 +289,17 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		}
 	}
 	
-	public void showExtractIcon(String tooltip){
+	public void showExtractIcon(LinkedList<Descripteme> tooltips){
 		this.hasExtractImageProperties.getStyleClass().clear();
 		this.hasExtractImageProperties.getStyleClass().add("button");
 		this.hasExtractImageProperties.getStyleClass().add("buttonMomentView");
-		//this.property.setExtract(tooltip);
+		
+		String tooltip = "";
+		for(int i=0; i<tooltips.size();i++) {
+			tooltip+="Descripteme "+(i+1)+": "+tooltips.get(i).getTexte();
+			if(i!=tooltips.size()-1) tooltip+="\n";
+		}
+		
 		extractTooltip.setText(tooltip);
 		extractTooltip.setOpacity(0);
     	extractTooltip.hide();

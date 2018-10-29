@@ -383,11 +383,11 @@ public class Main extends Application {
 		if(!classes.isEmpty()){
 			//Interview, ID, Name, Descripteme, Color, Duration + //Category, Property, Value
 			for(String s : classes){
-				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescripteme())+";"
+				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
 			+format(m.getColor())+";"+format(m.getDuration())+";"+s);
 			}
 		}else{
-			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescripteme())+";"
+			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
 		+format(m.getColor())+";"+format(m.getDuration())+";\"\";\"\";\"\"");
 		}
 		

@@ -33,6 +33,14 @@ public abstract class Type implements Serializable, Cloneable{
 	protected String mColor = "#000000";
 	protected String mName;
 	
+	/*public boolean equals(Type t) {
+		boolean ret = true;
+		if(		   !t.getClass().equals(this.getClass())
+				|| !t.getName().equals(this.getName())
+				|| !t.getColor().equals(this.getColor())
+		  ) ret = false;
+		return ret;
+	}*/
 	
 	public Type(String mName) {
 		super();
@@ -67,6 +75,14 @@ public abstract class Type implements Serializable, Cloneable{
 
 	public void setColor(String mColor) {
 		this.mColor = mColor;
+	}
+	
+	public String typeToString() {
+		if(isFolder()) return "Folder";
+		else if(isCategory()) return "Category";
+		else if(isProperty()) return "Property";
+		else if(isSchema()) return "Schema";
+		else return null;
 	}
 	
     // Functions used to define the layout for the different kind of Types

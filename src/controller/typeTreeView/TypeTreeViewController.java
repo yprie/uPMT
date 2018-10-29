@@ -80,6 +80,10 @@ public class TypeTreeViewController implements Initializable{
 		this.tree = tree;
 		this.textField = new TextField();
 	}
+	
+	public BorderPane getTypePane() {
+		return typePane;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -109,5 +113,12 @@ public class TypeTreeViewController implements Initializable{
 	protected void isSelected() {}
 	protected void isUnselected() {}
 	
+	public Type getType() {
+		return type.getType();
+	}
+	
+	public Type getParent() {
+		return type.getParent();
+	}
 
 }

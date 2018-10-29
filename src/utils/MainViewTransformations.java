@@ -35,6 +35,7 @@ import controller.command.AddTypeCommand;
 import controller.command.MoveMomentCommand;
 import controller.command.MoveMomentToMomentCommand;
 import controller.command.RemoveTypeCommand;
+import controller.typeTreeView.TypeTreeView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -69,10 +70,181 @@ import model.Category;
 import model.DescriptionInterview;
 import model.Folder;
 import model.MomentExperience;
+import model.Property;
 import model.Schema;
 import model.Type;
 
 public abstract class MainViewTransformations {
+	
+	public static boolean isParentOf(Type parent, Type type) {
+		if(parent.isSchema()) return MainViewTransformations.isParentOf((Schema)parent, type);
+		else if(parent.isFolder()) return MainViewTransformations.isParentOf((Folder)parent, type);
+		else if(parent.isCategory()) return MainViewTransformations.isParentOf((Category)parent, type);
+		else if(parent.isProperty()) return MainViewTransformations.isParentOf((Property)parent, type);
+		else return false;
+	}
+	
+	public static boolean isParentOf(Schema parent, Type type) {
+		return true;
+	}
+	
+	public static boolean isDirectParentOf(Type parent, Type type) {
+		boolean ret = false;
+		if(parent.isSchema()) {
+			Schema t = (Schema) parent;
+			for(Folder f : t.getFolders()) {
+				if(f==type) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		else if(parent.isFolder()) {
+			Folder t = (Folder) parent;
+			for(Folder f : t.getFolders()) {
+				if(f==type) {
+					ret = true;
+					break;
+				}
+			}
+			if(!ret) {
+				for(Category c : t.getCategories()) {
+					if(c==type) {
+						ret = true;
+						break;
+					}
+				}
+			}
+		}
+		else if(parent.isCategory()) {
+			Category t = (Category) parent;
+			for(Property p : t.getProperties()) {
+				if(p==type) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		else if(parent.isProperty()) {
+			ret = false;
+		}
+		
+		return ret;
+	}
+	
+	public static boolean isParentOf(Folder parent, Type type) {
+		boolean ret=false;
+		for(Folder sf : parent.getFolders()) {
+			if(sf==type) {
+				ret = true;
+				break;
+			}
+		}
+		if(!ret) {
+			for(Category sc : parent.getCategories()) {
+				if(sc==type) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		
+		
+		if(!ret) {
+			for(Folder sf : parent.getFolders()) {
+				ret = MainViewTransformations.isParentOf(sf, type);
+				if(ret) break;
+			}
+			if(!ret) {
+				for(Category sc : parent.getCategories()) {
+					ret = MainViewTransformations.isParentOf(sc, type);
+					if(ret) break;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public static boolean isParentOf(Category parent, Type type) {
+		boolean ret=false;
+		for(Property sp : parent.getProperties()) {
+			if(sp==type) {
+				ret = true;
+				break;
+			}
+		}
+		return ret;
+	}
+	
+	public static boolean isParentOf(Property parent, Type type) {
+		return false;
+	}
+	
+	public static Type getTypeByName(String type, String parent, Main m) {
+		Type ret=null;
+		Schema s = m.getCurrentProject().getSchema();
+		if(parent.equals(s.getName())) {
+			for(Folder f : s.getFolders()) {
+				if(f.getName().equals(type)) {
+					ret = f;
+					break;
+				}
+			}
+		}
+		else {
+			for(Folder f : s.getFolders()) {
+				ret = MainViewTransformations.getTypeByName(f, type, parent, m);
+				if(ret!=null) break;
+			}
+		}
+		return ret;
+	}
+	
+	private static Type getTypeByName(Folder f, String type, String parent, Main m) {
+		Type ret = null;
+		if(parent.equals(f.getName())) {
+			for(Folder sf : f.getFolders()) {
+				if(sf.getName().equals(type)) {
+					ret = sf;
+					break;
+				}
+			}
+			if(ret==null) {
+				for(Category sc : f.getCategories()) {
+					if(sc.getName().equals(type)) {
+						ret = sc;
+						break;
+					}
+				}
+			}
+		}
+		else {
+			for(Folder sf : f.getFolders()) {
+				ret = MainViewTransformations.getTypeByName(sf, type, parent, m);
+				if(ret!=null) break;
+			}
+			if(ret==null) {
+				for(Category sc : f.getCategories()) {
+					ret = MainViewTransformations.getTypeByName(sc, type, parent, m);
+					if(ret!=null) break;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	private static Type getTypeByName(Category c, String type, String parent, Main m) {
+		Type ret = null;
+		if(parent.equals(c.getName())) {
+			for(Property sp : c.getProperties()) {
+				if(sp.getName().equals(type)) {
+					ret = sp;
+					break;
+				}
+			}
+		}
+		return ret;
+	}
 	
 	
 	public static void addBorderPaneMomentListener(MomentExpVBox moment, Main main){
@@ -140,7 +312,7 @@ public abstract class MainViewTransformations {
 		    		//Add Moment to a Moment : int: index in sous-moment / Moment: parentMoment / Main
 		    		MomentExperience newMoment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
-		    			newMoment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    			newMoment.addDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
 			    	AddMomentCommand cmd = new AddMomentCommand(moment.getMoment().getSubMoments().size(),newMoment,moment.getMoment(),main);
 			    	cmd.execute();
@@ -276,7 +448,7 @@ public abstract class MainViewTransformations {
 		    		AddMomentCommand cmd=null;
 		    		MomentExperience moment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
-		    			moment.setDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
+		    			moment.addDescripteme((String)event.getDragboard().getContent(DataFormat.HTML));
 		    		}
 		    		if(p.hasMomentParent())
 		    			cmd = new AddMomentCommand(pos, moment, p.getMomentParent().getMoment() ,main);

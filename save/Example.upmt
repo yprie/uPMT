@@ -1,5 +1,5 @@
 {
-  "SAVE_VERSION": 2,
+  "SAVE_VERSION": 3,
   "mName": "Example",
   "mSchema": {
     "mFolders": [
@@ -90,22 +90,32 @@
         {
           "mDate": "Jan 1, 1970 12:00:00 AM",
           "mName": "April morning",
-          "mDescripteme": "It was in Puiseaux one April morning, last spring.",
+          "mDescriptemes": [
+            {
+              "mText": "It was in Puiseaux one April morning, last spring."
+            }
+          ],
           "mCategories": [],
           "mRecords": [],
           "mSubMoments": [
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Tightening phase",
-              "mDescripteme": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest.",
+              "mDescriptemes": [
+                {
+                  "mText": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest."
+                }
+              ],
               "mCategories": [
                 {
                   "mProperties": [
                     {
                       "mValue": "sadness",
-                      "mExtract": {
-                        "mText": "sad"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "sad"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "type"
@@ -119,36 +129,44 @@
                   "mProperties": [
                     {
                       "mValue": "cold",
-                      "mExtract": {
-                        "mText": "frozen"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "frozen"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "temperature"
                     },
                     {
                       "mValue": "ball",
-                      "mExtract": {
-                        "mText": "ball"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "ball"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "shape"
                     },
                     {
                       "mValue": "chest",
-                      "mExtract": {
-                        "mText": "in the middle of my chest"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "in the middle of my chest"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "location"
                     },
                     {
                       "mValue": "compact",
-                      "mExtract": {
-                        "mText": "tight"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "tight"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "density"
@@ -165,39 +183,38 @@
               "mParentCol": 0,
               "mGridCol": 0,
               "mColor": "#DBEFDF",
-              "mCurrentProperty": {
-                "mValue": "chest",
-                "mExtract": {
-                  "mText": "in the middle of my chest"
-                },
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "location"
-              },
               "mID": 2567451,
               "mRow": 1
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Transitional event",
-              "mDescripteme": "At one point, the song of a turtle-dove comes through the open window.",
+              "mDescriptemes": [
+                {
+                  "mText": "At one point, the song of a turtle-dove comes through the open window."
+                }
+              ],
               "mCategories": [
                 {
                   "mProperties": [
                     {
                       "mValue": "turtle-dove",
-                      "mExtract": {
-                        "mText": "the song of a turtle-dove"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "the song of a turtle-dove"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "source"
                     },
                     {
                       "mValue": "outside",
-                      "mExtract": {
-                        "mText": "comes through the open window"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "comes through the open window"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "location"
@@ -214,57 +231,60 @@
               "mParentCol": 0,
               "mGridCol": 1,
               "mColor": "#BBE4FB",
-              "mCurrentProperty": {
-                "mValue": "outside",
-                "mExtract": {
-                  "mText": "comes through the open window"
-                },
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "location"
-              },
               "mID": 8724382,
               "mRow": 1
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
               "mName": "Loosening phase",
-              "mDescripteme": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body.",
+              "mDescriptemes": [
+                {
+                  "mText": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body."
+                }
+              ],
               "mCategories": [
                 {
                   "mProperties": [
                     {
                       "mValue": "warm",
-                      "mExtract": {
-                        "mText": "heat"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "heat"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "temperature"
                     },
                     {
                       "mValue": "undefined",
-                      "mExtract": {
-                        "mText": ""
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": ""
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "shape"
                     },
                     {
                       "mValue": "body",
-                      "mExtract": {
-                        "mText": "body."
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "body."
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "location"
                     },
                     {
                       "mValue": "fluid",
-                      "mExtract": {
-                        "mText": "melt, to dilute"
-                      },
+                      "mDescriptemes": [
+                        {
+                          "mText": "melt, to dilute"
+                        }
+                      ],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "density"
@@ -281,15 +301,6 @@
               "mParentCol": 0,
               "mGridCol": 2,
               "mColor": "#F1D9D9",
-              "mCurrentProperty": {
-                "mValue": "body",
-                "mExtract": {
-                  "mText": "body."
-                },
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "location"
-              },
               "mID": 6595994,
               "mRow": 1
             }

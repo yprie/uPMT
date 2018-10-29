@@ -26,11 +26,12 @@ import java.util.LinkedList;
 public class Property extends Type implements Serializable, Cloneable{
 	
 	private String mValue;
-	private Descripteme mExtract;
+	private LinkedList<Descripteme> mDescriptemes;
 
 	
 	public Property(String nom) {
 		super(nom);
+		mDescriptemes = new LinkedList<Descripteme>();
 	}
 	
 	public void setValue(String valeur){
@@ -41,19 +42,22 @@ public class Property extends Type implements Serializable, Cloneable{
 		return this.mValue;
 	}
 	
-	public Descripteme getExtract(){
-		if(mExtract==null) {
-			mExtract= new Descripteme("");
-		}
-		return this.mExtract;
+	public LinkedList<Descripteme> getDescriptemes(){
+		return this.mDescriptemes;
 	}
 	
-	public void setExtract(String texte){
-		if(mExtract==null) {
-			mExtract= new Descripteme(texte);
+	public void setDescriptemes(LinkedList<Descripteme> mD){
+			this.mDescriptemes = mD;
+	}
+	
+	public void removeDescripteme(Descripteme d) {
+		if(this.mDescriptemes.contains(d)) {
+			this.mDescriptemes.remove(d);
 		}
-		else
-			this.mExtract.setTexte(texte);
+	}
+	
+	public void addDescripteme(Descripteme d) {
+		this.mDescriptemes.add(d);
 	}
 	
 	@Override
@@ -76,6 +80,9 @@ public class Property extends Type implements Serializable, Cloneable{
 		newp.setDescription(mDescription);
 		newp.setColor(mColor);
 		newp.setValue(mValue);
+		for(Descripteme d : this.mDescriptemes) {
+			newp.addDescripteme(new Descripteme(d.getTexte()));
+		}
 		return newp;
 	}
 	

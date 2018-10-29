@@ -58,13 +58,19 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import model.Category;
 import model.DescriptionInterview;
@@ -73,6 +79,8 @@ import model.MomentExperience;
 import model.Property;
 import model.Schema;
 import model.Type;
+import utils.MainViewTransformations;
+import utils.Serializer;
 import utils.UndoCollector;
 
 public class TypeTreeView extends TreeCell<TypeController>{
@@ -81,6 +89,11 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	private TextField textField;
 	private ContextMenu addMenu = new ContextMenu();
 	private TypeTreeViewController controller;
+	public static DataFormat pnm = new DataFormat("controller.typeTreeView.TypeTreeView.parentname");
+	public static DataFormat nm = new DataFormat("controller.typeTreeView.TypeTreeView.name");
+	public static DataFormat ty = new DataFormat("controller.typeTreeView.TypeTreeView.type");
+	public static DataFormat TYPE = new DataFormat("model.Type");
+	
 		
 	public TypeTreeView(Main main) {
 		this.main = main;
@@ -223,17 +236,79 @@ public class TypeTreeView extends TreeCell<TypeController>{
 				public void handle(MouseEvent event) {
 					
 					if(main.getCurrentDescription() != null){
-						if(elem.getType().isCategory()){
-							Dragboard db = ((TypeTreeView)event.getSource()).startDragAndDrop(TransferMode.ANY);
+						if(!elem.getType().isSchema()){
+				            
+							Dragboard db = startDragAndDrop(TransferMode.ANY);
 							ClipboardContent content = new ClipboardContent();
-				            content.putString("ajoutType");
+							
+				            if(elem.getType().isCategory())
+				            	content.putString("ajoutType");
+				            else
+				            	content.putString("moveType");
 				            content.putRtf(elem.getType().getName());
+				            content.put(TypeTreeView.nm, elem.getType().getName());
+				            content.put(TypeTreeView.pnm, elem.getParent().getName());
+				            content.put(TypeTreeView.ty, elem.getType().typeToString());
+				            try {
+								content.put(TypeTreeView.TYPE, Serializer.serialize(elem.getType()));
+							}
+							catch(IOException e) {
+								e.printStackTrace();
+							}
 				            db.setContent(content);
 						}
 
 					}
 				}
-			});	
+			});
+			
+			this.setOnDragOver(new EventHandler<DragEvent>() {
+				@Override
+				public void handle(DragEvent event) {
+					
+					boolean cond = false;
+					Type me = elem.getType();
+					Type meParent = elem.getParent();
+					Type you = MainViewTransformations.getTypeByName((String)event.getDragboard().getContent(TypeTreeView.nm), (String)event.getDragboard().getContent(TypeTreeView.pnm), main);
+					String typeDrop = you.typeToString();
+					//System.out.println("Drop by "+you.getName()+" on "+me.getName());
+					if(!me.isProperty() && you!=me) {
+						if(event.getDragboard().getString().equals("ajoutType") || event.getDragboard().getString().equals("moveType")){
+							if(me.isCategory() && typeDrop.equals("Property")) {
+								cond=true;
+							}
+							else if(me.isFolder() &&  (  typeDrop.equals("Category") || (typeDrop.equals("Folder")) ) ) {
+								cond=true;
+							}
+							else if(me.isSchema() && typeDrop.equals("Folder")) {
+								cond=true;
+							}
+						}
+					}
+					
+					if(cond && (MainViewTransformations.isParentOf(you, me) || MainViewTransformations.isDirectParentOf(me, you))) cond=false;
+			    	if(cond) {
+			    		event.acceptTransferModes(TransferMode.ANY);
+			    		controller.getTypePane().setBackground(new Background(new BackgroundFill(Color.gray(0.8), CornerRadii.EMPTY, Insets.EMPTY)));
+			    	}
+				    event.consume();
+				}
+			});
+			
+			this.setOnDragDropped(new EventHandler<DragEvent>() {
+				@Override
+				public void handle(DragEvent event) {
+					controller.getTypePane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+					System.out.println("1."+elem.getType().getName()+" - 2."+TypeTreeView.this.getController().getType().getName());
+				}
+			});
+			
+			this.setOnDragExited(new EventHandler<DragEvent>() {
+				@Override
+				public void handle(DragEvent event) {
+					controller.getTypePane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+		    	}
+			});
 		}
 	}
 }
