@@ -37,6 +37,18 @@
               {
                 "mDescription": "",
                 "mColor": "#000000",
+                "mName": "type"
+              }
+            ],
+            "mDescription": "",
+            "mColor": "#80334D",
+            "mName": "Emotion"
+          },
+          {
+            "mProperties": [
+              {
+                "mDescription": "",
+                "mColor": "#000000",
                 "mName": "temperature"
               },
               {
@@ -58,18 +70,6 @@
             "mDescription": "",
             "mColor": "#FFB366",
             "mName": "Bodily feeling"
-          },
-          {
-            "mProperties": [
-              {
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "type"
-              }
-            ],
-            "mDescription": "",
-            "mColor": "#80334D",
-            "mName": "Emotion"
           }
         ],
         "mDescription": "",
@@ -161,12 +161,7 @@
                       "mName": "location"
                     },
                     {
-                      "mValue": "compact",
-                      "mDescriptemes": [
-                        {
-                          "mText": "tight"
-                        }
-                      ],
+                      "mDescriptemes": [],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "density"
@@ -279,12 +274,7 @@
                       "mName": "location"
                     },
                     {
-                      "mValue": "fluid",
-                      "mDescriptemes": [
-                        {
-                          "mText": "melt, to dilute"
-                        }
-                      ],
+                      "mDescriptemes": [],
                       "mDescription": "",
                       "mColor": "#000000",
                       "mName": "density"

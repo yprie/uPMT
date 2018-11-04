@@ -43,6 +43,7 @@ import controller.MainViewController;
 import controller.MomentExpVBox;
 import controller.RootLayoutController;
 import controller.controller.TypeController;
+import controller.typeTreeView.TypeTreeView;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -473,6 +474,8 @@ public class Main extends Application {
 	public Schema getDefaultSchema(){
 		return this.BasicSchema;
 	}
+	
+	public TypeTreeView droppingTmp;
 	
 	public TreeView<TypeController> getTreeViewSchema() {
 		return treeViewSchema;

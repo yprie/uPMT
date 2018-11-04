@@ -46,20 +46,22 @@ public class Category extends Type implements Serializable, Cloneable {
 		this.mProperties.add(s);
 	}
 	
+	public void removeProperty(Property s){
+		this.mProperties.remove(s);
+	}
+	
 	public LinkedList<Property> getProperties(){
 		return this.mProperties;
 	}
 	
 	@Override
 	public boolean equals(Object o){
-		if(!o.getClass().equals(this.getClass())) {
+		if(!o.getClass().equals(Category.class)) {
 			return false;
 		}
 		Category tmp = (Category)o;
 		if(tmp != null){
-			return tmp.mName.equals(this.mName) &&
-					tmp.mDescription.equals(this.mDescription) &&
-					tmp.getProperties().equals(this.getProperties());
+			return tmp.mName.equals(this.mName);
 		}else{
 			return false;
 		}		

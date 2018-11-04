@@ -52,6 +52,7 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 	private Main main;
 	
 	public RemovePropertyFromClassCommand(TypeController controller, Property oldp, TreeItem<TypeController> treeItem, Main m) {
+		System.out.println("on veut supprimer "+oldp.getName());
 		this.oldp = oldp;
 		this.controller = controller;
 		this.tree = treeItem;
@@ -60,7 +61,7 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 	
 	@Override
 	public void undo() {
-		controller.GetAddPropertySchemeWithValueController().update(oldp);;
+		controller.GetAddPropertySchemeWithValueController().update(oldp);
 		// adding the new property to the scheme
 		TreeItem<TypeController> newType = new TreeItem<TypeController>();
 		TypeController tc = new TypeController(oldp, controller.getType());
@@ -85,12 +86,15 @@ public class RemovePropertyFromClassCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
+		System.out.println("Let's go !");
 		// TODO Auto-generated method stub
 		controller.getRemovePropertySchemeController().update(oldp);
 		// remove Property from treeView
 		for (TreeItem<TypeController> prop : tree.getChildren() ) {
+			System.out.println(prop.getValue().getType().getName()+" - "+oldp.getName());
 			if(prop.getValue().getType().getName().equals(oldp.getName())) {
 				tree.getChildren().remove(prop);
+				System.out.println("oui suppression...");
 				break;
 			}
 		}

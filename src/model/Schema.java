@@ -36,6 +36,10 @@ public class Schema extends Type implements Serializable, Cloneable{
 		mFolders.add(f);
 	}
 	
+	public void removeFolder(Folder f) {
+		mFolders.remove(f);
+	}
+	
 	public LinkedList<Folder> getFolders(){
 		return this.mFolders;
 	}

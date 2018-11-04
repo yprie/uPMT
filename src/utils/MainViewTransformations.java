@@ -303,7 +303,7 @@ public abstract class MainViewTransformations {
 		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	if(event.getDragboard().getString().equals("ajoutType")){
-		    		System.out.println("On va essayer d'ajouter le type");
+		    		System.out.println("On va essayer d'ajouter le typee");
 		    		AddTypeCommand cmd = new AddTypeCommand(moment,event,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
@@ -851,6 +851,7 @@ public abstract class MainViewTransformations {
 			}
 			return ret;
 		}
+
 		
 		private static MomentExperience getMomentByIDFromParent(MomentExperience parent, int id, Main main) {
 			MomentExperience ret = null;

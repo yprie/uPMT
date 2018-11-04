@@ -64,6 +64,10 @@ public class Folder extends Type implements Serializable, Cloneable{
 		mFolders.add(f);
 	}
 	
+	public void removeFolder(Folder f) {
+		mFolders.remove(f);
+	}
+	
 	public LinkedList<Folder> getFolders(){
 		return this.mFolders;
 	}
@@ -74,6 +78,10 @@ public class Folder extends Type implements Serializable, Cloneable{
 	
 	public void addCategory(Category c) {
 		mCategories.add(c);
+	}
+	
+	public void removeCategory(Category c) {
+		mCategories.remove(c);
 	}
 
 }

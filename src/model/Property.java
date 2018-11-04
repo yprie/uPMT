@@ -47,7 +47,8 @@ public class Property extends Type implements Serializable, Cloneable{
 	}
 	
 	public void setDescriptemes(LinkedList<Descripteme> mD){
-			this.mDescriptemes = mD;
+		if(mD==null) mD = new LinkedList<Descripteme>();
+		this.mDescriptemes = mD;
 	}
 	
 	public void removeDescripteme(Descripteme d) {
@@ -80,9 +81,12 @@ public class Property extends Type implements Serializable, Cloneable{
 		newp.setDescription(mDescription);
 		newp.setColor(mColor);
 		newp.setValue(mValue);
-		for(Descripteme d : this.mDescriptemes) {
-			newp.addDescripteme(new Descripteme(d.getTexte()));
+		if(this.mDescriptemes!=null) {
+			for(Descripteme d : this.mDescriptemes) {
+				newp.addDescripteme(new Descripteme(d.getTexte()));
+			}
 		}
+		else newp.mDescriptemes = new LinkedList<Descripteme>(); 
 		return newp;
 	}
 	

@@ -31,6 +31,7 @@ import javax.swing.GroupLayout.Alignment;
 import application.Main;
 import controller.MomentExpVBox;
 import controller.TypeCategoryRepresentationController;
+import controller.command.MoveTypeCommand;
 import controller.command.RemoveTypeCommand;
 import controller.controller.Observable;
 import controller.controller.Observer;
@@ -93,6 +94,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	public static DataFormat nm = new DataFormat("controller.typeTreeView.TypeTreeView.name");
 	public static DataFormat ty = new DataFormat("controller.typeTreeView.TypeTreeView.type");
 	public static DataFormat TYPE = new DataFormat("model.Type");
+	public static DataFormat TYPE_PARENT = new DataFormat("model.Type.parent");
 	
 		
 	public TypeTreeView(Main main) {
@@ -236,14 +238,13 @@ public class TypeTreeView extends TreeCell<TypeController>{
 				public void handle(MouseEvent event) {
 					
 					if(main.getCurrentDescription() != null){
-						if(!elem.getType().isSchema()){
-				            
+						if(!elem.getType().isSchema() && !elem.getType().isProperty()){
 							Dragboard db = startDragAndDrop(TransferMode.ANY);
 							ClipboardContent content = new ClipboardContent();
 							
 				            if(elem.getType().isCategory())
 				            	content.putString("ajoutType");
-				            else
+				            else 
 				            	content.putString("moveType");
 				            content.putRtf(elem.getType().getName());
 				            content.put(TypeTreeView.nm, elem.getType().getName());
@@ -251,11 +252,15 @@ public class TypeTreeView extends TreeCell<TypeController>{
 				            content.put(TypeTreeView.ty, elem.getType().typeToString());
 				            try {
 								content.put(TypeTreeView.TYPE, Serializer.serialize(elem.getType()));
+								content.put(TypeTreeView.TYPE_PARENT, Serializer.serialize(elem.getParent()));
 							}
 							catch(IOException e) {
 								e.printStackTrace();
 							}
 				            db.setContent(content);
+				            TypeTreeView.this.main.droppingTmp = TypeTreeView.this;
+				            System.out.println("Drag detected on : "+TypeTreeView.this.getController().getType().getName());
+				            
 						}
 
 					}
@@ -298,8 +303,13 @@ public class TypeTreeView extends TreeCell<TypeController>{
 			this.setOnDragDropped(new EventHandler<DragEvent>() {
 				@Override
 				public void handle(DragEvent event) {
+					if(event.getDragboard().getString().equals("moveType") || event.getDragboard().getString().equals("ajoutType")) {
+						MoveTypeCommand cmd = new MoveTypeCommand(event, TypeTreeView.this.main.droppingTmp, TypeTreeView.this,TypeTreeView.this.main);
+						cmd.execute();
+						UndoCollector.INSTANCE.add(cmd);
+					}
 					controller.getTypePane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-					System.out.println("1."+elem.getType().getName()+" - 2."+TypeTreeView.this.getController().getType().getName());
+					System.out.println(event.getDragboard().getString()+" - Dropped on : "+TypeTreeView.this.getController().getType().getName());
 				}
 			});
 			

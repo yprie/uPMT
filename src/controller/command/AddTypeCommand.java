@@ -25,6 +25,7 @@ import java.io.IOException;
 import application.Main;
 import controller.MomentExpVBox;
 import controller.TypeCategoryRepresentationController;
+import controller.typeTreeView.TypeTreeView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +39,7 @@ import model.Folder;
 import model.Property;
 import model.Type;
 import utils.MainViewTransformations;
+import utils.Serializer;
 import utils.Undoable;
 
 public class AddTypeCommand implements Command,Undoable{
@@ -51,19 +53,19 @@ public class AddTypeCommand implements Command,Undoable{
 	private Category dup;
 	
 	public AddTypeCommand(MomentExpVBox moment, DragEvent event, Main main) {
-		this.event = event;
-		typeName = event.getDragboard().getRtf();
-		System.out.println("Le nom de la categorie:"+typeName);
-		this.momentExpBorder = moment;
-		this.main = main;
-		type = MainViewTransformations.getCategory(typeName, main.getCurrentProject().getSchema());
-		if(type==null) {
-			System.out.println("Le type est null !");
+		try {
+			this.event = event;
+			typeName = event.getDragboard().getRtf();
+			this.momentExpBorder = moment;
+			this.main = main;
+			//type = MainViewTransformations.getCategory(typeName, main.getCurrentProject().getSchema());
+			type = (Category) Serializer.deserialize((byte[]) event.getDragboard().getContent(TypeTreeView.TYPE));
+			dup = type.clone();
 		}
-		else {
-			System.out.println("Le type n'est pas null: "+type.getName());
+		catch(Exception e) {
+			e.printStackTrace();
 		}
-		dup = type.clone();
+		
 	}
 	
 	
@@ -98,8 +100,12 @@ public class AddTypeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		//System.out.println(momentExpBorder.getMoment().getName());
+		System.out.println(momentExpBorder.getMoment().getName());
+		try {
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		main.needToSave();
 	}
 

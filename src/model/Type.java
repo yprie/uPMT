@@ -106,6 +106,60 @@ public abstract class Type implements Serializable, Cloneable{
 		return this.getClass().equals(Schema.class);
 	}
 	
+	public void removeChild(Type t) {
+		if(this.isSchema()){
+			((Schema)this).removeFolder((Folder)t);
+		}
+		else if(this.isFolder()) {
+			if(t.isCategory()) {
+				((Folder)this).removeCategory((Category)t);
+			}
+			else if(t.isFolder()) {
+				((Folder)this).removeFolder((Folder)t);
+			}
+		}
+		else if(this.isCategory()) {
+			((Category)this).removeProperty((Property)t);
+		}
+	}
 	
+	public void addChild(Type t) {
+		if(this.isSchema()){
+			((Schema)this).addFolder((Folder)t);
+		}
+		else if(this.isFolder()) {
+			if(t.isCategory()) {
+				((Folder)this).addCategory((Category)t);
+			}
+			else if(t.isFolder()) {
+				((Folder)this).addFolder((Folder)t);
+			}
+		}
+		else if(this.isCategory()) {
+			((Category)this).addProperty((Property)t);
+		}
+	}
+	
+	public Type getChild(String name) {
+		if(this.isSchema()){
+			for(Folder f : ((Schema)this).getFolders()) {
+				if(f.getName().equals(name)) return f;
+			}
+		}
+		else if(this.isFolder()) {
+			for(Folder f : ((Folder)this).getFolders()) {
+				if(f.getName().equals(name)) return f;
+			}
+			for(Category c : ((Folder)this).getCategories()) {
+				if(c.getName().equals(name)) return c;
+			}
+		}
+		else if(this.isCategory()) {
+			for(Property p : ((Category)this).getProperties()) {
+				if(p.getName().equals(name)) return p;
+			}
+		}
+		return null;
+	}
 	
 }
