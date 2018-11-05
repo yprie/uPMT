@@ -206,6 +206,20 @@
 	-fx-background-image: url("/images/hasExtractIconDisabled.png");
 }
 
+.buttonMomentViewDrag{
+	-fx-background-image: url("/images/hasExtractIconDrag.png");
+	-fx-border-width: 1;
+    -fx-border-insets: 0px;
+    -fx-background-insets: 0px;
+    -fx-background-radius: 50px;
+    -fx-background-color: black;
+    -fx-border-color: #eee;
+    -fx-border-radius:50;
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-size: 15;
+}
+
 .momentMenu{
 	-fx-background-image: url("/images/threedots.png");
 }

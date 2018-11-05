@@ -178,6 +178,17 @@
               "mParentCol": 0,
               "mGridCol": 0,
               "mColor": "#DBEFDF",
+              "mCurrentProperty": {
+                "mValue": "sadness",
+                "mDescriptemes": [
+                  {
+                    "mText": "sad"
+                  }
+                ],
+                "mDescription": "",
+                "mColor": "#000000",
+                "mName": "type"
+              },
               "mID": 2567451,
               "mRow": 1
             },

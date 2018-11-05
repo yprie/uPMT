@@ -92,7 +92,7 @@ public class DescriptemeViewerController implements Initializable {
 			momentName.setText(mMoment.getName());
 		else
 			momentName.setText(this.mProperty.getName());
-		lessButton.setDisable(false);
+		lessButton.setDisable(true);
 		reloadList();
 		
 		descrList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -114,7 +114,6 @@ public class DescriptemeViewerController implements Initializable {
 				reloadList();
 			}
 		});
-		
 		this.plusButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {

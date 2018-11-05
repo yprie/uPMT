@@ -37,6 +37,7 @@ import com.sun.javafx.scene.control.skin.CustomColorDialog;
 import application.Main;
 import controller.command.ChangeColorMomentCommand;
 import controller.command.ChangeDateMomentCommand;
+import controller.command.ChangeExtractMomentCommand;
 import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
@@ -223,7 +224,43 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
                 event.consume();
             }
         });
-        
+        hasExtractImage.setOnDragOver(new EventHandler<DragEvent>() {
+        	public void handle(DragEvent event) {
+        		if(event.getDragboard().getString().equals("dragDescripteme")) {
+	        		dragExtractIcon();
+	        		event.acceptTransferModes(TransferMode.ANY);
+	        		event.consume();
+        		}
+        	}
+        });
+        hasExtractImage.setOnDragExited(new EventHandler<DragEvent>() {
+        	public void handle(DragEvent event) {
+        		if(moment.getDescriptemes().isEmpty())
+        			hideExtractIcon();
+        		else
+        			showExtractIcon(moment.getDescriptemes());
+        		event.consume();
+        	}
+        });
+        hasExtractImage.setOnDragDropped(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				LinkedList<Descripteme> newDescriptemes = new LinkedList<Descripteme>();
+	        	for(Descripteme d : moment.getDescriptemes()) {
+	        		newDescriptemes.add(new Descripteme(d.getTexte()));
+	    		}
+	        	newDescriptemes.add(new Descripteme((String)event.getDragboard().getContent(DataFormat.HTML)));
+				ChangeExtractMomentCommand cmd = new ChangeExtractMomentCommand(
+						extractController,
+						moment.getDescriptemes(),
+						newDescriptemes,
+						main
+	        			);
+				cmd.execute();
+				UndoCollector.INSTANCE.add(cmd);
+				event.consume();
+			}
+        });
         
         momentMenuAction.getItems().clear();
         MenuItem menu1 = new MenuItem(main._langBundle.getString("delete"));
@@ -396,6 +433,14 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("buttonMomentViewDisabled");
 		
 		extractTooltip.setText(main._langBundle.getString("no_descripteme"));
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
+	}
+	
+	public void dragExtractIcon(){
+		this.hasExtractImage.getStyleClass().clear();
+		this.hasExtractImage.getStyleClass().add("button");
+		this.hasExtractImage.getStyleClass().add("buttonMomentViewDrag");
 		extractTooltip.setOpacity(0);
     	extractTooltip.hide();
 	}
@@ -761,5 +806,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			// TODO Exit Program
 			e.printStackTrace();
 		}
+	}
+	
+	public ScrollPane getScrollPane() {
+		return this.scrollTypesPane;
 	}
 }

@@ -46,7 +46,7 @@ public class DropPane extends StackPane{
 	
 	public void onDragOver(String movement) {
 		this.getChildren().clear();
-		if(movement.equals("ajoutMoment")) {
+		if(movement.equals("ajoutMoment") || movement.equals("dragDescripteme")) {
 			mText.setText(main._langBundle.getString("add_moment_here"));
 		}
 		else if(movement.equals("moveMoment")) {

@@ -239,7 +239,7 @@ public class MainViewController implements Initializable, Observer {
 				if (main.getCurrentDescription() != null) {
 					Dragboard db = ajoutMomentButton.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent content = new ClipboardContent();
-					content.putString("ajoutMoment");
+					content.putString("dragDescripteme");
 					content.put(DataFormat.HTML, droppableText.getSelectedText());
 					db.setContent(content);
 				}

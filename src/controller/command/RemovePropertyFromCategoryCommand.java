@@ -44,14 +44,14 @@ import model.Type;
 import utils.MainViewTransformations;
 import utils.Undoable;
 
-public class RemovePropertyFromClassCommand implements Command,Undoable{
+public class RemovePropertyFromCategoryCommand implements Command,Undoable{
 	
 	private TypeController controller;
 	private Property oldp;
 	private TreeItem<TypeController> tree;
 	private Main main;
 	
-	public RemovePropertyFromClassCommand(TypeController controller, Property oldp, TreeItem<TypeController> treeItem, Main m) {
+	public RemovePropertyFromCategoryCommand(TypeController controller, Property oldp, TreeItem<TypeController> treeItem, Main m) {
 		System.out.println("on veut supprimer "+oldp.getName());
 		this.oldp = oldp;
 		this.controller = controller;

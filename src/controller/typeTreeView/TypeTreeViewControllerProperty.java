@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import application.Main;
 import controller.MomentExpVBox;
-import controller.command.RemovePropertyFromClassCommand;
+import controller.command.RemovePropertyFromCategoryCommand;
 import controller.command.RenameCategorySchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
 import controller.controller.Observable;
@@ -190,7 +190,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 	
 	@FXML
 	public void deleteProperty(){
-		RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(
+		RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(
 				tree.getTreeItem().getParent().getValue(), 
 				(Property) type.getType(),
 				tree.getTreeItem().getParent(),

@@ -85,7 +85,7 @@ public class MoveTypeCommand  implements Command,Undoable{
 			oldParent.addChild(child);
 		}
 		else if(child.isProperty()) {
-			RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
+			RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
 			cmd.execute();
 			AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
 			cmd2.execute();
@@ -120,7 +120,7 @@ public class MoveTypeCommand  implements Command,Undoable{
 					moments = getMomentsContainsCatExcept(main.getCurrentDescription().getMoments(), (Category)oldParent, (Category)newParent);
 				}
 				System.out.println("value: "+((Property)child).getValue());
-				RemovePropertyFromClassCommand cmd = new RemovePropertyFromClassCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
+				RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
 				cmd.execute();
 				System.out.println("value2: "+((Property)child).getValue());
 				AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);

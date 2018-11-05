@@ -248,13 +248,13 @@ public abstract class MainViewTransformations {
 	
 	
 	public static void addBorderPaneMomentListener(MomentExpVBox moment, Main main){
-		moment.getMomentPane().setOnDragExited(new EventHandler<DragEvent>() {
+		moment.getScrollPane().setOnDragExited(new EventHandler<DragEvent>() {
 			@Override
 			public void handle(DragEvent event) {
 				moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 			}
 		});
-		moment.getMomentPane().setOnDragOver(new EventHandler<DragEvent>() {
+		moment.getScrollPane().setOnDragOver(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	// Checking if a type is already present
 		    	boolean doesntalreadyHasType = true;
@@ -290,7 +290,8 @@ public abstract class MainViewTransformations {
 		    	// setting the drag autorizations
 		    	if(((event.getDragboard().getString().equals("ajoutType") && doesntalreadyHasType)
 		    			|| event.getDragboard().getString().equals("ajoutMoment")
-		    			|| event.getDragboard().getString().equals("moveMoment"))
+		    			|| event.getDragboard().getString().equals("moveMoment")
+		    			|| event.getDragboard().getString().equals("dragDescripteme"))
 		    			&& cond){
 			        event.acceptTransferModes(TransferMode.ANY);
 			        moment.getMomentPane().setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -300,7 +301,7 @@ public abstract class MainViewTransformations {
 		});	
 		
 		
-		moment.getMomentPane().setOnDragDropped(new EventHandler<DragEvent>() {
+		moment.getScrollPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	if(event.getDragboard().getString().equals("ajoutType")){
 		    		System.out.println("On va essayer d'ajouter le typee");
@@ -308,7 +309,7 @@ public abstract class MainViewTransformations {
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);
 		    	}	
-		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
+		    	if (event.getDragboard().getString().equals("ajoutMoment") || event.getDragboard().getString().equals("dragDescripteme")) {
 		    		//Add Moment to a Moment : int: index in sous-moment / Moment: parentMoment / Main
 		    		MomentExperience newMoment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);
 		    		if(event.getDragboard().getContent(DataFormat.HTML)!=null) {
@@ -423,8 +424,9 @@ public abstract class MainViewTransformations {
 				}
 		       
 		        //System.out.println(Math.abs(i - pos));
-		        if ((event.getDragboard().getString().equals("ajoutMoment")) || 
-		          (event.getDragboard().getString().equals("moveMoment") && cond) ) {
+		        if ((event.getDragboard().getString().equals("ajoutMoment"))
+		        		|| event.getDragboard().getString().equals("dragDescripteme")
+		        		|| (event.getDragboard().getString().equals("moveMoment") && cond) ) {
 		          event.acceptTransferModes(TransferMode.ANY);
 		          //p.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 		          p.onDragOver(event.getDragboard().getString());
@@ -443,7 +445,7 @@ public abstract class MainViewTransformations {
 				}
 		    	//int pos = main.getGrid().getColumnIndex(p)/2;
 		    	int pos = p.getCol();
-		    	if (event.getDragboard().getString().equals("ajoutMoment")) {
+		    	if (event.getDragboard().getString().equals("ajoutMoment") || event.getDragboard().getString().equals("dragDescripteme")) {
 		    		
 		    		AddMomentCommand cmd=null;
 		    		MomentExperience moment = new MomentExperience(main._langBundle.getString("new_moment"),0,0);

@@ -31,7 +31,7 @@ import application.Main;
 import controller.command.AddPropertyToClassCommand;
 import controller.command.ChangeColorCategoryCommand;
 import controller.command.RemoveCategoryFromParentCommand;
-import controller.command.RemovePropertyFromClassCommand;
+import controller.command.RemovePropertyFromCategoryCommand;
 import controller.command.RenameCategorySchemeCommand;
 import controller.controller.ChangeColorCategorySchemeController;
 import controller.controller.Observable;

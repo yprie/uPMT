@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.ChangeExtractMomentCommand;
 import controller.command.ChangePropertyValueCommand;
 import controller.controller.ChangePropertyValueController;
 import controller.controller.Observable;
@@ -53,10 +54,13 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -129,6 +133,44 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		    }
 		});
     	this.hideExtractIcon();
+    	
+    	hasExtractImageProperties.setOnDragOver(new EventHandler<DragEvent>() {
+        	public void handle(DragEvent event) {
+        		if(event.getDragboard().getString().equals("dragDescripteme")) {
+	        		dragExtractIcon();
+	        		event.acceptTransferModes(TransferMode.ANY);
+        		}
+        		event.consume();
+        	}
+        });
+    	hasExtractImageProperties.setOnDragExited(new EventHandler<DragEvent>() {
+        	public void handle(DragEvent event) {
+        		if(property.getDescriptemes().isEmpty())
+        			hideExtractIcon();
+        		else
+        			showExtractIcon(property.getDescriptemes());
+        		event.consume();
+        	}
+        });
+    	hasExtractImageProperties.setOnDragDropped(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				LinkedList<Descripteme> newDescriptemes = new LinkedList<Descripteme>();
+	        	for(Descripteme d : property.getDescriptemes()) {
+	        		newDescriptemes.add(new Descripteme(d.getTexte()));
+	    		}
+	        	newDescriptemes.add(new Descripteme((String)event.getDragboard().getContent(DataFormat.HTML)));
+				ChangeExtractMomentCommand cmd = new ChangeExtractMomentCommand(
+						propertyExtractController,
+						property.getDescriptemes(),
+						newDescriptemes,
+						main
+	        			);
+				cmd.execute();
+				UndoCollector.INSTANCE.add(cmd);
+				event.consume();
+			}
+        });
         
         LinkToTreeProperty();
         if(this.propertiesHaveDescriptem()) 
@@ -311,6 +353,14 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		this.hasExtractImageProperties.getStyleClass().add("buttonMomentViewDisabled");
 		
 		extractTooltip.setText(main._langBundle.getString("no_descripteme"));
+		extractTooltip.setOpacity(0);
+    	extractTooltip.hide();
+	}
+	
+	public void dragExtractIcon(){
+		this.hasExtractImageProperties.getStyleClass().clear();
+		this.hasExtractImageProperties.getStyleClass().add("button");
+		this.hasExtractImageProperties.getStyleClass().add("buttonMomentViewDrag");
 		extractTooltip.setOpacity(0);
     	extractTooltip.hide();
 	}
