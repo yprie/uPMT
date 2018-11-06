@@ -418,8 +418,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		this.hasExtractImage.getStyleClass().add("button");
 		this.hasExtractImage.getStyleClass().add("buttonMomentView");
 		String tooltip = "";
+		
 		for(int i=0; i<tooltips.size();i++) {
-			tooltip+="Descripteme "+(i+1)+": "+tooltips.get(i).getTexte();
+			tooltip+="[Descripteme "+(i+1)+"]: "+tooltips.get(i).getTexte();
 			if(i!=tooltips.size()-1) tooltip+="\n";
 		}
 		extractTooltip.setText(tooltip);
@@ -602,10 +603,10 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			//System.out.println("Change detected!");
 			if(value != null) {
-				//System.out.println("value= "+value);
-				this.showExtractIcon((LinkedList<Descripteme>) value);
+				if(!((LinkedList<Descripteme>) value).isEmpty())
+					this.showExtractIcon((LinkedList<Descripteme>) value);
+				else this.hideExtractIcon();
 			}else {
-			//System.out.println("value est null");
 				this.hideExtractIcon();
 			}
 		}

@@ -42,7 +42,7 @@ public class SelectDescriptemePartController implements Initializable {
 	private Main main;
 	private Stage stage;
 	private @FXML TextArea descriptemeArea;
-	private @FXML Button acceptSelection;
+	private @FXML Button acceptSelection, cancelButton;
 	private String inspectorText;
 	private String text = "";
 
@@ -62,6 +62,11 @@ public class SelectDescriptemePartController implements Initializable {
 	public void validateSelection(){
 		if(this.descriptemeArea.getSelectedText().trim().length()!=0)
 			text = this.descriptemeArea.getSelectedText().trim();
+		stage.close();
+	}
+	
+	@FXML
+	public void cancel() {
 		stage.close();
 	}
 	

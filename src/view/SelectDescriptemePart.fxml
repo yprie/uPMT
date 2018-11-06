@@ -5,16 +5,22 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <BorderPane BorderPane.alignment="CENTER">
-         <center>
+         <left>
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="%cancel" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
             <Button fx:id="acceptSelection" mnemonicParsing="false" onAction="#validateSelection" text="%confirm_selection" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="10.0" top="10.0" />
                </BorderPane.margin>
             </Button>
-         </center>
+         </right>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
       </BorderPane>
    </bottom>
    <center>
