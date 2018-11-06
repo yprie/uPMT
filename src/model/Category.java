@@ -46,6 +46,10 @@ public class Category extends Type implements Serializable, Cloneable {
 		this.mProperties.add(s);
 	}
 	
+	public void addProperty(int index, Property s){
+		this.mProperties.add(index, s);
+	}
+	
 	public void removeProperty(Property s){
 		this.mProperties.remove(s);
 	}

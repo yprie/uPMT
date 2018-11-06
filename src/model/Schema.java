@@ -36,6 +36,10 @@ public class Schema extends Type implements Serializable, Cloneable{
 		mFolders.add(f);
 	}
 	
+	public void addFolder(int index, Folder f) {
+		mFolders.add(index, f);
+	}
+	
 	public void removeFolder(Folder f) {
 		mFolders.remove(f);
 	}

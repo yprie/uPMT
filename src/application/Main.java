@@ -45,6 +45,7 @@ import controller.RootLayoutController;
 import controller.controller.TypeController;
 import controller.typeTreeView.TypeTreeView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -64,6 +65,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import model.Category;
 import model.DescriptionInterview;
 import model.Folder;
@@ -116,6 +118,13 @@ public class Main extends Application {
 	private boolean needSave = false;
 	
 	public void start(Stage primaryStage) throws IOException {
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		       @Override
+		       public void handle(WindowEvent e) {
+		          Platform.exit();
+		          System.exit(0);
+		       }
+		    });
 		loadProperties();
 		initProjects();
 		createBasicSchema();

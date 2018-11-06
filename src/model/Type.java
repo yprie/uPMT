@@ -140,6 +140,23 @@ public abstract class Type implements Serializable, Cloneable{
 		}
 	}
 	
+	public void addChild(int index, Type t) {
+		if(this.isSchema()){
+			((Schema)this).addFolder(index, (Folder)t);
+		}
+		else if(this.isFolder()) {
+			if(t.isCategory()) {
+				((Folder)this).addCategory(index, (Category)t);
+			}
+			else if(t.isFolder()) {
+				((Folder)this).addFolder(index, (Folder)t);
+			}
+		}
+		else if(this.isCategory()) {
+			((Category)this).addProperty(index, (Property)t);
+		}
+	}
+	
 	public Type getChild(String name) {
 		if(this.isSchema()){
 			for(Folder f : ((Schema)this).getFolders()) {

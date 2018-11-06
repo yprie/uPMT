@@ -29,28 +29,29 @@ public class MoveTypeCommand  implements Command,Undoable{
 	private Type newParent,oldParent,child;
 	private TreeItem<TypeController> itemChild, itemNewParent, itemOldParent;
 	private LinkedList<MomentExperience> moments;
+	private int posInList;
 	
 	public MoveTypeCommand(DragEvent event, TypeTreeView p, TypeTreeView nP,  Main m) {
 		try{
 			this.event = event;
 		
-		this.main = m;
-		this.newParent = nP.getController().getType();
-		
-		child = (Type) Serializer.deserialize((byte[]) event.getDragboard().getContent(TypeTreeView.TYPE));
-		this.oldParent = p.getTreeItem().getParent().getValue().getType();
-		//this.child = p.getTreeItem().getValue().getType();
-		TreeView<TypeController> tree =  main.getTreeViewSchema();
-		TreeItem<TypeController> root = tree.getRoot();
-		/*this.itemChild = getTreeItemByType(child, root);
-		this.itemNewParent = getTreeItemByType(newParent, root);
-		this.itemOldParent = getTreeItemByType(oldParent, root);
-		*/
-		this.itemOldParent = p.getTreeItem().getParent();
-		this.itemNewParent = nP.getTreeItem();
-		System.out.println("Nouveau Parent:"+this.newParent.getName());
-		System.out.println("Ancien Parent:"+this.oldParent.getName());
-		System.out.println("Enfant:"+this.child.getName());
+			this.main = m;
+			this.newParent = nP.getController().getType();
+			
+			child = (Type) Serializer.deserialize((byte[]) event.getDragboard().getContent(TypeTreeView.TYPE));
+			this.oldParent = p.getTreeItem().getParent().getValue().getType();
+			TreeView<TypeController> tree =  main.getTreeViewSchema();
+			TreeItem<TypeController> root = tree.getRoot();
+			this.itemOldParent = p.getTreeItem().getParent();
+			this.itemNewParent = nP.getTreeItem();
+			for(TreeItem<TypeController> c : itemOldParent.getChildren()) {
+				if(c.getValue().getType().equals(child)) {
+					itemChild = c;
+					child = c.getValue().getType();
+					break;
+				}
+			}
+			posInList = this.itemOldParent.getChildren().indexOf(itemChild);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -81,8 +82,8 @@ public class MoveTypeCommand  implements Command,Undoable{
 		if(child.isFolder()||(child.isCategory())) {
 			this.itemNewParent.getChildren().remove(itemChild);
 			newParent.removeChild(child);
-			this.itemOldParent.getChildren().add(itemChild);
-			oldParent.addChild(child);
+			this.itemOldParent.getChildren().add(posInList, itemChild);
+			oldParent.addChild(posInList, child);
 		}
 		else if(child.isProperty()) {
 			RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
@@ -90,7 +91,7 @@ public class MoveTypeCommand  implements Command,Undoable{
 			AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
 			cmd2.execute();
 		}
-		main.refreshDataTreeView();
+		//main.refreshDataTreeView();
 		main.needToSave();
 	}
 
@@ -136,7 +137,7 @@ public class MoveTypeCommand  implements Command,Undoable{
 				e.printStackTrace();
 			}
 		}
-		main.refreshDataTreeView();
+		//main.refreshDataTreeView();
 		main.needToSave();
 	}
 	
