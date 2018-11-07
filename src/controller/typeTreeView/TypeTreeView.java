@@ -102,7 +102,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
 	}
 	
 	// method used to add a class to the current cell
-	public void addClass(int classNumber){
+	public TreeItem<TypeController> addClass(int classNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
         Category nt = new Category("Category "+classNumber);
         TypeController tc;
@@ -117,10 +117,11 @@ public class TypeTreeView extends TreeCell<TypeController>{
         getTreeItem().getChildren().add(newTypeController);
         ((Folder)getItem().getType()).addCategory(nt);
         this.getTreeItem().setExpanded(true);
+        return newTypeController;
 	}
 	
 	// method used to add a folder to the current cell
-	public void addFolder(int folderNumber){
+	public TreeItem<TypeController> addFolder(int folderNumber){
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
         Folder nt = new Folder("Folder "+folderNumber);
         TypeController tc;
@@ -142,6 +143,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
         	((Folder)getItem().getType()).addFolder(nt);
         System.out.println("2. Le parent est "+getItem().getType().getName());
         this.getTreeItem().setExpanded(true);
+        return newTypeController;
 	}
 
 	// method used to add a property to the current cell

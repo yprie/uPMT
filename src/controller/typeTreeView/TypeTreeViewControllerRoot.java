@@ -25,6 +25,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.AddCategorySchemeCommand;
+import controller.command.AddFolderSchemeCommand;
 import controller.controller.TypeController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -48,6 +50,7 @@ import javafx.scene.paint.Color;
 import model.Folder;
 import model.Type;
 import utils.ResourceLoader;
+import utils.UndoCollector;
 import utils.Utils;
 
 public class TypeTreeViewControllerRoot extends TypeTreeViewController {
@@ -133,12 +136,18 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	
 	@FXML
 	public void addFolder(){
-		tree.addFolder(folderNumber);
+		AddFolderSchemeCommand cmd = new AddFolderSchemeCommand(this.tree, folderNumber, main);
+		cmd.execute();
+		UndoCollector.INSTANCE.add(cmd);
+		//tree.addFolder(folderNumber);
 	}
 	
 	@FXML
 	public void addClass(){
-		tree.addClass(classNumber);
+		AddCategorySchemeCommand cmd = new AddCategorySchemeCommand(this.tree, classNumber, main);
+		cmd.execute();
+		UndoCollector.INSTANCE.add(cmd);
+		//tree.addClass(classNumber);
 	}
 	
 	@Override

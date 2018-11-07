@@ -121,6 +121,7 @@ public class Project implements Serializable {
 
 		try (Writer writer = new FileWriter(filename)) {
 		    gson.toJson(this, writer);
+		    writer.close();
 		}catch(Exception e) {
 			//e.printStackTrace();
 			//System.out.println("lol");
@@ -136,6 +137,8 @@ public class Project implements Serializable {
 			oos = new ObjectOutputStream(fichier);
 			oos.writeObject(this);
 			oos.flush();
+			fichier.close();
+			oos.close();
 		} catch (final java.io.IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -155,6 +158,7 @@ public class Project implements Serializable {
 	public void remove(){
 		File f = new File(PATH+this.getName()+FORMAT);
 		f.delete();
+		
 	}
 	
 	public void setVersion(int v) {

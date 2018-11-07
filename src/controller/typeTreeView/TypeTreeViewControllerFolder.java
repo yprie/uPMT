@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import application.Main;
+import controller.command.AddCategorySchemeCommand;
+import controller.command.AddFolderSchemeCommand;
 import controller.command.RemoveFolderSchemeCommand;
 import controller.command.RenameFolderSchemeCommand;
 import controller.command.RenamePropertySchemeCommand;
@@ -189,12 +191,19 @@ public class TypeTreeViewControllerFolder extends TypeTreeViewController {
 	
 	@FXML
 	public void addClass(){
-		tree.addClass(++TypeTreeViewControllerCategory.propertiesNumber);
+		AddCategorySchemeCommand cmd = new AddCategorySchemeCommand(this.tree, ++TypeTreeViewControllerCategory.propertiesNumber, main);
+		cmd.execute();
+		UndoCollector.INSTANCE.add(cmd);
+		//tree.addClass(++TypeTreeViewControllerCategory.propertiesNumber);
 	}
 	
 	@FXML
 	public void addFolder(){
-		tree.addFolder(++TypeTreeViewControllerCategory.propertiesNumber);
+		AddFolderSchemeCommand cmd = new AddFolderSchemeCommand(this.tree, ++TypeTreeViewControllerCategory.propertiesNumber, main);
+		cmd.execute();
+		UndoCollector.INSTANCE.add(cmd);
+		
+		//tree.addFolder(++TypeTreeViewControllerCategory.propertiesNumber);
 	}
 	
 	@FXML

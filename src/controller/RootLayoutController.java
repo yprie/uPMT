@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Main;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -98,7 +99,7 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void redo(){
 		UndoCollector.INSTANCE.showUndoRedoStack();
-		UndoCollector.INSTANCE.redo();;
+		UndoCollector.INSTANCE.redo();
 	}
 	
 	@FXML
@@ -187,7 +188,8 @@ public class RootLayoutController implements Initializable{
 			} catch (NullPointerException e) {
 			//System.out.println("no event, exit normally");
 			}
-			window.close();
+			Platform.exit();
+	        System.exit(0);
 		} else {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 	    	alert.setTitle(main._langBundle.getString("quit"));
@@ -201,10 +203,14 @@ public class RootLayoutController implements Initializable{
 	    	Optional<ButtonType> result = alert.showAndWait();
 	    	if (result.get() == buttonTypeOne){
 	    		saveProject();
-	    		window.close();
+	    		alert.close();
+	    		Platform.exit();
+		        System.exit(0);
 	    	} else if (result.get() == buttonTypeTwo) {
 	    		Utils.deleteRecovery();
-	    	    window.close();
+	    		alert.close();
+	    		Platform.exit();
+		        System.exit(0);
 	    	} else if (result.get() == buttonTypeCancel){
 	    	    alert.close();
 	    	    try {
@@ -282,10 +288,11 @@ public class RootLayoutController implements Initializable{
 		saveProject.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
 		newInterview.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_ANY));
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			
 			@Override
 			public void handle(WindowEvent event) {
 				saveRequest(event);
+				Platform.exit();
+		        System.exit(0);
 			}
 		});
 	}
