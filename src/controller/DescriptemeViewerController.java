@@ -103,7 +103,10 @@ public class DescriptemeViewerController implements Initializable {
 					int id = descrList.getSelectionModel().getSelectedIndex();
 					descrDetail.setText(mDescriptemes.get(id).getTexte());
 				}
-				else lessButton.setDisable(true);
+				else {
+					lessButton.setDisable(true);
+					descrDetail.setText("");
+				}
 			}
 		});
 		
