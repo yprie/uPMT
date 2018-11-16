@@ -6,6 +6,4 @@ Current work is carried out by Gwenaelle Gouriten, Salma Hichami,  Othman Houmai
 
 # LICENCE
 
-See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3) .
-
-testt
+See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3).
