@@ -279,8 +279,7 @@ public class RootLayoutController implements Initializable{
 		main.changeLocaleAndReload("cn");
 	}
 	// Add your new language here
-	
-	// Key shortcuts
+	// Keyboard shortcuts 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		KeyCodeCombination keyCombUMac=new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
