@@ -280,7 +280,7 @@ public class RootLayoutController implements Initializable{
 	}
 	// Add your new language here
 	
-	// Keyboard shortcuts 
+	// Keyboard shortcuts using KeyCodeCombination
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		KeyCodeCombination keyCombUMac=new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
