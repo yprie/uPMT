@@ -190,7 +190,6 @@ public class Main extends Application {
 		savePath(initPath);
 		Utils.loadProjects(projects, this);
 	}
-	
 	/**
      * Initializes the root layout.
      */
