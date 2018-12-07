@@ -20,7 +20,11 @@
 
 package controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,10 +50,13 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TitledPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import model.Project;
 import utils.UndoCollector;
 import utils.Utils;
 
@@ -59,6 +66,7 @@ public class RootLayoutController implements Initializable{
 	private @FXML MenuItem newInterview;
 	private @FXML MenuItem quitterBouton;
 	private @FXML MenuItem saveProject;
+	private @FXML MenuItem saveProjectAs;
 	private @FXML MenuItem exportProject;
 	private @FXML MenuItem undo;
 	private @FXML MenuItem redo;
@@ -81,8 +89,29 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
+	public void openProjectAs() throws IOException, ClassNotFoundException{
+		main.openProjectAs();
+	}
+	
+	@FXML
 	public void saveProject(){
 		main.saveCurrentProject();
+	}
+	
+	@FXML
+	public void saveProjectAs() throws IOException{
+		Stage primaryStage = null;
+		final FileChooser directoryChooser = new FileChooser();
+		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		directoryChooser.setInitialFileName(main.getCurrentProject().getName()+Project.FORMAT);
+		File dir = directoryChooser.showSaveDialog(primaryStage);
+		if(dir != null){
+			try {
+				main.saveCurrentProjectAs(dir.getCanonicalPath(), dir.getName());
+			} catch(IOException e ) {
+				e.printStackTrace();
+			}	
+		}
 	}
 	
 	@FXML

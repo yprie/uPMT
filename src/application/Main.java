@@ -26,14 +26,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Properties;
@@ -62,11 +69,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import model.Category;
+import model.Descripteme;
 import model.DescriptionInterview;
 import model.Folder;
 import model.MomentExperience;
@@ -80,6 +89,8 @@ import utils.ResourceLoader;
 import utils.SchemaTransformations;
 import utils.Utils;
 import java.util.ResourceBundle;
+
+import com.google.gson.Gson;
 
 
 public class Main extends Application {
@@ -103,19 +114,15 @@ public class Main extends Application {
 	private TreeView<TypeController> treeViewSchema;
 	private TreeView<DescriptionInterview> treeViewInterview;
 	private GridPane grid;
-	
 	private MainViewController mainViewController = new MainViewController(this);
 	private RootLayoutController rootLayoutController;
 	
 	//Main reference to the clicked moment
 	private MomentExpVBox currentMoment;
-	
 	private String bundleRes=null;
-	
 	private File fProperties=null;
-	
-	
 	private boolean needSave = false;
+	public final String fileOfPath = "resources/path.json";
 	
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -129,13 +136,6 @@ public class Main extends Application {
 		initProjects();
 		createBasicSchema();
 		
-		/*if(!projects.isEmpty()){
-			currentProject = projects.getFirst();
-			//System.out.println(currentProject.getSchemaProjet());
-		}
-		else {
-			currentProject = new Projet("projetTMP", new Schema("SchemaTemporaire"));
-		}*/
 		currentProject = new Project("--emptyProject--", new Schema("SchemaTemporaire"));
 		
 		this.primaryStage = primaryStage;
@@ -155,9 +155,7 @@ public class Main extends Application {
 			
 		try {
  			pros.load(is);
- 			//System.out.println("succeed load with: "+url);
  		} catch (Exception e) {
- 			//System.out.println("fail with: "+url);
  		}
 		String loc = pros.getProperty("locale","fr");
 		_locale= new Locale(pros.getProperty("locale","fr"));
@@ -179,14 +177,17 @@ public class Main extends Application {
 	
 	/**
 	 * Method used to load all the projects
+	 * @throws IOException 
 	 */
-	private void initProjects(){
+	private void initProjects() throws IOException{
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
 		if(Utils.checkRecovery()) {
 			this.mainViewController.alertRecovery();
 		}
+		final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		savePath(initPath);
 		Utils.loadProjects(projects, this);
 	}
 	
@@ -205,8 +206,6 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
-            
-            
             primaryStage.setScene(scene);
             primaryStage.setMaximized(true);
             primaryStage.show();
@@ -332,13 +331,101 @@ public class Main extends Application {
 	public void saveCurrentProject(){
 		needSave = false;
 		currentProject.save();
+		//this.serializeListProject(projects);
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 	}
+	
+	/**
+	 * Save Current Project as
+	 * @ pathLocation: project path to save
+	 * @ name: project name to save
+	 */
+	public void saveCurrentProjectAs(String pathLocation, String name) throws IOException{
+		needSave = false;
+		currentProject.saveAs(pathLocation, name.replace(".upmt", ""));
+		this.savePath(pathLocation.replace("/"+name, ""));
+		this.primaryStage.setTitle(_langBundle.getString("main_title"));
+	}
+	
+	/**
+	 * Serialization of project's path
+	 * @path: path to save
+	 */
+	public void savePath(String path) throws IOException {
+        LinkedList<String> list = null;
+        if(new File(fileOfPath).isFile()) {
+        	list = loadPath();
+        	if(!list.contains(path)) {
+        		list.add(path);
+            	Gson gson = new Gson();
+            	Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
+                gson.toJson(list, osWriter);
+                osWriter.close();
+        	}
+        } else {
+        	Gson gson = new Gson();
+            Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
+            list = new LinkedList<String>();
+            list.add(path);
+            gson.toJson(list, osWriter);
+            osWriter.close();
+        }  
+	}
+	
+	/**
+	 * Derialisation of project path
+	 * @return : path list to save
+	 */
+	public LinkedList<String> loadPath() throws IOException {
+		Gson gson = new Gson();
+		Reader isReader = new InputStreamReader( new FileInputStream((fileOfPath)));
+        LinkedList<String> pathList = gson.fromJson(isReader, LinkedList.class);
+        isReader.close();
+        return pathList;
+	}
+	
+	/**
+	 *  Open project from a path
+	 */
+	public void openProjectAs() throws IOException{
+		Stage primaryStage = null;
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open your project");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
+		File file = fileChooser.showOpenDialog(primaryStage);
+		
+        if (file != null) {
+        	String projectToLoad = file.getName().replace(".upmt", "");
+        	boolean isProject = false;
+        	for(Project project : projects) {
+        		if(project.getName().equals(projectToLoad)) {
+        			this.setCurrentProject(project);
+        			this.launchMainView();
+        			isProject=true;
+        		} 
+        	}
+        	
+        	if(!isProject) { //project is not in the project's list 
+        		String name = file.getPath();
+        		name = name.replace("/"+file.getName(), "");
+        		this.savePath(name);
+        		Utils.loadProjects(projects, this);
+        		for(Project p : projects) {
+        			if(p.getName().equals(projectToLoad)) {
+                		this.setCurrentProject(p);
+                		this.launchMainView();
+                		isProject=true;
+               		} 
+               	}
+        	}
+         }
+	}
+	
+
 	
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
-		//System.out.println("NEED TO SAVE");
 		this.primaryStage.setTitle(_langBundle.getString("main_title")+" *");
 	}
 	
@@ -359,8 +446,6 @@ public class Main extends Application {
     	        props.setProperty("locale", locale);
     	        OutputStream out= ResourceLoader.loadBundleOutput("Current.properties");
     	        props.store(out, "This is an optional header comment string");
-    	        
-    	        //start(primaryStage);
     	    }
     	    catch (Exception e ) {
     	        e.printStackTrace();
@@ -386,18 +471,18 @@ public class Main extends Application {
 		//Category, Property, Value
 		for(Category c : m.getCategories()){
 			for(Property p : c.getProperties()){
-				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()));
+				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()) +";"+ format(p.toStringDescripteme()) );
 			}
 		}
 		
 		if(!classes.isEmpty()){
 			//Interview, ID, Name, Descripteme, Color, Duration + //Category, Property, Value
 			for(String s : classes){
-				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
+				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
 			+format(m.getColor())+";"+format(m.getDuration())+";"+s);
 			}
 		}else{
-			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
+			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
 		+format(m.getColor())+";"+format(m.getDuration())+";\"\";\"\";\"\"");
 		}
 		
@@ -413,13 +498,11 @@ public class Main extends Application {
 	public void export(Project p){
 		ObjectOutputStream oos = null;
 		try {
-			
-
 			if (!Files.exists(Paths.get("./exports/"))) {
 			    new File("./exports/").mkdir();
 			}
 			PrintWriter writer = new PrintWriter("./exports/"+p.getName()+".csv", "UTF-8");
-		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\"");
+		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);

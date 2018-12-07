@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Projet.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,19 @@ package model;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -39,16 +43,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+
+import javax.swing.JFileChooser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import utils.InterfaceAdapter;
+import utils.Serializer;
 import utils.UpdateVersions;
 import utils.Utils;
 import javafx.scene.control.Alert.AlertType;
@@ -56,7 +67,7 @@ import javafx.scene.control.Alert.AlertType;
 public class Project implements Serializable {
 	
 	public static final String FORMAT = ".upmt";
-	public static final String PATH = "./save/";
+	
 	public static final String RECOVERY = "recovery_";
 	public static int VERSION_OF_APP = 3;
 	
@@ -65,13 +76,21 @@ public class Project implements Serializable {
 	private int SAVE_VERSION;
 	private String mName;
 	private Schema mSchema;
+	private String path;
 	private LinkedList<DescriptionInterview> mInterviews;
 
 	public Project(String n,Schema s){
 		this.mName = n;
 		this.mInterviews = new LinkedList<DescriptionInterview>();
 		this.mSchema = s;
+		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		SAVE_VERSION = VERSION_OF_APP;
+	}
+	
+	public void initializePath() {
+		if(this.path==null) {
+			this.path="./save/";
+		}
 	}
 	
 	public void addEntretiens(DescriptionInterview d){
@@ -100,17 +119,37 @@ public class Project implements Serializable {
 	
 
 	public void save(){
-		//delete autosave file
-		File autoSaveFile = new File(PATH+RECOVERY+mName+FORMAT);
+		initializePath();
+		File autoSaveFile = new File(path+"/"+RECOVERY+mName+FORMAT);
 		autoSaveFile.delete();
-		//saveFile(PATH+mName+FORMAT);
-		saveData(PATH+mName+FORMAT);
+		saveData(path+"/"+mName+FORMAT);
+		
+	}
+	
+	/**
+	 *  Save project in a different path
+	 *  @param pathLocation: path to save
+	 *  @param name: the project name to save 
+	 */
+	public void saveAs(String pathLocation, String name) throws IOException {
+		String lastPath = this.path.replace(".upmt", "");
+		this.setName(name);
+		path = pathLocation.replace("/"+mName+FORMAT, "");
+		this.setPath(path);
+		System.out.println(path);
+		System.out.println(lastPath);
+		System.out.println(pathLocation);
+		File autoSaveFile = new File(lastPath+"/"+mName+FORMAT);
+		autoSaveFile.delete();
+		if(!pathLocation.contains(".upmt")) {
+			pathLocation += FORMAT;
+		}
+		saveData(pathLocation);
 		
 	}
 	
 	public void autosave(){
-		//saveFile(PATH+RECOVERY+mName+FORMAT);	
-		saveData(PATH+RECOVERY+mName+FORMAT);
+		saveData(this.path+"/"+RECOVERY+mName+FORMAT);
 	}
 	
 	private void saveData(String filename) {
@@ -118,14 +157,12 @@ public class Project implements Serializable {
 		gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 		gsonBuilder.setPrettyPrinting();
 	    Gson gson = gsonBuilder.create(); 
-
 		try (Writer writer = new FileWriter(filename)) {
 		    gson.toJson(this, writer);
 		    writer.close();
 		}catch(Exception e) {
 			//e.printStackTrace();
 			//System.out.println("lol");
-			
 		}
 	}
 	
@@ -156,7 +193,7 @@ public class Project implements Serializable {
 	
 	
 	public void remove(){
-		File f = new File(PATH+this.getName()+FORMAT);
+		File f = new File(this.path+this.getName()+FORMAT);
 		f.delete();
 		
 	}
@@ -165,27 +202,27 @@ public class Project implements Serializable {
 		this.SAVE_VERSION=v;
 	}
 	
-	public static Project loadData(String projet) {
+	public static Project loadData(String projet, String path) {
 		try {
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 			gsonBuilder.setPrettyPrinting();
 			Gson gson = gsonBuilder.create();
 		    Project p;
-		    int projectVersion = getVersionProj(PATH+projet);
+		    int projectVersion = getVersionProj(path+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
-		    	String updatedJson = updateSaveFile(PATH+projet, projectVersion);
+		    	String updatedJson = updateSaveFile(path+projet, projectVersion);
 				p = gson.fromJson(updatedJson, Project.class);
 				p.save();
 		    }
 		    else {
-		    	p = gson.fromJson(new FileReader(PATH+projet), Project.class);
+		    	p = gson.fromJson(new FileReader(path+projet), Project.class);
 		    }
 			p.setVersion(Project.VERSION_OF_APP);
 			p.save();
 			p.reloadMomentParentLost();
 			return p;
-		}catch(Exception e) {
+		} catch(Exception e) {
 			//e.printStackTrace();
 			//System.out.println(e.getMessage());
 			return null;
@@ -241,8 +278,7 @@ public class Project implements Serializable {
 		ObjectInputStream ois = null;
 		
 		try {
-			final FileInputStream fichier = new FileInputStream(PATH+projet);
-		//System.out.println(projet);
+			final FileInputStream fichier = new FileInputStream(getPATH()+projet);
 			ois = new ObjectInputStream(fichier);
 			final Project p2 = (Project) ois.readObject();
 			return p2;
@@ -296,6 +332,18 @@ public class Project implements Serializable {
 
 	public int getVersion() {
 		return this.SAVE_VERSION;
+	}
+	
+	public void setPath(String path) {
+		this.path=path;
+	}
+	
+	/**
+	 * get project default path
+	 * @return: default path
+	 */
+	public static String getPATH() {
+		return "./save/";
 	}
 	
 }

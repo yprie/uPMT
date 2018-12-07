@@ -1,7 +1,7 @@
 /*****************************************************************************
  * LaunchingScreenController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ public class LaunchingScreenController implements Initializable{
 	private @FXML Button btn_ouvrirProjet;
 	private Main m_main;
 	private @FXML ListView<Project> tousLesProjets;
-	private Stage window;
+	public Stage window;
 	
 	public LaunchingScreenController(Main main,Stage window) {
 		// TODO Auto-generated constructor stub
