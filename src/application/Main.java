@@ -625,5 +625,4 @@ public class Main extends Application {
 	public void set_langBundle(ResourceBundle _langBundle) {
 		this._langBundle = _langBundle;
 	}
-
 }
