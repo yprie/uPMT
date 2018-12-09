@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Propriete.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,19 @@ public class Property extends Type implements Serializable, Cloneable{
 		return newp;
 	}
 	
-	
+	/**
+	 * to string Descripteme in a property
+	 * @return: list of descripteme regarding a property
+	 */
+	public String toStringDescripteme(){
+		String res="";
+		for(Descripteme d : mDescriptemes) {
+			res+=d.toString() + " / ";
+		}
+		if(res.length()>0) {
+			res = res.substring(0, res.length()-2);
+		} 
+		return res;
+	}
 
 }

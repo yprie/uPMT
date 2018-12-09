@@ -283,5 +283,20 @@ public class MomentExperience implements Serializable, Cloneable {
 	public Property getCurrentProperty() {
 		return mCurrentProperty;
 	}
+	
+	/**
+	 * to string Descripteme in a moment
+	 * @return: list of descripteme regarding a moment
+	 */
+	public String toStringDescripteme(){
+		String res="";
+		for(Descripteme d : mDescriptemes) {
+			res+=d.toString() + " / ";
+		}
+		if(res.length()>0) {
+			res = res.substring(0, res.length()-2);
+		} 
+		return res;
+	}
 
 }

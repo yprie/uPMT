@@ -386,18 +386,18 @@ public class Main extends Application {
 		//Category, Property, Value
 		for(Category c : m.getCategories()){
 			for(Property p : c.getProperties()){
-				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()));
+				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()) +";"+ format(p.toStringDescripteme()));
 			}
 		}
 		
 		if(!classes.isEmpty()){
 			//Interview, ID, Name, Descripteme, Color, Duration + //Category, Property, Value
 			for(String s : classes){
-				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
+				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
 			+format(m.getColor())+";"+format(m.getDuration())+";"+s);
 			}
 		}else{
-			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
+			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
 		+format(m.getColor())+";"+format(m.getDuration())+";\"\";\"\";\"\"");
 		}
 		
@@ -419,7 +419,7 @@ public class Main extends Application {
 			    new File("./exports/").mkdir();
 			}
 			PrintWriter writer = new PrintWriter("./exports/"+p.getName()+".csv", "UTF-8");
-		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\"");
+		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);
