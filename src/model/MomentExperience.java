@@ -283,19 +283,5 @@ public class MomentExperience implements Serializable, Cloneable {
 	public Property getCurrentProperty() {
 		return mCurrentProperty;
 	}
-	
-	/* 
-	 * to string Descripteme for csv export 
-	 */
-	public String toStringDescripteme(){
-		String res="";
-		for(Descripteme d : mDescriptemes) {
-			res+=d.toString() + " / ";
-		}
-		if(res.length()>0) {
-			res = res.substring(0, res.length()-2);
-		} 
-		return res;
-	}
 
 }

@@ -471,18 +471,18 @@ public class Main extends Application {
 		//Category, Property, Value
 		for(Category c : m.getCategories()){
 			for(Property p : c.getProperties()){
-				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()) +";"+ format(p.toStringDescripteme()) );
+				classes.add(format(c.getName())+";"+format(p.getName())+";"+format(p.getValue()) +";");
 			}
 		}
 		
 		if(!classes.isEmpty()){
 			//Interview, ID, Name, Descripteme, Color, Duration + //Category, Property, Value
 			for(String s : classes){
-				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
+				writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
 			+format(m.getColor())+";"+format(m.getDuration())+";"+s);
 			}
 		}else{
-			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.toStringDescripteme())+";"
+			writer.println(format(ent.getName())+";\""+hierarchy+"\""+";"+format(m.getName())+";"+format(m.getDescriptemes().toString())+";"
 		+format(m.getColor())+";"+format(m.getDuration())+";\"\";\"\";\"\"");
 		}
 		
@@ -502,7 +502,7 @@ public class Main extends Application {
 			    new File("./exports/").mkdir();
 			}
 			PrintWriter writer = new PrintWriter("./exports/"+p.getName()+".csv", "UTF-8");
-		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
+		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\"");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
 					MomentExperience m = ent.getMoments().get(i);
