@@ -83,13 +83,15 @@ public class Project implements Serializable {
 		this.mName = n;
 		this.mInterviews = new LinkedList<DescriptionInterview>();
 		this.mSchema = s;
-		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		this.path = "./save";
+		//this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		
 		SAVE_VERSION = VERSION_OF_APP;
 	}
 	
 	public void initializePath() {
 		if(this.path==null) {
-			this.path="./save/";
+			this.path="./save";
 		}
 	}
 	
@@ -213,6 +215,9 @@ public class Project implements Serializable {
 			Gson gson = gsonBuilder.create();
 		    Project p;
 		    int projectVersion = getVersionProj(path+projet);
+		    System.out.println("version app " + Project.VERSION_OF_APP);
+		    System.out.println("project version " + projectVersion);
+		    System.out.println("project path " + path+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
 		    	String updatedJson = updateSaveFile(path+projet, projectVersion);
 				p = gson.fromJson(updatedJson, Project.class);

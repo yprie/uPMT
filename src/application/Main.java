@@ -184,7 +184,8 @@ public class Main extends Application {
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
-		final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		//final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
 			this.mainViewController.alertRecovery();
