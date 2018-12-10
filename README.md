@@ -8,6 +8,8 @@ Download the latest version at: https://github.com/yprie/uPMT/releases
 
 Read documentation at: https://github.com/yprie/uPMT/wiki
 
+Report bugs and ask for features at: https://github.com/yprie/uPMT/issues
+
 # LICENCE
 
 See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3).
