@@ -192,7 +192,6 @@ public class Main extends Application {
 		}
 		Utils.loadProjects(projects, this);
 	}
-	
 	/**
      * Initializes the root layout.
      */
