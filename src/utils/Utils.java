@@ -59,7 +59,7 @@ public abstract class Utils {
 		List<String> listPath = main.loadPath();
 		for(String path : listPath) {
 			if(path.contains("/C")) {
-				path.replace("/C", "C");
+				path = path.replace("/C", "C");
 			}
 			path+="/";
 			HashSet<String> projectNames = loadProjectsNames(path);
