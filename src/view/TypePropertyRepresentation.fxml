@@ -10,7 +10,7 @@
 
 <fx:root fx:id="propertyPane" maxHeight="20.0" maxWidth="145.0" minHeight="20.0" minWidth="145.0" prefHeight="20.0" prefWidth="145.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane maxWidth="60.0" minWidth="60.0" prefWidth="60.0">
+      <BorderPane maxWidth="20.0" minWidth="20.0" prefWidth="20.0">
          <center>
             <Label fx:id="propertyName" text="propertyName" BorderPane.alignment="CENTER">
                <BorderPane.margin>
@@ -25,6 +25,18 @@
             <Button fx:id="hasExtractImageProperties" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#pickPropertyExtract" prefHeight="20.0" prefWidth="20.0" styleClass="buttonMomentView" stylesheets="@../application/application.css" BorderPane.alignment="CENTER" />
          </left>
       </BorderPane>
+       <BorderPane maxWidth="40.0" minWidth="40.0" prefWidth="40.0">
+       <left>
+            <Label fx:id="propertyName" text="propertyName" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Label>
+         </left>
+        </BorderPane>
       <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="20.0" maxWidth="15.0" minHeight="20.0" minWidth="15.0" prefHeight="20.0" prefWidth="15.0" text="  :  ">
          <font>
             <Font size="9.0" />
