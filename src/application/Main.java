@@ -355,10 +355,10 @@ public class Main extends Application {
 	 */
 	public void savePath(String path) throws IOException {
 		if(path.contains("\\")) {
-			path.replace("\\", "/");
+			path = path.replace("\\", "/");
 		}
 		if(path.contains("/C")) {
-			path.replace("/C", "C");
+			path = path.replace("/C", "C");
 		}
         LinkedList<String> list = null;
         if(new File(fileOfPath).isFile()) {

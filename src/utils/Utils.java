@@ -67,8 +67,6 @@ public abstract class Utils {
 				for (String projectName : projectNames) {
 					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
 						Project project = Project.loadData(projectName, path);
-						System.out.println("project name " + projectName);
-						System.out.println("path " + path);
 						if(project==null) {
 							Alert alert = new Alert(AlertType.CONFIRMATION);
 							alert.setTitle(main._langBundle.getString("error_version"));

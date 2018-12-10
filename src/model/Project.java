@@ -123,7 +123,6 @@ public class Project implements Serializable {
 	public void save(){
 		initializePath();
 		File autoSaveFile = new File(path+"/"+RECOVERY+mName+FORMAT);
-		System.out.println(path+"/"+RECOVERY+mName+FORMAT);
 		autoSaveFile.delete();
 		saveData(path+"/"+mName+FORMAT);
 		
@@ -135,9 +134,10 @@ public class Project implements Serializable {
 	 *  @param name: the project name to save 
 	 */
 	public void saveAs(String pathLocation, String name) throws IOException {
+		pathLocation = pathLocation.replace("\\", "/");
 		String lastPath = this.path.replace(".upmt", "");
 		if(name.contains(".upmt")) {
-			name += "./upmt";            
+			name += ".upmt";            
 		}
 		this.setName(name);
 		path = pathLocation.replace("/"+mName+FORMAT, "");
@@ -153,7 +153,6 @@ public class Project implements Serializable {
 	}
 	
 	public void autosave(){
-		System.out.println("autoSave "+ this.path+"/"+RECOVERY+mName+FORMAT);
 		saveData(this.path+"/"+RECOVERY+mName+FORMAT);
 	}
 	
@@ -215,9 +214,6 @@ public class Project implements Serializable {
 			Gson gson = gsonBuilder.create();
 		    Project p;
 		    int projectVersion = getVersionProj(path+projet);
-		    System.out.println("version app " + Project.VERSION_OF_APP);
-		    System.out.println("project version " + projectVersion);
-		    System.out.println("project path " + path+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
 		    	String updatedJson = updateSaveFile(path+projet, projectVersion);
 				p = gson.fromJson(updatedJson, Project.class);
