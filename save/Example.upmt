@@ -81,7 +81,6 @@
     "mColor": "#000000",
     "mName": "Example"
   },
-  "path": "./save/",
   "mInterviews": [
     {
       "mDescripteme": {
@@ -94,12 +93,6 @@
           "mDescriptemes": [
             {
               "mText": "It was in Puiseaux one April morning, last spring."
-            },
-            {
-              "mText": "uisea"
-            },
-            {
-              "mText": "a"
             }
           ],
           "mCategories": [],
@@ -111,39 +104,6 @@
               "mDescriptemes": [
                 {
                   "mText": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest."
-                },
-                {
-                  "mText": "in"
-                },
-                {
-                  "mText": "x one April morning, last spring. I just hung up the phone after a conversatio"
-                },
-                {
-                  "mText": "comes"
-                },
-                {
-                  "mText": "It"
-                },
-                {
-                  "mText": "conversation"
-                },
-                {
-                  "mText": "frozen"
-                },
-                {
-                  "mText": "dilute"
-                },
-                {
-                  "mText": "new"
-                },
-                {
-                  "mText": "to"
-                },
-                {
-                  "mText": "melt"
-                },
-                {
-                  "mText": "frozen"
                 }
               ],
               "mCategories": [
@@ -238,9 +198,6 @@
               "mDescriptemes": [
                 {
                   "mText": "At one point, the song of a turtle-dove comes through the open window."
-                },
-                {
-                  "mText": " ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body."
                 }
               ],
               "mCategories": [
