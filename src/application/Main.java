@@ -183,11 +183,11 @@ public class Main extends Application {
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
-		if(Utils.checkRecovery()) {
-			this.mainViewController.alertRecovery();
-		}
 		final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		savePath(initPath);
+		if(Utils.checkRecovery(this)) {
+			this.mainViewController.alertRecovery();
+		}
 		Utils.loadProjects(projects, this);
 	}
 	
@@ -354,6 +354,7 @@ public class Main extends Application {
 	public void savePath(String path) throws IOException {
         LinkedList<String> list = null;
         if(new File(fileOfPath).isFile()) {
+        	
         	list = loadPath();
         	if(!list.contains(path)) {
         		list.add(path);
@@ -363,6 +364,7 @@ public class Main extends Application {
                 osWriter.close();
         	}
         } else {
+        	System.out.println("ok");
         	Gson gson = new Gson();
             Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
             list = new LinkedList<String>();

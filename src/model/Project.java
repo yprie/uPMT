@@ -121,6 +121,7 @@ public class Project implements Serializable {
 	public void save(){
 		initializePath();
 		File autoSaveFile = new File(path+"/"+RECOVERY+mName+FORMAT);
+		System.out.println(path+"/"+RECOVERY+mName+FORMAT);
 		autoSaveFile.delete();
 		saveData(path+"/"+mName+FORMAT);
 		
@@ -133,22 +134,24 @@ public class Project implements Serializable {
 	 */
 	public void saveAs(String pathLocation, String name) throws IOException {
 		String lastPath = this.path.replace(".upmt", "");
+		if(name.contains(".upmt")) {
+			name += "./upmt";            
+		}
 		this.setName(name);
 		path = pathLocation.replace("/"+mName+FORMAT, "");
 		this.setPath(path);
-		System.out.println(path);
-		System.out.println(lastPath);
-		System.out.println(pathLocation);
 		File autoSaveFile = new File(lastPath+"/"+mName+FORMAT);
+		File autoSaveRecoveryFile = new File(lastPath+"/"+RECOVERY+mName+FORMAT);
 		autoSaveFile.delete();
+		autoSaveRecoveryFile.delete();
 		if(!pathLocation.contains(".upmt")) {
 			pathLocation += FORMAT;
 		}
 		saveData(pathLocation);
-		
 	}
 	
 	public void autosave(){
+		System.out.println("autoSave "+ this.path+"/"+RECOVERY+mName+FORMAT);
 		saveData(this.path+"/"+RECOVERY+mName+FORMAT);
 	}
 	

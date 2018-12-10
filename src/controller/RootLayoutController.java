@@ -210,7 +210,7 @@ public class RootLayoutController implements Initializable{
 		}
 	}
 	
-	private void saveRequest(WindowEvent event){
+	private void saveRequest(WindowEvent event) throws IOException{
 		if(!main.isNeedToBeSaved()) {
 			try {
    	    	 event.consume();
@@ -279,7 +279,7 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
-	public void close(){
+	public void close() throws IOException{
 		this.saveRequest(null);
 	}
 	
@@ -319,7 +319,12 @@ public class RootLayoutController implements Initializable{
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
-				saveRequest(event);
+				try {
+					saveRequest(event);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Platform.exit();
 		        System.exit(0);
 			}

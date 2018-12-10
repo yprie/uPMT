@@ -61,7 +61,7 @@ public abstract class Utils {
 			HashSet<String> projectNames = loadProjectsNames(path);
 			if(!projectNames.isEmpty()){
 				for (String projectName : projectNames) {
-					if(projectName.contains(Project.FORMAT)) {
+					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
 						Project project = Project.loadData(projectName, path);
 						if(project==null) {
 							Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -86,20 +86,23 @@ public abstract class Utils {
 	}
 
 	
-	public static boolean checkRecovery() {
-		HashSet<String> projectNames = loadProjectsNames("./save");
+	public static boolean checkRecovery(Main main) throws IOException {
+		List<String> listPath = main.loadPath();
 		boolean ret = false;
-		
-		if(projectNames.isEmpty()){
-			// For debug purposes
-			//System.out.println("No projects to load");
-		}else{
-			//System.out.println("Loading projects");
-			for (String s : projectNames) {
-				if(s.contains(Project.FORMAT)) {
-					if(projectNames.contains(Project.RECOVERY+s)) {
-						ret=true;
-						break;
+		for(String path : listPath) {
+			path+="/";
+			HashSet<String> projectNames = loadProjectsNames(path);
+			if(projectNames.isEmpty()){
+				// For debug purposes
+				//System.out.println("No projects to load");
+			}else{
+				//System.out.println("Loading projects");
+				for (String s : projectNames) {
+					if(s.contains(Project.FORMAT)) {
+						if(projectNames.contains(Project.RECOVERY+s)) {
+							ret=true;
+							break;
+						}
 					}
 				}
 			}
@@ -116,7 +119,6 @@ public abstract class Utils {
 
 		File[] files = new File(path).listFiles();
 		if(files==null) {
-			System.out.println("ok");
 			new File(path).mkdir();
 			files = new File(path).listFiles();
 		}
@@ -135,26 +137,34 @@ public abstract class Utils {
 		File[] files = new File(Project.getPATH()).listFiles();
 		//If this pathname does not denote a directory, then listFiles() returns null. 
 		for (File file : files) {
-		    if (file.isFile()) {
-		    	if(file.getName().contains(Project.RECOVERY))
-		    		file.delete();
-		    }
-		}
+			if (file.isFile()) {
+			    if(file.getName().contains(Project.RECOVERY))
+			    	file.delete();
+			    }
+			}
 	}
+		
 	
-	public static void replaceRecovery() {
-		//Search RecpveryFiles
-		File[] files = new File(Project.getPATH()).listFiles();
-		//If this pathname does not denote a directory, then listFiles() returns null. 
-		for (File file : files)
-		    if (file.isFile()) 
-		    	if(file.getName().contains(Project.RECOVERY)) {
-		    		String fileName = file.getName().replace(Project.RECOVERY, "");
-		    		//System.out.println();
-		    		File fileToDelete = new File(Project.getPATH()+fileName);
-		    		fileToDelete.delete();
-		    		file.renameTo(new File(Project.getPATH()+fileName));
-		    	}
+	
+	public static void replaceRecovery(Main main) throws IOException {
+		List<String> listPath = main.loadPath();
+		boolean ret = false;
+		for(String path : listPath) {
+			path+="/";
+			//Search RecpveryFiles
+			File[] files = new File(path).listFiles();
+			//If this pathname does not denote a directory, then listFiles() returns null. 
+			for (File file : files)
+			    if (file.isFile()) 
+			    	if(file.getName().contains(Project.RECOVERY)) {
+			    		String fileName = file.getName().replace(Project.RECOVERY, "");
+			    		//System.out.println();
+			    		File fileToDelete = new File(path+fileName);
+			    		fileToDelete.delete();
+			    		file.renameTo(new File(path+fileName));
+			    	}
+		}
+		
 	}
 	
 	public static String toRGBCode( Color color )
