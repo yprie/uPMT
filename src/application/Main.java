@@ -184,8 +184,8 @@ public class Main extends Application {
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
-		//final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
-		final String initPath = "./save";
+		final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		//final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
 			this.mainViewController.alertRecovery();
@@ -353,6 +353,9 @@ public class Main extends Application {
 	 * @path: path to save
 	 */
 	public void savePath(String path) throws IOException {
+		if(path.contains("\\")) {
+			path.replace("\\", "/");
+		}
         LinkedList<String> list = null;
         if(new File(fileOfPath).isFile()) {
         	

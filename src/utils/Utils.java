@@ -57,6 +57,9 @@ public abstract class Utils {
 	public static void loadProjects(LinkedList<Project> projects, Main main) throws IOException{
 		List<String> listPath = main.loadPath();
 		for(String path : listPath) {
+			if(path.contains("/C")) {
+				path.replace("/C", "C");
+			}
 			path+="/";
 			HashSet<String> projectNames = loadProjectsNames(path);
 			if(!projectNames.isEmpty()){
