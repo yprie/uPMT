@@ -344,6 +344,7 @@ public class Main extends Application {
 	public void saveCurrentProjectAs(String pathLocation, String name) throws IOException{
 		needSave = false;
 		currentProject.saveAs(pathLocation, name.replace(".upmt", ""));
+		pathLocation = pathLocation.replace("\\"+name, "");
 		this.savePath(pathLocation.replace("/"+name, ""));
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 	}
@@ -355,6 +356,9 @@ public class Main extends Application {
 	public void savePath(String path) throws IOException {
 		if(path.contains("\\")) {
 			path.replace("\\", "/");
+		}
+		if(path.contains("/C")) {
+			path.replace("/C", "C");
 		}
         LinkedList<String> list = null;
         if(new File(fileOfPath).isFile()) {
@@ -414,6 +418,7 @@ public class Main extends Application {
         	if(!isProject) { //project is not in the project's list 
         		String name = file.getPath();
         		name = name.replace("/"+file.getName(), "");
+        		name = name.replace("\\"+file.getName(), "");
         		this.savePath(name);
         		Utils.loadProjects(projects, this);
         		for(Project p : projects) {
