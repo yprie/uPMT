@@ -175,6 +175,7 @@ public class Main extends Application {
 		}
 	}
 	
+	
 	/**
 	 * Method used to load all the projects
 	 * @throws IOException 
