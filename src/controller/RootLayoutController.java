@@ -308,6 +308,7 @@ public class RootLayoutController implements Initializable{
 		main.changeLocaleAndReload("cn");
 	}
 	// Add your new language here
+	
 	// Keyboard shortcuts 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
