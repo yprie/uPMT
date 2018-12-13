@@ -4,6 +4,8 @@ uPMT is aimed at researchers using microphenomenology interviews (also know as e
 
 Current work is carried out by Gwenaelle Gouriten, Salma Hichami,  Othman Houmair. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron. Version 0.1 to 0.3 were implemented by Mehdi Haddad, with the help of Eva Boon and Yinxing Huang, under the supervision of Yannick Prié. 
 
+Download the latest version at: https://github.com/yprie/uPMT/releases
+
 # LICENCE
 
 See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3). 
