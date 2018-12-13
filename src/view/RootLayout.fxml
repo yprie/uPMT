@@ -13,7 +13,9 @@
           <Menu mnemonicParsing="false" text="%file">
             <items>
                   <MenuItem fx:id="openProject" mnemonicParsing="false" onAction="#openProject" text="%open_project" />
+                  <MenuItem fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProjectAs" text="%open_project_as" />
                   <MenuItem fx:id="saveProject" mnemonicParsing="false" onAction="#saveProject" text="%save_project" />
+                  <MenuItem fx:id="saveProjectAs" mnemonicParsing="false" onAction="#saveProjectAs" text="%save_project_as" />
                   <MenuItem fx:id="exportProject" mnemonicParsing="false" onAction="#exportProject" text="%export_project" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="newInterview" mnemonicParsing="false" onAction="#newInterview" text="%new_interview" />

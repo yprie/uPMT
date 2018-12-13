@@ -222,7 +222,7 @@ public class MainViewController implements Initializable, Observer {
 		});
 
 
-		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour à nouveau rendre le texte selectionnable
+		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour ï¿½ nouveau rendre le texte selectionnable
 		paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
@@ -325,7 +325,7 @@ public class MainViewController implements Initializable, Observer {
 		// TODO Auto-generated method stub
 	}
 	
-	public void alertRecovery(){
+	public void alertRecovery() throws IOException{
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(main._langBundle.getString("recovery"));
     	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));
@@ -336,7 +336,7 @@ public class MainViewController implements Initializable, Observer {
 
     	Optional<ButtonType> result = alert.showAndWait();
     	if (result.get() == buttonTypeOne){
-    		Utils.replaceRecovery();
+    		Utils.replaceRecovery(main);
     		alert.close();
     	} else if (result.get() == buttonTypeTwo) {
     		Utils.deleteRecovery();

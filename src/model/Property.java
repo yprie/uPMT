@@ -104,5 +104,4 @@ public class Property extends Type implements Serializable, Cloneable{
 		} 
 		return res;
 	}
-
 }
