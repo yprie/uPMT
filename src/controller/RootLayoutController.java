@@ -52,6 +52,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import utils.UndoCollector;
 import utils.Utils;
+import com.sun.javafx.PlatformUtil;
 
 public class RootLayoutController implements Initializable{
 		
@@ -291,14 +292,20 @@ public class RootLayoutController implements Initializable{
 		KeyCodeCombination keyCombSWindows=new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
 		KeyCodeCombination keyCombNMac=new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN);
 		KeyCodeCombination keyCombNWindows=new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-		undo.setAccelerator(keyCombUMac);
-		undo.setAccelerator(keyCombUWindows);
-		redo.setAccelerator(keyCombRMac);
-		redo.setAccelerator(keyCombRWindows);
-		saveProject.setAccelerator(keyCombSMac);
-		saveProject.setAccelerator(keyCombSWindows);
-		newInterview.setAccelerator(keyCombNMac);
-		newInterview.setAccelerator(keyCombNWindows);
+		if (PlatformUtil.isMac()) {
+			undo.setAccelerator(keyCombUMac);
+			redo.setAccelerator(keyCombRMac);
+			saveProject.setAccelerator(keyCombSMac);
+			newInterview.setAccelerator(keyCombNMac);
+		}
+		else {
+			undo.setAccelerator(keyCombUWindows);
+			redo.setAccelerator(keyCombRWindows);
+			saveProject.setAccelerator(keyCombSWindows);
+			newInterview.setAccelerator(keyCombNWindows);
+		}
+		
+		
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
