@@ -81,6 +81,7 @@
     "mColor": "#000000",
     "mName": "Example"
   },
+  "path": "./save",
   "mInterviews": [
     {
       "mDescripteme": {

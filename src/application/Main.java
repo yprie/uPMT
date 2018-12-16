@@ -122,7 +122,7 @@ public class Main extends Application {
 	private String bundleRes=null;
 	private File fProperties=null;
 	private boolean needSave = false;
-	public final String fileOfPath = "resources/path.json";
+	public final String fileOfPath = "path.json";
 	
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -184,8 +184,9 @@ public class Main extends Application {
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
-		final String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
-		//final String initPath = "./save";
+		//String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		//initPath = initPath.replace("uPMT.jar", "save");
+		final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
 			this.mainViewController.alertRecovery();

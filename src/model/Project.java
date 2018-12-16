@@ -83,8 +83,8 @@ public class Project implements Serializable {
 		this.mName = n;
 		this.mInterviews = new LinkedList<DescriptionInterview>();
 		this.mSchema = s;
-		//this.path = "./save";
-		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		this.path = "./save";
+		//this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		
 		SAVE_VERSION = VERSION_OF_APP;
 	}

@@ -62,9 +62,11 @@ public abstract class Utils {
 				path = path.replace("/C", "C");
 			}
 			path+="/";
+			System.out.println(path);
 			HashSet<String> projectNames = loadProjectsNames(path);
 			if(!projectNames.isEmpty()){
 				for (String projectName : projectNames) {
+					System.out.println(projectName);
 					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
 						Project project = Project.loadData(projectName, path);
 						if(project==null) {
