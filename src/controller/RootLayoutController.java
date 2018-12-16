@@ -322,6 +322,7 @@ public class RootLayoutController implements Initializable{
 		KeyCodeCombination keyCombNMac=new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN);
 		KeyCodeCombination keyCombNWindows=new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
 		if (PlatformUtil.isMac()) {
+			System.out.println("kkk");
 			undo.setAccelerator(keyCombUMac);
 			redo.setAccelerator(keyCombRMac);
 			saveProject.setAccelerator(keyCombSMac);

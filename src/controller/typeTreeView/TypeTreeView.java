@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeView.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -156,7 +156,7 @@ public class TypeTreeView extends TreeCell<TypeController>{
         getTreeItem().getChildren().add(newType);
         this.getTreeItem().setExpanded(true);
         //System.out.println("On ajoute une propriete !");
-        //System.out.println("On a essayé de la renommer");
+        //System.out.println("On a essayï¿½ de la renommer");
 	}
 
 	
