@@ -212,7 +212,7 @@ public class RootLayoutController implements Initializable{
 	    		Platform.exit();
 		        System.exit(0);
 	    	} else {
-	    		alert.close();
+	    		
 	    		try {
 	   	    	 	event.consume();
 				} catch (NullPointerException e) {
