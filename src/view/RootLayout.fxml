@@ -33,8 +33,6 @@
                   <MenuItem fx:id="redo1" mnemonicParsing="false" onAction="#openFrenchVersion" text="Français" />
                   <MenuItem fx:id="redo11" mnemonicParsing="false" onAction="#openSpanishVersion" text="Español" />
                   <MenuItem fx:id="redo112" mnemonicParsing="false" onAction="#openItalienVersion" text="Italiano" />
-                  <MenuItem fx:id="redo111" mnemonicParsing="false" onAction="#openJapaneseVersion" text="日本の" />
-                  <MenuItem fx:id="redo1111" mnemonicParsing="false" onAction="#openChineseVersion" text="中文" />
                </items>
             </Menu>
              <Menu mnemonicParsing="false" text="%help">
