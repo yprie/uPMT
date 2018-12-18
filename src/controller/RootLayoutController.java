@@ -105,6 +105,8 @@ public class RootLayoutController implements Initializable{
 		final FileChooser directoryChooser = new FileChooser();
 		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		directoryChooser.setInitialFileName(main.getCurrentProject().getName()+Project.FORMAT);
+		directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
+		directoryChooser.setTitle("Save your project");
 		File dir = directoryChooser.showSaveDialog(primaryStage);
 		if(dir != null){
 			try {

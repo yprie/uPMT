@@ -184,9 +184,10 @@ public class Main extends Application {
 		this.projects = new LinkedList<Project>();
 		LoadDataProjects dc = LoadDataProjects.instance();
 		dc.setProjets(projects);
-		//String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
-		//initPath = initPath.replace("uPMT.jar", "save");
-		final String initPath = "./save";
+		String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+		initPath = initPath.replace("uPMT.jar", "save");
+		System.out.println("path " + initPath);
+		//final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
 			this.mainViewController.alertRecovery();
