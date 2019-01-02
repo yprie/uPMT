@@ -270,8 +270,8 @@ public class RootLayoutController implements Initializable{
 	public void openItalienVersion(){
 		main.changeLocaleAndReload("it");
 	}
-	// Add your new language here
 	
+	// Add your new language here
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY));
