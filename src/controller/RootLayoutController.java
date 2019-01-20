@@ -250,6 +250,33 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
+	public void momentsComparaison(){
+		Stage statsWindow = new Stage(StageStyle.UTILITY);
+		statsWindow.setTitle(main._langBundle.getString("moments_comparaison"));
+		statsWindow.setResizable(false);
+		statsWindow.initModality(Modality.APPLICATION_MODAL);
+ 
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			
+            loader.setLocation(getClass().getResource("/view/MomentComparaisonView.fxml"));
+            loader.setController(new MomentComparaisonController(main, statsWindow));
+           
+            loader.setResources(main._langBundle);
+    		
+            //////////
+            AnchorPane layout = (AnchorPane) loader.load();
+            Scene sc = new Scene(layout);
+            statsWindow.setScene(sc);
+			statsWindow.showAndWait();
+			
+		} catch (IOException e) {
+			// TODO Exit Program
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
 	public void close(){
 		this.saveRequest(null);
 	}

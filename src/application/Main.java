@@ -113,8 +113,6 @@ public class Main extends Application {
 	private String bundleRes=null;
 	
 	private File fProperties=null;
-	
-	
 	private boolean needSave = false;
 	
 	public void start(Stage primaryStage) throws IOException {
@@ -405,8 +403,9 @@ public class Main extends Application {
 			MomentExperience sub = m.getSubMoments().get(i);
 			writeMoment(ent,sub, writer, hierarchy+"."+(i+1));
 		}
-	}	
+	}
 	
+
 	/**
 	 * Exports the project p into a CSV file
 	 */
