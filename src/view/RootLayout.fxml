@@ -30,11 +30,11 @@
             <Menu mnemonicParsing="false" text="%language">
                <items>
                   <MenuItem fx:id="anglais" mnemonicParsing="false" onAction="#openEnglishVersion" text="English" />
-                  <MenuItem fx:id="redo1" mnemonicParsing="false" onAction="#openFrenchVersion" text="Français" />
-                  <MenuItem fx:id="redo11" mnemonicParsing="false" onAction="#openSpanishVersion" text="Español" />
+                  <MenuItem fx:id="redo1" mnemonicParsing="false" onAction="#openFrenchVersion" text="FranÃ§ais" />
+                  <MenuItem fx:id="redo11" mnemonicParsing="false" onAction="#openSpanishVersion" text="EspaÃ±ol" />
                   <MenuItem fx:id="redo112" mnemonicParsing="false" onAction="#openItalienVersion" text="Italiano" />
-                  <MenuItem fx:id="redo111" mnemonicParsing="false" onAction="#openJapaneseVersion" text="日本の" />
-                  <MenuItem fx:id="redo1111" mnemonicParsing="false" onAction="#openChineseVersion" text="中文" />
+                  <MenuItem fx:id="redo111" mnemonicParsing="false" onAction="#openJapaneseVersion" text="æ—¥æœ¬ã�®" />
+                  <MenuItem fx:id="redo1111" mnemonicParsing="false" onAction="#openChineseVersion" text="ä¸­æ–‡" />
                </items>
             </Menu>
              <Menu mnemonicParsing="false" text="%help">
@@ -46,6 +46,7 @@
             <Menu mnemonicParsing="false" text="%tools">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category" />
+                <MenuItem mnemonicParsing="false" onAction="#momentsComparaison" text="%moments_comparaison" />
               </items>
             </Menu>
         </menus>
