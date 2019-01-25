@@ -222,7 +222,7 @@ public class MainViewController implements Initializable, Observer {
 		});
 
 
-		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour à nouveau rendre le texte selectionnable
+		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour ï¿½ nouveau rendre le texte selectionnable
 		paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {

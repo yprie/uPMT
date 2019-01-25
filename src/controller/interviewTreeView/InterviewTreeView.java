@@ -1,7 +1,7 @@
 /*****************************************************************************
  * InterviewTreeView.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 		
 		ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("confirm"));
 		ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"), ButtonData.CANCEL_CLOSE);
-
+ 
 		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();

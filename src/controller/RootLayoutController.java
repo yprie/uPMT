@@ -185,7 +185,7 @@ public class RootLayoutController implements Initializable{
 	private void saveRequest(WindowEvent event){
 		if(!main.isNeedToBeSaved()) {
 			try {
-   	    	 event.consume();
+				event.consume();
 			} catch (NullPointerException e) {
 			//System.out.println("no event, exit normally");
 			}
@@ -212,10 +212,10 @@ public class RootLayoutController implements Initializable{
 	    		alert.close();
 	    		Platform.exit();
 		        System.exit(0);
-	    	} else if (result.get() == buttonTypeCancel){
-	    	    alert.close();
-	    	    try {
-	    	    	 event.consume();
+	    	} else {
+	    		
+	    		try {
+	   	    	 	event.consume();
 				} catch (NullPointerException e) {
 				//System.out.println("no event, exit normally");
 				}
@@ -300,8 +300,6 @@ public class RootLayoutController implements Initializable{
 			@Override
 			public void handle(WindowEvent event) {
 				saveRequest(event);
-				Platform.exit();
-		        System.exit(0);
 			}
 		});
 	}
