@@ -59,7 +59,10 @@ public class MomentComparaison {
 					}
 					System.out.println("size 2 " + moment.getSubMoments().size());
 					if(subMoment.getSubMoments().size()==0) {
+						MomentExperience nullMoment = new MomentExperience();
+						nullMoment.setName("nullMoment");
 						System.out.println("taille sous moment = 0");
+						mMoments.add(nullMoment);
 					}
 					if(subMoment.getSubMoments().size()>0) {
 						lookingForSubMoments(subMoment);
@@ -85,7 +88,10 @@ public class MomentComparaison {
 			for(Category c : subMoment.getCategories()){
 			}
 			if(subMoment.getSubMoments().size()==0) {
+				MomentExperience nullMoment = new MomentExperience();
 				System.out.println("taille sous moment = 0");
+				nullMoment.setName("nullMoment");
+				mMoments.add(nullMoment);
 			}
 			if(subMoment.getSubMoments().size()>0) {
 				lookingForSubMoments(subMoment);

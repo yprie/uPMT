@@ -58,10 +58,18 @@ public class MomentComparaisonController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		MomentComparaison.getInstance().update(main);
-		
-		MomentComparaison.getmMoments();
+		float largeur = 100;
 		for(MomentExperience moments : MomentComparaison.getmMoments()) {
-			System.out.println(moments.toString());
+			System.out.println(moments.getName());
+			System.out.println("largeur moment 1 " + largeur);
+			if(moments.getSubMoments().size()>0) {
+				largeur = largeur/moments.getSubMoments().size();
+				for(MomentExperience m : moments.getSubMoments()) {
+					
+					System.out.println(m.getName());
+					System.out.println("largeur moment 2 " + largeur);
+				}
+			}
 		}
 		
 		//statsGrid = new GridPane();
