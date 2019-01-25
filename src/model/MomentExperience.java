@@ -284,4 +284,5 @@ public class MomentExperience implements Serializable, Cloneable {
 		return mCurrentProperty;
 	}
 
+
 }

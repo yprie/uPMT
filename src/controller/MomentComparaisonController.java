@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.CheckboxMenuItem;
+import java.awt.Insets;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,14 +15,18 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -52,13 +57,32 @@ public class MomentComparaisonController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		MomentComparaison.getInstance().update(main);
-		statsGrid = new GridPane();
-		statsGrid.setAlignment(Pos.CENTER);
-		statsGrid.setStyle("-fx-padding:  15 0 0 0;");
+		//statsGrid = new GridPane();
+		//statsGrid.setAlignment(Pos.CENTER);
+		//statsGrid.setStyle("-fx-padding:  15 0 0 0;");
+		 HBox statsGrid = new HBox();
+		 VBox statsGrid2 = new VBox();
+	        
+		 statsGrid.setSpacing(10);
+		 //statsGrid.setPadding(new Insets(15,20, 10,10));
 		
-
+		TitledPane t1 = new TitledPane("T1", new Button("B1"));
+		Accordion accordion = new Accordion();
+	    accordion.getPanes().addAll(t1);
+	    statsGrid.getChildren().add(accordion);
+	    
+		TitledPane t2 = new TitledPane("T2", new Button("B2"));
+		Accordion accordion2 = new Accordion();
+	    accordion2.getPanes().addAll(t2);
+	    statsGrid.getChildren().add(accordion2);
+	    //statsGrid.getChildren().add(statsGrid2);
+	    
+	    Button b = new Button("bla");
+	    statsGrid.getChildren().add(b);
+	    
 		/* display all */
 		this.centralPane.getChildren().add(statsGrid);
+		
 		buttonCloseStats.setText(main._langBundle.getString("close"));
 		
 	}

@@ -2,18 +2,12 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-
 import application.Main;
 import model.Category;
 import model.DescriptionInterview;
-import model.Folder;
 import model.MomentExperience;
 import model.Project;
-import model.Property;
-import model.Schema;
-import model.Type;
 
 public class MomentComparaison {
 	/* Singleton */
@@ -41,28 +35,43 @@ public class MomentComparaison {
    * @param p the current project
    */
     private static void lookingForMoment(Project p) {
+    	
+    	
     	System.out.println("name  " + p.getInterviews().toString());
-    	for(DescriptionInterview ent : p.getInterviews()){
+    	HashMap<String, Integer> mapMoments = new HashMap<String, Integer>();
+    	
+    	for(DescriptionInterview interview : p.getInterviews()){
     		//get all moment in interview
-		    for (int i = 0; i < ent.getMoments().size(); i++) {
-				MomentExperience m = ent.getMoments().get(i);
-				System.out.println("moment " + m.getName());
+		    for (int i = 0; i < interview.getMoments().size(); i++) {
+		    	System.out.println("le 1er i "+i);
+				MomentExperience moment = interview.getMoments().get(i);
+				System.out.println(moment.toString());
+				
+				/*
+				System.out.println(moment.getName() + " nb Fils " + moment.getSubMoments().size());
+				//System.out.println("moi " + moment.getID() + " parent " +  moment.getParentID());
 				//get category
-				for(Category c : m.getCategories()){
-					System.out.println("category: " + c.getName());
+				for(Category c : moment.getCategories()){
+					//System.out.println("category: " + c.getName());
 				}
 				//get all sub moments of the moment
-				for (int j = 0; j < m.getSubMoments().size(); j++) {
-					MomentExperience sub = m.getSubMoments().get(j);
-					System.out.println("sous moment: " + sub.getName());
-					for(Category c : m.getCategories()){
-						System.out.println("category: " + c.getName());
+				for (int j = 0; j < moment.getSubMoments().size(); j++) {
+					System.out.println("le 1er j "+j);
+					MomentExperience subMoment = moment.getSubMoments().get(j);
+					System.out.println(subMoment.getName() + " nb Fils " + subMoment.getSubMoments().size());
+					for(Category c : subMoment.getCategories()){
+						//System.out.println("category: " + c.getName());
+						
 					}
-					if(sub.getSubMoments().size()>0) {
-						lookingForSubMoments(sub);
+					if(subMoment.getSubMoments().size()>0) {
+						lookingForSubMoments(subMoment);
 					}
 				}
+				//System.out.println("fin boucle");
+				 *
+				 */
 		    }
+		    
     	}
     }
 
@@ -71,15 +80,18 @@ public class MomentComparaison {
 	* finds all the sub moment for a moment given
 	* @param the current moment.
 	*/
-    private static void lookingForSubMoments(MomentExperience m) {
-    	for (int j = 0; j < m.getSubMoments().size(); j++) {
-    		MomentExperience sub = m.getSubMoments().get(j);
-			System.out.println("sous moment: " + sub.getName());
-			for(Category c : m.getCategories()){
-				System.out.println("category: " + c.getName());
+    private static void lookingForSubMoments(MomentExperience moment) {
+    	for (int j = 0; j < moment.getSubMoments().size(); j++) {
+    		
+    		//System.out.println("parent " +  moment.getParentID());
+    		MomentExperience subMoment = moment.getSubMoments().get(j);
+			System.out.println(subMoment.getName() + " nb Fils " + subMoment.getSubMoments().size());
+			for(Category c : subMoment.getCategories()){
+				//System.out.println("le 2er j "+j + " " + moment.getParentCol());
+				//System.out.println("category: " + c.getName());
 			}
-			if(sub.getSubMoments().size()>0) {
-				lookingForSubMoments(sub);
+			if(subMoment.getSubMoments().size()>0) {
+				lookingForSubMoments(subMoment);
 			}
 		}
     }
