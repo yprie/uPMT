@@ -20,10 +20,12 @@
 
 package controller;
 
+import java.awt.im.InputContext;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -274,28 +276,37 @@ public class RootLayoutController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		KeyCodeCombination keyCombUMac=new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
-		KeyCodeCombination keyCombUWindows=new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-		KeyCodeCombination keyCombRMac=new KeyCodeCombination(KeyCode.Y, KeyCombination.META_DOWN);
-		KeyCodeCombination keyCombRWindows=new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
-		KeyCodeCombination keyCombSMac=new KeyCodeCombination(KeyCode.S, KeyCombination.META_DOWN);
-		KeyCodeCombination keyCombSWindows=new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		KeyCodeCombination keyCombNMac=new KeyCodeCombination(KeyCode.N, KeyCombination.META_DOWN);
-		KeyCodeCombination keyCombNWindows=new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-		if (PlatformUtil.isMac()) {
-			undo.setAccelerator(keyCombUMac);
-			redo.setAccelerator(keyCombRMac);
-			saveProject.setAccelerator(keyCombSMac);
-			newInterview.setAccelerator(keyCombNMac);
+		final KeyCodeCombination keyCombREDO=new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombSAVE=new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombNEW=new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
+		InputContext context = InputContext.getInstance(); 
+		String loc = context.getLocale().toString();
+		System.out.println(loc);  
+		// javafx keyboard layout bug management 
+		if(PlatformUtil.isMac()) {
+			if (loc.equals("fr")){
+				Locale.setDefault(Locale.FRANCE);
+			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+				undo.setAccelerator(keyCombUNDO);
+				redo.setAccelerator(keyCombREDO);
+				saveProject.setAccelerator(keyCombSAVE);
+				newInterview.setAccelerator(keyCombNEW);
+			} else {
+				Locale.setDefault(Locale.US);
+				KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+				undo.setAccelerator(keyCombUNDO);
+				redo.setAccelerator(keyCombREDO);
+				saveProject.setAccelerator(keyCombSAVE);
+				newInterview.setAccelerator(keyCombNEW);
+			}
+		}else {
+		    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+			undo.setAccelerator(keyCombUNDO);
+			redo.setAccelerator(keyCombREDO);
+			saveProject.setAccelerator(keyCombSAVE);
+			newInterview.setAccelerator(keyCombNEW);
 		}
-		else {
-			undo.setAccelerator(keyCombUWindows);
-			redo.setAccelerator(keyCombRWindows);
-			saveProject.setAccelerator(keyCombSWindows);
-			newInterview.setAccelerator(keyCombNWindows);
-		}
-		
-		
+	
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
