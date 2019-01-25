@@ -61,7 +61,6 @@ public class MomentComparaison {
 					if(subMoment.getSubMoments().size()==0) {
 						MomentExperience nullMoment = new MomentExperience();
 						nullMoment.setName("nullMoment");
-						System.out.println("taille sous moment = 0");
 						mMoments.add(nullMoment);
 					}
 					if(subMoment.getSubMoments().size()>0) {
@@ -109,6 +108,7 @@ public class MomentComparaison {
      * @param main
      */
     public static void update(Main main) {
+    	instance.mMoments.clear();
     	instance.lookingForMoment(main.getCurrentProject());
     }
     

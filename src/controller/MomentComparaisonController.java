@@ -58,10 +58,33 @@ public class MomentComparaisonController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		MomentComparaison.getInstance().update(main);
+		
 		float largeur = 100;
+		System.out.println("LALILALALALALALALLALALALALAL");
+		
+		HBox statsGrid = new HBox();
+		HBox statsGrid2 = new HBox();
+		
 		for(MomentExperience moments : MomentComparaison.getmMoments()) {
 			System.out.println(moments.getName());
 			System.out.println("largeur moment 1 " + largeur);
+			
+			
+			/******/
+			// Des qu'il y a un UUUUU changer de VBOX (peut etre faire un for pour creer des VBOX selon la size de la liste moments
+				statsGrid.setSpacing(10+largeur);
+				TitledPane t1 = new TitledPane(moments.getName(), new Button("B1"));
+				Accordion accordion = new Accordion();
+			    accordion.getPanes().addAll(t1);
+			    statsGrid.getChildren().add(accordion);
+			   
+
+			
+		    
+		    /******/
+		    
+		    System.out.println("UUUUUUUUUUUUUUUUU");
+		    
 			if(moments.getSubMoments().size()>0) {
 				largeur = largeur/moments.getSubMoments().size();
 				for(MomentExperience m : moments.getSubMoments()) {
@@ -70,34 +93,18 @@ public class MomentComparaisonController implements Initializable{
 					System.out.println("largeur moment 2 " + largeur);
 				}
 			}
-		}
+					}
 		
 		//statsGrid = new GridPane();
 		//statsGrid.setAlignment(Pos.CENTER);
 		//statsGrid.setStyle("-fx-padding:  15 0 0 0;");
-		 HBox statsGrid = new HBox();
-		 VBox statsGrid2 = new VBox();
-	        
-		 statsGrid.setSpacing(10);
-		 //statsGrid.setPadding(new Insets(15,20, 10,10));
-		
-		TitledPane t1 = new TitledPane("T1", new Button("B1"));
-		Accordion accordion = new Accordion();
-	    accordion.getPanes().addAll(t1);
-	    statsGrid.getChildren().add(accordion);
-	    
-		TitledPane t2 = new TitledPane("T2", new Button("B2"));
-		Accordion accordion2 = new Accordion();
-	    accordion2.getPanes().addAll(t2);
-	    statsGrid.getChildren().add(accordion2);
-	    //statsGrid.getChildren().add(statsGrid2);
-	    
-	    Button b = new Button("bla");
-	    statsGrid.getChildren().add(b);
+		 
+
 	    
 		/* display all */
 		this.centralPane.getChildren().add(statsGrid);
-		
+		this.centralPane.getChildren().add(statsGrid2);
+		 
 		buttonCloseStats.setText(main._langBundle.getString("close"));
 		
 	}
