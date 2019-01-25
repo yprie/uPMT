@@ -167,8 +167,8 @@ public class Main extends Application {
 			Locale.setDefault(Locale.FRANCE);
 		} else if (loc.equals("en")) {
 			Locale.setDefault(Locale.US);
-		} else if (loc.equals("cn")) {
-			Locale.setDefault(Locale.CHINA);
+		} else if (loc.equals("es")) {
+			Locale.setDefault(Locale.US);
 		}
 		else {
 		//System.out.println("ERREUR");
@@ -448,7 +448,17 @@ public class Main extends Application {
 		saveCurrentProject();
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(_langBundle.getString("confirmation_dialog"));
-        alert.setHeaderText(_langBundle.getString("take_effect_text"));
+        if(locale.equals("it")) {
+        	alert.setHeaderText(_langBundle.getString("take_effect_text_it"));
+        	locale = "en";
+        } else if (locale.equals("es")) {
+        	System.out.println("es");
+        	alert.setHeaderText(_langBundle.getString("take_effect_text_es"));
+        	locale = "en";
+        } else {
+        	 alert.setHeaderText(_langBundle.getString("take_effect_text"));
+        }
+        
         alert.setContentText(_langBundle.getString("ok_text"));
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -456,6 +466,7 @@ public class Main extends Application {
             // ... user chose OK
         	try {
     	        Properties props = new Properties();
+    	        System.out.println("loc " + locale);
     	        props.setProperty("locale", locale);
     	        OutputStream out= ResourceLoader.loadBundleOutput("Current.properties");
     	        props.store(out, "This is an optional header comment string");
