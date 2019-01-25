@@ -271,17 +271,7 @@ public class RootLayoutController implements Initializable{
 	public void openItalienVersion(){
 		main.changeLocaleAndReload("it");
 	}
-	@FXML
-	public void openJapaneseVersion(){
-		main.changeLocaleAndReload("jp");
-	}
-	@FXML
-	public void openChineseVersion(){
-		main.changeLocaleAndReload("cn");
-	}
-	// Add your new language here
 	
-	// Keyboard shortcuts using KeyCodeCombination
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		KeyCodeCombination keyCombUMac=new KeyCodeCombination(KeyCode.Z, KeyCombination.META_DOWN);
