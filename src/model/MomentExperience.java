@@ -284,5 +284,14 @@ public class MomentExperience implements Serializable, Cloneable {
 		return mCurrentProperty;
 	}
 
+	public String toString() {
+		String res;
+		res=this.mName;
+		for(MomentExperience e : mSubMoments) {
+			res = " " + e.mName;
+		}
+		return res;
+		
+	}
 
 }
