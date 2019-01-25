@@ -32,6 +32,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Category;
 import model.DescriptionInterview;
+import model.MomentExperience;
 import model.Type;
 import utils.IStats;
 import utils.MomentComparaison;
@@ -57,6 +58,12 @@ public class MomentComparaisonController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		MomentComparaison.getInstance().update(main);
+		
+		MomentComparaison.getmMoments();
+		for(MomentExperience moments : MomentComparaison.getmMoments()) {
+			System.out.println(moments.toString());
+		}
+		
 		//statsGrid = new GridPane();
 		//statsGrid.setAlignment(Pos.CENTER);
 		//statsGrid.setStyle("-fx-padding:  15 0 0 0;");

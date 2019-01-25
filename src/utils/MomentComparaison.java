@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class MomentComparaison {
     private static MomentComparaison instance = null;
     private ArrayList<Category> mCategories = null;
     private ArrayList<DescriptionInterview> mInterviews = null;
-    private ArrayList<MomentExperience> mMomentsTmp = null;
+    private static ArrayList<MomentExperience> mMoments = null;
     private Map<DescriptionInterview, ArrayList<MomentExperience>> mItwMoments = null;
     
     public static MomentComparaison getInstance() {           
@@ -25,7 +26,7 @@ public class MomentComparaison {
         	instance.mCategories = new ArrayList<Category>();
         	instance.mInterviews = new ArrayList<DescriptionInterview>();
         	instance.mItwMoments = new HashMap<DescriptionInterview, ArrayList<MomentExperience>>();
-        	instance.mMomentsTmp = new ArrayList<MomentExperience>();
+        	instance.mMoments = new ArrayList<MomentExperience>();
         }
         return instance;
     }
@@ -38,38 +39,32 @@ public class MomentComparaison {
     	
     	
     	System.out.println("name  " + p.getInterviews().toString());
-    	HashMap<String, Integer> mapMoments = new HashMap<String, Integer>();
+    	
     	
     	for(DescriptionInterview interview : p.getInterviews()){
     		//get all moment in interview
 		    for (int i = 0; i < interview.getMoments().size(); i++) {
-		    	System.out.println("le 1er i "+i);
+		    	
 				MomentExperience moment = interview.getMoments().get(i);
-				System.out.println(moment.toString());
-				
-				/*
-				System.out.println(moment.getName() + " nb Fils " + moment.getSubMoments().size());
-				//System.out.println("moi " + moment.getID() + " parent " +  moment.getParentID());
-				//get category
+				mMoments.add(moment);
 				for(Category c : moment.getCategories()){
-					//System.out.println("category: " + c.getName());
 				}
-				//get all sub moments of the moment
+				//System.out.println("hhhh1" + moment.toString());
+				System.out.println("size 1 " + moment.getSubMoments().size());
 				for (int j = 0; j < moment.getSubMoments().size(); j++) {
-					System.out.println("le 1er j "+j);
 					MomentExperience subMoment = moment.getSubMoments().get(j);
-					System.out.println(subMoment.getName() + " nb Fils " + subMoment.getSubMoments().size());
+					mMoments.add(subMoment);
+					//System.out.println("hhhh2" + subMoment.toString());
 					for(Category c : subMoment.getCategories()){
-						//System.out.println("category: " + c.getName());
-						
+					}
+					System.out.println("size 2 " + moment.getSubMoments().size());
+					if(subMoment.getSubMoments().size()==0) {
+						System.out.println("taille sous moment = 0");
 					}
 					if(subMoment.getSubMoments().size()>0) {
 						lookingForSubMoments(subMoment);
 					}
 				}
-				//System.out.println("fin boucle");
-				 *
-				 */
 		    }
 		    
     	}
@@ -81,14 +76,16 @@ public class MomentComparaison {
 	* @param the current moment.
 	*/
     private static void lookingForSubMoments(MomentExperience moment) {
+    	System.out.println("size 3 " + moment.getSubMoments().size());
     	for (int j = 0; j < moment.getSubMoments().size(); j++) {
-    		
-    		//System.out.println("parent " +  moment.getParentID());
     		MomentExperience subMoment = moment.getSubMoments().get(j);
-			System.out.println(subMoment.getName() + " nb Fils " + subMoment.getSubMoments().size());
+    		//System.out.println("hhhh3" + subMoment.toString());
+
+    		mMoments.add(subMoment);
 			for(Category c : subMoment.getCategories()){
-				//System.out.println("le 2er j "+j + " " + moment.getParentCol());
-				//System.out.println("category: " + c.getName());
+			}
+			if(subMoment.getSubMoments().size()==0) {
+				System.out.println("taille sous moment = 0");
 			}
 			if(subMoment.getSubMoments().size()>0) {
 				lookingForSubMoments(subMoment);
@@ -97,14 +94,15 @@ public class MomentComparaison {
     }
 	
 	
-    /**
+    public static ArrayList<MomentExperience> getmMoments() {
+		return mMoments;
+	}
+
+	/**
      * refresh the singleton's attributes
      * @param main
      */
     public static void update(Main main) {
-    	instance.mCategories.clear();
-    	instance.mInterviews.clear();
-    	instance.mItwMoments.clear();
     	instance.lookingForMoment(main.getCurrentProject());
     }
     
