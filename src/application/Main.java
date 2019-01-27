@@ -122,7 +122,7 @@ public class Main extends Application {
 	private String bundleRes=null;
 	private File fProperties=null;
 	private boolean needSave = false;
-	public final String fileOfPath = "path.json";
+	public final String fileOfPath = System.getProperty("user.home")+"/.upmt/path.json";
 	
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -151,7 +151,7 @@ public class Main extends Application {
 	 */
 	private void loadProperties () {
 		Properties pros = new Properties();
-		InputStream is = ResourceLoader.loadBundleInput("Current.properties");
+		InputStream is = ResourceLoader.loadBundleInput("test/Current.properties");
 			
 		try {
  			pros.load(is);
@@ -363,8 +363,11 @@ public class Main extends Application {
 			path = path.replace("/C", "C");
 		}
         LinkedList<String> list = null;
+        if (!Files.exists(Paths.get(System.getProperty("user.home")+"/.upmt/"))) {
+		    new File(System.getProperty("user.home")+"/.upmt/").mkdir();
+		}
+        
         if(new File(fileOfPath).isFile()) {
-        	
         	list = loadPath();
         	if(!list.contains(path)) {
         		list.add(path);
@@ -374,7 +377,6 @@ public class Main extends Application {
                 osWriter.close();
         	}
         } else {
-        	System.out.println("ok");
         	Gson gson = new Gson();
             Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
             list = new LinkedList<String>();
@@ -468,7 +470,7 @@ public class Main extends Application {
     	        Properties props = new Properties();
     	        System.out.println("loc " + locale);
     	        props.setProperty("locale", locale);
-    	        OutputStream out= ResourceLoader.loadBundleOutput("Current.properties");
+    	        OutputStream out= ResourceLoader.loadBundleOutput(System.getProperty("user.home")+"/.upmt/"+"Current.properties");
     	        props.store(out, "This is an optional header comment string");
     	    }
     	    catch (Exception e ) {
