@@ -193,7 +193,7 @@ public class Main extends Application {
 		dc.setProjets(projects);
 		String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		initPath = initPath.replace("uPMT.jar", "save");
-		System.out.println("path " + initPath);
+		System.out.println("patHHHHh " + initPath);
 		//final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {

@@ -87,15 +87,18 @@ public class Project implements Serializable {
 		//this.path = "./save";
 		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("uPMT.jar", "save");
-		System.out.println("path " + this.path);
 		SAVE_VERSION = VERSION_OF_APP;
 	}
 	
 	
 	public void initializePath() {
 		if(this.path==null) {
+			System.out.println("pathhhh " + this.path);
 			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("uPMT.jar", "save");
+			this.path = this.path.replace("bin/", "save");
+			this.path = this.path.replace("uPMT.jar", "save");
+			System.out.println("pathDDD " + this.path);
 		}
 	}
 	
