@@ -26,16 +26,16 @@ public class ResourceLoader {
     
     public static InputStream loadBundleInput(String bundleName){
     	InputStream ret = null;
-    	File f = new File("./data/"+bundleName);
+    	File f = new File(System.getProperty("user.home")+"/upmt/"+bundleName);
     	try{
 	    	if(!f.exists()) {
-	    		new File("./data/").mkdir();
+	    		new File(System.getProperty("user.home")+"/upmt/").mkdir();
     			f.createNewFile();
-    			PrintWriter writer = new PrintWriter("./data/"+bundleName, "UTF-8");
+    			PrintWriter writer = new PrintWriter(System.getProperty("user.home")+"/upmt/"+bundleName, "UTF-8");
     			writer.println("locale=en");
         		writer.close();
 	    	}
-	    	ret = new FileInputStream(new File("./data/"+bundleName));
+	    	ret = new FileInputStream(new File(System.getProperty("user.home")+"/upmt/"+bundleName));
     	}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -44,7 +44,7 @@ public class ResourceLoader {
     
     public static OutputStream loadBundleOutput(String bundleName){
     	try {
-        	File f = new File("./data/"+bundleName);
+        	File f = new File(System.getProperty("user.home")+"/upmt/"+bundleName);
 	        return new FileOutputStream( f );
     	}catch(Exception e) {
     		return null;
