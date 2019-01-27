@@ -426,7 +426,7 @@ public class Main extends Application {
 			}
 			
 			//get date and time
-			DateFormat df = new SimpleDateFormat("dd/MM/yy_HH//mm:ss");
+			DateFormat df = new SimpleDateFormat("dd/MM/yy_HH//mm");
 			Calendar calobj = Calendar.getInstance();
 			System.out.println(df.format(calobj.getTime()));
 	        String date = df.format(calobj.getTime());
@@ -435,7 +435,7 @@ public class Main extends Application {
 	        date = date.replace(":", "m");
 	        date = date.replaceAll("/", ":");
 
-			PrintWriter writer = new PrintWriter("./save/"+p.getName()+ "_" + date+ "s" +".csv", "UTF-8");
+			PrintWriter writer = new PrintWriter("./save/"+p.getName()+ "_" + date +".csv", "UTF-8");
 			
 		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
 			for(DescriptionInterview ent : p.getInterviews()){
