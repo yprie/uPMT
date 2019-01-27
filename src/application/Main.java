@@ -39,6 +39,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -78,6 +84,7 @@ import model.Category;
 import model.Descripteme;
 import model.DescriptionInterview;
 import model.Folder;
+import java.text.SimpleDateFormat;  
 import model.MomentExperience;
 import model.Project;
 import model.Property;
@@ -527,10 +534,23 @@ public class Main extends Application {
 	public void export(Project p){
 		ObjectOutputStream oos = null;
 		try {
-			if (!Files.exists(Paths.get("./exports/"))) {
-			    new File("./exports/").mkdir();
+			
+			if (!Files.exists(Paths.get("./save/"))) {
+			    new File("./save/").mkdir();
 			}
-			PrintWriter writer = new PrintWriter("./exports/"+p.getName()+".csv", "UTF-8");
+			
+			//get date and time
+			DateFormat df = new SimpleDateFormat("dd/MM/yy_HH//mm");
+			Calendar calobj = Calendar.getInstance();
+			System.out.println(df.format(calobj.getTime()));
+	        String date = df.format(calobj.getTime());
+	       
+	        date = date.replace("//", "h");
+	        date = date.replace(":", "m");
+	        date = date.replaceAll("/", ":");
+
+			PrintWriter writer = new PrintWriter("./save/"+p.getName()+ "_" + date +".csv", "UTF-8");
+			
 		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
 			for(DescriptionInterview ent : p.getInterviews()){
 			    for (int i = 0; i < ent.getMoments().size(); i++) {
