@@ -16,15 +16,12 @@
 
 <AnchorPane prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">    <children>
        <VBox prefHeight="480.0" prefWidth="800.0">
-          <children>
+        <children>
              <HBox>
                 <children>
-                  <Label id="wel" text="%welcome" textFill="#9a1111">
-                      <font>
-                         <Font size="32.0" />
-                      </font>
+                  <Label id="wel" text="" textFill="#9a1111">
                       <padding>
-                         <Insets bottom="20.0" top="30.0" />
+                         <Insets bottom="5.0" top="5.0" />
                       </padding>
                       <HBox.margin>
                          <Insets bottom="10.0" left="60.0" top="10.0" />
