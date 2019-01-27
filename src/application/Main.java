@@ -359,6 +359,9 @@ public class Main extends Application {
 		if(path.contains("\\")) {
 			path = path.replace("\\", "/");
 		}
+		if(path.contains(" ")) {
+			path = path.replace(" ", "_");
+		}
 		if(path.contains("/C")) {
 			path = path.replace("/C", "C");
 		}

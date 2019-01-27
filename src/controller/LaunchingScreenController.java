@@ -78,9 +78,14 @@ public class LaunchingScreenController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		//TODO: in this part, we prompt a lauchingScreen Dialog for open or create new project
-		ObservableList<Project> items = FXCollections.observableArrayList (m_main.getProjects());
+		for(Project p : m_main.getProjects()) {
+			
+		}
+		ObservableList<Project> items = FXCollections.observableArrayList(m_main.getProjects());
 		tousLesProjets.setItems(items);
+
 		tousLesProjets.getFocusModel().focus(0);
+		//tousLesProjets.setItems("ooo");
 		tousLesProjets.setCellFactory(new Callback<ListView<Project>, ListCell<Project>>() {
 	        @Override
 	        public ListCell<Project> call(ListView<Project> param) {
@@ -91,7 +96,7 @@ public class LaunchingScreenController implements Initializable{
 	                protected void updateItem(Project item, boolean empty) {
 	                    super.updateItem(item, empty);
 	                    if (item != null) {
-	                    	setText(item.getName());
+	                    	setText(item.getName() + " from " + item.getPath());
 	                    } else {
 	                    	setText(""); 
 	                    }

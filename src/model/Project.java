@@ -91,11 +91,14 @@ public class Project implements Serializable {
 		SAVE_VERSION = VERSION_OF_APP;
 	}
 	
+	
 	public void initializePath() {
 		if(this.path==null) {
-			this.path="./save";
+			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
+			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("uPMT.jar", "save");
 		}
 	}
+	
 	
 	public void addEntretiens(DescriptionInterview d){
 		this.mInterviews.add(d);
@@ -350,6 +353,14 @@ public class Project implements Serializable {
 	 */
 	public static String getPATH() {
 		return "./save/";
+	}
+	
+	/**
+	 * get project path
+	 * @return: default path
+	 */
+	public String getPath() {
+		return this.path;
 	}
 	
 }
