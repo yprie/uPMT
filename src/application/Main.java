@@ -261,7 +261,7 @@ public class Main extends Application {
 	        loader.setController(mainViewController);
 	        loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
 	        BorderPane mainView = (BorderPane) loader.load();
-	
+	        this.primaryStage.setTitle("µPMT - "+this.currentProject.getName()+".uPMT");
 	        // Show the scene containing the root layout.
 	        Scene scene = new Scene(mainView);
 	        rootLayout.setCenter(mainView);
@@ -348,7 +348,7 @@ public class Main extends Application {
 		currentProject.saveAs(pathLocation, name.replace(".upmt", ""));
 		pathLocation = pathLocation.replace("\\"+name, "");
 		this.savePath(pathLocation.replace("/"+name, ""));
-		this.primaryStage.setTitle(_langBundle.getString("main_title"));
+		this.primaryStage.setTitle("µPMT - "+this.currentProject.getName()+".uPMT");
 	}
 	
 	/**
@@ -406,12 +406,14 @@ public class Main extends Application {
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
 		File file = fileChooser.showOpenDialog(primaryStage);
 		
+		
         if (file != null) {
         	String projectToLoad = file.getName().replace(".upmt", "");
         	boolean isProject = false;
         	for(Project project : projects) {
         		if(project.getName().equals(projectToLoad)) {
         			this.setCurrentProject(project);
+        			this.primaryStage.setTitle("µPMT - "+this.currentProject.getName()+".uPMT");
         			this.launchMainView();
         			isProject=true;
         		} 
@@ -439,7 +441,7 @@ public class Main extends Application {
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
-		this.primaryStage.setTitle(_langBundle.getString("main_title")+" *");
+		this.primaryStage.setTitle("µPMT - "+this.currentProject.getName()+".uPMT");
 	}
 	
 	public boolean isNeedToBeSaved() {return needSave;}
@@ -570,6 +572,7 @@ public class Main extends Application {
 		currentProject = current;
 		if(currentProject!=null) {
 			//System.out.println("SET ! : "+this.currentProject.getName());
+			this.primaryStage.setTitle("µPMT - "+this.currentProject.getName()+".uPMT");
 		}
 		else {
 			//System.out.println("SET ! : null");
