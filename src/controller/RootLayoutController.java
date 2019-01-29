@@ -97,19 +97,24 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
-	public void saveProject(){
-		main.saveCurrentProject();
+	public void saveProject() throws IOException{
+		if(main.getCurrentProject().getIsAlreadSave()==false) {
+			saveProjectAs();
+		} else {
+			main.saveCurrentProject();
+		}
 	}
 	
 	@FXML
 	public void saveProjectAs() throws IOException{
-		Stage primaryStage = null;
+		main.getCurrentProject().setIsAlreadSave(true);
 		final FileChooser directoryChooser = new FileChooser();
 		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		directoryChooser.setInitialFileName(main.getCurrentProject().getName()+Project.FORMAT);
 		//directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
 		directoryChooser.setTitle("Save your project");
-		File dir = directoryChooser.showSaveDialog(primaryStage);
+		File dir = directoryChooser.showSaveDialog(this.window);
+		
 		if(dir != null){
 			try {
 				main.saveCurrentProjectAs(dir.getCanonicalPath(), dir.getName());

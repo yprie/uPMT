@@ -129,7 +129,7 @@ public class Main extends Application {
 	private String bundleRes=null;
 	private File fProperties=null;
 	private boolean needSave = false;
-	public final String fileOfPath = System.getProperty("user.home")+"/upmt/path.json";
+	public final String fileOfPath = System.getProperty("user.home")+"/.upmt/path.json";
 	
 	public void start(Stage primaryStage) throws IOException {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -193,7 +193,7 @@ public class Main extends Application {
 		dc.setProjets(projects);
 		String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		initPath = initPath.replace("uPMT.jar", "save");
-		System.out.println("patHHHHh " + initPath);
+		initPath = initPath.replace("%20", " ");
 		//final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
@@ -339,6 +339,7 @@ public class Main extends Application {
 	 * saves the current project
 	 */
 	public void saveCurrentProject(){
+
 		needSave = false;
 		currentProject.save();
 		//this.serializeListProject(projects);
@@ -366,15 +367,12 @@ public class Main extends Application {
 		if(path.contains("\\")) {
 			path = path.replace("\\", "/");
 		}
-		if(path.contains(" ")) {
-			path = path.replace(" ", "_");
-		}
 		if(path.contains("/C")) {
 			path = path.replace("/C", "C");
 		}
         LinkedList<String> list = null;
-        if (!Files.exists(Paths.get(System.getProperty("user.home")+"/upmt/"))) {
-		    new File(System.getProperty("user.home")+"/upmt/").mkdir();
+        if (!Files.exists(Paths.get(System.getProperty("user.home")+"/.upmt/"))) {
+		    new File(System.getProperty("user.home")+"/.upmt/").mkdir();
 		}
         
         if(new File(fileOfPath).isFile()) {
@@ -403,8 +401,21 @@ public class Main extends Application {
 	public LinkedList<String> loadPath() throws IOException {
 		Gson gson = new Gson();
 		Reader isReader = new InputStreamReader( new FileInputStream((fileOfPath)));
-        LinkedList<String> pathList = gson.fromJson(isReader, LinkedList.class);
+		LinkedList<String> pathList = gson.fromJson(isReader, LinkedList.class);
+		
+		for(String path : pathList) {
+        	File tmpDir = new File(path);
+        	if(!tmpDir.exists()) {
+        		pathList.remove(path);
+        	}
+        	
+        }
+        
+		Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
+        gson.toJson(pathList, osWriter);
+        osWriter.close();
         isReader.close();
+        
         return pathList;
 	}
 	
@@ -412,12 +423,11 @@ public class Main extends Application {
 	 *  Open project from a path
 	 */
 	public void openProjectAs() throws IOException{
-		Stage primaryStage = null;
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open your project");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
-		File file = fileChooser.showOpenDialog(primaryStage);
-		
+		File file = fileChooser.showOpenDialog(this.primaryStage);
+
         if (file != null) {
         	String projectToLoad = file.getName().replace(".upmt", "");
         	boolean isProject = false;
@@ -464,7 +474,6 @@ public class Main extends Application {
         	alert.setHeaderText(_langBundle.getString("take_effect_text_it"));
         	locale = "en";
         } else if (locale.equals("es")) {
-        	System.out.println("es");
         	alert.setHeaderText(_langBundle.getString("take_effect_text_es"));
         	locale = "en";
         } else {
@@ -478,7 +487,6 @@ public class Main extends Application {
             // ... user chose OK
         	try {
     	        Properties props = new Properties();
-    	        System.out.println("loc " + locale);
     	        props.setProperty("locale", locale);
     	        OutputStream out= ResourceLoader.loadBundleOutput("Current.properties");
     	        props.store(out, "This is an optional header comment string");
@@ -540,9 +548,8 @@ public class Main extends Application {
 			}
 			
 			//get date and time
-			DateFormat df = new SimpleDateFormat("dd/MM/yy_HH//mm");
+			DateFormat df = new SimpleDateFormat("dd.MM.yy_HH//mm");
 			Calendar calobj = Calendar.getInstance();
-			System.out.println(df.format(calobj.getTime()));
 	        String date = df.format(calobj.getTime());
 	       
 	        date = date.replace("//", "h");

@@ -79,9 +79,9 @@
     ],
     "mDescription": "",
     "mColor": "#000000",
-    "mName": "Example"
+    "mName": "SomeScheme"
   },
-  "path": "./save",
+  "path": "/Users/gouritengwenaelle/git/uPMT/save",
   "mInterviews": [
     {
       "mDescripteme": {
@@ -324,5 +324,6 @@
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
     }
-  ]
+  ],
+  "isAlreadySave": false
 }

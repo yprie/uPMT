@@ -79,26 +79,29 @@ public class Project implements Serializable {
 	private Schema mSchema;
 	private String path;
 	private LinkedList<DescriptionInterview> mInterviews;
+	private boolean isAlreadySave;
 
 	public Project(String n,Schema s){
 		this.mName = n;
 		this.mInterviews = new LinkedList<DescriptionInterview>();
 		this.mSchema = s;
+		isAlreadySave = false;
 		//this.path = "./save";
 		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("uPMT.jar", "save");
+		this.path = this.path.replace("%20", " ");
 		SAVE_VERSION = VERSION_OF_APP;
 	}
 	
 	
 	public void initializePath() {
 		if(this.path==null) {
-			System.out.println("pathhhh " + this.path);
 			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 			this.path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("uPMT.jar", "save");
-			this.path = this.path.replace("bin/", "save");
-			this.path = this.path.replace("uPMT.jar", "save");
-			System.out.println("pathDDD " + this.path);
+			this.path = this.path.replace("%20", " ");
+			//this.path = this.path.replace("bin/", "save");
+			//this.path = this.path.replace("uPMT.jar", "save");
+			this.path = this.path.replace("%20", " ");
 		}
 	}
 	
@@ -364,6 +367,22 @@ public class Project implements Serializable {
 	 */
 	public String getPath() {
 		return this.path;
+	}
+	
+	/**
+	 * get current project status
+	 * @return: 
+	 */
+	public boolean getIsAlreadSave() {
+		return this.isAlreadySave;
+	}
+	
+	/**
+	 * get current project status
+	 * @return: 
+	 */
+	public void setIsAlreadSave(boolean isAlreadySave) {
+		this.isAlreadySave = isAlreadySave;
 	}
 	
 }
