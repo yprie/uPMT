@@ -151,6 +151,8 @@ public class Main extends Application {
 		//Launching layouts
 		initRootLayout();
 		showLaunchingScreen();
+		
+		//Change the language
 	}
 	
 	/**
@@ -267,6 +269,9 @@ public class Main extends Application {
 	        loader.setLocation(getClass().getResource("/view/MainView.fxml"));
 	        loader.setController(mainViewController);
 	        loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
+	        
+	        rootLayoutController.fonct_test(_locale);
+	        
 	        BorderPane mainView = (BorderPane) loader.load();
 	        this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 
