@@ -344,7 +344,7 @@ public class Main extends Application {
 		needSave = false;
 		currentProject.save();
 		//this.serializeListProject(projects);
-		this.primaryStage.setTitle(_langBundle.getString("main_title"));
+		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 	}
 	
 	/**
@@ -544,10 +544,11 @@ public class Main extends Application {
 		ObjectOutputStream oos = null;
 		try {
 			
+			/*
 			if (!Files.exists(Paths.get("./save/"))) {
 			    new File("./save/").mkdir();
 			}
-			
+			*/
 			//get date and time
 			DateFormat df = new SimpleDateFormat("dd.MM.yy_HH//mm");
 			Calendar calobj = Calendar.getInstance();
@@ -556,8 +557,9 @@ public class Main extends Application {
 	        date = date.replace("//", "h");
 	        date = date.replace(":", "m");
 	        date = date.replaceAll("/", ":");
-
-			PrintWriter writer = new PrintWriter("./save/"+p.getName()+ "_" + date +".csv", "UTF-8");
+	        
+	        System.out.println("path export " + p.getPath());
+			PrintWriter writer = new PrintWriter(p.getPath() + "/" + p.getName()+ "_" + date +".csv", "UTF-8");
 			
 		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
 			for(DescriptionInterview ent : p.getInterviews()){

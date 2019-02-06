@@ -96,7 +96,7 @@ public class LaunchingScreenController implements Initializable{
 	                protected void updateItem(Project item, boolean empty) {
 	                    super.updateItem(item, empty);
 	                    if (item != null) {
-	                    	setText(item.getName() + " from " + item.getPath());
+	                    	setText(item.getName() + " (from " + item.getPath() +")");
 	                    } else {
 	                    	setText(""); 
 	                    }
