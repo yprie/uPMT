@@ -53,6 +53,8 @@ public class MomentExperience implements Serializable, Cloneable {
 	private Property mCurrentProperty =null;
 	private int mID;
 	private int mRow;
+	private boolean isTag=false;
+
 	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
 	
@@ -296,7 +298,15 @@ public class MomentExperience implements Serializable, Cloneable {
 			res = res + " " + e.mName;
 		}
 		return res;
-		
 	}
+	
+	public boolean isTag() {
+		return isTag;
+	}
+
+	public void setTag(boolean isTag) {
+		this.isTag = isTag;
+	}
+
 
 }
