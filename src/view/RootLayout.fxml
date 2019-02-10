@@ -10,9 +10,9 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="%file">
+          <Menu fx:id="menu" onAction="#menu" mnemonicParsing="false" text="%file">
             <items>
-                  <MenuItem fx:id="openProject" mnemonicParsing="false" onAction="#openProject" text="%open_project" />
+				  <Menu fx:id="openProject" mnemonicParsing="false" text="%open_project" />
                   <MenuItem fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProjectAs" text="%open_project_as" />
                   <MenuItem fx:id="saveProject" mnemonicParsing="false" onAction="#saveProject" text="%save_project" />
                   <MenuItem fx:id="saveProjectAs" mnemonicParsing="false" onAction="#saveProjectAs" text="%save_project_as" />

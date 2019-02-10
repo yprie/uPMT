@@ -43,12 +43,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TitledPane;
@@ -65,7 +68,7 @@ import com.sun.javafx.PlatformUtil;
 
 public class RootLayoutController implements Initializable{
 		
-	private @FXML MenuItem openProject;
+	private @FXML Menu openProject = new Menu();
 	private @FXML MenuItem newInterview;
 	private @FXML MenuItem quitterBouton;
 	private @FXML MenuItem saveProject;
@@ -77,6 +80,7 @@ public class RootLayoutController implements Initializable{
 //	private @FXML TextArea document;
 	private @FXML MenuItem userGuide;
 	private @FXML MenuItem stats;
+	private @FXML Menu menu;
 	
 	private Main main;
 	private Stage window;
@@ -87,8 +91,23 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
+	public void menu(){
+		System.out.println("oooo");
+	}
+	
+	@FXML
 	public void openProject(){
-		main.showLaunchingScreen();
+		System.out.println("oooo");
+		
+		openProject.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		        new EventHandler<MouseEvent>() {
+		          @Override
+		          public void handle(MouseEvent e) {
+		        	  main.showRecentProject(openProject);
+		        	  
+		          }
+		        });
+		
 	}
 	
 	@FXML
