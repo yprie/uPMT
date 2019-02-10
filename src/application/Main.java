@@ -55,6 +55,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
@@ -247,6 +250,12 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    public void showRecentProject(Menu openProject) {
+		MenuItem childMenuItem1 = new MenuItem("Child 1");
+		MenuItem childMenuItem2 = new MenuItem("Child 2");
+		openProject.getItems().addAll(childMenuItem1, childMenuItem2);
     }
     
     /**

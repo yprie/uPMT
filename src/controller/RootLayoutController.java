@@ -37,7 +37,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
@@ -55,7 +57,7 @@ import utils.Utils;
 
 public class RootLayoutController implements Initializable{
 		
-	private @FXML MenuItem openProject;
+	private @FXML Menu openProject;
 	private @FXML MenuItem newInterview;
 	private @FXML MenuItem quitterBouton;
 	private @FXML MenuItem saveProject;
@@ -66,6 +68,7 @@ public class RootLayoutController implements Initializable{
 //	private @FXML TextArea document;
 	private @FXML MenuItem userGuide;
 	private @FXML MenuItem stats;
+	private @FXML Menu menu;
 	
 	private Main main;
 	private Stage window;
@@ -77,7 +80,7 @@ public class RootLayoutController implements Initializable{
 	
 	@FXML
 	public void openProject(){
-		main.showLaunchingScreen();
+		main.showRecentProject(openProject);
 	}
 	
 	@FXML
