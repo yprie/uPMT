@@ -81,11 +81,15 @@ public class RootLayoutController implements Initializable {
 	private @FXML MenuItem userGuide;
 	private @FXML MenuItem stats;
 	private @FXML Menu menu;
-	
+	private @FXML MenuItem anglais;
+	private @FXML MenuItem francais;
+	private @FXML MenuItem espanol;
+	private @FXML MenuItem italiano;
 	private Main main;
 	private Stage window;
 	
-	public RootLayoutController(Main main,Stage window)  {
+	
+	public RootLayoutController(Main main,Stage window) {
 		this.main = main;
 		this.window = window;
 	}
@@ -308,18 +312,46 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	public void openEnglishVersion(){
 		main.changeLocaleAndReload("en");
+		
+		
 	}
+	
+	
 	@FXML
 	public void openFrenchVersion(){
 		main.changeLocaleAndReload("fr");
+		
+		
 	}
 	@FXML
 	public void openSpanishVersion(){
 		main.changeLocaleAndReload("es");
+		
 	}
 	@FXML
 	public void openItalienVersion(){
 		main.changeLocaleAndReload("it");
+		
+	}
+	
+	
+	public void fonct_test(Locale langue) {
+		System.out.println(langue);
+		if(langue.toString().equals("en")) {
+			System.out.println("en");
+			anglais.setDisable(true);
+		}
+		else if(langue.toString().equals("fr")) {
+			francais.setDisable(true);
+		}
+		else if(langue.toString().equals("es")) {
+			espanol.setDisable(true);
+		}
+		else {
+			italiano.setDisable(true);
+		}
+		
+		
 	}
 	
 	@Override
