@@ -66,9 +66,9 @@ import utils.UndoCollector;
 import utils.Utils;
 import com.sun.javafx.PlatformUtil;
 
-public class RootLayoutController implements Initializable{
+public class RootLayoutController implements Initializable {
 		
-	private @FXML Menu openProject = new Menu();
+	private @FXML Menu openProject;
 	private @FXML MenuItem newInterview;
 	private @FXML MenuItem quitterBouton;
 	private @FXML MenuItem saveProject;
@@ -85,7 +85,7 @@ public class RootLayoutController implements Initializable{
 	private Main main;
 	private Stage window;
 	
-	public RootLayoutController(Main main,Stage window) {
+	public RootLayoutController(Main main,Stage window)  {
 		this.main = main;
 		this.window = window;
 	}
@@ -98,21 +98,14 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void openProject(){
 		System.out.println("oooo");
-		
-		openProject.addEventHandler(MouseEvent.MOUSE_ENTERED,
-		        new EventHandler<MouseEvent>() {
-		          @Override
-		          public void handle(MouseEvent e) {
-		        	  main.showRecentProject(openProject);
-		        	  
-		          }
-		        });
+		main.showRecentProject(openProject);
 		
 	}
 	
 	@FXML
 	public void openProjectAs() throws IOException, ClassNotFoundException{
 		main.openProjectAs();
+		openProject();
 	}
 	
 	@FXML
@@ -336,6 +329,7 @@ public class RootLayoutController implements Initializable{
 		final KeyCodeCombination keyCombNEW=new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
 		InputContext context = InputContext.getInstance(); 
 		String loc = context.getLocale().toString();
+		openProject();
 		System.out.println(loc);  
 		// javafx keyboard layout bug management 
 		if(PlatformUtil.isMac()) {

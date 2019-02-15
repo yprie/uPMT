@@ -270,6 +270,7 @@ public class Main extends Application {
     public void showRecentProject(Menu openProject) {
     	openProject.getItems().clear();
 		for(Project p : this.getProjects()) {
+			System.out.println(p.getName());
 			MenuItem child = new MenuItem(p.getName() + " (from " + p.getPath() +")");
 			child.setOnAction(new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent t) {
@@ -279,8 +280,6 @@ public class Main extends Application {
 		    });
 			openProject.getItems().addAll(child);
 		}
-		
-		
     }
     
     /**
