@@ -407,6 +407,7 @@ public class Main extends Application {
         
         if(new File(fileOfPath).isFile()) {
         	list = loadPath();
+        	System.out.println("THE PATH " + path);
         	if(!list.contains(path)) {
         		list.add(path);
             	Gson gson = new Gson();
@@ -491,7 +492,7 @@ public class Main extends Application {
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
-		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
+		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT *");
 	}
 	
 	public boolean isNeedToBeSaved() {return needSave;}
