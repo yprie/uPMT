@@ -79,7 +79,7 @@
     ],
     "mDescription": "",
     "mColor": "#000000",
-    "mName": "Example"
+    "mName": "Description Model"
   },
   "mInterviews": [
     {
@@ -93,6 +93,9 @@
           "mDescriptemes": [
             {
               "mText": "It was in Puiseaux one April morning, last spring."
+            },
+            {
+              "mText": "was"
             }
           ],
           "mCategories": [],
@@ -110,7 +113,7 @@
                 {
                   "mProperties": [
                     {
-                      "mValue": "sadness",
+                      "mValue": "",
                       "mDescriptemes": [
                         {
                           "mText": "sad"
@@ -173,7 +176,48 @@
                 }
               ],
               "mRecords": [],
-              "mSubMoments": [],
+              "mSubMoments": [
+                {
+                  "mDate": "Jan 1, 1970 12:00:00 AM",
+                  "mName": "A",
+                  "mDescriptemes": [
+                    {
+                      "mText": "after a conversati"
+                    }
+                  ],
+                  "mCategories": [],
+                  "mRecords": [],
+                  "mSubMoments": [],
+                  "mParentMomentID": 2567451,
+                  "mParentCol": 0,
+                  "mGridCol": 0,
+                  "mColor": "#FFFFFF",
+                  "mID": 8069265,
+                  "mRow": 2,
+                  "isTag": true,
+                  "mWidth": 100.0
+                },
+                {
+                  "mDate": "Jan 1, 1970 12:00:00 AM",
+                  "mName": "B",
+                  "mDescriptemes": [
+                    {
+                      "mText": " after a conversation"
+                    }
+                  ],
+                  "mCategories": [],
+                  "mRecords": [],
+                  "mSubMoments": [],
+                  "mParentMomentID": 2567451,
+                  "mParentCol": 0,
+                  "mGridCol": 1,
+                  "mColor": "#FFFFFF",
+                  "mID": 8936605,
+                  "mRow": 2,
+                  "isTag": true,
+                  "mWidth": 100.0
+                }
+              ],
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 0,
@@ -190,7 +234,9 @@
                 "mName": "type"
               },
               "mID": 2567451,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 100.0
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
@@ -232,13 +278,36 @@
                 }
               ],
               "mRecords": [],
-              "mSubMoments": [],
+              "mSubMoments": [
+                {
+                  "mDate": "Jan 1, 1970 12:00:00 AM",
+                  "mName": "C",
+                  "mDescriptemes": [
+                    {
+                      "mText": "frozen"
+                    }
+                  ],
+                  "mCategories": [],
+                  "mRecords": [],
+                  "mSubMoments": [],
+                  "mParentMomentID": 8724382,
+                  "mParentCol": 0,
+                  "mGridCol": 0,
+                  "mColor": "#FFFFFF",
+                  "mID": 2659514,
+                  "mRow": 2,
+                  "isTag": true,
+                  "mWidth": 100.0
+                }
+              ],
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 1,
               "mColor": "#BBE4FB",
               "mID": 8724382,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 100.0
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
@@ -303,7 +372,9 @@
               "mGridCol": 2,
               "mColor": "#F1D9D9",
               "mID": 6595994,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 100.0
             }
           ],
           "mParentMomentID": -1,
@@ -311,7 +382,9 @@
           "mGridCol": 0,
           "mColor": "#FFFFFF",
           "mID": 1763325,
-          "mRow": 0
+          "mRow": 0,
+          "isTag": true,
+          "mWidth": 100.0
         }
       ],
       "mDateInterview": {

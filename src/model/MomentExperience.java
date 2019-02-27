@@ -54,7 +54,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	private int mID;
 	private int mRow;
 	private boolean isTag=false;
-
+	private float mWidth;
 	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
 	
@@ -83,6 +83,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mRow = row;
 		this.mGridCol = col;
 		this.mDate = new Date();
+		this.mWidth = 100;
 		try {
 			this.mDate = this.mFormater.parse("00:00:00");
 		} catch (ParseException e) {
@@ -307,6 +308,5 @@ public class MomentExperience implements Serializable, Cloneable {
 	public void setTag(boolean isTag) {
 		this.isTag = isTag;
 	}
-
 
 }
