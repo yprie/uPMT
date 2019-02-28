@@ -91,6 +91,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -146,7 +147,8 @@ public class MainViewController implements Initializable, Observer {
 		this.ajoutMomentButton.setImage(image);
 
 		if (!main.getCurrentProject().getInterviews().isEmpty()) {
-			main.setCurrentDescription(main.getCurrentProject().getInterviews().getFirst());
+			main.setCurrentDescription(main.getCurrentProject().getInterviews().getLast());
+			// get the last one
 		}
 
 		treeViewSchema.setEditable(true);
@@ -274,6 +276,7 @@ public class MainViewController implements Initializable, Observer {
 	
 	public void setDroppableText(String text) {
 		//droppableText.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
+		
 		droppableText.setText(text);
 	}
 	

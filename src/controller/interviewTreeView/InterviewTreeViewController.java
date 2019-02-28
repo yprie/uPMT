@@ -83,6 +83,8 @@ public class InterviewTreeViewController extends TreeViewController implements I
 	public void setSelected(String couleur){
 		this.nomEntretien.setTextFill(Paint.valueOf(couleur));
 		this.nomEntretien.setStyle("-fx-font-weight: bold;");
+		
+		//interviewTreeView.updateItem(interview, false);
 	}
 	
 	public void showInterview(){

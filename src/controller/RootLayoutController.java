@@ -221,7 +221,8 @@ public class RootLayoutController implements Initializable {
             //loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));
 			loader.setLocation(getClass().getResource("/view/NewInterview.fxml"));
             //loader.setController(new NewInterviewDialogController(main,promptWindow));
-			loader.setController(new NewInterviewDialogController(main,promptWindow));
+			NewInterviewDialogController test=new NewInterviewDialogController(main,promptWindow);
+			loader.setController(test);
             loader.setResources(main._langBundle);
             
             //BorderPane layout = (BorderPane) loader.load();
@@ -229,11 +230,13 @@ public class RootLayoutController implements Initializable {
 			Scene main = new Scene(layout);
 			promptWindow.setScene(main);
 			promptWindow.showAndWait();
+			//test.validerClick();
 			
 		} catch (IOException e) {
 			// TODO Exit Program
 			e.printStackTrace();
 		}
+		
 	}
 	
 	private void saveRequest(WindowEvent event) throws IOException{

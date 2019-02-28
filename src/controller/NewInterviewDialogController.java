@@ -185,6 +185,7 @@ public class NewInterviewDialogController  implements Initializable{
 	    //System.out.println(text);
 		
 		DescriptionInterview de = new DescriptionInterview(new Descripteme(text), nomEntretien.getText());
+		
 		de.setDateInterview(d);
 		if(!participantEntretien.getText().replaceAll(" ", "").equals(""))
 			de.setParticipant(participantEntretien.getText());
@@ -204,6 +205,8 @@ public class NewInterviewDialogController  implements Initializable{
 		main.refreshDataTreeView();
 		main.getMainViewController().addGridPaneInterview(de);
 		main.getMainViewController().updateGrid();
+		
+		
 
 		// in case the center was set to null because of automatic interview Creation
 		if (main.getRootLayout().getCenter() == null) {
