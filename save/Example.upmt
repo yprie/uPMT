@@ -89,13 +89,10 @@
       "mMoments": [
         {
           "mDate": "Jan 1, 1970 12:00:00 AM",
-          "mName": "April morning",
+          "mName": "New Moment",
           "mDescriptemes": [
             {
-              "mText": "It was in Puiseaux one April morning, last spring."
-            },
-            {
-              "mText": "was"
+              "mText": "zen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to mel"
             }
           ],
           "mCategories": [],
@@ -103,288 +100,93 @@
           "mSubMoments": [
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
-              "mName": "Tightening phase",
+              "mName": "New Moment",
               "mDescriptemes": [
                 {
-                  "mText": "It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest."
+                  "mText": "zen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute"
                 }
               ],
-              "mCategories": [
-                {
-                  "mProperties": [
-                    {
-                      "mValue": "",
-                      "mDescriptemes": [
-                        {
-                          "mText": "sad"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "type"
-                    }
-                  ],
-                  "mDescription": "",
-                  "mColor": "#80334D",
-                  "mName": "Emotion"
-                },
-                {
-                  "mProperties": [
-                    {
-                      "mValue": "cold",
-                      "mDescriptemes": [
-                        {
-                          "mText": "frozen"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "temperature"
-                    },
-                    {
-                      "mValue": "ball",
-                      "mDescriptemes": [
-                        {
-                          "mText": "ball"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "shape"
-                    },
-                    {
-                      "mValue": "chest",
-                      "mDescriptemes": [
-                        {
-                          "mText": "in the middle of my chest"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "location"
-                    },
-                    {
-                      "mDescriptemes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "density"
-                    }
-                  ],
-                  "mDescription": "",
-                  "mColor": "#FFB366",
-                  "mName": "Bodily feeling"
-                }
-              ],
-              "mRecords": [],
-              "mSubMoments": [
-                {
-                  "mDate": "Jan 1, 1970 12:00:00 AM",
-                  "mName": "A",
-                  "mDescriptemes": [
-                    {
-                      "mText": "after a conversati"
-                    }
-                  ],
-                  "mCategories": [],
-                  "mRecords": [],
-                  "mSubMoments": [],
-                  "mParentMomentID": 2567451,
-                  "mParentCol": 0,
-                  "mGridCol": 0,
-                  "mColor": "#FFFFFF",
-                  "mID": 8069265,
-                  "mRow": 2,
-                  "isTag": true,
-                  "mWidth": 100.0
-                },
-                {
-                  "mDate": "Jan 1, 1970 12:00:00 AM",
-                  "mName": "B",
-                  "mDescriptemes": [
-                    {
-                      "mText": " after a conversation"
-                    }
-                  ],
-                  "mCategories": [],
-                  "mRecords": [],
-                  "mSubMoments": [],
-                  "mParentMomentID": 2567451,
-                  "mParentCol": 0,
-                  "mGridCol": 1,
-                  "mColor": "#FFFFFF",
-                  "mID": 8936605,
-                  "mRow": 2,
-                  "isTag": true,
-                  "mWidth": 100.0
-                }
-              ],
-              "mParentMomentID": 1763325,
-              "mParentCol": 0,
-              "mGridCol": 0,
-              "mColor": "#DBEFDF",
-              "mCurrentProperty": {
-                "mValue": "sadness",
-                "mDescriptemes": [
-                  {
-                    "mText": "sad"
-                  }
-                ],
-                "mDescription": "",
-                "mColor": "#000000",
-                "mName": "type"
-              },
-              "mID": 2567451,
-              "mRow": 1,
-              "isTag": true,
-              "mWidth": 100.0
-            },
-            {
-              "mDate": "Jan 1, 1970 12:00:00 AM",
-              "mName": "Transitional event",
-              "mDescriptemes": [
-                {
-                  "mText": "At one point, the song of a turtle-dove comes through the open window."
-                }
-              ],
-              "mCategories": [
-                {
-                  "mProperties": [
-                    {
-                      "mValue": "turtle-dove",
-                      "mDescriptemes": [
-                        {
-                          "mText": "the song of a turtle-dove"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "source"
-                    },
-                    {
-                      "mValue": "outside",
-                      "mDescriptemes": [
-                        {
-                          "mText": "comes through the open window"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "location"
-                    }
-                  ],
-                  "mDescription": "",
-                  "mColor": "#4D804D",
-                  "mName": "Auditory sensation"
-                }
-              ],
-              "mRecords": [],
-              "mSubMoments": [
-                {
-                  "mDate": "Jan 1, 1970 12:00:00 AM",
-                  "mName": "C",
-                  "mDescriptemes": [
-                    {
-                      "mText": "frozen"
-                    }
-                  ],
-                  "mCategories": [],
-                  "mRecords": [],
-                  "mSubMoments": [],
-                  "mParentMomentID": 8724382,
-                  "mParentCol": 0,
-                  "mGridCol": 0,
-                  "mColor": "#FFFFFF",
-                  "mID": 2659514,
-                  "mRow": 2,
-                  "isTag": true,
-                  "mWidth": 100.0
-                }
-              ],
-              "mParentMomentID": 1763325,
-              "mParentCol": 0,
-              "mGridCol": 1,
-              "mColor": "#BBE4FB",
-              "mID": 8724382,
-              "mRow": 1,
-              "isTag": true,
-              "mWidth": 100.0
-            },
-            {
-              "mDate": "Jan 1, 1970 12:00:00 AM",
-              "mName": "Loosening phase",
-              "mDescriptemes": [
-                {
-                  "mText": "And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body."
-                }
-              ],
-              "mCategories": [
-                {
-                  "mProperties": [
-                    {
-                      "mValue": "warm",
-                      "mDescriptemes": [
-                        {
-                          "mText": "heat"
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "temperature"
-                    },
-                    {
-                      "mValue": "undefined",
-                      "mDescriptemes": [
-                        {
-                          "mText": ""
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "shape"
-                    },
-                    {
-                      "mValue": "body",
-                      "mDescriptemes": [
-                        {
-                          "mText": "body."
-                        }
-                      ],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "location"
-                    },
-                    {
-                      "mDescriptemes": [],
-                      "mDescription": "",
-                      "mColor": "#000000",
-                      "mName": "density"
-                    }
-                  ],
-                  "mDescription": "",
-                  "mColor": "#FFB366",
-                  "mName": "Bodily feeling"
-                }
-              ],
+              "mCategories": [],
               "mRecords": [],
               "mSubMoments": [],
-              "mParentMomentID": 1763325,
+              "mParentMomentID": 5224823,
               "mParentCol": 0,
-              "mGridCol": 2,
-              "mColor": "#F1D9D9",
-              "mID": 6595994,
+              "mGridCol": 0,
+              "mColor": "#FFFFFF",
+              "mID": 5334348,
               "mRow": 1,
               "isTag": true,
-              "mWidth": 100.0
+              "mWidth": 33.0
+            },
+            {
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "New Moment",
+              "mDescriptemes": [
+                {
+                  "mText": "comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body."
+                }
+              ],
+              "mCategories": [],
+              "mRecords": [],
+              "mSubMoments": [],
+              "mParentMomentID": 5224823,
+              "mParentCol": 0,
+              "mGridCol": 1,
+              "mColor": "#FFFFFF",
+              "mID": 5836015,
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 33.0
             }
           ],
           "mParentMomentID": -1,
           "mParentCol": 0,
           "mGridCol": 0,
           "mColor": "#FFFFFF",
-          "mID": 1763325,
+          "mID": 5224823,
           "mRow": 0,
           "isTag": true,
-          "mWidth": 100.0
+          "mWidth": 33.0
+        },
+        {
+          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mName": "New Moment",
+          "mDescriptemes": [
+            {
+              "mText": "zen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to mel"
+            }
+          ],
+          "mCategories": [],
+          "mRecords": [],
+          "mSubMoments": [],
+          "mParentMomentID": -1,
+          "mParentCol": 1,
+          "mGridCol": 1,
+          "mColor": "#FFFFFF",
+          "mID": 9575424,
+          "mRow": 0,
+          "isTag": true,
+          "mWidth": 33.0
+        },
+        {
+          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mName": "New Moment",
+          "mDescriptemes": [
+            {
+              "mText": "zen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to mel"
+            }
+          ],
+          "mCategories": [],
+          "mRecords": [],
+          "mSubMoments": [],
+          "mParentMomentID": -1,
+          "mParentCol": 2,
+          "mGridCol": 2,
+          "mColor": "#FFFFFF",
+          "mID": 3227685,
+          "mRow": 0,
+          "isTag": true,
+          "mWidth": 33.0
         }
       ],
       "mDateInterview": {
@@ -395,6 +197,123 @@
       "mParticipant": "Participant",
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
+    },
+    {
+      "mDescripteme": {
+        "mText": "Gouriten Gwenaelle\nHichami Salma\n\n% Consulter le projet %\n\nconsult(\u0027concept_learning_madoc.pl\u0027).\n\n\n\n\n% Jeux de tests en la présence d\u0027un unique intrus %\n\nfindIntrus([node(horizontal, leaf(triangle, green, large),node(vertical, leaf(circle, blue, large), leaf(circle, blue, small))),node(horizontal,leaf(triangle, green, small),node(vertical, leaf(circle, blue, small), leaf(triangle, blue, large))),node(vertical, leaf(square,yellow,medium),node(vertical, leaf(square, yellow, medium), leaf(square,yellow, medium))),node(horizontal,leaf(triangle,green, large),node(vertical, leaf(triangle, green, small), leaf(triangle, green, small)))]).\n\nVous devriez avoir en sortie que l\u0027intrus est node(vertical,leaf(square,yellow,medium),node(vertical,leaf(square,yellow,medium),leaf(square,yellow,medium))) car c\u0027est le seul graphique qui ne possède pas de vert.\n\n\n\n\n% Jeux de tests en la présence d\u0027un unique intrus %\n\nfindIntrus([node(vertical, leaf(triangle, yellow, small), leaf(triangle, blue, large)),node(vertical, leaf(triangle, red, small), leaf(triangle, blue, small)),node(vertical, leaf(circle, blue, large), leaf(square, red, small)),node(horizontal, leaf(triangle, blue, large), leaf(triangle, blue, large)),node(vertical, leaf(triangle, red, small), leaf(triangle, yellow, small)),node(vertical, leaf(triangle, yellow, small), leaf(circle, yellow, large))]).\n\nVous devriez avoir en sortie que l\u0027intrus est node(vertical,leaf(circle,blue,large),leaf(square,red,small)) car c\u0027est le seul graphique qui ne possède pas de triangles.\n\n\n\n\n% Jeux de tests en la présence d\u0027un unique intrus %\n\nfindIntrus([node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(circle, blue, large), leaf(square, red, small)), node(horizontal, leaf(triangle, blue, large), leaf(triangle, yellow, large)),node(vertical, leaf(triangle, yellow, small), leaf(circle, yellow, large))]).\n\nVous devriez avoir en sortie que l\u0027intrus est node(vertical,leaf(circle,blue,large),leaf(square,red,small)) car c\u0027est le seul graphique qui ne possède pas un grand triangle jaune.\n\n\n\n\n% Jeux de tests pour trouver un concept sans intrus %\n\nfindConcept([node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large))], R).\n\nVous devriez avoir en sortie que le concept minimal est [large, small, triangle, yellow] car tous les graphiques possèdent ces attributs.\n\n\n\n\n% Jeux de tests pour trouver un concept sans intrus %\n\nfindConcept([node(vertical, leaf(square, red, blue), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large)), node(vertical, leaf(triangle, yellow, small), leaf(triangle, yellow, large))], R).\n\nVous devriez avoir en sortie que le concept minimal est [large, triangle, yellow] car tous les graphiques possèdent ces attributs.\n"
+      },
+      "mMoments": [
+        {
+          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mName": "P",
+          "mDescriptemes": [
+            {
+              "mText": "e(horizontal,leaf(triangle, green, small),node(vertical, leaf(circle, blue, small), leaf(t"
+            }
+          ],
+          "mCategories": [],
+          "mRecords": [],
+          "mSubMoments": [
+            {
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "E",
+              "mDescriptemes": [
+                {
+                  "mText": "(square"
+                }
+              ],
+              "mCategories": [],
+              "mRecords": [],
+              "mSubMoments": [
+                {
+                  "mDate": "Jan 1, 1970 12:00:00 AM",
+                  "mName": "G",
+                  "mDescriptemes": [
+                    {
+                      "mText": "m), leaf(square,yellow, medium))),node("
+                    }
+                  ],
+                  "mCategories": [],
+                  "mRecords": [],
+                  "mSubMoments": [],
+                  "mParentMomentID": 9432283,
+                  "mParentCol": 0,
+                  "mGridCol": 0,
+                  "mColor": "#FFFFFF",
+                  "mID": 9669446,
+                  "mRow": 2,
+                  "isTag": true,
+                  "mWidth": 50.0
+                }
+              ],
+              "mParentMomentID": 3949556,
+              "mParentCol": 0,
+              "mGridCol": 0,
+              "mColor": "#FFFFFF",
+              "mID": 9432283,
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 50.0
+            },
+            {
+              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mName": "F",
+              "mDescriptemes": [
+                {
+                  "mText": "s([node(horizontal, leaf(triangle, green, large),node(vertical, leaf(circle, blue, large), leaf(circle, blue, small))),node(horizontal,leaf(triangle, green, small),node(vertical, leaf(circle, blue, sm"
+                }
+              ],
+              "mCategories": [],
+              "mRecords": [],
+              "mSubMoments": [],
+              "mParentMomentID": 3949556,
+              "mParentCol": 0,
+              "mGridCol": 1,
+              "mColor": "#FFFFFF",
+              "mID": 5393887,
+              "mRow": 1,
+              "isTag": true,
+              "mWidth": 50.0
+            }
+          ],
+          "mParentMomentID": -1,
+          "mParentCol": 0,
+          "mGridCol": 0,
+          "mColor": "#FFFFFF",
+          "mID": 3949556,
+          "mRow": 0,
+          "isTag": true,
+          "mWidth": 50.0
+        },
+        {
+          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mName": "D",
+          "mDescriptemes": [
+            {
+              "mText": "een, small), leaf(triangle, green, small)))]).\n"
+            }
+          ],
+          "mCategories": [],
+          "mRecords": [],
+          "mSubMoments": [],
+          "mParentMomentID": -1,
+          "mParentCol": 1,
+          "mGridCol": 1,
+          "mColor": "#FFFFFF",
+          "mID": 1275107,
+          "mRow": 0,
+          "isTag": true,
+          "mWidth": 50.0
+        }
+      ],
+      "mDateInterview": {
+        "year": 2019,
+        "month": 3,
+        "day": 12
+      },
+      "mParticipant": "Hey",
+      "mName": "Hey_2019-03-12"
     }
-  ]
+  ],
+  "size": 0.0
 }

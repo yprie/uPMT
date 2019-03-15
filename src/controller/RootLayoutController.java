@@ -268,6 +268,7 @@ public class RootLayoutController implements Initializable{
             AnchorPane layout = (AnchorPane) loader.load();
             Scene sc = new Scene(layout);
             statsWindow.setScene(sc);
+            //sc.getStylesheets().add(getClass().getResource("/application/test.css").toExternalForm());
 			statsWindow.showAndWait();
 			
 		} catch (IOException e) {

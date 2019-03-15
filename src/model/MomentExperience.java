@@ -54,7 +54,8 @@ public class MomentExperience implements Serializable, Cloneable {
 	private int mID;
 	private int mRow;
 	private boolean isTag=false;
-	private float mWidth;
+	private double mWidth;
+	private String interviewName;
 	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
 	
@@ -92,6 +93,14 @@ public class MomentExperience implements Serializable, Cloneable {
 	}
 	
 	
+	public double getmWidth() {
+		return mWidth;
+	}
+
+	public void setmWidth(double mWidth) {
+		this.mWidth = mWidth;
+	}
+
 	public MomentExperience() {
 		this("New Moment", 0,0);
 	}
@@ -179,6 +188,14 @@ public class MomentExperience implements Serializable, Cloneable {
 		return mSubMoments;
 	}
 	
+	public String getInterviewName() {
+		return interviewName;
+	}
+
+	public void setInterviewName(String interviewName) {
+		this.interviewName = interviewName;
+	}
+
 	public void addSousMoment(MomentExperience m) {
 		if(!this.mSubMoments.contains(m)) {
 			m.setParent(this);

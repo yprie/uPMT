@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Projet.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,6 +66,7 @@ public class Project implements Serializable {
 	private String mName;
 	private Schema mSchema;
 	private LinkedList<DescriptionInterview> mInterviews;
+	private double size;
 
 	public Project(String n,Schema s){
 		this.mName = n;
