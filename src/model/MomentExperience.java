@@ -84,7 +84,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mRow = row;
 		this.mGridCol = col;
 		this.mDate = new Date();
-		this.mWidth = 100;
+		this.mWidth = 120;
 		try {
 			this.mDate = this.mFormater.parse("00:00:00");
 		} catch (ParseException e) {

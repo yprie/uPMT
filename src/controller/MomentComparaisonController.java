@@ -127,7 +127,7 @@ public class MomentComparaisonController implements Initializable{
 	private Paint backgroundPaint;
 	private GridPane statsGrid;
 	double largeurNoeudEnfant = 0;
-	double largeurRacineParent = 100;
+	double largeurRacineParent = 120;
 	double lastWidth;
 	ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
 	
@@ -168,7 +168,7 @@ public class MomentComparaisonController implements Initializable{
 			int nbRacineMax = allMoments.size();
 			int nbRacine = 0;
 			System.out.println("jjjjjj" + allMoments.toString() + allMoments.size());
-			largeurNoeudEnfant = 100/allMoments.size();
+			largeurNoeudEnfant = 120/allMoments.size();
 			largeurRacineParent = largeurNoeudEnfant;
 
 			System.out.println(largeurNoeudEnfant);
@@ -177,9 +177,9 @@ public class MomentComparaisonController implements Initializable{
 				
 			VBox colTree = new VBox();
 			
-			for(MomentExperience moment : moments){
+			for(MomentExperience moment : moments) {
 				
-				System.out.println("WIDTH " + moment.getmWidth());
+				System.out.println("WIIDTH " + moment.getmWidth());
 				moment.setmWidth(moment.getmWidth()/allMoments.size());	
 				
 				if(allMoments.size()>1) {
@@ -213,7 +213,7 @@ public class MomentComparaisonController implements Initializable{
 					}
 
 					ListView<String> listCategoryDisplay = new ListView<String>();
-					listCategoryDisplay.setPrefSize(100, 100);
+					listCategoryDisplay.setPrefSize(120, 120);
 					listCategoryDisplay.getItems().addAll(categoryList);
 					
 					TitledPane titleMoment = new TitledPane(moment.getName(), listCategoryDisplay);
@@ -221,7 +221,7 @@ public class MomentComparaisonController implements Initializable{
 					//titleMoment.setEffect(new DropShadow(20, Color.BLACK));
 					titleMoment.setAlignment(Pos.CENTER);
 					titleMoment.setStyle("-fx-border-color: lightgray;");
-					displayArrow(titleMoment);
+					//displayArrow(titleMoment);
 					//System.out.println(titleMoment.getId());
 					try {
 						//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-border-color: red;}");
@@ -232,7 +232,9 @@ public class MomentComparaisonController implements Initializable{
 					}
 					
 					Accordion momentBox = new Accordion();
-					momentBox.setPrefWidth(largeurRacineParent*10);
+					//momentBox.setPrefWidth(largeurRacineParent*10);
+					momentBox.setMinWidth(largeurRacineParent*10);
+					momentBox.setMaxWidth(largeurRacineParent*10);
 					momentBox.getPanes().addAll(titleMoment);
 					rowTree.getChildren().add(momentBox);
 					colTree.getChildren().add(rowTree);
@@ -264,17 +266,19 @@ public class MomentComparaisonController implements Initializable{
 								rowTree.getChildren().add(labelTitleInterview);
 							}
 							ListView<String> listCategoryDisplay = new ListView<String>();
-							listCategoryDisplay.setPrefSize(100, 100);
+							listCategoryDisplay.setPrefSize(120, 120);
 							listCategoryDisplay.getItems().addAll(categoryList);
 							TitledPane titleMoment = new TitledPane(subMoment.getName(), listCategoryDisplay);
 							titleMoment.setStyle("-fx-border-color: lightgray;");
 							Accordion momentBox = new Accordion();
-							momentBox.setPrefWidth(subMoment.getmWidth()*10);
+							//momentBox.setPrefWidth(subMoment.getmWidth()*10);
+							momentBox.setMaxWidth(subMoment.getmWidth()*10);
+							momentBox.setMinWidth(subMoment.getmWidth()*10);
 							momentBox.getPanes().addAll(titleMoment);
 							titleMoment.setId("title"+subMoment.getID());
 
 							titleMoment.setAlignment(Pos.CENTER);
-							displayArrow(titleMoment);
+							//displayArrow(titleMoment);
 							Region title = (Region) titleMoment.lookup("#"+titleMoment.getId());
 							
 							
@@ -348,14 +352,15 @@ public class MomentComparaisonController implements Initializable{
 						categoryList.add(c.toString());	
 					}
 					ListView<String> listCategoryDisplay = new ListView<String>();
-					listCategoryDisplay.setPrefSize(100, 100);
+					listCategoryDisplay.setPrefSize(120, 120);
+					
 					listCategoryDisplay.getItems().addAll(categoryList);
 					
 					TitledPane titleMoment = new TitledPane(subMomentOfSubMoment.getName(), listCategoryDisplay);
 					titleMoment.setStyle("-fx-border-color: lightgray;");
 					titleMoment.setAlignment(Pos.CENTER);
 					titleMoment.setId("title"+subMomentOfSubMoment.getID());
-					displayArrow(titleMoment);
+					//displayArrow(titleMoment);
 					//System.out.println(titleMoment.getId());
 					try {
 						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
@@ -371,7 +376,9 @@ public class MomentComparaisonController implements Initializable{
 					}
 					
 					Accordion momentBox = new Accordion();
-					momentBox.setPrefWidth(subMomentOfSubMoment.getmWidth()*10);
+					//momentBox.setPrefWidth(subMomentOfSubMoment.getmWidth()*10);
+					momentBox.setMaxWidth(subMomentOfSubMoment.getmWidth()*10);
+					momentBox.setMinWidth(subMomentOfSubMoment.getmWidth()*10);
 					momentBox.getPanes().addAll(titleMoment);
 					rowTree.getChildren().add(momentBox);
 					subMomentOfSubMoment.setTag(true);
@@ -387,7 +394,9 @@ public class MomentComparaisonController implements Initializable{
 				Accordion momentBox = new Accordion();
 				double size = subMoment.getmWidth();
 				//System.out.println(size);
-				momentBox.setPrefWidth(size*10);
+				//momentBox.setPrefWidth(size*10);
+				momentBox.setMaxWidth(size*10);
+				momentBox.setMinWidth(size*10);
 				momentBox.getPanes().addAll(titleMoment);
 				rowTree.getChildren().add(momentBox);
 				momentBox.setDisable(true);
@@ -425,10 +434,10 @@ public class MomentComparaisonController implements Initializable{
 			file.createNewFile();
 			fileWriter = new FileWriter(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-			bufferWriter.write(".accordion .title > .arrow-button{ visibility: hidden;}");
-			bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
+			//bufferWriter.write(".accordion .title > .arrow-button{ visibility: hidden;}");
+			//bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
 			bufferWriter.close();
-			bufferWriter.write(".hbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
+			//bufferWriter.write(".hbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
 			fileWriter.close();
 			
 		} catch (IOException e1) {
