@@ -428,11 +428,14 @@ public class MomentComparaisonController implements Initializable{
 			final String dir = System.getProperty("user.dir"); 
 		    FileWriter fileWriter = null;
 			File file = new File(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css");
+			File file2 = new File(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css");
+			
 			if(file.exists()){
 			    file.delete();
 			}
 			file.createNewFile();
 			fileWriter = new FileWriter(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css", true);
+			fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			//bufferWriter.write(".accordion .title > .arrow-button{ visibility: hidden;}");
 			//bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
@@ -453,6 +456,7 @@ public class MomentComparaisonController implements Initializable{
 			final String dir = System.getProperty("user.dir"); 
 		    FileWriter fileWriter = null;
 		    fileWriter = new FileWriter(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css", true);
+		    fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			bufferWriter.write(toWrite + "\n");
 			bufferWriter.close();
