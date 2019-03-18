@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeClassRepresentationController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,7 +178,6 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 		for(Type t : this.classe.getProperties()) {
 			if(t.getName().equals(p.getName())) {
 				this.classe.getProperties().remove(t);
-			//System.out.println("TESTEST "+t.hashCode()+ " , "+t);
 				stack.push((Property) t);
 				break;
 			}
@@ -254,7 +253,6 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 					break;
 				}
 			}
-		//System.out.println("contains ? "+contain);
 			
 			if(!this.classe.getProperties().contains(n)) {
 				addProperty((Property) n);

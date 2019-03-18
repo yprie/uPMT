@@ -98,9 +98,7 @@ public abstract class Utils {
 			HashSet<String> projectNames = loadProjectsNames(path);
 			if(projectNames.isEmpty()){
 				// For debug purposes
-				//System.out.println("No projects to load");
 			}else{
-				//System.out.println("Loading projects");
 				for (String s : projectNames) {
 					if(s.contains(Project.FORMAT)) {
 						if(projectNames.contains(Project.RECOVERY+s)) {

@@ -237,7 +237,6 @@ public class MainViewController implements Initializable, Observer {
 		paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
 				if (main.getCurrentDescription() != null) {
 					Dragboard db = ajoutMomentButton.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent content = new ClipboardContent();
@@ -345,8 +344,7 @@ public class MainViewController implements Initializable, Observer {
     		Utils.deleteRecovery();
     		alert.close();
     	} else{
-    		//System.out.println("IL SEST PASSE UN TRUC");
-    	    alert.close();
+    	   
     	}
 	}
 

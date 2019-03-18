@@ -112,15 +112,6 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 		        this.setGraphic(elementPane);
 		        
 		        if(!desc.getName().equals("Interviews")) {
-		        	
-					
-					/*if((!main.getCurrentProject().getInterviews().isEmpty()) && desc.equals(main.getCurrentDescription())){
-						System.out.println("blue");
-						((InterviewTreeViewController)controller).setSelected("blue");
-					}else{
-						((InterviewTreeViewController)controller).setSelected("black");
-						System.out.println("black");
-					}*/
 					
 		        }
 	    	}

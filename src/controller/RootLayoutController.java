@@ -96,12 +96,10 @@ public class RootLayoutController implements Initializable {
 	
 	@FXML
 	public void menu(){
-		System.out.println("oooo");
 	}
 	
 	@FXML
 	public void openProject(){
-		System.out.println("oooo");
 		main.showRecentProject(openProject);
 		
 	}

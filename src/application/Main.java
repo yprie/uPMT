@@ -153,15 +153,13 @@ public class Main extends Application {
 		createBasicSchema();
 		
 		currentProject = new Project("--emptyProject--", new Schema("SchemaTemporaire"));
-		
+
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 		
 		//Launching layouts
 		initRootLayout();
 		showLaunchingScreen();
-		
-		//Change the language
 	}
 	
 	/**
@@ -189,7 +187,7 @@ public class Main extends Application {
 			Locale.setDefault(Locale.US);
 		}
 		else {
-		//System.out.println("ERREUR");
+
 		}
 	}
 	
@@ -205,7 +203,6 @@ public class Main extends Application {
 		String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
 		initPath = initPath.replace("uPMT.jar", "save");
 		initPath = initPath.replace("%20", " ");
-		//final String initPath = "./save";
 		savePath(initPath);
 		if(Utils.checkRecovery(this)) {
 			this.mainViewController.alertRecovery();
@@ -256,12 +253,8 @@ public class Main extends Application {
 				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			promptWindow.setScene(launchingScene);
 			promptWindow.showAndWait();
-			
-			// if project empty -> launch interview creation
-			//if(this.getCurrentProject().getEntretiens().isEmpty()){
-			//if(this.getCurrentProject()==null){
+
 			if(this.getProjectInCreation()!=null) {
-				//rootLayout.setCenter(null);
 				this.getRootLayoutController().newInterview();
 			}
 		} catch (IOException e) {
@@ -272,7 +265,6 @@ public class Main extends Application {
     public void showRecentProject(Menu openProject) {
     	openProject.getItems().clear();
 		for(Project p : this.getProjects()) {
-			System.out.println(p.getName());
 			MenuItem child = new MenuItem(p.getName() + " (from " + p.getPath() +")");
 			child.setOnAction(new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent t) {
@@ -372,7 +364,6 @@ public class Main extends Application {
 
 		needSave = false;
 		currentProject.save();
-		//this.serializeListProject(projects);
 		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 	}
 	
@@ -491,7 +482,7 @@ public class Main extends Application {
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
-		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
+		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT*");
 	}
 	
 	public boolean isNeedToBeSaved() {return needSave;}
@@ -572,12 +563,6 @@ public class Main extends Application {
 	public void export(Project p){
 		ObjectOutputStream oos = null;
 		try {
-			
-			/*
-			if (!Files.exists(Paths.get("./save/"))) {
-			    new File("./save/").mkdir();
-			}
-			*/
 			//get date and time
 			DateFormat df = new SimpleDateFormat("dd.MM.yy_HH//mm");
 			Calendar calobj = Calendar.getInstance();
@@ -587,7 +572,6 @@ public class Main extends Application {
 	        date = date.replace(":", "m");
 	        date = date.replaceAll("/", ":");
 	        
-	        System.out.println("path export " + p.getPath());
 			PrintWriter writer = new PrintWriter(p.getPath() + "/" + p.getName()+ "_" + date +".csv", "UTF-8");
 			
 		    writer.println("\"INTERVIEW\";\"ID\";\"NAME\";\"DESCRIPTEME\";\"COLOR\";\"DURATION\";\"CATEGORY\";\"PROPERTY\";\"VALUE\";\"\"PROPERTY'S DESCRIPTEME");
@@ -644,11 +628,10 @@ public class Main extends Application {
 	public void setCurrentProject(Project current){
 		currentProject = current;
 		if(currentProject!=null) {
-			//System.out.println("SET ! : "+this.currentProject.getName());
 			this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 		}
 		else {
-			//System.out.println("SET ! : null");
+
 		}
 	}
 	
@@ -664,17 +647,6 @@ public class Main extends Application {
 	
 	public void setTreeViewSchema(TreeView<TypeController> treeViewSchema) {
 		this.treeViewSchema = treeViewSchema;
-		/*this.treeViewSchema.focusedProperty().addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				 if (!newValue.booleanValue()) {
-					 Main.this.treeViewSchema.getSelectionModel().clearSelection();
-				 }
-			}
-			
-		});*/
-
 	}
 	
 	public TreeView<DescriptionInterview> getTreeViewInterview() {
