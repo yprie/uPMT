@@ -126,6 +126,7 @@ public class MomentComparaisonController implements Initializable{
 	private Stage window;
 	private Paint backgroundPaint;
 	private GridPane statsGrid;
+	private BorderPane test;
 	double largeurNoeudEnfant = 0;
 	double largeurRacineParent = 120;
 	double lastWidth;
@@ -311,6 +312,12 @@ public class MomentComparaisonController implements Initializable{
 			layoutV.getChildren().add(layoutH);
 			cptInterviewName=0;
 	}
+		//final String dir = System.getProperty("user.home")+"/.upmt";
+		final String dir = System.getProperty("user.home")+"/.upmt/test.css";
+		//String css = this.getClass().getResource("file:///src/test.css").toExternalForm();
+		//System.out.println("DIR " + css);
+		this.centralPane.getStylesheets().add("file:///"+dir);
+		//this.centralPane.getStylesheets().add(getClass().getResource("../src/application.css").toExternalForm());
 		//layoutV.setStyle("-fx-border-width: 0px, 0px, 5px, 0px;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;  -fx-border-color: blue ; ");
 		this.centralPane.getChildren().add(layoutV);
 		buttonCloseStats.setText(main._langBundle.getString("close"));
@@ -425,17 +432,19 @@ public class MomentComparaisonController implements Initializable{
 	public void initCssFile() throws IOException {
 		try {
 			
-			final String dir = System.getProperty("user.dir"); 
+			final String dir = System.getProperty("user.home")+"/.upmt";
+			System.out.println("DIR " + dir);
 		    FileWriter fileWriter = null;
-			File file = new File(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css");
-			File file2 = new File(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css");
+		    //final String dirSystem.getProperty("user.home")+"/.upmt/path.json";
+		    File file = new File(dir+File.separator + "test.css");
+			//File file2 = new File(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css");
 			
 			if(file.exists()){
 			    file.delete();
 			}
 			file.createNewFile();
-			fileWriter = new FileWriter(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css", true);
-			fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
+			fileWriter = new FileWriter(dir+File.separator+"test.css", true);
+			//fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			//bufferWriter.write(".accordion .title > .arrow-button{ visibility: hidden;}");
 			//bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
@@ -453,10 +462,10 @@ public class MomentComparaisonController implements Initializable{
 	public void writeInCssFile(String toWrite) throws IOException {
 		try {
 			
-			final String dir = System.getProperty("user.dir"); 
+			final String dir = System.getProperty("user.home")+"/.upmt"; 
 		    FileWriter fileWriter = null;
-		    fileWriter = new FileWriter(dir+File.separator+"bin" + File.separator + "application" + File.separator + "test.css", true);
-		    fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
+		    fileWriter = new FileWriter(dir+File.separator+"test.css", true);
+		    //fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			bufferWriter.write(toWrite + "\n");
 			bufferWriter.close();

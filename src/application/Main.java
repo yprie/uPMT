@@ -140,6 +140,7 @@ public class Main extends Application {
 		this.primaryStage.setTitle(_langBundle.getString("main_title"));
 		
 		//Launching layouts
+		
 		initRootLayout();
 		showLaunchingScreen();
 	}
@@ -230,8 +231,10 @@ public class Main extends Application {
             BorderPane layout = (BorderPane) loader.load();
 			Scene launchingScene = new Scene(layout);
 			//ENLEVER LE COMMENTAIRE POUR ACTIVER LA BETA CSS FLAT DESIGN
-			if(activateBetaDesign)
+			if(activateBetaDesign) {
 				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+				//rootLayout.getStylesheets().add(getClass().getResource("t.css").toExternalForm());
+			}
 			promptWindow.setScene(launchingScene);
 			promptWindow.showAndWait();
 			
