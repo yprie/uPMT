@@ -479,7 +479,6 @@ public class Main extends Application {
 	}
 	
 
-	
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
