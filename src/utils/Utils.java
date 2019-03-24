@@ -137,7 +137,6 @@ public abstract class Utils {
 	
 	public static void deleteRecovery() {
 		File[] files = new File(Project.getPATH()).listFiles();
-		//If this pathname does not denote a directory, then listFiles() returns null. 
 		for (File file : files) {
 			if (file.isFile()) {
 			    if(file.getName().contains(Project.RECOVERY))
