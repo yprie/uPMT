@@ -127,9 +127,16 @@ public class MomentComparaisonController implements Initializable{
 	private Paint backgroundPaint;
 	private GridPane statsGrid;
 	private BorderPane test;
+	private ArrayList<Accordion> listAccordion;
 	double largeurNoeudEnfant = 0;
 	double largeurRacineParent = 120;
 	double lastWidth;
+	final int ROW_HEIGHT = 24;
+	private int idName;
+	private int idMax;
+	int PADDING = 2;
+	boolean ok=true;
+	
 	ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
 	
 	public MomentComparaisonController(Main main, Stage window) {
@@ -143,6 +150,7 @@ public class MomentComparaisonController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		listAccordion=new ArrayList<Accordion>();
 		int cptInterviewName=0;
 		//rowTree.setStyle("-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-border-radius: 20;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
 		try {
@@ -160,15 +168,16 @@ public class MomentComparaisonController implements Initializable{
 		initTag(listMainMoments);
 		VBox layoutV = new VBox();
 		
-		System.out.println("jjjjjj" + listMainMoments.toString() + listMainMoments.size());
+		//System.out.println("jjjjjj" + listMainMoments.toString() + listMainMoments.size());
 		for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) { //separation de la liste en deux
+			PADDING = 1;
 			HBox layoutH = new HBox();
 			layoutH.setStyle( "-fx-border-color: grey; -fx-padding: 50 10 50 10; -fx-border-width: 0 0 3 0 ; -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;"); 
 			boolean isRacine = true;
 			
 			int nbRacineMax = allMoments.size();
 			int nbRacine = 0;
-			System.out.println("jjjjjj" + allMoments.toString() + allMoments.size());
+			//System.out.println("jjjjjj" + allMoments.toString() + allMoments.size());
 			largeurNoeudEnfant = 120/allMoments.size();
 			largeurRacineParent = largeurNoeudEnfant;
 
@@ -180,7 +189,7 @@ public class MomentComparaisonController implements Initializable{
 			
 			for(MomentExperience moment : moments) {
 				
-				System.out.println("WIIDTH " + moment.getmWidth());
+				//System.out.println("WIIDTH " + moment.getmWidth());
 				moment.setmWidth(moment.getmWidth()/allMoments.size());	
 				
 				if(allMoments.size()>1) {
@@ -214,28 +223,36 @@ public class MomentComparaisonController implements Initializable{
 					}
 
 					ListView<String> listCategoryDisplay = new ListView<String>();
-					listCategoryDisplay.setPrefSize(120, 120);
-					listCategoryDisplay.getItems().addAll(categoryList);
+					//listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
 					
+					listCategoryDisplay.getItems().addAll(categoryList);
+					listCategoryDisplay.setId("list"+moment.getID());
+					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
 					TitledPane titleMoment = new TitledPane(moment.getName(), listCategoryDisplay);
+					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 					titleMoment.setId("title"+moment.getID());
 					//titleMoment.setEffect(new DropShadow(20, Color.BLACK));
 					titleMoment.setAlignment(Pos.CENTER);
-					titleMoment.setStyle("-fx-border-color: lightgray;");
-					//displayArrow(titleMoment);
-					//System.out.println(titleMoment.getId());
+					//titleMoment.setStyle("-fx-border-color: lightgray;");
+					
 					try {
-						//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-border-color: red;}");
-						//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-border-radius: red;}");
+						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ moment.getColor() +"; }");
+						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ moment.getColor() +"; }");
 						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ moment.getColor() +"; }");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 					
 					Accordion momentBox = new Accordion();
+					momentBox.setId("moment"+idName);
+					listAccordion.add(momentBox);
+					System.out.println("NAME 1 " + moment.getName() + "     " + momentBox.getId());
 					//momentBox.setPrefWidth(largeurRacineParent*10);
+					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
 					momentBox.setMinWidth(largeurRacineParent*10);
 					momentBox.setMaxWidth(largeurRacineParent*10);
+					
+					//momentBox.setStyle("-fx-border-color: grey;");
 					momentBox.getPanes().addAll(titleMoment);
 					rowTree.getChildren().add(momentBox);
 					colTree.getChildren().add(rowTree);
@@ -243,14 +260,17 @@ public class MomentComparaisonController implements Initializable{
 					moment.setTag(true);
 						
 				} 
-
+				idName++;
+				idMax=idName;
+				PADDING = PADDING + 2;
 				if(moment.getSubMoments().size()>0) {
-						
+					
 					HBox rowTree = new HBox();
 					for(MomentExperience subMoment : moment.getSubMoments()) { //pour tous les sous moments de A
 						
 						subMoment.setmWidth(moment.getmWidth()/moment.getSubMoments().size());
-						System.out.println("2 "+subMoment.getmWidth());
+						//subMoment.setmWidth(subMoment.getmWidth()-(PADDING/2));
+						//System.out.println("2 "+subMoment.getmWidth());
 						if(subMoment.isTag()==false) {
 
 							//category display
@@ -267,15 +287,28 @@ public class MomentComparaisonController implements Initializable{
 								rowTree.getChildren().add(labelTitleInterview);
 							}
 							ListView<String> listCategoryDisplay = new ListView<String>();
-							listCategoryDisplay.setPrefSize(120, 120);
+							
+							listCategoryDisplay.setId("list"+subMoment.getID());
+							listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
+							listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
 							listCategoryDisplay.getItems().addAll(categoryList);
+
 							TitledPane titleMoment = new TitledPane(subMoment.getName(), listCategoryDisplay);
-							titleMoment.setStyle("-fx-border-color: lightgray;");
+							titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
+							//titleMoment.setStyle("-fx-border-color: lightgray;");
 							Accordion momentBox = new Accordion();
+							momentBox.setId("moment"+idName);
+							listAccordion.add(momentBox);
+							System.out.println("NAME 1 " + subMoment.getName() + "     " + momentBox.getId());
 							//momentBox.setPrefWidth(subMoment.getmWidth()*10);
-							momentBox.setMaxWidth(subMoment.getmWidth()*10);
-							momentBox.setMinWidth(subMoment.getmWidth()*10);
+							momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
+							//momentBox.setStyle("-fx-padding: 0 20 0 20;");
+							//momentBox.setStyle("-fx-border-color: grey;");
+							momentBox.setMaxWidth((subMoment.getmWidth()*10)-2);
+							momentBox.setMinWidth((subMoment.getmWidth()*10)-2);
+							//momentBox.setExpandedPane(titleMoment);
 							momentBox.getPanes().addAll(titleMoment);
+							momentBox.setId("moment"+idName);
 							titleMoment.setId("title"+subMoment.getID());
 
 							titleMoment.setAlignment(Pos.CENTER);
@@ -286,7 +319,8 @@ public class MomentComparaisonController implements Initializable{
 							//System.out.println("ooooooooooooo" + subMoment.toString().length());
 
 							try {
-								
+								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMoment.getColor() +"; }");
+								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
 								//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
 								//writeInCssFile(".titled-pane > .title { -fx-alignment: center-right; }");
@@ -294,15 +328,19 @@ public class MomentComparaisonController implements Initializable{
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-			
+							
 							rowTree.getChildren().add(momentBox);
 							subMoment.setTag(true);
 							momentSave.add(subMoment);	
 						}
 							
 					}
+					idName++;
+					idMax=idName;
+					System.out.println("EEEEND");
 					colTree.getChildren().add(rowTree);
 					search(momentSave, moments, colTree);
+					
 				}	
 			}
 			isRacine=true;
@@ -319,6 +357,16 @@ public class MomentComparaisonController implements Initializable{
 		this.centralPane.getStylesheets().add("file:///"+dir);
 		//this.centralPane.getStylesheets().add(getClass().getResource("../src/application.css").toExternalForm());
 		//layoutV.setStyle("-fx-border-width: 0px, 0px, 5px, 0px;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;  -fx-border-color: blue ; ");
+		System.out.println("EEEEND " + idMax);
+		TitledPane t = new TitledPane("oooo", new Button("B1"));
+		for(Accordion a : listAccordion) {
+			if(!a.equals(null)) {
+				System.out.println(a.getId());
+				a.setExpandedPane(a.getPanes().get(0));
+			}
+			
+			//a.setExpandedPane(t);
+		}
 		this.centralPane.getChildren().add(layoutV);
 		buttonCloseStats.setText(main._langBundle.getString("close"));
 	}
@@ -332,6 +380,7 @@ public class MomentComparaisonController implements Initializable{
 	* @param colTree for place children in same col
 	*/
 	public void search(ArrayList<MomentExperience> subMoments, ArrayList<MomentExperience> moments, VBox colTree) {
+		PADDING = PADDING + 2;
 		double init = lastWidth;
 		int cpt=0;
 		int i = 0;
@@ -359,14 +408,24 @@ public class MomentComparaisonController implements Initializable{
 						categoryList.add(c.toString());	
 					}
 					ListView<String> listCategoryDisplay = new ListView<String>();
-					listCategoryDisplay.setPrefSize(120, 120);
-					
+					listCategoryDisplay.setStyle("-fx-border-color: red; -fx-border-width: 0px Opx 8px 0px;");
+					listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT);
 					listCategoryDisplay.getItems().addAll(categoryList);
+					listCategoryDisplay.setStyle("-fx-background-color:"+subMomentOfSubMoment.getColor()+";");
+					listCategoryDisplay.setId("list"+subMomentOfSubMoment.getID());
+					
+					try {
+						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
+						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					
 					TitledPane titleMoment = new TitledPane(subMomentOfSubMoment.getName(), listCategoryDisplay);
-					titleMoment.setStyle("-fx-border-color: lightgray;");
+					//titleMoment.setStyle("-fx-border-color: lightgray;");
 					titleMoment.setAlignment(Pos.CENTER);
 					titleMoment.setId("title"+subMomentOfSubMoment.getID());
+					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 					//displayArrow(titleMoment);
 					//System.out.println(titleMoment.getId());
 					try {
@@ -381,12 +440,24 @@ public class MomentComparaisonController implements Initializable{
 						cptInterviewName++;
 						rowTree.getChildren().add(labelTitleInterview);
 					}
-					
+					System.out.println("NAME 2 " + subMomentOfSubMoment.getName());
 					Accordion momentBox = new Accordion();
+					momentBox.setId("moment"+idName);
+					listAccordion.add(momentBox);
+					System.out.println("NAME 1 " + subMomentOfSubMoment.getName() + "     " + momentBox.getId());
+					
+					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
+					
 					//momentBox.setPrefWidth(subMomentOfSubMoment.getmWidth()*10);
-					momentBox.setMaxWidth(subMomentOfSubMoment.getmWidth()*10);
-					momentBox.setMinWidth(subMomentOfSubMoment.getmWidth()*10);
+					momentBox.setMaxWidth((subMomentOfSubMoment.getmWidth()*10)-2);
+					momentBox.setMinWidth((subMomentOfSubMoment.getmWidth()*10)-2);
+					//momentBox.getId().setExpandedPane(titleMoment);
+					if(ok==true) {
+					momentBox.setStyle("-fx-background-color: grey;");
+					ok=false;
+					}
 					momentBox.getPanes().addAll(titleMoment);
+					//momentBox.set
 					rowTree.getChildren().add(momentBox);
 					subMomentOfSubMoment.setTag(true);
 					momentSaveCopy.add(subMomentOfSubMoment);
@@ -400,10 +471,12 @@ public class MomentComparaisonController implements Initializable{
 				titleMoment.setVisible(false);
 				Accordion momentBox = new Accordion();
 				double size = subMoment.getmWidth();
+				listAccordion.add(momentBox);
 				//System.out.println(size);
 				//momentBox.setPrefWidth(size*10);
-				momentBox.setMaxWidth(size*10);
-				momentBox.setMinWidth(size*10);
+				momentBox.setPadding(new Insets(4, PADDING*2, 4, PADDING*2));
+				momentBox.setMaxWidth((size*10)-2);
+				momentBox.setMinWidth((size*10)-2);
 				momentBox.getPanes().addAll(titleMoment);
 				rowTree.getChildren().add(momentBox);
 				momentBox.setDisable(true);
