@@ -60,6 +60,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -151,6 +152,10 @@ public class MomentComparaisonController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listAccordion=new ArrayList<Accordion>();
+		ScrollPane scroll = new ScrollPane();
+		scroll.setFitToHeight(true);
+		scroll.setFitToWidth(true);
+		//scroll.setPrefSize(300, 300);
 		
 		int cptInterviewName=0;
 		//rowTree.setStyle("-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-border-radius: 20;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
@@ -248,7 +253,7 @@ public class MomentComparaisonController implements Initializable{
 					Accordion momentBox = new Accordion();
 					momentBox.setId("moment"+idName);
 					listAccordion.add(momentBox);
-					System.out.println("NAME 1 " + moment.getName() + "     " + momentBox.getId());
+					//System.out.println("NAME 1 " + moment.getName() + "     " + momentBox.getId());
 					//momentBox.setPrefWidth(largeurRacineParent*10);
 					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
 					momentBox.setMinWidth(largeurRacineParent*10);
@@ -256,6 +261,11 @@ public class MomentComparaisonController implements Initializable{
 					
 					//momentBox.setStyle("-fx-border-color: grey;");
 					momentBox.getPanes().addAll(titleMoment);
+					
+					momentBox.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) -> {
+						expand(momentBox);
+					});
+					
 					rowTree.getChildren().add(momentBox);
 					colTree.getChildren().add(rowTree);
 					nbRacine++;
@@ -302,7 +312,7 @@ public class MomentComparaisonController implements Initializable{
 							Accordion momentBox = new Accordion();
 							momentBox.setId("moment"+idName);
 							listAccordion.add(momentBox);
-							System.out.println("NAME 1 " + subMoment.getName() + "     " + momentBox.getId());
+							//System.out.println("NAME 1 " + subMoment.getName() + "     " + momentBox.getId());
 							//momentBox.setPrefWidth(subMoment.getmWidth()*10);
 							momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
 							//momentBox.setStyle("-fx-padding: 0 20 0 20;");
@@ -315,7 +325,7 @@ public class MomentComparaisonController implements Initializable{
 							momentBox.setId("moment"+idName);
 							titleMoment.setId("title"+subMoment.getID());
 							
-							
+
 							
 							//momentBox.setOnMouseClicked(mousehandler);
 							/*
@@ -338,10 +348,12 @@ public class MomentComparaisonController implements Initializable{
 										            });
 										        }
 										        */
-										        
+        
 							momentBox.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) -> {
-								//titleMoment.setExpanded(fa);
-						    });
+								expand(momentBox);
+							});
+							
+							
 												//momentBox.setExpandedPane(momentBox.getPanes().get(0));
 											//titleMoment.setCollapsible(false);
 											//System.out.println(titleMoment.isCollapsible());
@@ -400,6 +412,8 @@ public class MomentComparaisonController implements Initializable{
 			largeurNoeudEnfant=largeurRacineParent;
 			layoutH.getChildren().add(colTree);
 		}
+			
+			
 			layoutV.getChildren().add(layoutH);
 			cptInterviewName=0;
 	}
@@ -410,19 +424,14 @@ public class MomentComparaisonController implements Initializable{
 		this.centralPane.getStylesheets().add("file:///"+dir);
 		//this.centralPane.getStylesheets().add(getClass().getResource("../src/application.css").toExternalForm());
 		//layoutV.setStyle("-fx-border-width: 0px, 0px, 5px, 0px;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;  -fx-border-color: blue ; ");
-		System.out.println("EEEEND " + idMax);
+		//System.out.println("EEEEND " + idMax);
 		TitledPane t = new TitledPane("oooo", new Button("B1"));
-		/*
-		for(Accordion a : listAccordion) {
-			if(!a.equals(null)) {
-				System.out.println(a.getId());
-				a.setExpandedPane(a.getPanes().get(0));
-			}
-			
-			//a.setExpandedPane(t);
-		}
-		*/
-		this.centralPane.getChildren().add(layoutV);
+		//layoutV.setPrefSize(900, 500);
+		layoutV.setPrefSize(200, 200);
+		scroll.setContent(layoutV);
+		this.centralPane.getChildren().add(scroll);
+
+		
 		buttonCloseStats.setText(main._langBundle.getString("close"));
 	}
 	
@@ -495,11 +504,11 @@ public class MomentComparaisonController implements Initializable{
 						cptInterviewName++;
 						rowTree.getChildren().add(labelTitleInterview);
 					}
-					System.out.println("NAME 2 " + subMomentOfSubMoment.getName());
+					//System.out.println("NAME 2 " + subMomentOfSubMoment.getName());
 					Accordion momentBox = new Accordion();
 					momentBox.setId("moment"+idName);
 					listAccordion.add(momentBox);
-					System.out.println("NAME 1 " + subMomentOfSubMoment.getName() + "     " + momentBox.getId());
+					//System.out.println("NAME 1 " + subMomentOfSubMoment.getName() + "     " + momentBox.getId());
 					
 					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
 					
@@ -512,6 +521,9 @@ public class MomentComparaisonController implements Initializable{
 					ok=false;
 					}
 					momentBox.getPanes().addAll(titleMoment);
+					momentBox.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) -> {
+						expand(momentBox);
+					});
 					//momentBox.set
 					rowTree.getChildren().add(momentBox);
 					subMomentOfSubMoment.setTag(true);
@@ -523,6 +535,7 @@ public class MomentComparaisonController implements Initializable{
 				TitledPane titleMoment = new TitledPane("momentVide", new Button("b"));
 				titleMoment.setVisible(false);
 				Accordion momentBox = new Accordion();
+				momentBox.setId("hideMoment");
 				double size = subMoment.getmWidth();
 				listAccordion.add(momentBox);
 				//System.out.println(size);
@@ -627,7 +640,7 @@ public class MomentComparaisonController implements Initializable{
 		
 	    @Override
 	    public void handle(MouseEvent mouseEvent) {
-	        System.out.println("hi");
+	       // System.out.println("hi");
 	    }
 	};
 	
@@ -635,6 +648,72 @@ public class MomentComparaisonController implements Initializable{
     private void closeStats() {
 		window.close();
     };
+    
+    
+    /*
+     * 
+     * 
+     Button button =new Button(" close ");
+			Button button2 =new Button(" open ");
+			button2.setOnAction((ActionEvent event) -> {
+				for(Accordion a : listAccordion) {
+					if(!a.equals(null)) {
+						System.out.println(a.getPanes().get(0).isExpanded());
+						System.out.println(a.getId());
+						a.getPanes().get(0).setExpanded(true);
+					}
+				}
+		    });
+			
+			button.setOnAction((ActionEvent event) -> {
+				for(Accordion a : listAccordion) {
+					if(!a.equals(null)) {
+						System.out.println(a.getPanes().get(0).isExpanded());
+						
+						a.getPanes().get(0).setExpanded(false);
+						//a.setExpandedPane(a.getPanes().get(0));
+						//a.setExpanded(true);
+					}
+					
+					//a.setExpandedPane(t);
+				}
+		        //accordion.setExpandedPane(titledPane); // Expanded Pane works!
+		         * 
+		    layoutV.getChildren().add(button);
+			layoutV.getChildren().add(button2);
+		    });
+     */
+    
+	/**
+	* Expand all accordion in the same
+	* @param momentBox: the accordion
+	*/
+    public void expand(Accordion momentBox) {
+    	if(momentBox.getPanes().get(0).isExpanded()) {
+	    	for(Accordion a : listAccordion) {
+	    		if(!a.equals(null)) {
+	    			if(!a.getId().equals("hideMoment")) {
+	    				if(a.getId().equals(momentBox.getId())) {
+	    					if(a.getId().equals(momentBox.getId())) {
+	    						System.out.println(a.getId());
+	    						a.getPanes().get(0).setExpanded(true);
+	    					}
+	        			}
+	    			}
+	    		}
+	    	}
+    	} else {
+    		for(Accordion a : listAccordion) {
+    			if(!a.equals(null)) {
+	    			if(!a.getId().equals("hideMoment")) {
+	    				if(a.getId().equals(momentBox.getId())) {
+	    					a.getPanes().get(0).setExpanded(false);
+	    				}
+	    			}
+	    		}
+	    	}	
+	    }
+    }
     
 }
 
