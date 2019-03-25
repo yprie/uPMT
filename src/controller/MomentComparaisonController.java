@@ -151,6 +151,7 @@ public class MomentComparaisonController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listAccordion=new ArrayList<Accordion>();
+		
 		int cptInterviewName=0;
 		//rowTree.setStyle("-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-border-radius: 20;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
 		try {
@@ -296,6 +297,7 @@ public class MomentComparaisonController implements Initializable{
 
 							TitledPane titleMoment = new TitledPane(subMoment.getName(), listCategoryDisplay);
 							titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
+							
 							//titleMoment.setStyle("-fx-border-color: lightgray;");
 							Accordion momentBox = new Accordion();
 							momentBox.setId("moment"+idName);
@@ -309,9 +311,59 @@ public class MomentComparaisonController implements Initializable{
 							momentBox.setMinWidth((subMoment.getmWidth()*10)-2);
 							//momentBox.setExpandedPane(titleMoment);
 							momentBox.getPanes().addAll(titleMoment);
+						
 							momentBox.setId("moment"+idName);
 							titleMoment.setId("title"+subMoment.getID());
+							
+							
+							
+							//momentBox.setOnMouseClicked(mousehandler);
+							/*
+							int isClose=0;
+							momentBox.expandedPaneProperty().addListener(new 
+									ChangeListener<TitledPane>() {
+										@Override
+										public void changed(ObservableValue<? extends TitledPane> observable,
+												TitledPane oldPane, TitledPane newValue) {
+											 Boolean expand = true; // This value will change to false if there's (at least) one pane that is in "expanded" state, so we don't have to expand anything manually
+										        for(TitledPane pane: momentBox.getPanes()) {
+										            if(pane.isExpanded()) {
+										                expand = false;
+										            }
+										        }
 
+										        if((expand == true) && (oldPane != null)) {
+										            Platform.runLater(() -> {
+										            	momentBox.setExpandedPane(oldPane);
+										            });
+										        }
+										        */
+										        
+							momentBox.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) -> {
+								//titleMoment.setExpanded(fa);
+						    });
+												//momentBox.setExpandedPane(momentBox.getPanes().get(0));
+											//titleMoment.setCollapsible(false);
+											//System.out.println(titleMoment.isCollapsible());
+											/*
+													if(titleMoment.isCollapsible()) {
+														//titleMoment.setExpanded(false);
+														System.out.println("fermé");
+													} else {
+														for(Accordion accordion : listAccordion) {
+															if(!accordion.equals(null) && accordion.getId().equals(momentBox.getId())) {
+																
+																accordion.setExpandedPane(accordion.getPanes().get(0));
+																titleMoment.setCollapsible(true);
+																//accordion.setExpanded(accordion.getPanes().get(0));
+															} 
+														}
+													}
+													
+										}
+										
+						     });
+							*/
 							titleMoment.setAlignment(Pos.CENTER);
 							//displayArrow(titleMoment);
 							Region title = (Region) titleMoment.lookup("#"+titleMoment.getId());
@@ -567,11 +619,17 @@ public class MomentComparaisonController implements Initializable{
 						m.setTag(false);
 					}
 				}
-			}
-			
+			}	
 		}
-		
 	}
+	
+	EventHandler<MouseEvent> mousehandler = new EventHandler<MouseEvent>() {
+		
+	    @Override
+	    public void handle(MouseEvent mouseEvent) {
+	        System.out.println("hi");
+	    }
+	};
 	
 	@FXML
     private void closeStats() {
