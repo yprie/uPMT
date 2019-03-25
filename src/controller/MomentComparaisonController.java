@@ -172,7 +172,7 @@ public class MomentComparaisonController implements Initializable{
 		for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) { //separation de la liste en deux
 			PADDING = 1;
 			HBox layoutH = new HBox();
-			layoutH.setStyle( "-fx-border-color: grey; -fx-padding: 50 10 50 10; -fx-border-width: 0 0 3 0 ; -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;"); 
+			layoutH.setStyle( "-fx-border-color: grey; -fx-padding: 20 0 20 0; -fx-border-width: 0 0 3 0 ; -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;"); 
 			boolean isRacine = true;
 			
 			int nbRacineMax = allMoments.size();
@@ -228,6 +228,7 @@ public class MomentComparaisonController implements Initializable{
 					listCategoryDisplay.getItems().addAll(categoryList);
 					listCategoryDisplay.setId("list"+moment.getID());
 					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
+					listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
 					TitledPane titleMoment = new TitledPane(moment.getName(), listCategoryDisplay);
 					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 					titleMoment.setId("title"+moment.getID());
@@ -359,6 +360,7 @@ public class MomentComparaisonController implements Initializable{
 		//layoutV.setStyle("-fx-border-width: 0px, 0px, 5px, 0px;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;  -fx-border-color: blue ; ");
 		System.out.println("EEEEND " + idMax);
 		TitledPane t = new TitledPane("oooo", new Button("B1"));
+		/*
 		for(Accordion a : listAccordion) {
 			if(!a.equals(null)) {
 				System.out.println(a.getId());
@@ -367,6 +369,7 @@ public class MomentComparaisonController implements Initializable{
 			
 			//a.setExpandedPane(t);
 		}
+		*/
 		this.centralPane.getChildren().add(layoutV);
 		buttonCloseStats.setText(main._langBundle.getString("close"));
 	}
@@ -404,7 +407,7 @@ public class MomentComparaisonController implements Initializable{
 					
 					//category display
 					ArrayList<String> categoryList = new ArrayList<String>();
-					for(Category c : subMoment.getCategories()){
+					for(Category c : subMomentOfSubMoment.getCategories()){
 						categoryList.add(c.toString());	
 					}
 					ListView<String> listCategoryDisplay = new ListView<String>();
@@ -453,7 +456,7 @@ public class MomentComparaisonController implements Initializable{
 					momentBox.setMinWidth((subMomentOfSubMoment.getmWidth()*10)-2);
 					//momentBox.getId().setExpandedPane(titleMoment);
 					if(ok==true) {
-					momentBox.setStyle("-fx-background-color: grey;");
+					//momentBox.setStyle("-fx-background-color: grey;");
 					ok=false;
 					}
 					momentBox.getPanes().addAll(titleMoment);
@@ -461,9 +464,7 @@ public class MomentComparaisonController implements Initializable{
 					rowTree.getChildren().add(momentBox);
 					subMomentOfSubMoment.setTag(true);
 					momentSaveCopy.add(subMomentOfSubMoment);
-
 				}
-				
 			lastWidth = init;
 			} else {
 				
@@ -519,7 +520,7 @@ public class MomentComparaisonController implements Initializable{
 			fileWriter = new FileWriter(dir+File.separator+"test.css", true);
 			//fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-			//bufferWriter.write(".accordion .title > .arrow-button{ visibility: hidden;}");
+			//bufferWriter.write(".accordion .title > .arrow-button{ -fx-padding: 10;}");
 			//bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
 			bufferWriter.close();
 			//bufferWriter.write(".hbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
