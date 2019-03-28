@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -77,6 +79,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -122,7 +125,7 @@ public class MomentComparaisonController implements Initializable{
 	private @FXML Button buttonCloseStats;
 	
 	private @FXML Pane centralPane;
-
+	private @FXML HBox anchorPane;
 	private Main main;
 	private Stage window;
 	private Paint backgroundPaint;
@@ -137,12 +140,13 @@ public class MomentComparaisonController implements Initializable{
 	private int idMax;
 	int PADDING = 2;
 	boolean ok=true;
-	
-	ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
+	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
 	
 	public MomentComparaisonController(Main main, Stage window) {
 		this.main = main;
 		this.window = window;
+		
 	}
 	
 	public void setColor(String col){
@@ -151,10 +155,11 @@ public class MomentComparaisonController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		//this.anchorPane.se
 		listAccordion=new ArrayList<Accordion>();
 		ScrollPane scroll = new ScrollPane();
-		scroll.setFitToHeight(true);
-		scroll.setFitToWidth(true);
+		//scroll.setFitToHeight(true);
+		//scroll.setFitToWidth(true);
 		//scroll.setPrefSize(300, 300);
 		
 		int cptInterviewName=0;
@@ -427,12 +432,18 @@ public class MomentComparaisonController implements Initializable{
 		//System.out.println("EEEEND " + idMax);
 		TitledPane t = new TitledPane("oooo", new Button("B1"));
 		//layoutV.setPrefSize(900, 500);
-		layoutV.setPrefSize(200, 200);
+		
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		//scroll.setMinSize(1300, 750);
+		
+		//this.anchorPane.getChildren().add(layoutV);
+		scroll.setPrefSize(screenSize.getWidth()-100, screenSize.getHeight()-100);
+		
 		scroll.setContent(layoutV);
 		this.centralPane.getChildren().add(scroll);
 
 		
-		buttonCloseStats.setText(main._langBundle.getString("close"));
+		//buttonCloseStats.setText(main._langBundle.getString("close"));
 	}
 	
 	
@@ -644,12 +655,14 @@ public class MomentComparaisonController implements Initializable{
 	    }
 	};
 	
+	/*
 	@FXML
     private void closeStats() {
 		window.close();
     };
     
-    
+    */
+	
     /*
      * 
      * 

@@ -20,6 +20,8 @@
 
 package controller;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,6 +40,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
@@ -45,6 +48,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.TitledPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -251,25 +256,25 @@ public class RootLayoutController implements Initializable{
 	
 	@FXML
 	public void momentsComparaison(){
-		Stage statsWindow = new Stage(StageStyle.UTILITY);
-		statsWindow.setTitle(main._langBundle.getString("moments_comparaison"));
-		statsWindow.setResizable(false);
-		statsWindow.initModality(Modality.APPLICATION_MODAL);
- 
+		Stage comparisonWindow = new Stage(StageStyle.UTILITY);
+		comparisonWindow.setTitle(main._langBundle.getString("moments_comparaison"));
+		comparisonWindow.setResizable(true);
+		comparisonWindow.initModality(Modality.APPLICATION_MODAL);
+
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			
             loader.setLocation(getClass().getResource("/view/MomentComparaisonView.fxml"));
-            loader.setController(new MomentComparaisonController(main, statsWindow));
+            loader.setController(new MomentComparaisonController(main, comparisonWindow));
            
             loader.setResources(main._langBundle);
     		
             //////////
-            AnchorPane layout = (AnchorPane) loader.load();
+            HBox layout = (HBox) loader.load();
             Scene sc = new Scene(layout);
-            statsWindow.setScene(sc);
+            comparisonWindow.setScene(sc);
             //sc.getStylesheets().add(getClass().getResource("/application/test.css").toExternalForm());
-			statsWindow.showAndWait();
+            comparisonWindow.showAndWait();
 			
 		} catch (IOException e) {
 			// TODO Exit Program
