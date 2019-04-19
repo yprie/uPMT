@@ -4,13 +4,32 @@ package controller;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.scene.control.Tooltip;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
+import javax.swing.ToolTipManager;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedWriter;
@@ -60,8 +79,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Cell;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
@@ -94,6 +117,7 @@ import model.MomentExperience;
 import model.Property;
 import model.Schema;
 import model.Type;
+import utils.EllipsisListCell;
 import utils.MainViewTransformations;
 import utils.Serializer;
 import utils.UndoCollector;
@@ -116,12 +140,13 @@ import model.MomentExperience;
 import utils.MomentComparaison;
 
 
-public class MomentComparaisonController implements Initializable{
+public class MomentComparaisonController  implements Initializable {
 
-	//GERER LES ID + LES COULEURS + APPLIQUER PARTOUT + NETTOYER
-	//METTRE AU MILIEU, CHANGER LA PLACE DE LA FLECHE
-	//GERER L'INTERIEUR
-	//BIEN ALIGNER QUAND PLEIN DE DIFFERENTES INTERVIEWS
+	//DROPDOWN
+	//RESPONSIVE INTERIEUR
+	//TITRE
+	//PADDING et MARGIN
+	
 	private @FXML Button buttonCloseStats;
 	
 	private @FXML Pane centralPane;
@@ -140,7 +165,7 @@ public class MomentComparaisonController implements Initializable{
 	private int idMax;
 	int PADDING = 2;
 	boolean ok=true;
-	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	//private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
 	
 	public MomentComparaisonController(Main main, Stage window) {
@@ -226,31 +251,74 @@ public class MomentComparaisonController implements Initializable{
 						rowTree.getChildren().add(labelTitleInterview);
 					}
 					
-					
-					//category display
-					ArrayList<String> categoryList = new ArrayList<String>();
-					for(Category c : moment.getCategories()){
-						categoryList.add(c.toString());	
-					}
-
-					ListView<String> listCategoryDisplay = new ListView<String>();
+	
+					ListView<Category> listCategoryDisplay = new ListView<Category>();
+					//ListView<String> listCategoryDisplay = new ListView<String>();
 					//listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
+					listCategoryDisplay.getItems().addAll(moment.getCategories());
 					
-					listCategoryDisplay.getItems().addAll(categoryList);
+					//debut
+					listCategoryDisplay.setPrefHeight(moment.getCategories().size() * ROW_HEIGHT);
+					listCategoryDisplay.getItems().addAll(moment.getCategories());
+					//fin
+					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
+					listCategoryDisplay.setId("list"+moment.getID());
+					
+					//debut
+					listCategoryDisplay.setCellFactory(lv -> {
+			            ListCell<Category> cell = new ListCell<Category>() {
+			                @Override
+			                public void updateItem(Category item, boolean empty) {
+			                    super.updateItem(item, empty);
+			                    setStyle("-fx-padding: 2 2 2 2");
+			                    //listCategoryDisplay.setCursor(Cursors.Hand);
+			                    if (empty) {
+			                        setText(null);
+			                    } else {
+			                    	Tooltip tooltip = new Tooltip();
+			                        setText(item.getName());
+			                        if(item.getProperties().size()>0) {
+			                        	tooltip.setText(item.getProperties().toString());
+			                        	//tooltip.setId("tool");
+			                        	//ToolTipManager.sharedInstance().setDismissDelay(20000);
+			                        	//tooltip.de
+			                        } else {
+			                        	
+			                        	tooltip.hide();
+			                        }
+			                        bindTooltip(this, tooltip);
+			                       // setTooltip(tooltip);
+			                        
+			                        //item.getProperties()
+			                    }
+			                }
+			            };
+			            
+			            cell.hoverProperty().addListener((obs, wasHovered, isNowHovered) -> {
+			            	 //ToolTipManager.sharedInstance().setDismissDelay(90000);
+			            });
+						
+			            return cell ;
+			        });
+					
+					//fin
+					
+					//listCategoryDisplay.getItems().addAll(categoryList);
 					listCategoryDisplay.setId("list"+moment.getID());
 					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
-					listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
+					//listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
 					TitledPane titleMoment = new TitledPane(moment.getName(), listCategoryDisplay);
 					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 					titleMoment.setId("title"+moment.getID());
 					//titleMoment.setEffect(new DropShadow(20, Color.BLACK));
 					titleMoment.setAlignment(Pos.CENTER);
 					//titleMoment.setStyle("-fx-border-color: lightgray;");
-					
+
 					try {
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ moment.getColor() +"; }");
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ moment.getColor() +"; }");
 						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ moment.getColor() +"; }");
+						writeInCssFile(scollBarColor(listCategoryDisplay.getId(),moment.getColor()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -293,9 +361,7 @@ public class MomentComparaisonController implements Initializable{
 							//category display
 							ArrayList<String> categoryList = new ArrayList<String>();
 							
-							for(Category c : subMoment.getCategories()){
-								categoryList.add(c.toString());	
-							}
+
 							if(cptInterviewName==1) {
 								Label labelTitleInterview = new Label(subMoment.getInterviewName());
 								labelTitleInterview.setPrefSize(200, 0);
@@ -303,19 +369,92 @@ public class MomentComparaisonController implements Initializable{
 								cptInterviewName++;
 								rowTree.getChildren().add(labelTitleInterview);
 							}
-							ListView<String> listCategoryDisplay = new ListView<String>();
+							ListView<Category> listCategoryDisplay = new ListView<Category>();
 							
-							listCategoryDisplay.setId("list"+subMoment.getID());
-							listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
+							//listCategoryDisplay.setId("list"+subMoment.getID());
+							//listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
+							//listCategoryDisplay.setPrefWi(categoryList.size() * ROW_HEIGHT + 2);
+							//listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
+							
+							listCategoryDisplay.getItems().addAll(subMoment.getCategories());
+							
+							//debut
+							listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
+							//listCategoryDisplay.getItems().setPadding(new Insets(4, 4, 4, 4));
+							//listCategoryDisplay.setPadding(new Insets(4, 4, 4, 4));
+							//listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
+							listCategoryDisplay.getItems().addAll(subMoment.getCategories());
+							//fin
 							listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
-							listCategoryDisplay.getItems().addAll(categoryList);
-
+							listCategoryDisplay.setId("list"+subMoment.getID());
+							
+							
+							// TEST AVEC ...
+							//listCategoryDisplay.setCellFactory((ListView<Category> param) -> new EllipsisListCell());
+							
+							
+							//debut
+							listCategoryDisplay.setCellFactory(lv -> {
+					            ListCell<Category> cell = new ListCell<Category>() {
+					                @Override
+					                public void updateItem(Category item, boolean empty) {
+					                    super.updateItem(item, empty);
+					                   
+					                    setStyle("-fx-padding: 2 2 2 2");
+					                    //listCategoryDisplay.setCursor(Cursors.Hand);
+					                    if (empty) {
+					                        setText(null);
+					                    } else {
+					                    	Tooltip tooltip = new Tooltip();
+					                        setText(item.getName());
+					                        //setText(item.toString());
+					                        //setTextOverrun(OverrunStyle.ELLIPSIS);
+					                        //setEllipsisString("...");
+					                        //ICI
+					                        prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(4));
+					                        setMaxWidth(Control.USE_PREF_SIZE);
+					                        //FIN
+					                        if(item.getProperties().size()>0) {
+					                        	tooltip.setText(item.getProperties().toString());
+					                        	//tooltip.setId("tool");
+					                        	//ToolTipManager.sharedInstance().setDismissDelay(20000);
+					                        	//tooltip.de
+					                        } else {
+					                        	tooltip.hide();
+					                        }
+					                        bindTooltip(this, tooltip);
+					                       // setTooltip(tooltip);
+					                        
+					                        //item.getProperties()
+					                    }
+					                }
+					            };
+					            
+					            cell.hoverProperty().addListener((obs, wasHovered, isNowHovered) -> {
+					            	 //ToolTipManager.sharedInstance().setDismissDelay(90000);
+					            });
+								
+					            return cell ;
+					        });
+							
+							//fin
+							
+							
+							
 							TitledPane titleMoment = new TitledPane(subMoment.getName(), listCategoryDisplay);
+							//titleMoment.setText(subMoment.getName());
+							
+							Accordion momentBox = new Accordion();
+
+							
 							titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 							
-							//titleMoment.setStyle("-fx-border-color: lightgray;");
-							Accordion momentBox = new Accordion();
+
+							
 							momentBox.setId("moment"+idName);
+							
+							
+
 							listAccordion.add(momentBox);
 							//System.out.println("NAME 1 " + subMoment.getName() + "     " + momentBox.getId());
 							//momentBox.setPrefWidth(subMoment.getmWidth()*10);
@@ -324,6 +463,7 @@ public class MomentComparaisonController implements Initializable{
 							//momentBox.setStyle("-fx-border-color: grey;");
 							momentBox.setMaxWidth((subMoment.getmWidth()*10)-2);
 							momentBox.setMinWidth((subMoment.getmWidth()*10)-2);
+							
 							//momentBox.setExpandedPane(titleMoment);
 							momentBox.getPanes().addAll(titleMoment);
 						
@@ -359,41 +499,16 @@ public class MomentComparaisonController implements Initializable{
 							});
 							
 							
-												//momentBox.setExpandedPane(momentBox.getPanes().get(0));
-											//titleMoment.setCollapsible(false);
-											//System.out.println(titleMoment.isCollapsible());
-											/*
-													if(titleMoment.isCollapsible()) {
-														//titleMoment.setExpanded(false);
-														System.out.println("fermé");
-													} else {
-														for(Accordion accordion : listAccordion) {
-															if(!accordion.equals(null) && accordion.getId().equals(momentBox.getId())) {
-																
-																accordion.setExpandedPane(accordion.getPanes().get(0));
-																titleMoment.setCollapsible(true);
-																//accordion.setExpanded(accordion.getPanes().get(0));
-															} 
-														}
-													}
-													
-										}
-										
-						     });
-							*/
-							titleMoment.setAlignment(Pos.CENTER);
-							//displayArrow(titleMoment);
-							Region title = (Region) titleMoment.lookup("#"+titleMoment.getId());
-							
-							
-							//System.out.println("ooooooooooooo" + subMoment.toString().length());
 
 							try {
+								/**************/
+								writeInCssFile("#" + titleMoment.getId() + " > *.content { -fx-background-color:"+ subMoment.getColor() +"; }");
+								
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
-								//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
-								//writeInCssFile(".titled-pane > .title { -fx-alignment: center-right; }");
+								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
+								writeInCssFile(scollBarColor(listCategoryDisplay.getId(),subMoment.getColor()));
 							
 							} catch (IOException e) {
 								e.printStackTrace();
@@ -437,10 +552,17 @@ public class MomentComparaisonController implements Initializable{
 		//scroll.setMinSize(1300, 750);
 		
 		//this.anchorPane.getChildren().add(layoutV);
-		scroll.setPrefSize(screenSize.getWidth()-100, screenSize.getHeight()-100);
+		//scroll.setPrefSize(screenSize.getWidth()-100, screenSize.getHeight()-100);
 		
-		scroll.setContent(layoutV);
-		this.centralPane.getChildren().add(scroll);
+		//scroll.setContent(layoutV);
+		Button button = new Button();
+		button.setText("Hover Me!");
+		Tooltip tt = new Tooltip();
+		tt.setText("Text on Hover");
+		layoutV.getChildren().add(button);
+		button.setTooltip(tt);
+		
+		this.centralPane.getChildren().add(layoutV);
 
 		
 		//buttonCloseStats.setText(main._langBundle.getString("close"));
@@ -478,20 +600,66 @@ public class MomentComparaisonController implements Initializable{
 					//System.out.println(subMomentOfSubMoment.getName());
 					
 					//category display
+					/*
 					ArrayList<String> categoryList = new ArrayList<String>();
 					for(Category c : subMomentOfSubMoment.getCategories()){
 						categoryList.add(c.toString());	
 					}
-					ListView<String> listCategoryDisplay = new ListView<String>();
+					*/
+					ListView<Category> listCategoryDisplay = new ListView<Category>();
+					
 					listCategoryDisplay.setStyle("-fx-border-color: red; -fx-border-width: 0px Opx 8px 0px;");
-					listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT);
-					listCategoryDisplay.getItems().addAll(categoryList);
+					//debut
+					listCategoryDisplay.setPrefHeight(subMomentOfSubMoment.getCategories().size() * ROW_HEIGHT);
+					listCategoryDisplay.getItems().addAll(subMomentOfSubMoment.getCategories());
+					//fin
 					listCategoryDisplay.setStyle("-fx-background-color:"+subMomentOfSubMoment.getColor()+";");
 					listCategoryDisplay.setId("list"+subMomentOfSubMoment.getID());
+					
+					//debut
+					listCategoryDisplay.setCellFactory(lv -> {
+			            ListCell<Category> cell = new ListCell<Category>() {
+			                @Override
+			                public void updateItem(Category item, boolean empty) {
+			                    super.updateItem(item, empty);
+			                    setStyle("-fx-padding: 2 2 2 2");
+			                    //listCategoryDisplay.setCursor(Cursors.Hand);
+			                    if (empty) {
+			                        setText(null);
+			                    } else {
+			                    	Tooltip tooltip = new Tooltip();
+			                        setText(item.getName());
+			                        if(item.getProperties().size()>0) {
+			                        	tooltip.setText(item.getProperties().toString());
+			                        	//tooltip.setId("tool");
+			                        	//ToolTipManager.sharedInstance().setDismissDelay(20000);
+			                        	//tooltip.de
+			                        } else {
+			                        	tooltip.hide();
+			                        	//tooltip.setText(" ");
+			                        }
+			                        bindTooltip(this, tooltip);
+			                       // setTooltip(tooltip);
+			                        
+			                        //item.getProperties()
+			                    }
+			                }
+			            };
+			            
+			            cell.hoverProperty().addListener((obs, wasHovered, isNowHovered) -> {
+			            	 //ToolTipManager.sharedInstance().setDismissDelay(90000);
+			            });
+						
+			            return cell ;
+			        });
+					
+					//fin
 					
 					try {
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
+						writeInCssFile(scollBarColor(listCategoryDisplay.getId(),subMomentOfSubMoment.getColor()));
+						//writeInCssFile("#tool { -fx-show-duration: 20s;}");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -569,6 +737,47 @@ public class MomentComparaisonController implements Initializable{
 		colTree.getChildren().add(rowTree);
 	}
 	
+	public static void bindTooltip(final Node node, final Tooltip tooltip){
+		node.setOnMouseEntered(new EventHandler<MouseEvent>(){
+		      @Override  
+		      public void handle(MouseEvent event) {
+		         // +15 moves the tooltip 15 pixels below the mouse cursor;
+		         // if you don't change the y coordinate of the tooltip, you
+		         // will see constant screen flicker
+		    	//node.setCursor(Cursor.HAND); //Change cursor to hand
+		         tooltip.show(node, event.getScreenX(), event.getScreenY() + 15);
+		      }
+		   
+	});
+		node.setOnMouseExited(new EventHandler<MouseEvent>(){
+		      @Override
+		      public void handle(MouseEvent event){
+		         tooltip.hide();
+		      }
+		   });
+	}
+	
+	public String scollBarColor(String id, String color) {
+		//String css = "";
+		System.out.println("color" + color);
+		return  "#"+id+" .scroll-bar:horizontal .track,"
+		+"#"+id+" .scroll-bar:vertical .track{ -fx-background-color : " + color +"; -fx-border-color :transparent;-fx-background-radius : 0.0em;-fx-border-radius :2.0em}"
+		+ "#"+id+" .scroll-bar:horizontal .increment-button , .scroll-bar:horizontal .decrement-button { -fx-background-color :transparent; -fx-background-radius : 0.0em; -fx-padding :0.0 0.0 10.0 0.0;}"
+		+ "#"+id+" .scroll-bar:horizontal { -fx-pref-width: 1.5;}"
+		+ "#"+id+" .scroll-bar { -fx-font-size: 2px;}"
+		+ "#"+id+" .scroll-bar:vertical .increment-button , .scroll-bar:vertical .decrement-button {-fx-background-color :" + color +";-fx-background-radius : 0.0em; -fx-padding :0.0 10.0 0.0 0.0;}"
+
+		+ "#"+id+" .scroll-bar .increment-arrow,.scroll-bar .decrement-arrow{-fx-shape : \" \";    -fx-padding :0.15em 0.0;}"
+		+ "#"+id+" .corner { -fx-background-color : " + color +" }"
+		+ "#"+id+" .scroll-bar:vertical .increment-arrow,.scroll-bar:vertical .decrement-arrow{-fx-shape : \" \";    -fx-padding :0.0 0.15em;}"
+
+		+ "#"+id+" .scroll-bar:horizontal .thumb,.scroll-bar:vertical .thumb {-fx-background-color :derive(black,90.0%);-fx-background-insets : 2.0, 0.0, 0.0;-fx-background-radius : 2.0em;}"
+
+		+ "#"+id+" .scroll-bar:horizontal .thumb:hover,.scroll-bar:vertical .thumb:hover {-fx-background-color :derive(#4D4C4F,10.0%);-fx-background-insets : 2.0, 0.0, 0.0;-fx-background-radius : 2.0em;}";
+		
+		//+ ".list-view" + "#"+id+ " .scroll-bar:horizontal .increment-arrow,.list-view"+ "#"+id+ " .scroll-bar:horizontal .decrement-arrow,.list-view"+ "#"+id+" .scroll-bar:horizontal .increment-button,.list-view# .scroll-bar:horizontal .decrement-button { -fx-padding:0;}";
+		
+	}
 	public void displayArrow(TitledPane titledPane) {
 		Label collapseButton = new Label();
 		//collapseButton.setBackground(new Background(new BackgroundFill(Color.gray(0.8), CornerRadii.EMPTY, Insets.EMPTY)));

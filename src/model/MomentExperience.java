@@ -54,7 +54,7 @@ public class MomentExperience implements Serializable, Cloneable {
 	private int mID;
 	private int mRow;
 	private boolean isTag=false;
-	private double mWidth;
+	private double mWidth=120;
 	private String interviewName;
 	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
@@ -84,7 +84,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mRow = row;
 		this.mGridCol = col;
 		this.mDate = new Date();
-		this.mWidth = 120;
+		this.mWidth = 180;
 		try {
 			this.mDate = this.mFormater.parse("00:00:00");
 		} catch (ParseException e) {
@@ -96,10 +96,11 @@ public class MomentExperience implements Serializable, Cloneable {
 	public double getmWidth() {
 		return mWidth;
 	}
-
-	public void setmWidth(double mWidth) {
-		this.mWidth = mWidth;
+	
+	public void setmWidth(Double width) {
+		this.mWidth=width;
 	}
+
 
 	public MomentExperience() {
 		this("New Moment", 0,0);

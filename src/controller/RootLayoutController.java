@@ -255,8 +255,12 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
+	/**
+	 * Launch window for moment comparison view
+	 */
 	public void momentsComparaison(){
 		Stage comparisonWindow = new Stage(StageStyle.UTILITY);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		comparisonWindow.setTitle(main._langBundle.getString("moments_comparaison"));
 		comparisonWindow.setResizable(true);
 		comparisonWindow.initModality(Modality.APPLICATION_MODAL);
@@ -271,13 +275,16 @@ public class RootLayoutController implements Initializable{
     		
             //////////
             HBox layout = (HBox) loader.load();
-            Scene sc = new Scene(layout);
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setPrefSize(screenSize.getWidth()-10, screenSize.getHeight()-150);
+            scrollPane.setContent(layout);
+
+            
+            Scene sc = new Scene(scrollPane);
             comparisonWindow.setScene(sc);
-            //sc.getStylesheets().add(getClass().getResource("/application/test.css").toExternalForm());
             comparisonWindow.showAndWait();
 			
 		} catch (IOException e) {
-			// TODO Exit Program
 			e.printStackTrace();
 		}
 	}
