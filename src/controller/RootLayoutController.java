@@ -277,6 +277,8 @@ public class RootLayoutController implements Initializable{
             HBox layout = (HBox) loader.load();
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setPrefSize(screenSize.getWidth()-10, screenSize.getHeight()-150);
+            System.out.println("width " + screenSize.getWidth());
+            System.out.println("height " + screenSize.getHeight());
             scrollPane.setContent(layout);
 
             

@@ -141,14 +141,8 @@ import utils.MomentComparaison;
 
 
 public class MomentComparaisonController  implements Initializable {
-
-	//DROPDOWN
-	//RESPONSIVE INTERIEUR
-	//TITRE
-	//PADDING et MARGIN
 	
 	private @FXML Button buttonCloseStats;
-	
 	private @FXML Pane centralPane;
 	private @FXML HBox anchorPane;
 	private Main main;
@@ -157,15 +151,15 @@ public class MomentComparaisonController  implements Initializable {
 	private GridPane statsGrid;
 	private BorderPane test;
 	private ArrayList<Accordion> listAccordion;
-	double largeurNoeudEnfant = 0;
-	double largeurRacineParent = 120;
-	double lastWidth;
-	final int ROW_HEIGHT = 24;
+	private double largeurNoeudEnfant = 0;
+	private double largeurRacineParent = 120;
+	private double lastWidth;
+	private final int ROW_HEIGHT = 24;
+	private double lengthInit;
 	private int idName;
 	private int idMax;
-	int PADDING = 2;
-	boolean ok=true;
-	//private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int PADDING = 2;
+	private boolean ok=true;
 	private ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
 	
 	public MomentComparaisonController(Main main, Stage window) {
@@ -178,33 +172,34 @@ public class MomentComparaisonController  implements Initializable {
 		
 	}
 	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//this.anchorPane.se
+		
 		listAccordion=new ArrayList<Accordion>();
 		ScrollPane scroll = new ScrollPane();
-		//scroll.setFitToHeight(true);
-		//scroll.setFitToWidth(true);
-		//scroll.setPrefSize(300, 300);
-		
 		int cptInterviewName=0;
-		//rowTree.setStyle("-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-border-radius: 20;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
+		
 		try {
 			initCssFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		//init size 
 		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		lengthInit=((screenSize.getWidth()-255)/10);
+		initLenthOfMoment();
+		System.out.println(screenSize.getWidth() + "  " + lengthInit);
 		
 		MomentComparaison.getInstance().update(main);
 		ArrayList<ArrayList<ArrayList<MomentExperience>>> listMainMoments = MomentComparaison.getmMoments();
-		
-		
+		MomentComparaison.initLengthMoment(lengthInit);
+		System.out.println(MomentComparaison.getmaxNbMoment());
 		initTag(listMainMoments);
 		VBox layoutV = new VBox();
 		
-		//System.out.println("jjjjjj" + listMainMoments.toString() + listMainMoments.size());
 		for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) { //separation de la liste en deux
 			PADDING = 1;
 			HBox layoutH = new HBox();
@@ -214,7 +209,7 @@ public class MomentComparaisonController  implements Initializable {
 			int nbRacineMax = allMoments.size();
 			int nbRacine = 0;
 			//System.out.println("jjjjjj" + allMoments.toString() + allMoments.size());
-			largeurNoeudEnfant = 120/allMoments.size();
+			largeurNoeudEnfant = lengthInit/allMoments.size();
 			largeurRacineParent = largeurNoeudEnfant;
 
 			System.out.println(largeurNoeudEnfant);
@@ -327,7 +322,7 @@ public class MomentComparaisonController  implements Initializable {
 					momentBox.setId("moment"+idName);
 					listAccordion.add(momentBox);
 					//System.out.println("NAME 1 " + moment.getName() + "     " + momentBox.getId());
-					//momentBox.setPrefWidth(largeurRacineParent*10);
+					
 					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
 					momentBox.setMinWidth(largeurRacineParent*10);
 					momentBox.setMaxWidth(largeurRacineParent*10);
@@ -522,7 +517,6 @@ public class MomentComparaisonController  implements Initializable {
 					}
 					idName++;
 					idMax=idName;
-					System.out.println("EEEEND");
 					colTree.getChildren().add(rowTree);
 					search(momentSave, moments, colTree);
 					
@@ -537,24 +531,11 @@ public class MomentComparaisonController  implements Initializable {
 			layoutV.getChildren().add(layoutH);
 			cptInterviewName=0;
 	}
-		//final String dir = System.getProperty("user.home")+"/.upmt";
+
 		final String dir = System.getProperty("user.home")+"/.upmt/test.css";
-		//String css = this.getClass().getResource("file:///src/test.css").toExternalForm();
-		//System.out.println("DIR " + css);
 		this.centralPane.getStylesheets().add("file:///"+dir);
-		//this.centralPane.getStylesheets().add(getClass().getResource("../src/application.css").toExternalForm());
-		//layoutV.setStyle("-fx-border-width: 0px, 0px, 5px, 0px;  -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;  -fx-border-color: blue ; ");
-		//System.out.println("EEEEND " + idMax);
 		TitledPane t = new TitledPane("oooo", new Button("B1"));
-		//layoutV.setPrefSize(900, 500);
-		
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		//scroll.setMinSize(1300, 750);
-		
-		//this.anchorPane.getChildren().add(layoutV);
-		//scroll.setPrefSize(screenSize.getWidth()-100, screenSize.getHeight()-100);
-		
-		//scroll.setContent(layoutV);
 		Button button = new Button();
 		button.setText("Hover Me!");
 		Tooltip tt = new Tooltip();
@@ -564,10 +545,7 @@ public class MomentComparaisonController  implements Initializable {
 		
 		this.centralPane.getChildren().add(layoutV);
 
-		
-		//buttonCloseStats.setText(main._langBundle.getString("close"));
 	}
-	
 	
 	
 	/**
@@ -584,7 +562,7 @@ public class MomentComparaisonController  implements Initializable {
 		int j =0;
 		int cptInterviewName=0;
 		int width;
-		//System.out.println(subMoments.toString());
+
 		HBox rowTree = new HBox();
 		lastWidth = largeurNoeudEnfant;
 		ArrayList<MomentExperience> momentSaveCopy = new ArrayList<MomentExperience>();
@@ -665,12 +643,10 @@ public class MomentComparaisonController  implements Initializable {
 					}
 					
 					TitledPane titleMoment = new TitledPane(subMomentOfSubMoment.getName(), listCategoryDisplay);
-					//titleMoment.setStyle("-fx-border-color: lightgray;");
+					
 					titleMoment.setAlignment(Pos.CENTER);
 					titleMoment.setId("title"+subMomentOfSubMoment.getID());
 					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
-					//displayArrow(titleMoment);
-					//System.out.println(titleMoment.getId());
 					try {
 						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
 					} catch (IOException e) {
@@ -733,7 +709,6 @@ public class MomentComparaisonController  implements Initializable {
 		momentSave.addAll(momentSaveCopy);
 		//System.out.println("momment save " + momentSaveCopy.toString());
 		largeurNoeudEnfant = lastWidth;
-		//System.out.println("finish");
 		colTree.getChildren().add(rowTree);
 	}
 	
@@ -758,8 +733,6 @@ public class MomentComparaisonController  implements Initializable {
 	}
 	
 	public String scollBarColor(String id, String color) {
-		//String css = "";
-		System.out.println("color" + color);
 		return  "#"+id+" .scroll-bar:horizontal .track,"
 		+"#"+id+" .scroll-bar:vertical .track{ -fx-background-color : " + color +"; -fx-border-color :transparent;-fx-background-radius : 0.0em;-fx-border-radius :2.0em}"
 		+ "#"+id+" .scroll-bar:horizontal .increment-button , .scroll-bar:horizontal .decrement-button { -fx-background-color :transparent; -fx-background-radius : 0.0em; -fx-padding :0.0 0.0 10.0 0.0;}"
@@ -774,10 +747,10 @@ public class MomentComparaisonController  implements Initializable {
 		+ "#"+id+" .scroll-bar:horizontal .thumb,.scroll-bar:vertical .thumb {-fx-background-color :derive(black,90.0%);-fx-background-insets : 2.0, 0.0, 0.0;-fx-background-radius : 2.0em;}"
 
 		+ "#"+id+" .scroll-bar:horizontal .thumb:hover,.scroll-bar:vertical .thumb:hover {-fx-background-color :derive(#4D4C4F,10.0%);-fx-background-insets : 2.0, 0.0, 0.0;-fx-background-radius : 2.0em;}";
-		
-		//+ ".list-view" + "#"+id+ " .scroll-bar:horizontal .increment-arrow,.list-view"+ "#"+id+ " .scroll-bar:horizontal .decrement-arrow,.list-view"+ "#"+id+" .scroll-bar:horizontal .increment-button,.list-view# .scroll-bar:horizontal .decrement-button { -fx-padding:0;}";
-		
+			
 	}
+	
+	
 	public void displayArrow(TitledPane titledPane) {
 		Label collapseButton = new Label();
 		//collapseButton.setBackground(new Background(new BackgroundFill(Color.gray(0.8), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -792,23 +765,19 @@ public class MomentComparaisonController  implements Initializable {
 		try {
 			
 			final String dir = System.getProperty("user.home")+"/.upmt";
-			System.out.println("DIR " + dir);
 		    FileWriter fileWriter = null;
-		    //final String dirSystem.getProperty("user.home")+"/.upmt/path.json";
+		    
 		    File file = new File(dir+File.separator + "test.css");
-			//File file2 = new File(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css");
+			
 			
 			if(file.exists()){
 			    file.delete();
 			}
 			file.createNewFile();
 			fileWriter = new FileWriter(dir+File.separator+"test.css", true);
-			//fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
+			
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-			//bufferWriter.write(".accordion .title > .arrow-button{ -fx-padding: 10;}");
-			//bufferWriter.write(".vbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
 			bufferWriter.close();
-			//bufferWriter.write(".hbox {-fx-border-color: #2e8b57; -fx-border-width: 2px; -fx-padding: 10;-fx-spacing: 8;}");
 			fileWriter.close();
 			
 		} catch (IOException e1) {
@@ -824,7 +793,6 @@ public class MomentComparaisonController  implements Initializable {
 			final String dir = System.getProperty("user.home")+"/.upmt"; 
 		    FileWriter fileWriter = null;
 		    fileWriter = new FileWriter(dir+File.separator+"test.css", true);
-		    //fileWriter = new FileWriter(dir+File.separator+"jar" + File.separator + "application" + File.separator + "test.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			bufferWriter.write(toWrite + "\n");
 			bufferWriter.close();
@@ -864,48 +832,26 @@ public class MomentComparaisonController  implements Initializable {
 	    }
 	};
 	
-	/*
-	@FXML
-    private void closeStats() {
-		window.close();
-    };
-    
-    */
+	public void initLenthOfMoment() {
+		if((lengthInit/MomentComparaison.getmaxNbMoment())<2.0){
+			lengthInit += 150;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<5.0){
+			lengthInit += 120;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<7.0){
+			lengthInit += 100;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<10.0) {
+			lengthInit += 80;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<13.0) {
+			lengthInit += 60;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<15.0) {
+			lengthInit += 40;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<20.0){
+			lengthInit += 20;
+		} else if((lengthInit/MomentComparaison.getmaxNbMoment())<25.0){
+			lengthInit += 15;
+		}
+	}
 	
-    /*
-     * 
-     * 
-     Button button =new Button(" close ");
-			Button button2 =new Button(" open ");
-			button2.setOnAction((ActionEvent event) -> {
-				for(Accordion a : listAccordion) {
-					if(!a.equals(null)) {
-						System.out.println(a.getPanes().get(0).isExpanded());
-						System.out.println(a.getId());
-						a.getPanes().get(0).setExpanded(true);
-					}
-				}
-		    });
-			
-			button.setOnAction((ActionEvent event) -> {
-				for(Accordion a : listAccordion) {
-					if(!a.equals(null)) {
-						System.out.println(a.getPanes().get(0).isExpanded());
-						
-						a.getPanes().get(0).setExpanded(false);
-						//a.setExpandedPane(a.getPanes().get(0));
-						//a.setExpanded(true);
-					}
-					
-					//a.setExpandedPane(t);
-				}
-		        //accordion.setExpandedPane(titledPane); // Expanded Pane works!
-		         * 
-		    layoutV.getChildren().add(button);
-			layoutV.getChildren().add(button2);
-		    });
-     */
-    
 	/**
 	* Expand all accordion in the same
 	* @param momentBox: the accordion

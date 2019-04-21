@@ -11,25 +11,22 @@ import model.MomentExperience;
 import model.Project;
 
 public class MomentComparaison {
+	
 	/* Singleton */
-    private MomentComparaison() {}
-     
+    private MomentComparaison() {} 
     private static MomentComparaison instance = null;
     private ArrayList<Category> mCategories = null;
     private ArrayList<DescriptionInterview> mInterviews = null;
     private static ArrayList<ArrayList<ArrayList<MomentExperience>>> mMoments = null;
-    //private Map<DescriptionInterview, ArrayList<MomentExperience>> mItwMoments = null;
+    private static double maxNbMoment=0;
     private static HashMap<Integer, ArrayList<MomentExperience>> mRowMoments = null; 
-    //static ArrayList<MomentExperience> mMoment = null;
     
     public static MomentComparaison getInstance() {           
         if (instance == null){   
         	instance = new MomentComparaison();
         	instance.mCategories = new ArrayList<Category>();
         	instance.mInterviews = new ArrayList<DescriptionInterview>();
-        	//instance.mItwMoments = new HashMap<DescriptionInterview, ArrayList<MomentExperience>>();
         	instance.mMoments = new ArrayList<ArrayList<ArrayList<MomentExperience>>>();
-        	//instance.mMoment = new ArrayList<MomentExperience>();
         	instance.mRowMoments = new HashMap<Integer, ArrayList<MomentExperience>>();
         }
         return instance;
@@ -40,8 +37,7 @@ public class MomentComparaison {
    * @param p the current project
    */
     private static void lookingForMoment(Project p) {
-    	//ArrayList<ArrayList<ArrayList<MomentExperience>>> allMomentInterview = new ArrayList<ArrayList<ArrayList<MomentExperience>>>();
-    	
+
     	for(DescriptionInterview interview : p.getInterviews()){
     		interview.initInterviewName();
     		ArrayList<ArrayList<MomentExperience>> allMoment = new ArrayList<ArrayList<MomentExperience>>();
@@ -51,39 +47,30 @@ public class MomentComparaison {
 				ArrayList<MomentExperience> momentInterview = new ArrayList<MomentExperience>();
 				momentInterview.add(moment);
 				MomentComparaison.addMoments(moment);
-				for(Category c : moment.getCategories()){
+				
+				if(moment.getSubMoments().size()>maxNbMoment) {
+					maxNbMoment=moment.getSubMoments().size();
 				}
-				//System.out.println(moment.toString());
-				//System.out.println("size 1 " + moment.getSubMoments().size());
+				
 				for (int j = 0; j < moment.getSubMoments().size(); j++) {
-					MomentExperience subMoment = moment.getSubMoments().get(j);
-					momentInterview.add(subMoment);
-					for(Category c : subMoment.getCategories()){
+					
+					if(moment.getSubMoments().size()>maxNbMoment) {
+						maxNbMoment=moment.getSubMoments().size();
 					}
-					//System.out.println("size 2 " + moment.getSubMoments().size());
+					
+					MomentExperience subMoment = moment.getSubMoments().get(j);
+					momentInterview.add(subMoment);		
+					
 					if((subMoment.getSubMoments().size()>0)) {
 						lookingForSubMoments(subMoment, momentInterview);
 					}
-					/*
-					if(subMoment.getSubMoments().size()==0) {		
-						
-						System.out.println("LELLELELEL " + subMoment.getName());
-						MomentExperience nullMoment = new MomentExperience();
-						nullMoment.setName("nullMomentOOOOOOO");
-						subMoment.addSousMoment(nullMoment);
-						
-					}
-					 */
+		
 				}
-				//System.out.println(momentInterview.toString());
+				
 				allMoment.add(momentInterview);
-				//System.out.println(allMoment.toString());
-				//allMomentInterview.add(allMoment);
 		    }
 		    
 		    mMoments.add(allMoment);
-		    
-		   // System.out.println(mMoments.toString());
     	}
     }
 
@@ -93,16 +80,20 @@ public class MomentComparaison {
 	* @param the current moment.
 	*/
     private static void lookingForSubMoments(MomentExperience moment, ArrayList<MomentExperience> lignee) {
-    	//System.out.println("size 3 " + moment.getSubMoments().size());
+
     	for (int j = 0; j < moment.getSubMoments().size(); j++) {
+    		
+    		if(moment.getSubMoments().size()>maxNbMoment) {
+				maxNbMoment=moment.getSubMoments().size();
+			}
+    		
     		MomentExperience subMoment = moment.getSubMoments().get(j);
     		lignee.add(subMoment);
-			for(Category c : subMoment.getCategories()){
-			}
+    		
 			if(subMoment.getSubMoments().size()>0) {
 				lookingForSubMoments(subMoment, lignee);
-				
 			}
+			
 		}
     }
 	
@@ -126,6 +117,45 @@ public class MomentComparaison {
     public static ArrayList<ArrayList<ArrayList<MomentExperience>>> getmMoments() {
 		return mMoments;
 	}
+    
+    /**
+  	  * 
+  	  * Init width of moment
+  	  */
+     public static void initLengthMoment(double size) {
+	   	  for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) {
+	   		  for(ArrayList<MomentExperience> moments : allMoments) {
+	   			  for(MomentExperience moment : moments) {
+	   				  moment.setmWidth(size);
+	           		  if(moment!=null) {
+	           			  if(moment.getSubMoments().size()>0) {
+	           				  initLengthSubMoment(moment, size);
+	           			  } 
+	           		  }
+	           	  }  
+	   		  }
+	   	  }
+     }
+     
+     /**
+     * 
+     * Init width of sub moment
+     */
+     public static void initLengthSubMoment(MomentExperience moment, double size) {
+   	  	for(MomentExperience m : moment.getSubMoments()) {
+   	  		moment.setmWidth(size);
+   	  		if(m!=null) {
+   	  			if(m.getSubMoments().size()>0) {
+   	  				initLengthSubMoment(m, size);
+     			} 
+   	  		}
+   	  	}
+     }
+	 
+    
+    public static double getmaxNbMoment() {
+    	return maxNbMoment;
+    }
 
     /**
      * refresh the singleton's attributes
