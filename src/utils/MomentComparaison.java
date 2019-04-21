@@ -97,6 +97,43 @@ public class MomentComparaison {
 		}
     }
 	
+    public static ArrayList<MomentExperience> searchMomentName(String name) {
+    	System.out.println("STRRRRRRRRRRRRRRRRRRRRR");
+    	ArrayList<MomentExperience> res = new ArrayList();
+    	for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) {
+	   		  for(ArrayList<MomentExperience> moments : allMoments) {
+	   			  for(MomentExperience moment : moments) {
+	   				 if(moment.getName().equalsIgnoreCase(name)) {
+	   					 System.out.println(moment.getName()+moment.getID());
+	   					 res.add(moment);
+	   				 }
+	           		  if(moment!=null) {
+	           			  if(moment.getSubMoments().size()>0) {
+	           				searchSubMomentName(moment, name, res);
+	           			  } 
+	           		  }
+	           	  }  
+	   		  }
+	   	  }
+    	return res;
+    }
+    
+    public static void searchSubMomentName(MomentExperience moment, String name, ArrayList<MomentExperience> res) {
+   	  	for(MomentExperience m : moment.getSubMoments()) {
+   	  		if(moment.getName().equalsIgnoreCase(name)) {
+   	  		 System.out.println(moment.getName()+moment.getID());
+   	  			System.out.println(moment.getName());
+   	  			res.add(moment);
+   	  		}
+   	  		if(m!=null) {
+   	  			if(m.getSubMoments().size()>0) {
+   	  				searchSubMomentName(m, name, res);
+     			} 
+   	  		}
+   	  	}
+     }
+    
+    
     /**
     * Add all subMoments in  of a moment in a list
     * @param main

@@ -117,7 +117,6 @@ import model.MomentExperience;
 import model.Property;
 import model.Schema;
 import model.Type;
-import utils.EllipsisListCell;
 import utils.MainViewTransformations;
 import utils.Serializer;
 import utils.UndoCollector;
@@ -161,6 +160,7 @@ public class MomentComparaisonController  implements Initializable {
 	private int PADDING = 2;
 	private boolean ok=true;
 	private ArrayList<MomentExperience> momentSave = new ArrayList<MomentExperience>();
+	private ArrayList<TitledPane> listTitleMoment = new ArrayList<TitledPane>();
 	
 	public MomentComparaisonController(Main main, Stage window) {
 		this.main = main;
@@ -191,19 +191,31 @@ public class MomentComparaisonController  implements Initializable {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		lengthInit=((screenSize.getWidth()-255)/10);
 		initLenthOfMoment();
-		System.out.println(screenSize.getWidth() + "  " + lengthInit);
+		//System.out.println(screenSize.getWidth() + "  " + lengthInit);
+		
 		
 		MomentComparaison.getInstance().update(main);
 		ArrayList<ArrayList<ArrayList<MomentExperience>>> listMainMoments = MomentComparaison.getmMoments();
 		MomentComparaison.initLengthMoment(lengthInit);
-		System.out.println(MomentComparaison.getmaxNbMoment());
+		//System.out.println(MomentComparaison.getmaxNbMoment());
 		initTag(listMainMoments);
-		VBox layoutV = new VBox();
+		//HBox titleBox = new HBox();
+		//titleBox.setAlignment(Pos.CENTER);
 		
+		//this.centralPane.getChildren().add(titleBox);
+		VBox layoutV = new VBox();
+		layoutV.setAlignment(Pos.CENTER);
+		Label titleproject = new Label("Project name : " + main.getCurrentProject().getName());
+		titleproject.setFont(Font.font("Arial Black", FontWeight.BLACK, 25));
+		layoutV.getChildren().add(titleproject);
+		layoutV.setStyle("-fx-padding: 0 0 0 20");
+		titleproject.setStyle("-fx-padding: 10 0 0 0");
+		Boolean displayTitle = true;
 		for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) { //separation de la liste en deux
 			PADDING = 1;
 			HBox layoutH = new HBox();
-			layoutH.setStyle( "-fx-border-color: grey; -fx-padding: 20 0 20 0; -fx-border-width: 0 0 3 0 ; -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;"); 
+			//layoutH.setStyle("-fx-padding: 100 100 100 100");
+			layoutH.setStyle( "-fx-border-color: #C0C0C0; -fx-padding: 20 0 20 0; -fx-border-width: 0 0 3 0 ; -fx-border-style: segments(10, 15, 15, 15)  line-cap round ;"); 
 			boolean isRacine = true;
 			
 			int nbRacineMax = allMoments.size();
@@ -218,7 +230,20 @@ public class MomentComparaisonController  implements Initializable {
 				
 			VBox colTree = new VBox();
 			
+			HBox titleInterview = new HBox();
+			
 			for(MomentExperience moment : moments) {
+				
+				//display title
+				if(displayTitle.equals(true)) {
+					Label labelTitleInterview = new Label(moment.getInterviewName());
+					labelTitleInterview.setStyle("-fx-font-weight: bold;");
+					labelTitleInterview.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+					titleInterview.setPrefSize(200, 0);
+					titleInterview.getChildren().add(labelTitleInterview);
+					displayTitle=false;
+				}
+				
 				
 				//System.out.println("WIIDTH " + moment.getmWidth());
 				moment.setmWidth(moment.getmWidth()/allMoments.size());	
@@ -235,16 +260,6 @@ public class MomentComparaisonController  implements Initializable {
 				if(nbRacine < nbRacineMax && isRacine) {
 					isRacine=false;
 					HBox rowTree = new HBox();
-					
-					if(cptInterviewName==0) {
-						Label labelTitleInterview = new Label(moment.getInterviewName());
-						//text1.setStyle("-fx-font-weight: bold");
-						labelTitleInterview.setStyle("-fx-font-weight: bold;");
-						labelTitleInterview.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-						labelTitleInterview.setPrefSize(200, 0);
-						cptInterviewName++;
-						rowTree.getChildren().add(labelTitleInterview);
-					}
 					
 	
 					ListView<Category> listCategoryDisplay = new ListView<Category>();
@@ -303,8 +318,12 @@ public class MomentComparaisonController  implements Initializable {
 					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
 					//listCategoryDisplay.setPrefHeight(categoryList.size() * ROW_HEIGHT + 2);
 					TitledPane titleMoment = new TitledPane(moment.getName(), listCategoryDisplay);
-					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
 					titleMoment.setId("title"+moment.getID());
+					if(!listTitleMoment.contains(titleMoment)) {
+						listTitleMoment.add(titleMoment);
+					}
+					titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+					
 					//titleMoment.setEffect(new DropShadow(20, Color.BLACK));
 					titleMoment.setAlignment(Pos.CENTER);
 					//titleMoment.setStyle("-fx-border-color: lightgray;");
@@ -312,7 +331,7 @@ public class MomentComparaisonController  implements Initializable {
 					try {
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ moment.getColor() +"; }");
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ moment.getColor() +"; }");
-						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ moment.getColor() +"; }");
+						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ moment.getColor() +"; -fx-font-weight: bold }");
 						writeInCssFile(scollBarColor(listCategoryDisplay.getId(),moment.getColor()));
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -320,6 +339,15 @@ public class MomentComparaisonController  implements Initializable {
 					
 					Accordion momentBox = new Accordion();
 					momentBox.setId("moment"+idName);
+					momentBox.addEventFilter(MouseEvent.MOUSE_ENTERED, evt -> {
+						highlightOn(moment);			    
+					});
+					
+					momentBox.addEventFilter(MouseEvent.MOUSE_EXITED, evt -> {
+						highlightOff(moment);							    
+					});
+					 
+					
 					listAccordion.add(momentBox);
 					//System.out.println("NAME 1 " + moment.getName() + "     " + momentBox.getId());
 					
@@ -356,14 +384,6 @@ public class MomentComparaisonController  implements Initializable {
 							//category display
 							ArrayList<String> categoryList = new ArrayList<String>();
 							
-
-							if(cptInterviewName==1) {
-								Label labelTitleInterview = new Label(subMoment.getInterviewName());
-								labelTitleInterview.setPrefSize(200, 0);
-								labelTitleInterview.setVisible(false);
-								cptInterviewName++;
-								rowTree.getChildren().add(labelTitleInterview);
-							}
 							ListView<Category> listCategoryDisplay = new ListView<Category>();
 							
 							//listCategoryDisplay.setId("list"+subMoment.getID());
@@ -437,37 +457,45 @@ public class MomentComparaisonController  implements Initializable {
 							
 							
 							TitledPane titleMoment = new TitledPane(subMoment.getName(), listCategoryDisplay);
+							titleMoment.setId("title"+subMoment.getName());
+							if(!listTitleMoment.contains(titleMoment)) {
+								listTitleMoment.add(titleMoment);
+							}
+							
 							//titleMoment.setText(subMoment.getName());
 							
 							Accordion momentBox = new Accordion();
 
 							
-							titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
+							titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
 							
 
 							
 							momentBox.setId("moment"+idName);
+							momentBox.addEventFilter(MouseEvent.MOUSE_ENTERED, evt -> {
+								highlightOn(subMoment);			    
+							});
 							
+							momentBox.addEventFilter(MouseEvent.MOUSE_EXITED, evt -> {
+								highlightOff(subMoment);							    
+							});
 							
 
 							listAccordion.add(momentBox);
 							//System.out.println("NAME 1 " + subMoment.getName() + "     " + momentBox.getId());
 							//momentBox.setPrefWidth(subMoment.getmWidth()*10);
 							momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
-							//momentBox.setStyle("-fx-padding: 0 20 0 20;");
-							//momentBox.setStyle("-fx-border-color: grey;");
 							momentBox.setMaxWidth((subMoment.getmWidth()*10)-2);
 							momentBox.setMinWidth((subMoment.getmWidth()*10)-2);
 							
 							//momentBox.setExpandedPane(titleMoment);
 							momentBox.getPanes().addAll(titleMoment);
-						
-							momentBox.setId("moment"+idName);
+
 							titleMoment.setId("title"+subMoment.getID());
 							
 
 							
-							//momentBox.setOnMouseClicked(mousehandler);
+							momentBox.setOnMouseClicked(mousehandler);
 							/*
 							int isClose=0;
 							momentBox.expandedPaneProperty().addListener(new 
@@ -501,8 +529,8 @@ public class MomentComparaisonController  implements Initializable {
 								
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMoment.getColor() +"; }");
-								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
-								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
+								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; -fx-font-weight: bold }");
+								//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile(scollBarColor(listCategoryDisplay.getId(),subMoment.getColor()));
 							
 							} catch (IOException e) {
@@ -522,17 +550,22 @@ public class MomentComparaisonController  implements Initializable {
 					
 				}	
 			}
+			
 			isRacine=true;
 			largeurNoeudEnfant=largeurRacineParent;
+			layoutH.getChildren().add(titleInterview);
 			layoutH.getChildren().add(colTree);
 		}
-			
+			displayTitle=true;
 			
 			layoutV.getChildren().add(layoutH);
 			cptInterviewName=0;
 	}
 
-		final String dir = System.getProperty("user.home")+"/.upmt/test.css";
+		String dir = System.getProperty("user.home")+ File.separator + ".upmt" + File.separator + "test.css";
+		if(dir.contains("\\")){
+			dir = dir.replace("\\", "/");
+		}
 		this.centralPane.getStylesheets().add("file:///"+dir);
 		TitledPane t = new TitledPane("oooo", new Button("B1"));
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -586,7 +619,7 @@ public class MomentComparaisonController  implements Initializable {
 					*/
 					ListView<Category> listCategoryDisplay = new ListView<Category>();
 					
-					listCategoryDisplay.setStyle("-fx-border-color: red; -fx-border-width: 0px Opx 8px 0px;");
+					listCategoryDisplay.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
 					//debut
 					listCategoryDisplay.setPrefHeight(subMomentOfSubMoment.getCategories().size() * ROW_HEIGHT);
 					listCategoryDisplay.getItems().addAll(subMomentOfSubMoment.getCategories());
@@ -633,36 +666,35 @@ public class MomentComparaisonController  implements Initializable {
 					
 					//fin
 					
+					
+					TitledPane titleMoment = new TitledPane(subMomentOfSubMoment.getName(), listCategoryDisplay);
+					if(!listTitleMoment.contains(titleMoment)) {
+						listTitleMoment.add(titleMoment);
+					}
+					titleMoment.setAlignment(Pos.CENTER);
+					titleMoment.setId("title"+subMomentOfSubMoment.getID());
+					titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
 					try {
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
 						writeInCssFile(scollBarColor(listCategoryDisplay.getId(),subMomentOfSubMoment.getColor()));
-						//writeInCssFile("#tool { -fx-show-duration: 20s;}");
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					
-					TitledPane titleMoment = new TitledPane(subMomentOfSubMoment.getName(), listCategoryDisplay);
-					
-					titleMoment.setAlignment(Pos.CENTER);
-					titleMoment.setId("title"+subMomentOfSubMoment.getID());
-					titleMoment.setStyle("-fx-border-color: grey; -fx-border-width: 2px;");
-					try {
-						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
+						writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; -fx-font-weight: bold }");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					if(cptInterviewName==0) {
-						Label labelTitleInterview = new Label(subMomentOfSubMoment.getInterviewName());
-						labelTitleInterview.setPrefSize(200, 0);
-						labelTitleInterview.setVisible(false);
-						cptInterviewName++;
-						rowTree.getChildren().add(labelTitleInterview);
-					}
+
 					//System.out.println("NAME 2 " + subMomentOfSubMoment.getName());
 					Accordion momentBox = new Accordion();
 					momentBox.setId("moment"+idName);
 					listAccordion.add(momentBox);
+					momentBox.addEventFilter(MouseEvent.MOUSE_ENTERED, evt -> {
+						highlightOn(subMomentOfSubMoment);			    
+					});
+					
+					momentBox.addEventFilter(MouseEvent.MOUSE_EXITED, evt -> {
+						highlightOff(subMomentOfSubMoment);							    
+					});
+					
 					//System.out.println("NAME 1 " + subMomentOfSubMoment.getName() + "     " + momentBox.getId());
 					
 					momentBox.setPadding(new Insets(4, PADDING*1.5, 4, PADDING*1.5));
@@ -670,11 +702,6 @@ public class MomentComparaisonController  implements Initializable {
 					//momentBox.setPrefWidth(subMomentOfSubMoment.getmWidth()*10);
 					momentBox.setMaxWidth((subMomentOfSubMoment.getmWidth()*10)-2);
 					momentBox.setMinWidth((subMomentOfSubMoment.getmWidth()*10)-2);
-					//momentBox.getId().setExpandedPane(titleMoment);
-					if(ok==true) {
-					//momentBox.setStyle("-fx-background-color: grey;");
-					ok=false;
-					}
 					momentBox.getPanes().addAll(titleMoment);
 					momentBox.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) -> {
 						expand(momentBox);
@@ -828,7 +855,7 @@ public class MomentComparaisonController  implements Initializable {
 		
 	    @Override
 	    public void handle(MouseEvent mouseEvent) {
-	       // System.out.println("hi");
+	       System.out.println("hi");
 	    }
 	};
 	
@@ -880,6 +907,42 @@ public class MomentComparaisonController  implements Initializable {
 	    			}
 	    		}
 	    	}	
+	    }
+    }
+    
+    /**
+	* Highlight on all the moment of a given moment the same name on mouse enterred
+	* @param moment: the given moment
+	*/
+    public void highlightOn(MomentExperience moment) {
+    	ArrayList<MomentExperience> listSameName = new ArrayList();
+	    listSameName = MomentComparaison.searchMomentName(moment.getName());
+	    
+	    for(MomentExperience momentSameName : listSameName) {
+
+	    	for(TitledPane title : listTitleMoment) {
+	    		if(title.getId().equals("title" + momentSameName.getID())){
+	    			title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46, 49, 49, 1), 13, 0, 0, 0);");
+	    		}
+	    	}
+	    }
+    }
+    
+    /**
+	* Remove the highlight on mouse exited
+	* @param moment: the given moment
+	*/
+    public void highlightOff(MomentExperience moment) {
+    	ArrayList<MomentExperience> listSameName = new ArrayList();
+	    listSameName = MomentComparaison.searchMomentName(moment.getName());
+	    
+	    for(MomentExperience momentSameName : listSameName) {
+
+	    	for(TitledPane title : listTitleMoment) {
+	    		if(title.getId().equals("title" + momentSameName.getID())){
+	    			title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+	    		}
+	    	}
 	    }
     }
     
