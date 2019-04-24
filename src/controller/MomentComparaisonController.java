@@ -224,8 +224,8 @@ public class MomentComparaisonController  implements Initializable {
 			largeurNoeudEnfant = lengthInit/allMoments.size();
 			largeurRacineParent = largeurNoeudEnfant;
 
-			System.out.println(largeurNoeudEnfant);
-			System.out.println(largeurRacineParent);
+			//System.out.println(largeurNoeudEnfant);
+			//System.out.println(largeurRacineParent);
 			for(ArrayList<MomentExperience> moments : allMoments) {
 				
 			VBox colTree = new VBox();
@@ -595,18 +595,26 @@ public class MomentComparaisonController  implements Initializable {
 		int j =0;
 		int cptInterviewName=0;
 		int width;
-
+		boolean isFirst=true;
+		
 		HBox rowTree = new HBox();
 		lastWidth = largeurNoeudEnfant;
 		ArrayList<MomentExperience> momentSaveCopy = new ArrayList<MomentExperience>();
 		while (i < subMoments.size()) {
 			
 			MomentExperience subMoment = subMoments.get(i);
+			if(i<subMoments.size()-1) {
+				subMoment.setmWidth(subMoments.get(i+1).getmWidth());
+				isFirst=false;
+			}
+			
+			System.out.println("1"+subMoment.getName() + " " + subMoment.getmWidth());
 			if(subMoment.getSubMoments().size()>0) {
 				
 				for(MomentExperience subMomentOfSubMoment : subMoment.getSubMoments()) {
 					
 					subMomentOfSubMoment.setmWidth(subMoment.getmWidth()/subMoment.getSubMoments().size());
+					
 					largeurNoeudEnfant=lastWidth/subMoment.getSubMoments().size();
 					//System.out.println(subMomentOfSubMoment.getName());
 					
@@ -713,9 +721,9 @@ public class MomentComparaisonController  implements Initializable {
 				}
 			lastWidth = init;
 			} else {
-				
+				System.out.println(subMoment.getName() + " " + subMoment.getmWidth());
 				TitledPane titleMoment = new TitledPane("momentVide", new Button("b"));
-				titleMoment.setVisible(false);
+				//titleMoment.setVisible(false);
 				Accordion momentBox = new Accordion();
 				momentBox.setId("hideMoment");
 				double size = subMoment.getmWidth();
@@ -890,7 +898,7 @@ public class MomentComparaisonController  implements Initializable {
 	    			if(!a.getId().equals("hideMoment")) {
 	    				if(a.getId().equals(momentBox.getId())) {
 	    					if(a.getId().equals(momentBox.getId())) {
-	    						System.out.println(a.getId());
+	    						//System.out.println(a.getId());
 	    						a.getPanes().get(0).setExpanded(true);
 	    					}
 	        			}

@@ -98,13 +98,13 @@ public class MomentComparaison {
     }
 	
     public static ArrayList<MomentExperience> searchMomentName(String name) {
-    	System.out.println("STRRRRRRRRRRRRRRRRRRRRR");
+    	//System.out.println("STRRRRRRRRRRRRRRRRRRRRR");
     	ArrayList<MomentExperience> res = new ArrayList();
     	for(ArrayList<ArrayList<MomentExperience>> allMoments : MomentComparaison.getmMoments()) {
 	   		  for(ArrayList<MomentExperience> moments : allMoments) {
 	   			  for(MomentExperience moment : moments) {
 	   				 if(moment.getName().equalsIgnoreCase(name)) {
-	   					 System.out.println(moment.getName()+moment.getID());
+	   					 //System.out.println(moment.getName()+moment.getID());
 	   					 res.add(moment);
 	   				 }
 	           		  if(moment!=null) {
@@ -121,8 +121,8 @@ public class MomentComparaison {
     public static void searchSubMomentName(MomentExperience moment, String name, ArrayList<MomentExperience> res) {
    	  	for(MomentExperience m : moment.getSubMoments()) {
    	  		if(moment.getName().equalsIgnoreCase(name)) {
-   	  		 System.out.println(moment.getName()+moment.getID());
-   	  			System.out.println(moment.getName());
+   	  		 //System.out.println(moment.getName()+moment.getID());
+   	  			//System.out.println(moment.getName());
    	  			res.add(moment);
    	  		}
    	  		if(m!=null) {
