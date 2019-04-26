@@ -723,7 +723,7 @@ public class MomentComparaisonController  implements Initializable {
 			} else {
 				System.out.println(subMoment.getName() + " " + subMoment.getmWidth());
 				TitledPane titleMoment = new TitledPane("momentVide", new Button("b"));
-				//titleMoment.setVisible(false);
+				titleMoment.setVisible(false);
 				Accordion momentBox = new Accordion();
 				momentBox.setId("hideMoment");
 				double size = subMoment.getmWidth();

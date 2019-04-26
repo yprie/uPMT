@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeClassRepresentationController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,6 +150,7 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 		// for each Property, add a representation
 		if(!classe.getProperties().isEmpty()){
 			for(Property prop : classe.getProperties()){
+				System.out.println("Prop " + prop.toString());
 				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main);
 				this.properties.getChildren().add(controller);
 			}
