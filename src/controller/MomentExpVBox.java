@@ -32,6 +32,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.textfield.TextFields;
+
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
 import application.Main;
@@ -101,6 +103,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import model.AutoCompletionService;
 import model.Category;
 import model.Descripteme;
 import model.MomentExperience;
@@ -154,7 +157,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         this.setPrefWidth(USE_COMPUTED_SIZE);
         this.setMaxWidth(USE_COMPUTED_SIZE);
         this.setMinHeight(200);
-        //System.out.println("HFJFDJEJER "+moment.getNom());
         loadMomentPane();
         
         extractTooltip = new Tooltip("");
@@ -333,7 +335,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void colorPicked(Color cp) {
 		Color couleur = cp;
 		String colorString = Utils.toRGBCode(couleur);
-		//System.out.println(moment.getCouleur());
 		ChangeColorMomentCommand cmd = new ChangeColorMomentCommand(
 				this.getMomentColorController(),
 				moment.getColor(),
@@ -341,7 +342,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				main);
 		cmd.execute();
 		UndoCollector.INSTANCE.add(cmd);
-		//System.out.println(moment.getCouleur());
 		this.getMomentColorController().update(colorString);
 	}
 	
@@ -485,9 +485,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	private void editNameMode() {
 		TextField t = new TextField();
+		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(),moment);
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
+		TextFields.bindAutoCompletion(t, auto.getSuggestedMoments(moment));
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override
@@ -533,7 +535,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		for(Node n : typeSpace.getChildren()){
 			TypeCategoryRepresentationController tcr = (TypeCategoryRepresentationController) n;
 			if(tcr.getClasse().equals(item)){
-				//System.out.println("lol");
 				return tcr;
 			}
 		}
@@ -737,14 +738,12 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		boolean ret = false;
 		for(Node n : this.getSousMomentPane().getChildren()) {
 			MomentExpVBox m = (MomentExpVBox)n;
-			//System.out.print(m.getMoment().getNom()+" est le pere de "+p.getNom()+" ?");
 			if(m.getMoment().equals(p)) {
-				//System.out.println(" -> Oui");
 				ret = true;
 				break;
 			}
 			else {
-				//System.out.println(" -> Non");
+
 			}
 		}
 		return ret;

@@ -304,7 +304,6 @@ public abstract class MainViewTransformations {
 		moment.getScrollPane().setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 		    	if(event.getDragboard().getString().equals("ajoutType")){
-		    		System.out.println("On va essayer d'ajouter le typee");
 		    		AddTypeCommand cmd = new AddTypeCommand(moment,event,main);
 			    	cmd.execute();
 			    	UndoCollector.INSTANCE.add(cmd);

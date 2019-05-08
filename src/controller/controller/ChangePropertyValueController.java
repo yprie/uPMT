@@ -1,7 +1,7 @@
 /*****************************************************************************
  * ChangePropertyValueController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,12 +57,9 @@ public class ChangePropertyValueController implements controller.controller.Obse
 	@Override
 	public void updateModel(Object value) {
 		if(property==null) {
-			//System.out.println("Ancien: null");
 		}
 		else {
-			//System.out.println("Ancien: "+((Property)property).getValue());
 			this.property = (Property) value;
-			//System.out.println("Nouveau: "+((Property)property).getValue());
 		}
 	}
 	

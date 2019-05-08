@@ -1,7 +1,7 @@
 /*****************************************************************************
  * NewProjectDialogController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@ public class NewProjectDialogController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
 		choixSchema.getItems().add(main.getDefaultSchema());
 		for (Project p : main.getProjects()) {
 			choixSchema.getItems().add(p.getSchema());
@@ -82,24 +81,12 @@ public class NewProjectDialogController implements Initializable{
 		Project p = new Project(nomProjet.getText(), this.choixSchema.getValue());
 		p.getSchema().setName(nomProjet.getText());
 		main.setProjectInCreation(p);
-		//main.getProjects().add(p);
-		//main.setCurrentProject(p);
-		//p.save();
 		window.close();
-		launchingScreenWindow.close();
-		// in case the center was set to null because of automatic interview Creation
-		/*if (main.getRootLayout().getCenter() == null) {
-			main.launchMainView();
-		}*/
-		//main.launchMainView();
-		//main.refreshDataTreeView();
-		//main.needToSave();
-		
+		launchingScreenWindow.close();		
 	}
 	
 	public void closeWindow(){
 		window.close();
-		//launchingScreenWindow.close();
 	}
 
 }

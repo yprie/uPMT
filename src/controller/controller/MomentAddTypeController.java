@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentAddTypeController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@ public class MomentAddTypeController implements controller.controller.Observable
 
 	@Override
 	public void update(Object value) {
-		//System.out.println("Moment update: "+momentExp.getName());
 		
 		if(value != null) {
 			momentExp.getCategories().add((Category) value);
@@ -60,9 +59,7 @@ public class MomentAddTypeController implements controller.controller.Observable
 
 	@Override
 	public void updateModel(Object value) {
-		//System.out.println("Ancien m: "+momentExp.getName());
 		this.momentExp = (MomentExperience) value;
-		//System.out.println("Nouveau m: "+momentExp.getName());
 	}
 	
 	@Override

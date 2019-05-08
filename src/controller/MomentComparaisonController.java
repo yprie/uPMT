@@ -402,7 +402,7 @@ public class MomentComparaisonController  implements Initializable {
 							//listCategoryDisplay.getItems().setPadding(new Insets(4, 4, 4, 4));
 							//listCategoryDisplay.setPadding(new Insets(4, 4, 4, 4));
 							//listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
-							listCategoryDisplay.getItems().addAll(subMoment.getCategories());
+							//listCategoryDisplay.getItems().addAll(subMoment.getCategories());
 							//fin
 							listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
 							listCategoryDisplay.setId("list"+subMoment.getID());

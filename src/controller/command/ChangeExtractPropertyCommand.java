@@ -27,8 +27,6 @@ public class ChangeExtractPropertyCommand implements Command,Undoable{
 	
 	@Override
 	public void undo() {
-		//System.out.println("actuellement:"+newExtract);
-		//System.out.println("change en:"+oldExtract);
 		observable.update(oldDescriptemes);
 		main.needToSave();
 	}
@@ -45,8 +43,6 @@ public class ChangeExtractPropertyCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		//System.out.println("nouveau:"+newExtract);
-		//System.out.println("ancien:"+oldExtract);
 		observable.update(newDescriptemes);
 		main.needToSave();
 	}

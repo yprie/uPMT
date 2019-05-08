@@ -66,6 +66,7 @@ public class RootInterviewTreeViewController extends TreeViewController implemen
 	@FXML
 	public void newInterview(){
 		main.getRootLayoutController().newInterview();
+		
 	}
 
 	@Override
