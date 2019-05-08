@@ -32,6 +32,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.textfield.TextFields;
+
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
 import application.Main;
@@ -101,6 +103,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import model.AutoCompletionService;
 import model.Category;
 import model.Descripteme;
 import model.MomentExperience;
@@ -482,9 +485,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	private void editNameMode() {
 		TextField t = new TextField();
+		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(),moment);
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
+		TextFields.bindAutoCompletion(t, auto.getSuggestedMoments(moment));
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override
