@@ -287,6 +287,10 @@ public class MomentComparaisonController  implements Initializable {
 			                    } else {
 			                    	Tooltip tooltip = new Tooltip();
 			                        setText(item.getName());
+			                        setTextOverrun(OverrunStyle.ELLIPSIS);
+			                        setEllipsisString("...");
+			                        prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(40));
+			                        setMaxWidth(Control.USE_PREF_SIZE);
 			                        if(item.getProperties().size()>0) {
 			                        	tooltip.setText(item.getProperties().toString());
 			                        	//tooltip.setId("tool");
@@ -426,8 +430,10 @@ public class MomentComparaisonController  implements Initializable {
 					                        //setTextOverrun(OverrunStyle.ELLIPSIS);
 					                        //setEllipsisString("...");
 					                        //ICI
-					                        prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(4));
-					                        setMaxWidth(Control.USE_PREF_SIZE);
+					                        setTextOverrun(OverrunStyle.ELLIPSIS);
+					                        setEllipsisString("...");
+					                       prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(40));
+					                       setMaxWidth(Control.USE_PREF_SIZE);
 					                        //FIN
 					                        if(item.getProperties().size()>0) {
 					                        	tooltip.setText(item.getProperties().toString());
@@ -648,6 +654,10 @@ public class MomentComparaisonController  implements Initializable {
 			                    } else {
 			                    	Tooltip tooltip = new Tooltip();
 			                        setText(item.getName());
+			                        setTextOverrun(OverrunStyle.ELLIPSIS);
+			                        setEllipsisString("...");
+			                        prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(40));
+			                        setMaxWidth(Control.USE_PREF_SIZE);
 			                        if(item.getProperties().size()>0) {
 			                        	tooltip.setText(item.getProperties().toString());
 			                        	//tooltip.setId("tool");
