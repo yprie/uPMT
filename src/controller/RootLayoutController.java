@@ -294,7 +294,8 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void close(){
 		this.saveRequest(null);
-	}
+	} 
+	
 	
 	@FXML
 	public void openEnglishVersion(){
