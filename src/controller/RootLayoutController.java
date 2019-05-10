@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-package controller;
 
+package controller;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;

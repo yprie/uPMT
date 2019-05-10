@@ -26,9 +26,12 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.textfield.TextFields;
+
 import application.Main;
 import controller.command.ChangeExtractMomentCommand;
 import controller.command.ChangePropertyValueCommand;
+import controller.command.RenameMomentCommand;
 import controller.controller.ChangePropertyValueController;
 import controller.controller.Observable;
 import controller.controller.Observer;
@@ -67,6 +70,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Record;
+import model.AutoCompletionService;
+import model.Category;
 import model.Descripteme;
 import model.Property;
 import utils.ResourceLoader;
@@ -81,7 +86,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	private Main main;
 	private Property property;
 	private TreeItem<TypeController> propertyTypeTreeItem;
-	
+	private Category category;
 	private MomentExpVBox momentBox;
 	
 	private TypeController propertyController;
@@ -90,12 +95,12 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	
 	private PropertyExtractController propertyExtractController;
 	
-	public TypePropertyRepresentation(Property t, MomentExpVBox m,  TreeItem<TypeController> propertyTypeTreeItem, Main main) {
+	public TypePropertyRepresentation(Property t, MomentExpVBox m,  TreeItem<TypeController> propertyTypeTreeItem, Main main, Category category) {
 		momentBox = m;
 		this.property = t;
 		this.propertyTypeTreeItem = propertyTypeTreeItem;
 		this.main = main;
-		
+		this.category = category;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/TypePropertyRepresentation.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -246,7 +251,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 	
 	private void setLabelChangeName(HBox propertyPane2, TypePropertyRepresentation tpr){
 		
-		
+		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(), property, this.category);
 		propertyValue.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -254,28 +259,40 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 				
 				if(arg0.getClickCount() == 2){
 					TextField t = new TextField(propertyValue.getText());
+					TextFields.bindAutoCompletion(t,auto.getSuggestedValues(property));
 					t.setMaxWidth(70);
 					t.setMinWidth(10);
-					
+
 					ChangeListener<Boolean> listener = new ChangeListener<Boolean>() {
 						 @Override
 						    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-						    {
-						        if (!newPropertyValue)
-						        {
+						    {	
+								if (!newPropertyValue)
+						        {	if (t.getText().equals("")) {
 						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
+						        			tpr,
+						        			property.getValue(), 
+						        			"____",
+						        			main);
+						        	cmd.execute();
+									UndoCollector.INSTANCE.add(cmd);
+					        	} else {
+					              	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
 						        			tpr,
 						        			property.getValue(), 
 						        			t.getText(),
 						        			main);
 						        	cmd.execute();
-						        	UndoCollector.INSTANCE.add(cmd);
+									UndoCollector.INSTANCE.add(cmd);
+					        	}
+						        	
 						        	propertyPane2.getChildren().remove(2);
 						        	propertyPane2.getChildren().add(propertyValue);
 									//propertyPane2.setRight(propertyValue);
 						        }
 						    }
 					};
+					
 					t.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 						@Override

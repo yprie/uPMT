@@ -71,9 +71,6 @@ public class Project implements Serializable {
 	
 	public static final String RECOVERY = "recovery_";
 	public static int VERSION_OF_APP = 3;
-	
-	//--------------------------------------------
-	
 	private int SAVE_VERSION;
 	private String mName;
 	private Schema mSchema;

@@ -150,8 +150,7 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 		// for each Property, add a representation
 		if(!classe.getProperties().isEmpty()){
 			for(Property prop : classe.getProperties()){
-				System.out.println("Prop " + prop.toString());
-				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main);
+				TypePropertyRepresentation controller =  new TypePropertyRepresentation(prop,moment, treeClassTreeItem, main,this.classe);
 				this.properties.getChildren().add(controller);
 			}
 		}
@@ -195,7 +194,7 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 
 	public void addProperty(Property p) {
 		this.classe.addProperty(p);
-		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, moment, treeClassTreeItem, main);
+		TypePropertyRepresentation controller =  new TypePropertyRepresentation(p, moment, treeClassTreeItem, main,this.classe);
 		this.properties.getChildren().add(controller);
 	}
 
