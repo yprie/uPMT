@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Utils.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ package utils;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -47,60 +48,63 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import model.Project;
 
-public abstract class Utils {
-	
-	public static void loadProjects(LinkedList<Project> projects, Main main){
-		HashSet<String> projectNames = loadProjectsNames();
-		
-		
-		if(projectNames.isEmpty()){
-			// For debug purposes
-			//System.out.println("No projects to load");
-		}else{
-			System.out.println("Loading projects");
-			for (String s : projectNames) {
-				if(s.contains(Project.FORMAT)) {
-					//projects.add(Projet.load(s));
-					Project p = Project.loadData(s);
-					if(p==null) {
-						Alert alert = new Alert(AlertType.CONFIRMATION);
-				        //alert.setTitle("Error, version conflict");
-						alert.setTitle(main._langBundle.getString("error_version"));
-				        //alert.setHeaderText("Your saves are in conflict with this new version.");
-						alert.setHeaderText(main._langBundle.getString("error_version_text_alarm"));
-				        //alert.setContentText("Please contact us in the github repository.");
-						alert.setContentText(main._langBundle.getString("error_version_text_contact"));
 
-				        Optional<ButtonType> result = alert.showAndWait();
-				        if (result.get() == ButtonType.OK){
-				    		alert.close();
-				        } else {
-				            alert.close();
-				        }
+public abstract class Utils {
+	/**
+	 * load all of the project in different path
+	 * @param projects: list of project
+	 * @param main: application's main
+	 */
+	public static void loadProjects(LinkedList<Project> projects, Main main) throws IOException{
+		List<String> listPath = main.loadPath();
+		for(String path : listPath) {
+			if(path.contains("/C")) {
+				path = path.replace("/C", "C");
+			}
+			path+="/";
+			HashSet<String> projectNames = loadProjectsNames(path);
+			if(!projectNames.isEmpty()){
+				for (String projectName : projectNames) {
+					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
+						Project project = Project.loadData(projectName, path);
+						if(project==null) {
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+							alert.setTitle(main._langBundle.getString("error_version"));
+							alert.setHeaderText(main._langBundle.getString("error_version_text_alarm"));
+							alert.setContentText(main._langBundle.getString("error_version_text_contact"));
+						    Optional<ButtonType> result = alert.showAndWait();
+						    if (result.get() == ButtonType.OK){
+						    	alert.close();
+						    } else {
+						         alert.close();
+						    }
+						} else {
+								projects.add(project);
+						}
 					}
-					else
-						projects.add(p);
-					
 				}
 			}
+			
 		}
+		
 	}
 
 	
-	public static boolean checkRecovery() {
-		HashSet<String> projectNames = loadProjectsNames();
+	public static boolean checkRecovery(Main main) throws IOException {
+		List<String> listPath = main.loadPath();
 		boolean ret = false;
-		
-		if(projectNames.isEmpty()){
-			// For debug purposes
-			//System.out.println("No projects to load");
-		}else{
-			//System.out.println("Loading projects");
-			for (String s : projectNames) {
-				if(s.contains(Project.FORMAT)) {
-					if(projectNames.contains(Project.RECOVERY+s)) {
-						ret=true;
-						break;
+		for(String path : listPath) {
+			path+="/";
+			HashSet<String> projectNames = loadProjectsNames(path);
+			if(projectNames.isEmpty()){
+				// For debug purposes
+			}else{
+				for (String s : projectNames) {
+					if(s.contains(Project.FORMAT)) {
+						if(projectNames.contains(Project.RECOVERY+s)) {
+							ret=true;
+							break;
+						}
 					}
 				}
 			}
@@ -108,20 +112,21 @@ public abstract class Utils {
 		return ret;
 	}
 	
-	private static HashSet<String> loadProjectsNames() {
+	/**
+	 * Load project name in a path
+	 * @param path: repository of project
+	 */
+	private static HashSet<String> loadProjectsNames(String path) {
 		HashSet<String> results = new HashSet<String>();
 
-		File[] files = new File(Project.PATH).listFiles();
+		File[] files = new File(path).listFiles();
 		if(files==null) {
-			new File(Project.PATH).mkdir();
-			files = new File(Project.PATH).listFiles();
+			new File(path).mkdir();
+			files = new File(path).listFiles();
 		}
-		//If this pathname does not denote a directory, then listFiles() returns null. 
-
 		for (File file : files) {
 		    if (file.isFile()) {
 		        results.add(file.getName());
-		        //System.out.println(file.getName());
 		    }
 		}
 		
@@ -131,38 +136,36 @@ public abstract class Utils {
 	}
 	
 	public static void deleteRecovery() {
-		File[] files = new File(Project.PATH).listFiles();
-		//If this pathname does not denote a directory, then listFiles() returns null. 
-
+		File[] files = new File(Project.getPATH()).listFiles();
 		for (File file : files) {
-		    if (file.isFile()) {
-		    	if(file.getName().contains(Project.RECOVERY))
-		    		file.delete();
-		    }
+			if (file.isFile()) {
+			    if(file.getName().contains(Project.RECOVERY))
+			    	file.delete();
+			    }
+			}
+	}
+		
+	
+	public static void replaceRecovery(Main main) throws IOException {
+		List<String> listPath = main.loadPath();
+		boolean ret = false;
+		for(String path : listPath) {
+			path+="/";
+			//Search RecpveryFiles
+			File[] files = new File(path).listFiles();
+			//If this pathname does not denote a directory, then listFiles() returns null. 
+			for (File file : files)
+			    if (file.isFile()) 
+			    	if(file.getName().contains(Project.RECOVERY)) {
+			    		String fileName = file.getName().replace(Project.RECOVERY, "");
+			    		//System.out.println();
+			    		File fileToDelete = new File(path+fileName);
+			    		fileToDelete.delete();
+			    		file.renameTo(new File(path+fileName));
+			    	}
 		}
-	}
-	
-	public static void replaceRecovery() {
-
-		//Search RecpveryFiles
-		File[] files = new File(Project.PATH).listFiles();
-		//If this pathname does not denote a directory, then listFiles() returns null. 
-		for (File file : files)
-		    if (file.isFile()) 
-		    	if(file.getName().contains(Project.RECOVERY)) {
-		    		String fileName = file.getName().replace(Project.RECOVERY, "");
-		    		//System.out.println();
-		    		File fileToDelete = new File(Project.PATH+fileName);
-		    		fileToDelete.delete();
-		    		file.renameTo(new File(Project.PATH+fileName));
-		    	}
-		
 		
 	}
-	
-	
-	
-	
 	
 	public static String toRGBCode( Color color )
     {
@@ -171,8 +174,5 @@ public abstract class Utils {
             (int)( color.getGreen() * 255 ),
             (int)( color.getBlue() * 255 ) );
     }
-	
-	
-	
 
 }

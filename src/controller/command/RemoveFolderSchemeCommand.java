@@ -1,7 +1,7 @@
 /*****************************************************************************
  * RemoveFolderSchemeCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,6 @@ public class RemoveFolderSchemeCommand implements Command,Undoable{
 		LinkedList<Folder> folders;
 		if(parentFolder.getValue().getType().isSchema()) {
 			folders = ((Schema)parentFolder.getValue().getType()).getFolders();
-			System.out.println("parent: ------ "+((Schema)parentFolder.getValue().getType()).getName());
 		}
 		else {
 			folders = ((Folder)parentFolder.getValue().getType()).getFolders();

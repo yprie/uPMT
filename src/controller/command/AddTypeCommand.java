@@ -1,7 +1,7 @@
 /*****************************************************************************
  * AddTypeCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,6 @@ public class AddTypeCommand implements Command,Undoable{
 			typeName = event.getDragboard().getRtf();
 			this.momentExpBorder = moment;
 			this.main = main;
-			//type = MainViewTransformations.getCategory(typeName, main.getCurrentProject().getSchema());
 			type = (Category) Serializer.deserialize((byte[]) event.getDragboard().getContent(TypeTreeView.TYPE));
 			dup = type.clone();
 		}
@@ -100,7 +99,6 @@ public class AddTypeCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		System.out.println(momentExpBorder.getMoment().getName());
 		try {
 		this.momentExpBorder.getMomentAddTypeController().update(dup);
 		}catch(Exception e) {

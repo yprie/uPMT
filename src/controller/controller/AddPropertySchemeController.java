@@ -1,7 +1,7 @@
 /*****************************************************************************
  * AddPropertySchemeController.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,10 +40,8 @@ public class AddPropertySchemeController implements controller.controller.Observ
 
 	@Override
 	public void update(Object value) {
-		//System.out.println("On ajoute " + ((Type)value).toString());
 		mCategory.addProperty((Property) value);
 		for(Observer obs : ObsTypesNames) {
-			//System.out.println("Nom: "+obs.toString());
 			obs.updateVue(this, value);
 		}
 	}

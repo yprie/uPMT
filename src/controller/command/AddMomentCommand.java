@@ -1,7 +1,7 @@
 /*****************************************************************************
  * AddMomentCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,19 +90,14 @@ public class AddMomentCommand implements Command,Undoable{
 	@Override
 	public void execute() {
 		try {
-			//System.out.println("Execute de "+id);
 			this.dataBefore = (DescriptionInterview)main.getCurrentDescription().clone();
-			
 			indexInterview = new Integer(MainViewTransformations.getInterviewIndex(main.getCurrentDescription(), main));
-			//indexInterview = new Integer(main.getProjects().indexOf(main.getCurrentDescription()));
-			//System.out.println("On veut ajouter un moment à l'index");
 			if(parentMoment!=null) {
 				parentMoment.addSubMoment(index, moment);
 			}
 			else
 				main.getCurrentDescription().addMoment(index, moment);
 			MainViewTransformations.updateGrid(main);
-			//System.out.println("update");
 		    main.needToSave();
 		    this.dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 		}catch(Exception e) {e.printStackTrace();}

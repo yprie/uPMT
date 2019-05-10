@@ -1,7 +1,7 @@
 /*****************************************************************************
  * InterviewTreeView.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 		
 		ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("confirm"));
 		ButtonType buttonTypeCancel = new ButtonType(main._langBundle.getString("cancel"), ButtonData.CANCEL_CLOSE);
-
+ 
 		alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 
 		Optional<ButtonType> result = alert.showAndWait();
@@ -88,7 +88,7 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
     }
 	
 	@Override
-    protected void updateItem(DescriptionInterview elem, boolean empty) {
+    protected void updateItem(DescriptionInterview elem, boolean empty) {   // function to use
 		super.updateItem(elem, empty);
 		
 		if(empty || elem == null) {
@@ -103,9 +103,17 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 		        loader.setLocation(getClass().getResource("/view/EntretienTreeView.fxml"));
 		        InterviewTreeViewController controller =  new InterviewTreeViewController(desc,this);
 		        this.controller = controller;
+		        System.out.println("controller "+desc);
+		        
+		        
+		        
 		        loader.setController(controller);
 		        BorderPane elementPane = (BorderPane) loader.load();
 		        this.setGraphic(elementPane);
+		        
+		        if(!desc.getName().equals("Interviews")) {
+					
+		        }
 	    	}
 	    	catch (IOException e) {
 	    		e.printStackTrace();
@@ -126,21 +134,39 @@ public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 			}
 			else
 			{
-				this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-						main.setCurrentDescription(desc);
-						main.getTreeViewInterview().refresh();
-						main.getMainViewController().updateGrid();
-					}
-				});
-				
-				if((!main.getCurrentProject().getInterviews().isEmpty()) && desc.equals(main.getCurrentDescription())){
-					((InterviewTreeViewController)controller).setSelected("blue");
-				}else{
-					((InterviewTreeViewController)controller).setSelected("black");
-				}
+				function_test(desc);
+				/*main.setCurrentDescription(desc);
+				main.getTreeViewInterview().refresh();
+				main.getMainViewController().updateGrid();*/
 			}
+		}
+	}
+	
+	
+	public void function_test(DescriptionInterview desc) {
+		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				main.setCurrentDescription(desc);
+				System.out.println("yoo");
+				main.getTreeViewInterview().refresh();
+				main.getMainViewController().updateGrid();
+				
+				// The event for changing the interviews
+				//((InterviewTreeViewController)controller).setSelected("blue");
+				
+
+				
+				
+			}
+		});
+		
+		if((!main.getCurrentProject().getInterviews().isEmpty()) && desc.equals(main.getCurrentDescription())){
+			System.out.println("blue");
+			((InterviewTreeViewController)controller).setSelected("blue");
+		}else{
+			System.out.println("black");
+			((InterviewTreeViewController)controller).setSelected("black");
 		}
 	}
 

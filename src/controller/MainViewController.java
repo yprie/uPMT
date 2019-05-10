@@ -91,6 +91,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -146,7 +147,8 @@ public class MainViewController implements Initializable, Observer {
 		this.ajoutMomentButton.setImage(image);
 
 		if (!main.getCurrentProject().getInterviews().isEmpty()) {
-			main.setCurrentDescription(main.getCurrentProject().getInterviews().getFirst());
+			main.setCurrentDescription(main.getCurrentProject().getInterviews().getLast());
+			// get the last one
 		}
 
 		treeViewSchema.setEditable(true);
@@ -235,7 +237,6 @@ public class MainViewController implements Initializable, Observer {
 		paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
 				if (main.getCurrentDescription() != null) {
 					Dragboard db = ajoutMomentButton.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent content = new ClipboardContent();
@@ -274,6 +275,7 @@ public class MainViewController implements Initializable, Observer {
 	
 	public void setDroppableText(String text) {
 		//droppableText.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
+		
 		droppableText.setText(text);
 	}
 	
@@ -325,7 +327,7 @@ public class MainViewController implements Initializable, Observer {
 		// TODO Auto-generated method stub
 	}
 	
-	public void alertRecovery(){
+	public void alertRecovery() throws IOException{
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(main._langBundle.getString("recovery"));
     	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));
@@ -336,14 +338,13 @@ public class MainViewController implements Initializable, Observer {
 
     	Optional<ButtonType> result = alert.showAndWait();
     	if (result.get() == buttonTypeOne){
-    		Utils.replaceRecovery();
+    		Utils.replaceRecovery(main);
     		alert.close();
     	} else if (result.get() == buttonTypeTwo) {
     		Utils.deleteRecovery();
     		alert.close();
     	} else{
-    		//System.out.println("IL SEST PASSE UN TRUC");
-    	    alert.close();
+    	   
     	}
 	}
 

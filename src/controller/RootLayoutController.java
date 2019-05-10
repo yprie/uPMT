@@ -22,10 +22,16 @@ package controller;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.awt.im.InputContext;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -39,31 +45,39 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.TitledPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import model.Project;
 import utils.UndoCollector;
 import utils.Utils;
+import com.sun.javafx.PlatformUtil;
 
-public class RootLayoutController implements Initializable{
+public class RootLayoutController implements Initializable {
 		
-	private @FXML MenuItem openProject;
+	private @FXML Menu openProject;
 	private @FXML MenuItem newInterview;
 	private @FXML MenuItem quitterBouton;
 	private @FXML MenuItem saveProject;
+	private @FXML MenuItem saveProjectAs;
 	private @FXML MenuItem exportProject;
 	private @FXML MenuItem undo;
 	private @FXML MenuItem redo;
@@ -71,9 +85,14 @@ public class RootLayoutController implements Initializable{
 //	private @FXML TextArea document;
 	private @FXML MenuItem userGuide;
 	private @FXML MenuItem stats;
-	
+	private @FXML Menu menu;
+	private @FXML MenuItem anglais;
+	private @FXML MenuItem francais;
+	private @FXML MenuItem espanol;
+	private @FXML MenuItem italiano;
 	private Main main;
 	private Stage window;
+	
 	
 	public RootLayoutController(Main main,Stage window) {
 		this.main = main;
@@ -81,13 +100,47 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
-	public void openProject(){
-		main.showLaunchingScreen();
+	public void menu(){
 	}
 	
 	@FXML
-	public void saveProject(){
-		main.saveCurrentProject();
+	public void openProject(){
+		main.showRecentProject(openProject);
+		
+	}
+	
+	@FXML
+	public void openProjectAs() throws IOException, ClassNotFoundException{
+		main.openProjectAs();
+		openProject();
+	}
+	
+	@FXML
+	public void saveProject() throws IOException{
+		if(main.getCurrentProject().getIsAlreadSave()==false) {
+			saveProjectAs();
+		} else {
+			main.saveCurrentProject();
+		}
+	}
+	
+	@FXML
+	public void saveProjectAs() throws IOException{
+		main.getCurrentProject().setIsAlreadSave(true);
+		final FileChooser directoryChooser = new FileChooser();
+		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		directoryChooser.setInitialFileName(main.getCurrentProject().getName()+Project.FORMAT);
+		//directoryChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
+		directoryChooser.setTitle("Save your project");
+		File dir = directoryChooser.showSaveDialog(this.window);
+		
+		if(dir != null){
+			try {
+				main.saveCurrentProjectAs(dir.getCanonicalPath(), dir.getName());
+			} catch(IOException e ) {
+				e.printStackTrace();
+			}	
+		}
 	}
 	
 	@FXML
@@ -171,7 +224,8 @@ public class RootLayoutController implements Initializable{
             //loader.setLocation(getClass().getResource("/view/NouveauEntretienDialogLayout.fxml"));
 			loader.setLocation(getClass().getResource("/view/NewInterview.fxml"));
             //loader.setController(new NewInterviewDialogController(main,promptWindow));
-			loader.setController(new NewInterviewDialogController(main,promptWindow));
+			NewInterviewDialogController test=new NewInterviewDialogController(main,promptWindow);
+			loader.setController(test);
             loader.setResources(main._langBundle);
             
             //BorderPane layout = (BorderPane) loader.load();
@@ -179,17 +233,19 @@ public class RootLayoutController implements Initializable{
 			Scene main = new Scene(layout);
 			promptWindow.setScene(main);
 			promptWindow.showAndWait();
+			//test.validerClick();
 			
 		} catch (IOException e) {
 			// TODO Exit Program
 			e.printStackTrace();
 		}
+		
 	}
 	
-	private void saveRequest(WindowEvent event){
+	private void saveRequest(WindowEvent event) throws IOException{
 		if(!main.isNeedToBeSaved()) {
 			try {
-   	    	 event.consume();
+				event.consume();
 			} catch (NullPointerException e) {
 			//System.out.println("no event, exit normally");
 			}
@@ -216,10 +272,10 @@ public class RootLayoutController implements Initializable{
 	    		alert.close();
 	    		Platform.exit();
 		        System.exit(0);
-	    	} else if (result.get() == buttonTypeCancel){
-	    	    alert.close();
-	    	    try {
-	    	    	 event.consume();
+	    	} else {
+	    		
+	    		try {
+	   	    	 	event.consume();
 				} catch (NullPointerException e) {
 				//System.out.println("no event, exit normally");
 				}
@@ -292,7 +348,7 @@ public class RootLayoutController implements Initializable{
 	}
 	
 	@FXML
-	public void close(){
+	public void close() throws IOException{
 		this.saveRequest(null);
 	} 
 	
@@ -300,42 +356,103 @@ public class RootLayoutController implements Initializable{
 	@FXML
 	public void openEnglishVersion(){
 		main.changeLocaleAndReload("en");
+		
+		
 	}
+	
+	
 	@FXML
 	public void openFrenchVersion(){
 		main.changeLocaleAndReload("fr");
+		
+		
 	}
 	@FXML
 	public void openSpanishVersion(){
 		main.changeLocaleAndReload("es");
+		
 	}
 	@FXML
 	public void openItalienVersion(){
 		main.changeLocaleAndReload("it");
+		
 	}
-	@FXML
-	public void openJapaneseVersion(){
-		main.changeLocaleAndReload("jp");
+	
+	
+	public void fonct_test(Locale langue) {
+		System.out.println(langue);
+		if(langue.toString().equals("en")) {
+			System.out.println("en");
+			anglais.setDisable(true);
+		}
+		else if(langue.toString().equals("fr")) {
+			francais.setDisable(true);
+		}
+		else if(langue.toString().equals("es")) {
+			espanol.setDisable(true);
+		}
+		else {
+			italiano.setDisable(true);
+		}
+		
+		
 	}
-	@FXML
-	public void openChineseVersion(){
-		main.changeLocaleAndReload("cn");
-	}
-	// Add your new language here
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		undo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_ANY));
-		redo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_ANY));
-		saveProject.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
-		saveProject.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
-		newInterview.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_ANY));
+		final KeyCodeCombination keyCombREDO=new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombSAVE=new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombNEW=new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
+		InputContext context = InputContext.getInstance(); 
+		String loc = context.getLocale().toString();
+		openProject();
+		System.out.println(loc);  
+		// javafx keyboard layout bug management 
+		if(PlatformUtil.isMac()) {
+			if (loc.equals("fr")){
+				Locale.setDefault(Locale.FRANCE);
+			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+				undo.setAccelerator(keyCombUNDO);
+				redo.setAccelerator(keyCombREDO);
+				saveProject.setAccelerator(keyCombSAVE);
+				newInterview.setAccelerator(keyCombNEW);
+			} else {
+				Locale.setDefault(Locale.US);
+				KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+				undo.setAccelerator(keyCombUNDO);
+				redo.setAccelerator(keyCombREDO);
+				saveProject.setAccelerator(keyCombSAVE);
+				newInterview.setAccelerator(keyCombNEW);
+			}
+		}else {
+		    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+			undo.setAccelerator(keyCombUNDO);
+			redo.setAccelerator(keyCombREDO);
+			saveProject.setAccelerator(keyCombSAVE);
+			newInterview.setAccelerator(keyCombNEW);
+
+		}
+	
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
-				saveRequest(event);
+
+				try {
+					saveRequest(event);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Platform.exit();
 		        System.exit(0);
+
+				try {
+					saveRequest(event);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		});
 	}

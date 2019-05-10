@@ -1,7 +1,7 @@
 /*****************************************************************************
  * AddPropertyToClassCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,8 +62,6 @@ public class AddPropertyToClassCommand implements Command,Undoable{
 	public void undo() {
 		// remove Property from treeView
 		for (TreeItem<TypeController> prop : tree.getChildren() ) {
-			//System.out.println(tree.getChildren());
-
 			if(prop.getValue().getType().getName().equals(newp.getName())) {
 				tree.getChildren().remove(prop);
 				break;

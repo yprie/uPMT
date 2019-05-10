@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeTreeView.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,13 +125,6 @@ public class TypeTreeView extends TreeCell<TypeController>{
 		TreeItem<TypeController> newTypeController = new TreeItem<TypeController>();
         Folder nt = new Folder("Folder "+folderNumber);
         TypeController tc;
-        /*if(getItem().getType().getClass().equals(Schema.class)){
-        	tc = new TypeController(nt, getTreeItem().getValue().getType());
-        }else{
-        	tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
-        	System.out.println("Le parent est "+getTreeItem().getParent().getValue().getType().getName());
-        }*/
-        System.out.println("Le parent du dossier est "+getTreeItem().getValue().getType());
         tc = new TypeController(nt, getTreeItem().getValue().getType());
         //tc = new TypeController(nt, getTreeItem().getValue().getType());
         newTypeController.setValue(tc);
@@ -141,7 +134,6 @@ public class TypeTreeView extends TreeCell<TypeController>{
         }
         else
         	((Folder)getItem().getType()).addFolder(nt);
-        System.out.println("2. Le parent est "+getItem().getType().getName());
         this.getTreeItem().setExpanded(true);
         return newTypeController;
 	}
@@ -151,12 +143,9 @@ public class TypeTreeView extends TreeCell<TypeController>{
 		TreeItem<TypeController> newType = new TreeItem<TypeController>();
 		//TypeController tc = new TypeController(nt, getTreeItem().getParent().getValue().getType());
 		TypeController tc = new TypeController(nt, getTreeItem().getValue().getType());
-		System.out.println("Le parent de la propriete est "+getTreeItem().getValue().getType());
 		newType.setValue(tc);
         getTreeItem().getChildren().add(newType);
         this.getTreeItem().setExpanded(true);
-        //System.out.println("On ajoute une propriete !");
-        //System.out.println("On a essayé de la renommer");
 	}
 
 	
@@ -261,7 +250,6 @@ public class TypeTreeView extends TreeCell<TypeController>{
 							}
 				            db.setContent(content);
 				            TypeTreeView.this.main.droppingTmp = TypeTreeView.this;
-				            System.out.println("Drag detected on : "+TypeTreeView.this.getController().getType().getName());
 				            
 						}
 
@@ -278,7 +266,6 @@ public class TypeTreeView extends TreeCell<TypeController>{
 					Type meParent = elem.getParent();
 					Type you = MainViewTransformations.getTypeByName((String)event.getDragboard().getContent(TypeTreeView.nm), (String)event.getDragboard().getContent(TypeTreeView.pnm), main);
 					String typeDrop = you.typeToString();
-					//System.out.println("Drop by "+you.getName()+" on "+me.getName());
 					if(!me.isProperty() && you!=me) {
 						if(event.getDragboard().getString().equals("ajoutType") || event.getDragboard().getString().equals("moveType")){
 							if(me.isCategory() && typeDrop.equals("Property")) {
@@ -311,7 +298,6 @@ public class TypeTreeView extends TreeCell<TypeController>{
 						UndoCollector.INSTANCE.add(cmd);
 					}
 					controller.getTypePane().setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-					System.out.println(event.getDragboard().getString()+" - Dropped on : "+TypeTreeView.this.getController().getType().getName());
 				}
 			});
 			

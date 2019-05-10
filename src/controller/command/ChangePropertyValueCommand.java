@@ -1,7 +1,7 @@
 /*****************************************************************************
  * ChangePropertyValueCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,8 +65,6 @@ public class ChangePropertyValueCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		//System.out.println(property.getProperty().getName()+" - "+property.getProperty().getValeur());
-		//property.getPropertyController().getChangePropertyValueController().update(newName);
 		property.setValue(newName);
 		main.needToSave();
 	}

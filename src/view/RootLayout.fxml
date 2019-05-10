@@ -10,10 +10,12 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="%file">
+          <Menu fx:id="menu" onAction="#menu" mnemonicParsing="false" text="%file">
             <items>
-                  <MenuItem fx:id="openProject" mnemonicParsing="false" onAction="#openProject" text="%open_project" />
+				  <Menu fx:id="openProject" mnemonicParsing="false" text="%open_project" />
+                  <MenuItem fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProjectAs" text="%open_project_as" />
                   <MenuItem fx:id="saveProject" mnemonicParsing="false" onAction="#saveProject" text="%save_project" />
+                  <MenuItem fx:id="saveProjectAs" mnemonicParsing="false" onAction="#saveProjectAs" text="%save_project_as" />
                   <MenuItem fx:id="exportProject" mnemonicParsing="false" onAction="#exportProject" text="%export_project" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="newInterview" mnemonicParsing="false" onAction="#newInterview" text="%new_interview" />
@@ -30,11 +32,9 @@
             <Menu mnemonicParsing="false" text="%language">
                <items>
                   <MenuItem fx:id="anglais" mnemonicParsing="false" onAction="#openEnglishVersion" text="English" />
-                  <MenuItem fx:id="redo1" mnemonicParsing="false" onAction="#openFrenchVersion" text="FranÃ§ais" />
-                  <MenuItem fx:id="redo11" mnemonicParsing="false" onAction="#openSpanishVersion" text="EspaÃ±ol" />
-                  <MenuItem fx:id="redo112" mnemonicParsing="false" onAction="#openItalienVersion" text="Italiano" />
-                  <MenuItem fx:id="redo111" mnemonicParsing="false" onAction="#openJapaneseVersion" text="æ—¥æœ¬ã�®" />
-                  <MenuItem fx:id="redo1111" mnemonicParsing="false" onAction="#openChineseVersion" text="ä¸­æ–‡" />
+                  <MenuItem fx:id="francais" mnemonicParsing="false" onAction="#openFrenchVersion" text="Français" />
+                  <MenuItem fx:id="espanol" mnemonicParsing="false" onAction="#openSpanishVersion" text="Español" />
+                  <MenuItem fx:id="italiano" mnemonicParsing="false" onAction="#openItalienVersion" text="Italiano" />
                </items>
             </Menu>
              <Menu mnemonicParsing="false" text="%help">

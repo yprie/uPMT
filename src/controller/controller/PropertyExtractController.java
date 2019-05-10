@@ -18,8 +18,6 @@ public class PropertyExtractController implements controller.controller.Observab
 
 	@Override
 	public void update(Object value) {
-		
-		//System.out.println("UPDATE "+value);
 		mPropriete.setDescriptemes(((LinkedList<Descripteme>) value));
 		for(Observer obs : ObsMomentNames) {
 			obs.updateVue(this, value);

@@ -1,7 +1,7 @@
 /*****************************************************************************
  * RemovePropertyFromClassCommand.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ public class RemovePropertyFromCategoryCommand implements Command,Undoable{
 	private Main main;
 	
 	public RemovePropertyFromCategoryCommand(TypeController controller, Property oldp, TreeItem<TypeController> treeItem, Main m) {
-		System.out.println("on veut supprimer "+oldp.getName());
 		this.oldp = oldp;
 		this.controller = controller;
 		this.tree = treeItem;
@@ -86,15 +85,12 @@ public class RemovePropertyFromCategoryCommand implements Command,Undoable{
 
 	@Override
 	public void execute() {
-		System.out.println("Let's go !");
 		// TODO Auto-generated method stub
 		controller.getRemovePropertySchemeController().update(oldp);
 		// remove Property from treeView
 		for (TreeItem<TypeController> prop : tree.getChildren() ) {
-			System.out.println(prop.getValue().getType().getName()+" - "+oldp.getName());
 			if(prop.getValue().getType().getName().equals(oldp.getName())) {
 				tree.getChildren().remove(prop);
-				System.out.println("oui suppression...");
 				break;
 			}
 		}

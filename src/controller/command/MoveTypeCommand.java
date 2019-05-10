@@ -120,13 +120,10 @@ public class MoveTypeCommand  implements Command,Undoable{
 				if( ( !((Property)child).getDescriptemes().isEmpty() || ((Property)child).getValue()!=null) && moments==null) {
 					moments = getMomentsContainsCatExcept(main.getCurrentDescription().getMoments(), (Category)oldParent, (Category)newParent);
 				}
-				System.out.println("value: "+((Property)child).getValue());
 				RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
 				cmd.execute();
-				System.out.println("value2: "+((Property)child).getValue());
 				AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
 				cmd2.execute();
-				System.out.println("value3: "+((Property)child).getValue());
 				if( ( !((Property)child).getDescriptemes().isEmpty() || ((Property)child).getValue()!=null) && moments==null) {
 					for(MomentExperience m : moments) {
 						
