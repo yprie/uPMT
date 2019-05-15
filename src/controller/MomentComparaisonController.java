@@ -269,7 +269,6 @@ public class MomentComparaisonController  implements Initializable {
 					
 					//debut
 					listCategoryDisplay.setPrefHeight(moment.getCategories().size() * ROW_HEIGHT);
-					listCategoryDisplay.getItems().addAll(moment.getCategories());
 					//fin
 					listCategoryDisplay.setStyle("-fx-background-color:"+moment.getColor()+";");
 					listCategoryDisplay.setId("list"+moment.getID());
@@ -281,12 +280,15 @@ public class MomentComparaisonController  implements Initializable {
 			                public void updateItem(Category item, boolean empty) {
 			                    super.updateItem(item, empty);
 			                    setStyle("-fx-padding: 2 2 2 2");
-			                    //listCategoryDisplay.setCursor(Cursors.Hand);
 			                    if (empty) {
 			                        setText(null);
 			                    } else {
+			                    	
 			                    	Tooltip tooltip = new Tooltip();
-			                        setText(item.getName());
+			                        setText("fffff");
+			                        //item.setColor(mColor);
+			                        
+			                        //item.setColor("red");
 			                        setTextOverrun(OverrunStyle.ELLIPSIS);
 			                        setEllipsisString("...");
 			                        prefWidthProperty().bind(listCategoryDisplay.widthProperty().subtract(40));
@@ -402,7 +404,7 @@ public class MomentComparaisonController  implements Initializable {
 							//listCategoryDisplay.getItems().setPadding(new Insets(4, 4, 4, 4));
 							//listCategoryDisplay.setPadding(new Insets(4, 4, 4, 4));
 							//listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
-							listCategoryDisplay.getItems().addAll(subMoment.getCategories());
+							
 							//fin
 							listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
 							listCategoryDisplay.setId("list"+subMoment.getID());
@@ -532,11 +534,10 @@ public class MomentComparaisonController  implements Initializable {
 							try {
 								/**************/
 								writeInCssFile("#" + titleMoment.getId() + " > *.content { -fx-background-color:"+ subMoment.getColor() +"; }");
-								
+								writeInCssFile(".list-cell:filled:hover { -fx-font-weight: bold; -fx-font-size: 1.1em;}");
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; -fx-font-weight: bold }");
-								//writeInCssFile("#" + titleMoment.getId() + " > .title { -fx-background-color:"+ subMoment.getColor() +"; }");
 								writeInCssFile(scollBarColor(listCategoryDisplay.getId(),subMoment.getColor()));
 							
 							} catch (IOException e) {
@@ -568,7 +569,7 @@ public class MomentComparaisonController  implements Initializable {
 			cptInterviewName=0;
 	}
 
-		String dir = System.getProperty("user.home")+ File.separator + ".upmt" + File.separator + "test.css";
+		String dir = System.getProperty("user.home")+ File.separator + ".upmt" + File.separator + "momentComparisonView.css";
 		if(dir.contains("\\")){
 			dir = dir.replace("\\", "/");
 		}
@@ -738,8 +739,6 @@ public class MomentComparaisonController  implements Initializable {
 				momentBox.setId("hideMoment");
 				double size = subMoment.getmWidth();
 				listAccordion.add(momentBox);
-				//System.out.println(size);
-				//momentBox.setPrefWidth(size*10);
 				momentBox.setPadding(new Insets(4, PADDING*2, 4, PADDING*2));
 				momentBox.setMaxWidth((size*10)-2);
 				momentBox.setMinWidth((size*10)-2);
@@ -752,19 +751,17 @@ public class MomentComparaisonController  implements Initializable {
 		}
 		momentSave.clear();		
 		momentSave.addAll(momentSaveCopy);
-		//System.out.println("momment save " + momentSaveCopy.toString());
 		largeurNoeudEnfant = lastWidth;
 		colTree.getChildren().add(rowTree);
 	}
 	
+	/**
+	 * Bing tooltip in 0 seconde
+	 */
 	public static void bindTooltip(final Node node, final Tooltip tooltip){
 		node.setOnMouseEntered(new EventHandler<MouseEvent>(){
 		      @Override  
 		      public void handle(MouseEvent event) {
-		         // +15 moves the tooltip 15 pixels below the mouse cursor;
-		         // if you don't change the y coordinate of the tooltip, you
-		         // will see constant screen flicker
-		    	//node.setCursor(Cursor.HAND); //Change cursor to hand
 		         tooltip.show(node, event.getScreenX(), event.getScreenY() + 15);
 		      }
 		   
@@ -777,6 +774,11 @@ public class MomentComparaisonController  implements Initializable {
 		   });
 	}
 	
+	/**
+	 * @param id: id of scroll bar 
+	 * @param color: color to settle
+	 * @return style to write in css file
+	 */
 	public String scollBarColor(String id, String color) {
 		return  "#"+id+" .scroll-bar:horizontal .track,"
 		+"#"+id+" .scroll-bar:vertical .track{ -fx-background-color : " + color +"; -fx-border-color :transparent;-fx-background-radius : 0.0em;-fx-border-radius :2.0em}"
@@ -796,30 +798,20 @@ public class MomentComparaisonController  implements Initializable {
 	}
 	
 	
-	public void displayArrow(TitledPane titledPane) {
-		Label collapseButton = new Label();
-		//collapseButton.setBackground(new Background(new BackgroundFill(Color.gray(0.8), CornerRadii.EMPTY, Insets.EMPTY)));
-		collapseButton.textProperty().bind(
-		    Bindings.when(titledPane.expandedProperty())
-		        .then("\u25bc").otherwise("\u25b6"));
-		titledPane.setGraphic(collapseButton);
-		titledPane.setContentDisplay(ContentDisplay.RIGHT);
-	}
-	
 	public void initCssFile() throws IOException {
 		try {
 			
 			final String dir = System.getProperty("user.home")+"/.upmt";
 		    FileWriter fileWriter = null;
 		    
-		    File file = new File(dir+File.separator + "test.css");
+		    File file = new File(dir+File.separator + "momentComparisonView.css");
 			
 			
 			if(file.exists()){
 			    file.delete();
 			}
 			file.createNewFile();
-			fileWriter = new FileWriter(dir+File.separator+"test.css", true);
+			fileWriter = new FileWriter(dir+File.separator+"momentComparisonView.css", true);
 			
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			bufferWriter.close();
@@ -837,7 +829,7 @@ public class MomentComparaisonController  implements Initializable {
 			
 			final String dir = System.getProperty("user.home")+"/.upmt"; 
 		    FileWriter fileWriter = null;
-		    fileWriter = new FileWriter(dir+File.separator+"test.css", true);
+		    fileWriter = new FileWriter(dir+File.separator+"momentComparisonView.css", true);
 			BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
 			bufferWriter.write(toWrite + "\n");
 			bufferWriter.close();
@@ -908,7 +900,6 @@ public class MomentComparaisonController  implements Initializable {
 	    			if(!a.getId().equals("hideMoment")) {
 	    				if(a.getId().equals(momentBox.getId())) {
 	    					if(a.getId().equals(momentBox.getId())) {
-	    						//System.out.println(a.getId());
 	    						a.getPanes().get(0).setExpanded(true);
 	    					}
 	        			}
@@ -935,12 +926,11 @@ public class MomentComparaisonController  implements Initializable {
     public void highlightOn(MomentExperience moment) {
     	ArrayList<MomentExperience> listSameName = new ArrayList();
 	    listSameName = MomentComparaison.searchMomentName(moment.getName());
-	    
 	    for(MomentExperience momentSameName : listSameName) {
-
 	    	for(TitledPane title : listTitleMoment) {
 	    		if(title.getId().equals("title" + momentSameName.getID())){
-	    			title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46, 49, 49, 1), 13, 0, 0, 0);");
+	    			title.setStyle("-fx-border-color: rgba(46, 49, 49, 1); -fx-border-width: 2;");
+	    			//title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46, 49, 49, 1), 13, 0, 0, 0);");
 	    		}
 	    	}
 	    }
@@ -958,7 +948,8 @@ public class MomentComparaisonController  implements Initializable {
 
 	    	for(TitledPane title : listTitleMoment) {
 	    		if(title.getId().equals("title" + momentSameName.getID())){
-	    			title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+	    			title.setStyle("-fx-border-color: lightgrey; -fx-border-width: 2;");
+	    			//title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
 	    		}
 	    	}
 	    }
