@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Utils.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,8 +54,7 @@ public abstract class Utils {
 		
 		
 		if(projectNames.isEmpty()){
-			// For debug purposes
-			//System.out.println("No projects to load");
+
 		}else{
 			System.out.println("Loading projects");
 			for (String s : projectNames) {
