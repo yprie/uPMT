@@ -129,7 +129,6 @@ public class StatsCategoryController implements Initializable{
 			}
 			
 			/* INTERVIEWS */
-			
 			else {
 				
 				/* set interview label */ 

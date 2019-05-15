@@ -19,11 +19,12 @@
  *****************************************************************************/
 
 package controller;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.awt.im.InputContext;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
@@ -46,6 +47,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
@@ -54,6 +56,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.TitledPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -301,6 +305,43 @@ public class RootLayoutController implements Initializable {
 			
 		} catch (IOException e) {
 			// TODO Exit Program
+			e.printStackTrace();
+		}
+	}
+	
+
+	/**
+	 * Launch window for moment comparison view
+	 */
+	public void momentsComparaison(){
+		Stage comparisonWindow = new Stage(StageStyle.UTILITY);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		comparisonWindow.setTitle(main._langBundle.getString("moments_comparaison"));
+		comparisonWindow.setResizable(true);
+		comparisonWindow.initModality(Modality.APPLICATION_MODAL);
+
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			
+            loader.setLocation(getClass().getResource("/view/MomentComparaisonView.fxml"));
+            loader.setController(new MomentComparaisonController(main, comparisonWindow));
+           
+            loader.setResources(main._langBundle);
+    		
+            //////////
+            HBox layout = (HBox) loader.load();
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setPrefSize(screenSize.getWidth()-10, screenSize.getHeight()-150);
+            System.out.println("width " + screenSize.getWidth());
+            System.out.println("height " + screenSize.getHeight());
+            scrollPane.setContent(layout);
+
+            
+            Scene sc = new Scene(scrollPane);
+            comparisonWindow.setScene(sc);
+            comparisonWindow.showAndWait();
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

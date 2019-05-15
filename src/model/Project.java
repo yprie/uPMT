@@ -80,6 +80,7 @@ public class Project implements Serializable {
 	private String path;
 	private LinkedList<DescriptionInterview> mInterviews;
 	private boolean isAlreadySave;
+	private double size;
 
 	public Project(String n,Schema s){
 		this.mName = n;

@@ -53,6 +53,9 @@ public class MomentExperience implements Serializable, Cloneable {
 	private Property mCurrentProperty =null;
 	private int mID;
 	private int mRow;
+	private boolean isTag=false;
+	private double mWidth=120;
+	private String interviewName;
 	private transient SimpleDateFormat mFormater = new SimpleDateFormat("HH:mm:ss");
 	
 	
@@ -81,6 +84,7 @@ public class MomentExperience implements Serializable, Cloneable {
 		this.mRow = row;
 		this.mGridCol = col;
 		this.mDate = new Date();
+		this.mWidth = 180;
 		try {
 			this.mDate = this.mFormater.parse("00:00:00");
 		} catch (ParseException e) {
@@ -89,6 +93,15 @@ public class MomentExperience implements Serializable, Cloneable {
 	}
 	
 	
+	public double getmWidth() {
+		return mWidth;
+	}
+	
+	public void setmWidth(Double width) {
+		this.mWidth=width;
+	}
+
+
 	public MomentExperience() {
 		this("New Moment", 0,0);
 	}
@@ -176,6 +189,14 @@ public class MomentExperience implements Serializable, Cloneable {
 		return mSubMoments;
 	}
 	
+	public String getInterviewName() {
+		return interviewName;
+	}
+
+	public void setInterviewName(String interviewName) {
+		this.interviewName = interviewName;
+	}
+
 	public void addSousMoment(MomentExperience m) {
 		if(!this.mSubMoments.contains(m)) {
 			m.setParent(this);
@@ -297,6 +318,28 @@ public class MomentExperience implements Serializable, Cloneable {
 			res = res.substring(0, res.length()-4);
 		} 
 		return res;
+	}
+
+	public String toString() {
+		String res;
+		
+		if(this.equals(null)) {
+			System.out.println("bla");;
+		}
+		
+		res=this.mName;
+		for(MomentExperience e : mSubMoments) {
+			res = res + " " + e.mName;
+		}
+		return res;
+	}
+	
+	public boolean isTag() {
+		return isTag;
+	}
+
+	public void setTag(boolean isTag) {
+		this.isTag = isTag;
 	}
 
 }

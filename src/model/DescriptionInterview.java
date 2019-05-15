@@ -1,7 +1,7 @@
 /*****************************************************************************
  * DescriptionEntretien.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright ï¿½ 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,6 +178,12 @@ public class DescriptionInterview implements Serializable, Cloneable{
 	}
 	public String toString(){
 		return this.mName;
+	}
+	
+	public void initInterviewName() {
+		for(MomentExperience moment: mMoments) {
+			moment.setInterviewName(this.mName);
+		}
 	}
 	
 	public int getNumberOfMoments() {

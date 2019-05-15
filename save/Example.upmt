@@ -1,6 +1,6 @@
 {
   "SAVE_VERSION": 3,
-  "mName": "Example",
+  "mName": "Example2",
   "mSchema": {
     "mFolders": [
       {
@@ -81,6 +81,7 @@
     "mColor": "#000000",
     "mName": "Description Model"
   },
+  "path": "/Users/gouritengwenaelle/git/uPMT/save/",
   "mInterviews": [
     {
       "mDescripteme": {
@@ -193,7 +194,9 @@
                 "mName": "type"
               },
               "mID": 2567451,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": false,
+              "mWidth": 180.0
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
@@ -241,7 +244,9 @@
               "mGridCol": 1,
               "mColor": "#BBE4FB",
               "mID": 8724382,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": false,
+              "mWidth": 180.0
             },
             {
               "mDate": "Jan 1, 1970 12:00:00 AM",
@@ -306,7 +311,9 @@
               "mGridCol": 2,
               "mColor": "#F1D9D9",
               "mID": 6595994,
-              "mRow": 1
+              "mRow": 1,
+              "isTag": false,
+              "mWidth": 180.0
             }
           ],
           "mParentMomentID": -1,
@@ -314,7 +321,9 @@
           "mGridCol": 0,
           "mColor": "#FFFFFF",
           "mID": 1763325,
-          "mRow": 0
+          "mRow": 0,
+          "isTag": false,
+          "mWidth": 180.0
         }
       ],
       "mDateInterview": {
@@ -326,5 +335,7 @@
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
     }
-  ]
+  ],
+  "isAlreadySave": false,
+  "size": 0.0
 }

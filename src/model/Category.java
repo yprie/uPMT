@@ -32,7 +32,6 @@ public class Category extends Type implements Serializable, Cloneable {
 		super(nom);
 		mProperties  = new LinkedList<Property>();
 	}
-	
 	public Category clone(){
 		Category newc = new Category(this.getName());
 		newc.setColor(this.getColor());
