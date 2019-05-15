@@ -75,6 +75,9 @@ public abstract class Utils {
 						}
 						
 						if(!project.getName().equals(projectName)) {
+							System.out.println("hhhhhhhhhhhhhhh " + project.getPath());
+							//File autoSaveFile2 = new File(project.getPath());
+							//autoSaveFile2.delete();
 							project.setName(projectName);
 							project.setName(project.getName().replace(".upmt", ""));
 							File autoSaveFile = new File(path);
