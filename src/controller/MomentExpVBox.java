@@ -286,6 +286,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				});
 			}
         });
+        
         MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
         menu3.setDisable(true);
         menuTime = new MenuItem(main._langBundle.getString("edit_time") + " ('"+moment.getDateString()+"')");
