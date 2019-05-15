@@ -401,7 +401,6 @@ public class Main extends Application {
         
         if(new File(fileOfPath).isFile()) {
         	list = loadPath();
-        	System.out.println("THE PATH " + path);
         	if(!list.contains(path)) {
         		list.add(path);
             	Gson gson = new Gson();

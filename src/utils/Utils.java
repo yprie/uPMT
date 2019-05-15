@@ -66,7 +66,25 @@ public abstract class Utils {
 			if(!projectNames.isEmpty()){
 				for (String projectName : projectNames) {
 					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
+						
 						Project project = Project.loadData(projectName, path);
+						
+						if(!project.getPath().equals(path)) {
+							project.setPath(path);
+							project.autosave();
+						}
+						
+						if(!project.getName().equals(projectName)) {
+							project.setName(projectName);
+							project.setName(project.getName().replace(".upmt", ""));
+							File autoSaveFile = new File(path);
+							autoSaveFile.delete();
+							project.save();
+						}
+						
+						System.out.println("Pathhh general " + path);
+						System.out.println("Pathhh project " + project.getPath());
+						
 						if(project==null) {
 							Alert alert = new Alert(AlertType.CONFIRMATION);
 							alert.setTitle(main._langBundle.getString("error_version"));

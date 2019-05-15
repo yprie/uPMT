@@ -55,6 +55,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
+import application.Main;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.DirectoryChooser;
@@ -161,6 +162,7 @@ public class Project implements Serializable {
 		if(!pathLocation.contains(".upmt")) {
 			pathLocation += FORMAT;
 		}
+		//System.out.println();
 		saveData(pathLocation);
 	}
 	
