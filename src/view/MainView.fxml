@@ -58,7 +58,7 @@
                <top>
                   <BorderPane fx:id="topBarContainerTextInterview" prefHeight="64.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <center>
-                        <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="%text_interview" BorderPane.alignment="CENTER">
+                        <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER">
                            <font>	
                               <Font size="22.0" />
                            </font>

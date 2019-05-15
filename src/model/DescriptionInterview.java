@@ -107,7 +107,11 @@ public class DescriptionInterview implements Serializable, Cloneable{
 	}
 	
 	public String getName() {
-		return mName;
+		if(mName==null) {
+			return this.getParticipant() +"_" +this.getDateInterview();
+		}else {
+			return mName;
+		}
 	}
 
 	public void setName(String mName) {

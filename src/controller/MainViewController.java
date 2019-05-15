@@ -145,10 +145,11 @@ public class MainViewController implements Initializable, Observer {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Image image = ResourceLoader.loadImage("momentIcon.png");
 		this.ajoutMomentButton.setImage(image);
-
+		
 		if (!main.getCurrentProject().getInterviews().isEmpty()) {
 			main.setCurrentDescription(main.getCurrentProject().getInterviews().getLast());
 			// get the last one
+			
 		}
 
 		treeViewSchema.setEditable(true);
@@ -175,8 +176,11 @@ public class MainViewController implements Initializable, Observer {
 		main.setTreeViewSchema(treeViewSchema);
 		main.setTreeViewInterview(treeViewInterview);
 		
+		
+		
 		if (main.getCurrentDescription() != null) {
 			// Give time to end initializing the scheme on the left
+			
 			Platform.runLater(new Runnable() {
                 @Override public void run() {
                 	for(DescriptionInterview d : main.getCurrentProject().getInterviews()) {
@@ -275,7 +279,7 @@ public class MainViewController implements Initializable, Observer {
 	
 	public void setDroppableText(String text) {
 		//droppableText.setText(main.getCurrentDescription().getDescripteme().getTexte().trim());
-		
+		textInterviewTitle.setText(main.getCurrentDescription().getName());
 		droppableText.setText(text);
 	}
 	
@@ -353,4 +357,7 @@ public class MainViewController implements Initializable, Observer {
 		else return this.droppableText.getText();
 	}
 
+	public Text getTextInterviewTitle() {
+		return this.textInterviewTitle;
+	}
 }
