@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExpVBox.java
  *****************************************************************************
- * Copyright 閿燂拷 2017 uPMT
+ * Copyright é–¿ç‡‚æ‹· 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 package controller;
+import java.util.stream.Collectors;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -28,9 +29,14 @@ import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.controlsfx.control.textfield.TextFields;
 
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
@@ -38,6 +44,7 @@ import application.Main;
 import controller.command.ChangeColorMomentCommand;
 import controller.command.ChangeDateMomentCommand;
 import controller.command.ChangeExtractMomentCommand;
+import controller.command.ChangePropertyValueCommand;
 import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
@@ -101,6 +108,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import model.AutoCompletionService;
 import model.Category;
 import model.Descripteme;
 import model.MomentExperience;
@@ -286,7 +294,6 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				});
 			}
         });
-        
         MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
         menu3.setDisable(true);
         menuTime = new MenuItem(main._langBundle.getString("edit_time") + " ('"+moment.getDateString()+"')");
@@ -483,9 +490,28 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	private void editNameMode() {
 		TextField t = new TextField();
+		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(),moment);
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
+		
+		//Set<String> uniquesuggestedmoments = new HashSet<String>(auto.getSuggestedMoments(moment));
+		
+		TextFields.bindAutoCompletion(t, te -> {
+		    return auto.getSuggestedMoments(moment).stream().filter(elem -> 
+		    {	
+		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+		    		//System.out.println("yo1");
+	    			return true;
+		    	}
+		    	else {
+		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
+		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
+		    		
+		    	}
+		    }).collect(Collectors.toList());
+		});
+		
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override
@@ -493,6 +519,16 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			    {
 			        if (!newPropertyValue)
 			        {
+			        	if (t.getText().equals("")) {
+			        		RenameMomentCommand cmd = new RenameMomentCommand(
+				        			nameController,
+				        			moment.getName(),
+				        			"____",
+				        			main);
+							cmd.execute();
+							UndoCollector.INSTANCE.add(cmd);
+			        	
+			        	} else {
 			        	RenameMomentCommand cmd = new RenameMomentCommand(
 			        			nameController,
 			        			moment.getName(),
@@ -503,6 +539,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 						borderPaneLabel.setCenter(label);
 						//borderPaneLabel.setCenter(label);
 						t.focusedProperty().removeListener(this);
+			        }
 			        }
 			    }
 		};

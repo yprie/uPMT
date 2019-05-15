@@ -401,10 +401,7 @@ public class MomentComparaisonController  implements Initializable {
 							
 							//debut
 							listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
-							//listCategoryDisplay.getItems().setPadding(new Insets(4, 4, 4, 4));
-							//listCategoryDisplay.setPadding(new Insets(4, 4, 4, 4));
-							//listCategoryDisplay.setPrefHeight(subMoment.getCategories().size() * ROW_HEIGHT);
-							
+
 							//fin
 							listCategoryDisplay.setStyle("-fx-background-color:"+subMoment.getColor()+";");
 							listCategoryDisplay.setId("list"+subMoment.getID());
@@ -574,14 +571,7 @@ public class MomentComparaisonController  implements Initializable {
 			dir = dir.replace("\\", "/");
 		}
 		this.centralPane.getStylesheets().add("file:///"+dir);
-		TitledPane t = new TitledPane("oooo", new Button("B1"));
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		Button button = new Button();
-		button.setText("Hover Me!");
-		Tooltip tt = new Tooltip();
-		tt.setText("Text on Hover");
-		layoutV.getChildren().add(button);
-		button.setTooltip(tt);
 		
 		this.centralPane.getChildren().add(layoutV);
 

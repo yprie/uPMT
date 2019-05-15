@@ -18,13 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
+
 package controller;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.awt.im.InputContext;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.im.InputContext;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
@@ -48,6 +52,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCode;
@@ -309,7 +317,6 @@ public class RootLayoutController implements Initializable {
 		}
 	}
 	
-
 	/**
 	 * Launch window for moment comparison view
 	 */
@@ -345,11 +352,12 @@ public class RootLayoutController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void close() throws IOException{
 		this.saveRequest(null);
-	}
+	} 
+	
 	
 	@FXML
 	public void openEnglishVersion(){

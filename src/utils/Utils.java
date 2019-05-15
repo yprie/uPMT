@@ -75,19 +75,13 @@ public abstract class Utils {
 						}
 						
 						if(!project.getName().equals(projectName)) {
-							System.out.println("hhhhhhhhhhhhhhh " + project.getPath());
-							//File autoSaveFile2 = new File(project.getPath());
-							//autoSaveFile2.delete();
 							project.setName(projectName);
 							project.setName(project.getName().replace(".upmt", ""));
 							File autoSaveFile = new File(path);
 							autoSaveFile.delete();
 							project.save();
 						}
-						
-						System.out.println("Pathhh general " + path);
-						System.out.println("Pathhh project " + project.getPath());
-						
+
 						if(project==null) {
 							Alert alert = new Alert(AlertType.CONFIRMATION);
 							alert.setTitle(main._langBundle.getString("error_version"));
