@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 package controller;
+import java.util.stream.Collectors;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -28,9 +29,12 @@ import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.controlsfx.control.textfield.TextFields;
 
@@ -489,7 +493,24 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
-		TextFields.bindAutoCompletion(t, auto.getSuggestedMoments(moment));
+		
+		//Set<String> uniquesuggestedmoments = new HashSet<String>(auto.getSuggestedMoments(moment));
+		
+		TextFields.bindAutoCompletion(t, te -> {
+		    return auto.getSuggestedMoments(moment).stream().filter(elem -> 
+		    {	
+		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+		    		//System.out.println("yo1");
+	    			return true;
+		    	}
+		    	else {
+		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
+		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
+		    		
+		    	}
+		    }).collect(Collectors.toList());
+		});
+		
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override

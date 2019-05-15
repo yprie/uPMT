@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import utils.IStats;
 
@@ -12,8 +14,8 @@ public class AutoCompletionService {
 	private Property property;
 	private Category cat; 
 	private MomentExperience moment;
-	private LinkedList<String> suggestedValuesProperties = new LinkedList<String>();
-	private LinkedList<String> suggestedMoments = new LinkedList<String>();
+	private Set<String> suggestedValuesProperties = new HashSet<String>();
+	private Set<String> suggestedMoments = new HashSet<String>();
 
 	
 	public AutoCompletionService(Project pro,Property p, Category cat){
@@ -35,13 +37,13 @@ public class AutoCompletionService {
 		return moment;
 	}
 	
-	public LinkedList<String> getSuggestedValues(Property p) {
+	public Set<String> getSuggestedValues(Property p) {
 		suggestPropValues(p);
 		//this.suggestedValuesProperties.sort((o1,o2)-> o1.compareTo(o2));
 		return this.suggestedValuesProperties;
 	}
 	
-	public LinkedList<String> getSuggestedMoments(MomentExperience m) {
+	public Set<String> getSuggestedMoments(MomentExperience m) {
 		suggestMoments(m);
 		//this.suggestedMoments.sort((o1,o2)-> o1.compareTo(o2));
 		return this.suggestedMoments ;
@@ -52,7 +54,7 @@ public class AutoCompletionService {
 	 * @param p
 	 * @return
 	 */
-	public LinkedList<String> suggestPropValues(Property p) {
+	public Set<String> suggestPropValues(Property p) {
 
 		for (DescriptionInterview di : this.currentProject.getInterviews()) {
 			for(MomentExperience me :di.getMoments()) {
@@ -79,7 +81,7 @@ public class AutoCompletionService {
 		return suggestedValuesProperties;	
 	}
 
-	public void suggestPropSubValues(LinkedList<String> suggestedList, MomentExperience m, Property p) {
+	public void suggestPropSubValues(Set<String> suggestedValuesProperties2, MomentExperience m, Property p) {
 		for(MomentExperience sm: m.getSubMoments()) {
 			for(Category c : sm.getCategories()) { 
 				if ((c.getName().equals(this.cat.getName()))) {
@@ -99,7 +101,7 @@ public class AutoCompletionService {
 		}
 	}
 	
-	public LinkedList<String> suggestMoments(MomentExperience m) {
+	public Set<String> suggestMoments(MomentExperience m) {
 
 		for (DescriptionInterview di : this.currentProject.getInterviews()) {
 			for(MomentExperience me :di.getMoments()) {
@@ -117,7 +119,7 @@ public class AutoCompletionService {
 	}
 
 
-	public void suggestMomentNames(LinkedList<String> suggestedList, MomentExperience m) {
+	public void suggestMomentNames(Set<String> suggestedList, MomentExperience m) {
 		for(MomentExperience sm: m.getSubMoments()) {
 			System.out.println(sm.getName());
 			suggestedMoments.add(sm.getName());

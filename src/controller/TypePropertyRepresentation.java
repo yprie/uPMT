@@ -21,12 +21,18 @@
 package controller;
 
 import java.io.File;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.controlsfx.control.textfield.TextFields;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import application.Main;
 import controller.command.ChangeExtractMomentCommand;
@@ -259,7 +265,18 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 				
 				if(arg0.getClickCount() == 2){
 					TextField t = new TextField(propertyValue.getText());
-					TextFields.bindAutoCompletion(t,auto.getSuggestedValues(property));
+					
+					
+					TextFields.bindAutoCompletion(t, te -> {
+					    return auto.getSuggestedValues(property).stream().filter(elem -> 
+					    {	if(te.getUserText().toLowerCase().toString().equals(" ")) 
+					    		return true;
+					    	
+					    	else
+					    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
+					    }).collect(Collectors.toList());
+					});
+					
 					t.setMaxWidth(70);
 					t.setMinWidth(10);
 
