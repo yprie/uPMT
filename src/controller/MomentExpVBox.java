@@ -102,6 +102,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -277,12 +278,27 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				deleteMoment();
 			}
         });
-        MenuItem menu2 = new MenuItem(main._langBundle.getString("change_color"));
+        StackPane root = new StackPane();
+        final ColorPicker colorssPicker = new ColorPicker();
+        colorssPicker.setStyle("-fx-background-color: white;");
+        colorssPicker.autosize();
+        MenuItem menu2 = new MenuItem();
+       // menu2.
+       // menu2.setGraphic(value);
+        menu2.setGraphic(colorssPicker);
+        
         menu2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				//System.out.println(colorssPicker.getValue().toString());
+				//setColor("red");
+				String colorString = Utils.toRGBCode(colorssPicker.getValue());
+				setColor(colorString);
+				//root.setBackground(new Background(new BackgroundFill(colorssPicker.getValue(),null,null)));
+		        
+		        /*
 				CustomColorDialog dialog = new CustomColorDialog(main.getPrimaryStage());
-				dialog.setCurrentColor(Color.web(moment.getColor()));
+				//dialog.setCurrentColor(Color.web(moment.getColor()));
 				dialog.setShowUseBtn(false);
 		        dialog.show();
 		        dialog.getDialog().centerOnScreen();
@@ -292,6 +308,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 						colorPicked(dialog.getCustomColor());
 					}
 				});
+				*/
 			}
         });
         MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
@@ -328,6 +345,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			}
         });
         //menuTime.setDisable(true);
+        //momentMenuAction.setMaxWidth(10);
+        momentMenuAction.setPrefSize(100, 100);
+        //.setPrefWidth(10);
         momentMenuAction.getItems().addAll(menu1, menu2, menu3, menuTime);
 	}
 	
@@ -629,10 +649,10 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void updateVue(Observable obs, Object value) {
 
 		if(obs.getClass().equals(MomentNameController.class)) {
-			label.setText((String) value);
+			label.setText((String) "red");
 		}
 		if(obs.getClass().equals(MomentColorController.class)) {
-			this.setColor((String) value);
+			this.setColor((String) "red");
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			//System.out.println("Change detected!");

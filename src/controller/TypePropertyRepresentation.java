@@ -30,6 +30,8 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
 import org.controlsfx.control.textfield.TextFields;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
@@ -267,16 +269,36 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 					TextField t = new TextField(propertyValue.getText());
 					
 					
-					TextFields.bindAutoCompletion(t, te -> {
+					AutoCompletionBinding<String> c = TextFields.bindAutoCompletion(t, te -> {
+						t.deselect();
 					    return auto.getSuggestedValues(property).stream().filter(elem -> 
-					    {	if(te.getUserText().toLowerCase().toString().equals(" ")) 
+					    {	if(te.getUserText().toLowerCase().toString().equals(" ")) { 
+					    		
 					    		return true;
 					    	
-					    	else
+					    }else {
 					    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-					    }).collect(Collectors.toList());
+					    }}).collect(Collectors.toList());
 					});
+					c.setOnAutoCompleted(new EventHandler<AutoCompletionBinding.AutoCompletionEvent<String>>()
+					{
+
+						  @Override
+						  public void handle(AutoCompletionEvent<String> event)
+						  {
+							  if(t.getText().equals("")) {
+								  //System.out.println("nnnnnnn");
+							  }
+						    String valueFromAutoCompletion = event.getCompletion();
+						    System.out.println(valueFromAutoCompletion);
+						  }
+
+						});
 					
+					
+					
+					//c.setOnAutoCompleted(value);
+					c.setHideOnEscape(true);
 					t.setMaxWidth(70);
 					t.setMinWidth(10);
 
@@ -314,7 +336,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 
 						@Override
 						public void handle(KeyEvent event) {
-							if(event.getCode() == KeyCode.ENTER){
+							if(event.getCode() == KeyCode.ENTER && t.getText().equals("")){
 								t.setText(t.getText());
 								propertyPane2.getChildren().remove(2);
 					        	propertyPane2.getChildren().add(propertyValue);
