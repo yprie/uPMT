@@ -328,8 +328,8 @@ public class MomentComparaisonController  implements Initializable {
 					if(!listTitleMoment.contains(titleMoment)) {
 						listTitleMoment.add(titleMoment);
 					}
-					titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
-					
+					//titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+					titleMoment.setStyle("-fx-border-color: lightgrey; -fx-border-width: 2;");
 					//titleMoment.setEffect(new DropShadow(20, Color.BLACK));
 					titleMoment.setAlignment(Pos.CENTER);
 					//titleMoment.setStyle("-fx-border-color: lightgray;");
@@ -472,8 +472,8 @@ public class MomentComparaisonController  implements Initializable {
 							Accordion momentBox = new Accordion();
 
 							
-							titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
-							
+							//titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+							titleMoment.setStyle("-fx-border-color: lightgrey; -fx-border-width: 2;");
 
 							
 							momentBox.setId("moment"+idName);
@@ -682,7 +682,8 @@ public class MomentComparaisonController  implements Initializable {
 					}
 					titleMoment.setAlignment(Pos.CENTER);
 					titleMoment.setId("title"+subMomentOfSubMoment.getID());
-					titleMoment.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
+					titleMoment.setStyle("-fx-border-color: lightgrey; -fx-border-width: 2;");
+					
 					try {
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:even { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
 						writeInCssFile("#" + listCategoryDisplay.getId() + " .list-cell:odd { -fx-background-color:"+ subMomentOfSubMoment.getColor() +"; }");
@@ -919,7 +920,7 @@ public class MomentComparaisonController  implements Initializable {
 	    for(MomentExperience momentSameName : listSameName) {
 	    	for(TitledPane title : listTitleMoment) {
 	    		if(title.getId().equals("title" + momentSameName.getID())){
-	    			title.setStyle("-fx-border-color: rgba(46, 49, 49, 1); -fx-border-width: 2;");
+	    			title.setStyle("-fx-border-color: black; -fx-border-width: 2;");
 	    			//title.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(46, 49, 49, 1), 13, 0, 0, 0);");
 	    		}
 	    	}
