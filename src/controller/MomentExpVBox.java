@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MomentExpVBox.java
  *****************************************************************************
- * Copyright 閿燂拷 2017 uPMT
+ * Copyright é–¿ç‡‚æ‹· 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ import application.Main;
 import controller.command.ChangeColorMomentCommand;
 import controller.command.ChangeDateMomentCommand;
 import controller.command.ChangeExtractMomentCommand;
+import controller.command.ChangePropertyValueCommand;
 import controller.command.RemoveMomentCommand;
 import controller.command.RenameMomentCommand;
 import controller.controller.AddPropertySchemeController;
@@ -518,6 +519,16 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			    {
 			        if (!newPropertyValue)
 			        {
+			        	if (t.getText().equals("")) {
+			        		RenameMomentCommand cmd = new RenameMomentCommand(
+				        			nameController,
+				        			moment.getName(),
+				        			"____",
+				        			main);
+							cmd.execute();
+							UndoCollector.INSTANCE.add(cmd);
+			        	
+			        	} else {
 			        	RenameMomentCommand cmd = new RenameMomentCommand(
 			        			nameController,
 			        			moment.getName(),
@@ -528,6 +539,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 						borderPaneLabel.setCenter(label);
 						//borderPaneLabel.setCenter(label);
 						t.focusedProperty().removeListener(this);
+			        }
 			        }
 			    }
 		};

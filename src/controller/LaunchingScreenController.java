@@ -20,6 +20,7 @@
 
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,12 +31,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import model.Project;
+import utils.Utils;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -51,6 +54,7 @@ public class LaunchingScreenController implements Initializable{
 
 	private @FXML Button btn_nouveauProjet;
 	private @FXML Button btn_ouvrirProjet;
+	private @FXML Button btn_openProjectAs;
 	private Main m_main;
 	private @FXML ListView<Project> tousLesProjets;
 	public Stage window;
@@ -141,6 +145,44 @@ public class LaunchingScreenController implements Initializable{
 			// TODO Exit Program
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 *  Open project from a path
+	 */
+	public void openProjectAs() throws IOException{
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open a Project");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
+		File file = fileChooser.showOpenDialog(this.window);
+        if (file != null) {
+        	String projectToLoad = file.getName().replace(".upmt", "");
+        	boolean isProject = false;
+        	for(Project project : m_main.getProjects()) {
+        		if(project.getName().equals(projectToLoad)) {
+        			m_main.setCurrentProject(project);
+        			m_main.getPrimaryStage().setTitle("uPMT - "+m_main.getCurrentProject().getName()+".uPMT");
+        			m_main.launchMainView();
+        			isProject=true;
+        		} 
+        	}
+        	
+        	if(!isProject) { //project is not in the project's list 
+        		String name = file.getPath();
+        		name = name.replace("/"+file.getName(), "");
+        		name = name.replace("\\"+file.getName(), "");
+        		m_main.savePath(name);
+        		Utils.loadProjects(m_main.getProjects(), m_main);
+        		for(Project p : m_main.getProjects()) {
+        			if(p.getName().equals(projectToLoad)) {
+                		m_main.setCurrentProject(p);
+                		m_main.launchMainView();
+                		isProject=true;
+               		} 
+               	}
+        	}
+         }
+        window.close();
 	}
 	
 	public void OpenProjectDialog(){

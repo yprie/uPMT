@@ -26,6 +26,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.awt.im.InputContext;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.im.InputContext;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
@@ -45,6 +48,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -310,7 +317,6 @@ public class RootLayoutController implements Initializable {
 		}
 	}
 	
-	@FXML
 	/**
 	 * Launch window for moment comparison view
 	 */
@@ -346,7 +352,7 @@ public class RootLayoutController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void close() throws IOException{
 		this.saveRequest(null);

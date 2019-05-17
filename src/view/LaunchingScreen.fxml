@@ -17,6 +17,7 @@
             <HBox alignment="TOP_CENTER" prefHeight="37.0" prefWidth="249.0" spacing="10.0">
                <children>
                   <Button fx:id="btn_ouvrirProjet" mnemonicParsing="false" onAction="#OpenProjectDialog" styleClass="button-gray" stylesheets="@../application/application.css" text="%open_project" />
+                  <Button fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProjectAs" styleClass="button-gray" stylesheets="@../application/application.css" text="%open_project_as" />
                   <Button fx:id="btn_nouveauProjet" mnemonicParsing="false" onAction="#NewProjectDialog" styleClass="button-gray" stylesheets="@../application/application.css" text="%new_project" wrapText="true" />
                </children>
             </HBox>

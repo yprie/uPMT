@@ -12,4 +12,4 @@ Report bugs and ask for features at: https://github.com/yprie/uPMT/issues
 
 # LICENCE
 
-See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3).
+See the [LICENSE](LICENSE) file for license rights and limitations (GPLv3). 
