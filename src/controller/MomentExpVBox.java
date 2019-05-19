@@ -34,8 +34,10 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
@@ -491,6 +493,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	private void editNameMode() {
 		TextField t = new TextField();
 		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(),moment);
+		
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
@@ -498,7 +501,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		//Set<String> uniquesuggestedmoments = new HashSet<String>(auto.getSuggestedMoments(moment));
 		
 		TextFields.bindAutoCompletion(t, te -> {
-		    return auto.getSuggestedMoments(moment).stream().filter(elem -> 
+			Set<String> autolist=new TreeSet<String>();
+			
+			autolist.addAll( auto.getSuggestedMoments(moment).stream().filter(elem -> 
 		    {	
 		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
 		    		//System.out.println("yo1");
@@ -509,8 +514,27 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
 		    		
 		    	}
-		    }).collect(Collectors.toList());
+		    }).collect(Collectors.toList()));
+			
+			if(!te.getUserText().toString().equals(" "))	
+				autolist.add(te.getUserText().toString());
+			
+			
+		return autolist;
+		    /*return auto.getSuggestedMoments(moment).stream().filter(elem -> 
+		    {	
+		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+		    		//System.out.println("yo1");
+	    			return true;
+		    	}
+		    	else {
+		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
+		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
+		    		
+		    	}
+		    }).collect(Collectors.toList());*/
 		});
+		
 		
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
@@ -527,6 +551,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				        			main);
 							cmd.execute();
 							UndoCollector.INSTANCE.add(cmd);
+							t.focusedProperty().removeListener(this);
 			        	
 			        	} else {
 			        	RenameMomentCommand cmd = new RenameMomentCommand(

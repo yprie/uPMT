@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.controlsfx.control.textfield.TextFields;
 
@@ -268,14 +269,27 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 					
 					
 					TextFields.bindAutoCompletion(t, te -> {
-					    return auto.getSuggestedValues(property).stream().filter(elem -> 
-					    {	if(te.getUserText().toLowerCase().toString().equals(" ")) 
-					    		return true;
-					    	
-					    	else
+						
+						Set<String> autolist=new TreeSet<String>();
+						
+						autolist.addAll(auto.getSuggestedValues(property).stream().filter(elem -> 
+					    {	
+					    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+					    		//System.out.println("yo1");
+				    			return true;
+					    	}
+					    	else {
+					    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
 					    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-					    }).collect(Collectors.toList());
+					    		
+					    	}
+					    }).collect(Collectors.toList()));
+						
+						if(!te.getUserText().toString().equals(" "))
+							autolist.add(te.getUserText().toString());
+					    return autolist;
 					});
+					
 					
 					t.setMaxWidth(70);
 					t.setMinWidth(10);
