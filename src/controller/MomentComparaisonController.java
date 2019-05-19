@@ -613,15 +613,6 @@ public class MomentComparaisonController  implements Initializable {
 					subMomentOfSubMoment.setmWidth(subMoment.getmWidth()/subMoment.getSubMoments().size());
 					
 					largeurNoeudEnfant=lastWidth/subMoment.getSubMoments().size();
-					//System.out.println(subMomentOfSubMoment.getName());
-					
-					//category display
-					/*
-					ArrayList<String> categoryList = new ArrayList<String>();
-					for(Category c : subMomentOfSubMoment.getCategories()){
-						categoryList.add(c.toString());	
-					}
-					*/
 					ListView<Category> listCategoryDisplay = new ListView<Category>();
 					
 					listCategoryDisplay.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);");
@@ -632,7 +623,6 @@ public class MomentComparaisonController  implements Initializable {
 					listCategoryDisplay.setStyle("-fx-background-color:"+subMomentOfSubMoment.getColor()+";");
 					listCategoryDisplay.setId("list"+subMomentOfSubMoment.getID());
 					
-					//debut
 					listCategoryDisplay.setCellFactory(lv -> {
 			            ListCell<Category> cell = new ListCell<Category>() {
 			                @Override
@@ -651,12 +641,8 @@ public class MomentComparaisonController  implements Initializable {
 			                        setMaxWidth(Control.USE_PREF_SIZE);
 			                        if(item.getProperties().size()>0) {
 			                        	tooltip.setText(item.getProperties().toString());
-			                        	//tooltip.setId("tool");
-			                        	//ToolTipManager.sharedInstance().setDismissDelay(20000);
-			                        	//tooltip.de
 			                        } else {
 			                        	tooltip.hide();
-			                        	//tooltip.setText(" ");
 			                        }
 			                        bindTooltip(this, tooltip);
 			                       // setTooltip(tooltip);

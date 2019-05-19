@@ -53,7 +53,7 @@ import javafx.scene.control.ListView;
 public class LaunchingScreenController implements Initializable{
 
 	private @FXML Button btn_nouveauProjet;
-	private @FXML Button btn_ouvrirProjet;
+	private @FXML Button btn_ouvrirProjetSelected;
 	private @FXML Button btn_openProjectAs;
 	private Main m_main;
 	private @FXML ListView<Project> tousLesProjets;
@@ -109,15 +109,15 @@ public class LaunchingScreenController implements Initializable{
 	            return cell;
 	        }
 	    });
-		btn_ouvrirProjet.setDisable(true);
+		btn_ouvrirProjetSelected.setDisable(true);
 		tousLesProjets.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
 			@Override
 			public void changed(ObservableValue<? extends Project> arg0, Project arg1, Project arg2) {
 				if (tousLesProjets.getSelectionModel().getSelectedItem() != null){
-					btn_ouvrirProjet.setDisable(false);
+					btn_ouvrirProjetSelected.setDisable(false);
 				}
 				else {
-					btn_ouvrirProjet.setDisable(true);
+					btn_ouvrirProjetSelected.setDisable(true);
 				}
 			}
           });
@@ -182,7 +182,7 @@ public class LaunchingScreenController implements Initializable{
                	}
         	}
          }
-        window.close();
+        //window.close();
 	}
 	
 	public void OpenProjectDialog(){
