@@ -68,6 +68,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -278,40 +279,35 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				deleteMoment();
 			}
         });
+        menu1.setStyle("-fx-padding: 0 0 0 -170");
+        
         StackPane root = new StackPane();
         final ColorPicker colorssPicker = new ColorPicker();
         colorssPicker.setStyle("-fx-background-color: white;");
-        colorssPicker.autosize();
-        MenuItem menu2 = new MenuItem();
-       // menu2.
-       // menu2.setGraphic(value);
-        menu2.setGraphic(colorssPicker);
+        System.out.println("hhhhh " + moment.getName());
+        colorssPicker.setValue(Color.web(moment.getColor()));
+        colorssPicker.setPrefWidth(170);
         
+        MenuItem menu2 = new MenuItem();
+        final StackPane root2 = new StackPane(); 
+        root2.getChildren().add(colorssPicker);
+        root2.setAlignment(Pos.CENTER);
+        menu2.setGraphic(root2);
+        
+        menu2.setStyle("-fx-padding: -10 -10 0 0");
         menu2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				//System.out.println(colorssPicker.getValue().toString());
-				//setColor("red");
+				System.out.println("hhhhh " + moment.getName());
 				String colorString = Utils.toRGBCode(colorssPicker.getValue());
 				setColor(colorString);
-				//root.setBackground(new Background(new BackgroundFill(colorssPicker.getValue(),null,null)));
-		        
-		        /*
-				CustomColorDialog dialog = new CustomColorDialog(main.getPrimaryStage());
-				//dialog.setCurrentColor(Color.web(moment.getColor()));
-				dialog.setShowUseBtn(false);
-		        dialog.show();
-		        dialog.getDialog().centerOnScreen();
-		        dialog.setOnSave(new Runnable() {
-					@Override
-					public void run() {
-						colorPicked(dialog.getCustomColor());
-					}
-				});
-				*/
+				setBorderColor(colorString);
+				getMomentColorController().update(colorString);
 			}
         });
+        
         MenuItem menu3 = new MenuItem(main._langBundle.getString("add_comment"));
+        menu3.setStyle("-fx-padding: 0 0 0 -170");
         menu3.setDisable(true);
         menuTime = new MenuItem(main._langBundle.getString("edit_time") + " ('"+moment.getDateString()+"')");
         menuTime.setOnAction(new EventHandler<ActionEvent>(){
@@ -348,6 +344,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         //momentMenuAction.setMaxWidth(10);
         momentMenuAction.setPrefSize(100, 100);
         //.setPrefWidth(10);
+        menuTime.setStyle("-fx-padding: 0 0 0 -170");
         momentMenuAction.getItems().addAll(menu1, menu2, menu3, menuTime);
 	}
 	
@@ -649,10 +646,10 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	public void updateVue(Observable obs, Object value) {
 
 		if(obs.getClass().equals(MomentNameController.class)) {
-			label.setText((String) "red");
+			label.setText((String) value);
 		}
 		if(obs.getClass().equals(MomentColorController.class)) {
-			this.setColor((String) "red");
+			this.setColor((String) value);
 		}
 		if(obs.getClass().equals(MomentExtractController.class)) {
 			//System.out.println("Change detected!");
