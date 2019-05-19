@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.AutoCompletionBinding.AutoCompletionEvent;
@@ -268,17 +269,25 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 				if(arg0.getClickCount() == 2){
 					TextField t = new TextField(propertyValue.getText());
 					
-					
-					AutoCompletionBinding<String> c = TextFields.bindAutoCompletion(t, te -> {
-						t.deselect();
-					    return auto.getSuggestedValues(property).stream().filter(elem -> 
-					    {	if(te.getUserText().toLowerCase().toString().equals(" ")) { 
-					    		
-					    		return true;
-					    	
-					    }else {
+					TextFields.bindAutoCompletion(t, te -> {
+						
+						Set<String> autolist=new TreeSet<String>();
+						
+						autolist.addAll(auto.getSuggestedValues(property).stream().filter(elem -> 
+					    {	
+					    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+					    		//System.out.println("yo1");
+				    			return true;
+					    	}
+					    	else {
 					    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-					    }}).collect(Collectors.toList());
+					    		
+					    	}
+					    }).collect(Collectors.toList()));
+						
+						if(!te.getUserText().toString().equals(" "))
+							autolist.add(te.getUserText().toString());
+					    return autolist;
 					});
 					c.setOnAutoCompleted(new EventHandler<AutoCompletionBinding.AutoCompletionEvent<String>>()
 					{
@@ -294,10 +303,6 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 						  }
 
 						});
-					
-					
-					
-					//c.setOnAutoCompleted(value);
 					c.setHideOnEscape(true);
 					t.setMaxWidth(70);
 					t.setMinWidth(10);
