@@ -568,6 +568,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 				        			main);
 							cmd.execute();
 							UndoCollector.INSTANCE.add(cmd);
+							borderPaneLabel.setCenter(label);
 							t.focusedProperty().removeListener(this);
 			        	
 			        	} else {
