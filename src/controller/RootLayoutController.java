@@ -411,7 +411,6 @@ public class RootLayoutController implements Initializable {
 		final KeyCodeCombination keyCombNEW=new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
 		InputContext context = InputContext.getInstance(); 
 		String loc = context.getLocale().toString();
-		openProject();
 		System.out.println(loc);  
 		// javafx keyboard layout bug management 
 		if(PlatformUtil.isMac()) {
@@ -436,13 +435,11 @@ public class RootLayoutController implements Initializable {
 			redo.setAccelerator(keyCombREDO);
 			saveProject.setAccelerator(keyCombSAVE);
 			newInterview.setAccelerator(keyCombNEW);
-
 		}
 	
 		this.window.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
-
 				try {
 					saveRequest(event);
 				} catch (IOException e) {
@@ -451,16 +448,8 @@ public class RootLayoutController implements Initializable {
 				}
 				Platform.exit();
 		        System.exit(0);
-
-				try {
-					saveRequest(event);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
 			}
 		});
 	}
-
+	
 }
