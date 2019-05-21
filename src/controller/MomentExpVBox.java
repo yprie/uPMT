@@ -300,11 +300,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         menu2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("hhhhh " + moment.getName());
 				String colorString = Utils.toRGBCode(colorssPicker.getValue());
 				setColor(colorString);
 				setBorderColor(colorString);
-				getMomentColorController().update(colorString);
+				//getMomentColorController().update(colorString);
+				colorPicked(colorssPicker.getValue());
 			}
         });
         
