@@ -37,8 +37,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
 
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
@@ -112,7 +110,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import model.AutoCompletionService;
 import model.Category;
 import model.Descripteme;
 import model.MomentExperience;
@@ -509,50 +506,9 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 	
 	private void editNameMode() {
 		TextField t = new TextField();
-		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(),moment);
-		
 		t.setMaxWidth(180);
 		t.setText(moment.getName());
 		t.requestFocus();
-		
-		//Set<String> uniquesuggestedmoments = new HashSet<String>(auto.getSuggestedMoments(moment));
-		
-		TextFields.bindAutoCompletion(t, te -> {
-			Set<String> autolist=new TreeSet<String>();
-			
-			autolist.addAll( auto.getSuggestedMoments(moment).stream().filter(elem -> 
-		    {	
-		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
-		    		//System.out.println("yo1");
-	    			return true;
-		    	}
-		    	else {
-		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
-		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-		    		
-		    	}
-		    }).collect(Collectors.toList()));
-			
-			if(!te.getUserText().toString().equals(" "))	
-				autolist.add(te.getUserText().toString());
-			
-			
-		return autolist;
-		    /*return auto.getSuggestedMoments(moment).stream().filter(elem -> 
-		    {	
-		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
-		    		//System.out.println("yo1");
-	    			return true;
-		    	}
-		    	else {
-		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
-		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-		    		
-		    	}
-		    }).collect(Collectors.toList());*/
-		});
-		
-		
 		
 		ChangeListener<Boolean>	 listener = new ChangeListener<Boolean>() {
 			 @Override
