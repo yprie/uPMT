@@ -255,6 +255,19 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 		property.setValue(value);
 	}
 	
+	public static boolean isStringNullOrWhiteSpace(String value) {
+	    if (value == null) {
+	        return true;
+	    }
+
+	    for (int i = 0; i < value.length(); i++) {
+	        if (!Character.isWhitespace(value.charAt(i))) {
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
 	private void setLabelChangeName(HBox propertyPane2, TypePropertyRepresentation tpr){
 		
 		propertyValue.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -273,7 +286,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 						    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
 						    {	
 								if (!newPropertyValue)
-						        {	if (t.getText().equals("")) {
+						        {	if (isStringNullOrWhiteSpace(t.getText())) {
 						        	ChangePropertyValueCommand cmd = new ChangePropertyValueCommand(
 						        			tpr,
 						        			property.getValue(), 

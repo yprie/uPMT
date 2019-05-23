@@ -504,6 +504,20 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		});
 	}
 	
+	public static boolean isStringNullOrWhiteSpace(String value) {
+	    if (value == null) {
+	        return true;
+	    }
+
+	    for (int i = 0; i < value.length(); i++) {
+	        if (!Character.isWhitespace(value.charAt(i))) {
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
+	
 	private void editNameMode() {
 		TextField t = new TextField();
 		t.setMaxWidth(180);
@@ -516,7 +530,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 			    {
 			        if (!newPropertyValue)
 			        {
-			        	if (t.getText().equals("")) {
+			        	if (isStringNullOrWhiteSpace(t.getText())) {
 			        		RenameMomentCommand cmd = new RenameMomentCommand(
 				        			nameController,
 				        			moment.getName(),
