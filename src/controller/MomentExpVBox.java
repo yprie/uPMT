@@ -528,7 +528,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		t.requestFocus();
 		
 		//Set<String> uniquesuggestedmoments = new HashSet<String>(auto.getSuggestedMoments(moment));
-		
+	
 		TextFields.bindAutoCompletion(t, te -> {
 			Set<String> autolist=new TreeSet<String>();
 			
