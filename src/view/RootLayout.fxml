@@ -46,6 +46,7 @@
             <Menu mnemonicParsing="false" text="%tools">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category" />
+                <MenuItem mnemonicParsing="false" onAction="#momentsComparaison" text="%moments_comparaison" />
               </items>
             </Menu>
         </menus>
