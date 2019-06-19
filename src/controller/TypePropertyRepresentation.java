@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+import org.controlsfx.control.textfield.TextFields;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
@@ -77,6 +77,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Record;
+import model.AutoCompletionService;
 import model.Category;
 import model.Descripteme;
 import model.Property;
@@ -268,8 +269,10 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 
 	    return true;
 	}
+
 	private void setLabelChangeName(HBox propertyPane2, TypePropertyRepresentation tpr){
 		
+		AutoCompletionService auto = new AutoCompletionService(main.getCurrentProject(), property, this.category);
 		propertyValue.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -277,6 +280,30 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 				
 				if(arg0.getClickCount() == 2){
 					TextField t = new TextField(propertyValue.getText());
+					
+					
+					TextFields.bindAutoCompletion(t, te -> {
+						
+						Set<String> autolist=new TreeSet<String>();
+						
+						autolist.addAll(auto.getSuggestedValues(property).stream().filter(elem -> 
+					    {	
+					    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
+					    		//System.out.println("yo1");
+				    			return true;
+					    	}
+					    	else {
+					    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
+					    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
+					    		
+					    	}
+					    }).collect(Collectors.toList()));
+						
+						if(!te.getUserText().toString().equals(" "))
+							autolist.add(te.getUserText().toString());
+					    return autolist;
+					});
+					
 					
 					t.setMaxWidth(70);
 					t.setMinWidth(10);

@@ -267,8 +267,9 @@ public class Main extends Application {
     
     public void showRecentProject(Menu openProject) {
     	openProject.getItems().clear();
+    	System.out.println(this.getProjects().size());
 		for(Project p : this.getProjects()) {
-			MenuItem child = new MenuItem(p.getName() + " (from " + p.getPath() +")");
+			MenuItem child = new MenuItem(p.getName() + " (froom " + p.getPath() +")");
 			child.setOnAction(new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent t) {
 		        	setCurrentProject(p);

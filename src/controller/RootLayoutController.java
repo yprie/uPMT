@@ -112,8 +112,8 @@ public class RootLayoutController implements Initializable {
 	
 	@FXML
 	public void openProject(){
+		System.out.println("hj");
 		main.showRecentProject(openProject);
-		
 	}
 	
 	@FXML
@@ -416,7 +416,7 @@ public class RootLayoutController implements Initializable {
 		if(PlatformUtil.isMac()) {
 			if (loc.equals("fr")){
 				Locale.setDefault(Locale.FRANCE);
-			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
 				undo.setAccelerator(keyCombUNDO);
 				redo.setAccelerator(keyCombREDO);
 				saveProject.setAccelerator(keyCombSAVE);
@@ -430,7 +430,7 @@ public class RootLayoutController implements Initializable {
 				newInterview.setAccelerator(keyCombNEW);
 			}
 		}else {
-		    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+		    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
 			undo.setAccelerator(keyCombUNDO);
 			redo.setAccelerator(keyCombREDO);
 			saveProject.setAccelerator(keyCombSAVE);
