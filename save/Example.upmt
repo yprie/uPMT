@@ -81,7 +81,6 @@
     "mColor": "#000000",
     "mName": "Description Model"
   },
-  "path": "/Users/gouritengwenaelle/git/uPMT/save/",
   "mInterviews": [
     {
       "mDescripteme": {
@@ -132,7 +131,7 @@
                 {
                   "mProperties": [
                     {
-                      "mValue": "cold",
+                      "mValue": "____",
                       "mDescriptemes": [
                         {
                           "mText": "frozen"
@@ -181,7 +180,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 0,
-              "mColor": "#DBEFDF",
+              "mColor": "#FFFFFF",
               "mCurrentProperty": {
                 "mValue": "sadness",
                 "mDescriptemes": [
@@ -242,7 +241,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 1,
-              "mColor": "#BBE4FB",
+              "mColor": "#FFFFFF",
               "mID": 8724382,
               "mRow": 1,
               "isTag": false,
@@ -309,7 +308,7 @@
               "mParentMomentID": 1763325,
               "mParentCol": 0,
               "mGridCol": 2,
-              "mColor": "#F1D9D9",
+              "mColor": "#FFFFFF",
               "mID": 6595994,
               "mRow": 1,
               "isTag": false,
@@ -335,7 +334,5 @@
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
     }
-  ],
-  "isAlreadySave": false,
-  "size": 0.0
+  ]
 }
