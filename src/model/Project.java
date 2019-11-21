@@ -223,6 +223,7 @@ public class Project implements Serializable {
 			gsonBuilder.setPrettyPrinting();
 			Gson gson = gsonBuilder.create();
 		    Project p;
+		    
 		    int projectVersion = getVersionProj(path+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
 		    	String updatedJson = updateSaveFile(path+projet, projectVersion);
@@ -237,8 +238,8 @@ public class Project implements Serializable {
 			p.reloadMomentParentLost();
 			return p;
 		} catch(Exception e) {
-			//e.printStackTrace();
-			//System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
 		}
 	}

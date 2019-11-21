@@ -1,6 +1,6 @@
 package utils;
 
-enum OS {
+public enum OS {
 	win, mac, linux, other;
 
 	public static final OS current;

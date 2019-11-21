@@ -48,6 +48,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.paint.Color;
 import model.Project;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+
 
 public abstract class Utils {
 	/**
@@ -58,17 +60,19 @@ public abstract class Utils {
 	public static void loadProjects(LinkedList<Project> projects, Main main) throws IOException{
 		List<String> listPath = main.loadPath();
 		for(String path : listPath) {
-			if(path.contains("/C")) {
-				path = path.replace("/C", "C");
+
+			if(path.charAt(0) == '/'){
+				path = path.substring(1, path.length()-1);
 			}
 			path+="/";
+
 			HashSet<String> projectNames = loadProjectsNames(path);
 			if(!projectNames.isEmpty()){
 				for (String projectName : projectNames) {
 					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
-						
+
 						Project project = Project.loadData(projectName, path);
-						
+
 						if(!project.getPath().equals(path)) {
 							project.setPath(path);
 							project.autosave();

@@ -76,7 +76,7 @@ import javafx.stage.WindowEvent;
 import model.Project;
 import utils.UndoCollector;
 import utils.Utils;
-import com.sun.javafx.PlatformUtil;
+import utils.OS;
 
 public class RootLayoutController implements Initializable {
 		
@@ -413,7 +413,7 @@ public class RootLayoutController implements Initializable {
 		String loc = context.getLocale().toString();
 		System.out.println(loc);  
 		// javafx keyboard layout bug management 
-		if(PlatformUtil.isMac()) {
+		if(OS.current == OS.mac) {
 			if (loc.equals("fr")){
 				Locale.setDefault(Locale.FRANCE);
 			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
