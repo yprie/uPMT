@@ -220,10 +220,12 @@ public class Project implements Serializable {
 		try {
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
+			gsonBuilder.setDateFormat("MMM dd, yyyy, hh:mm:ss a");
 			gsonBuilder.setPrettyPrinting();
 			Gson gson = gsonBuilder.create();
+
 		    Project p;
-		    
+
 		    int projectVersion = getVersionProj(path+projet);
 		    if(Project.VERSION_OF_APP>projectVersion) {
 		    	String updatedJson = updateSaveFile(path+projet, projectVersion);

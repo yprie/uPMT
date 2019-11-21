@@ -88,7 +88,7 @@
       },
       "mMoments": [
         {
-          "mDate": "Jan 1, 1970 12:00:00 AM",
+          "mDate": "Jan 1, 1970, 12:00:00 AM",
           "mName": "April morning",
           "mDescriptemes": [
             {
@@ -102,7 +102,7 @@
           "mRecords": [],
           "mSubMoments": [
             {
-              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mDate": "Jan 1, 1970, 12:00:00 AM",
               "mName": "Tightening phase",
               "mDescriptemes": [
                 {
@@ -198,7 +198,7 @@
               "mWidth": 180.0
             },
             {
-              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mDate": "Jan 1, 1970, 12:00:00 AM",
               "mName": "Transitional event",
               "mDescriptemes": [
                 {
@@ -248,7 +248,7 @@
               "mWidth": 180.0
             },
             {
-              "mDate": "Jan 1, 1970 12:00:00 AM",
+              "mDate": "Jan 1, 1970, 12:00:00 AM",
               "mName": "Loosening phase",
               "mDescriptemes": [
                 {
@@ -334,5 +334,7 @@
       "mComment": "This interview is extracted from a work of Claire Petitmengin, in order to give an example of the model you can build with uPMT.",
       "mName": "Participant_2017-04-04"
     }
-  ]
+  ],
+  "size": 0.0,
+  "isAlreadySave": true
 }
