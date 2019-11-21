@@ -53,7 +53,6 @@ import javax.swing.JFileChooser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import application.Main;
 import javafx.scene.control.Alert;

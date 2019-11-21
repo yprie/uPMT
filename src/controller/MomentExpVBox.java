@@ -37,10 +37,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.controlsfx.control.textfield.AutoCompletionBinding;
-import org.controlsfx.control.textfield.TextFields;
-
-import com.sun.javafx.scene.control.skin.CustomColorDialog;
+import javafx.scene.control.ColorPicker;
 
 import application.Main;
 import controller.command.ChangeColorMomentCommand;
@@ -527,11 +524,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		t.setText(moment.getName());
 		t.requestFocus();
 
-		TextFields.bindAutoCompletion(t, te -> {
+		/*TextFields.bindAutoCompletion(t, te -> {
 			Set<String> autolist=new TreeSet<String>();
-			
-			autolist.addAll( auto.getSuggestedMoments(moment).stream().filter(elem -> 
-		    {	
+
+			autolist.addAll( auto.getSuggestedMoments(moment).stream().filter(elem ->
+		    {
 		    	if(te.getUserText().toLowerCase().toString().equals(" ")) {
 		    		//System.out.println("yo1");
 	    			return true;
@@ -539,11 +536,11 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    	else {
 		    		//System.out.println("yo :"+te.getUserText().toLowerCase()+"R");
 		    		return elem.toLowerCase().startsWith(te.getUserText().toLowerCase());
-		    		
+
 		    	}
 		    }).collect(Collectors.toList()));
-			
-			if(!te.getUserText().toString().equals(" "))	
+
+			if(!te.getUserText().toString().equals(" "))
 				autolist.add(te.getUserText().toString());
 			
 			
@@ -560,7 +557,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
 		    		
 		    	}
 		    }).collect(Collectors.toList());*/
-		});
+//		});
 		
 		
 		

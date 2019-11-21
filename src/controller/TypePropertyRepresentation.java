@@ -31,10 +31,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.controlsfx.control.textfield.TextFields;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import application.Main;
 import controller.command.ChangeExtractMomentCommand;
 import controller.command.ChangePropertyValueCommand;
@@ -282,7 +278,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 					TextField t = new TextField(propertyValue.getText());
 					
 					
-					TextFields.bindAutoCompletion(t, te -> {
+					/*TextFields.bindAutoCompletion(t, te -> {
 						
 						Set<String> autolist=new TreeSet<String>();
 						
@@ -302,7 +298,7 @@ public class TypePropertyRepresentation extends HBox implements Initializable, O
 						if(!te.getUserText().toString().equals(" "))
 							autolist.add(te.getUserText().toString());
 					    return autolist;
-					});
+					});*/
 					
 					
 					t.setMaxWidth(70);
