@@ -170,6 +170,7 @@ public class Project implements Serializable {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 		gsonBuilder.setPrettyPrinting();
+		gsonBuilder.setDateFormat("MMM dd, yyyy, hh:mm:ss a");
 	    Gson gson = gsonBuilder.create(); 
 		try (Writer writer = new FileWriter(filename)) {
 		    gson.toJson(this, writer);
