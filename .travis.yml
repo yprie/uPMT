@@ -22,7 +22,7 @@ deploy:
  token: $token
  file: "./build/libs/uPMT.jar"
  on: try-ci
- cleanup: false
+ skip_cleanup: true
 
 before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
