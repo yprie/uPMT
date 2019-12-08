@@ -127,7 +127,10 @@ public class Main extends Application {
 		       }
 		    });
 		loadProperties();
-		initProjects();
+
+
+
+		//initProjects();
 		createBasicSchema();
 		
 		currentProject = new Project("--emptyProject--", new Schema("SchemaTemporaire"));
