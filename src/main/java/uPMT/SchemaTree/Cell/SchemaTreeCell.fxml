@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="container" prefHeight="40.0" prefWidth="176.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <ImageView fx:id="pictureView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview" stylesheets="@../../application/application.css" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets right="10.0" />
+         </BorderPane.margin></MenuButton>
+   </right>
+   <padding>
+      <Insets left="15.0" right="3.0" />
+   </padding>
+   <center>
+      <BorderPane fx:id="nameDisplayer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
+         <left>
+            <Label fx:id="name" text="name" BorderPane.alignment="CENTER" />
+         </left>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </BorderPane>
+   </center>
+</BorderPane>

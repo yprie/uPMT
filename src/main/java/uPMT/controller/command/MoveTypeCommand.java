@@ -1,0 +1,165 @@
+package controller.command;
+
+import java.util.LinkedList;
+
+import NewModel.IDescriptemeAdapter;
+import SchemaTree.Cell.Models.ITypeAdapter;
+import application.Main;
+import controller.controller.TypeController;
+import controller.typeTreeView.TypeTreeView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.input.DragEvent;
+import model.Category;
+import model.MomentExperience;
+import model.Property;
+import model.Type;
+import utils.Serializer;
+import utils.Undoable;
+
+public class MoveTypeCommand  implements Command,Undoable{
+	
+	private DragEvent event;
+	private Main main;
+	private ITypeAdapter newParent,oldParent,child;
+	private TreeItem<TypeController> itemChild, itemNewParent, itemOldParent;
+	private LinkedList<MomentExperience> moments;
+	private int posInList;
+	
+	public MoveTypeCommand(DragEvent event, TypeTreeView p, TypeTreeView nP,  Main m) {
+		try{
+			this.event = event;
+		
+			this.main = m;
+			this.newParent = nP.getController().getType();
+			
+			child = (Type) Serializer.deserialize((byte[]) event.getDragboard().getContent(TypeTreeView.TYPE));
+			this.oldParent = p.getTreeItem().getParent().getValue().getType();
+			TreeView<TypeController> tree =  main.getTreeViewSchema();
+			TreeItem<TypeController> root = tree.getRoot();
+			this.itemOldParent = p.getTreeItem().getParent();
+			this.itemNewParent = nP.getTreeItem();
+			for(TreeItem<TypeController> c : itemOldParent.getChildren()) {
+				if(c.getValue().getType().equals(child)) {
+					itemChild = c;
+					child = c.getValue().getType();
+					break;
+				}
+			}
+			posInList = this.itemOldParent.getChildren().indexOf(itemChild);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private TreeItem<TypeController> getTreeItemByType(Type t, TreeItem<TypeController> root) {
+		TreeItem<TypeController> ret=null;
+		if(root.getValue()!=null) {
+			if(root.getValue().getType().equals(t)) {
+				ret = root;
+			}
+		}
+		if(ret==null) {
+			for(TreeItem<TypeController> item : root.getChildren()) {
+				ret= getTreeItemByType(t, item);
+				if(ret!=null)break;
+			}
+		}
+		return ret;
+	}
+	
+	
+
+	@Override
+	public void undo() {
+		if(child.isFolder()||(child.isCategory())) {
+			this.itemNewParent.getChildren().remove(itemChild);
+			newParent.removeChild(child);
+			this.itemOldParent.getChildren().add(posInList, itemChild);
+			oldParent.addChild(posInList, child);
+		}
+		else if(child.isProperty()) {
+			RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
+			cmd.execute();
+			AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
+			cmd2.execute();
+		}
+		//main.refreshDataTreeView();
+		main.needToSave();
+	}
+
+	@Override
+	public void redo() {
+		execute();
+	}
+
+	@Override
+	public String getUndoRedoName() {
+		return "moveType";
+	}
+	
+
+	@Override
+	public void execute() {
+		if(child.isFolder()||(child.isCategory())) {
+			this.itemOldParent.getChildren().remove(itemChild);
+			oldParent.removeChild(child);
+			this.itemNewParent.getChildren().add(itemChild);
+			newParent.addChild(child);
+		}
+		else if(child.isProperty()) {
+			try {
+				if(((Property)child).getDescriptemes()==null) ((Property)child).setDescriptemes(new LinkedList<IDescriptemeAdapter>());
+				if( ( !((Property)child).getDescriptemes().isEmpty() || ((Property)child).getValue()!=null) && moments==null) {
+					moments = getMomentsContainsCatExcept(main.getCurrentDescription().getMoments(), (Category)oldParent, (Category)newParent);
+				}
+				RemovePropertyFromCategoryCommand cmd = new RemovePropertyFromCategoryCommand(this.itemOldParent.getValue(), (Property)child, this.itemOldParent, main);
+				cmd.execute();
+				AddPropertyToClassCommand cmd2 = new AddPropertyToClassCommand(this.itemNewParent.getValue(), (Property)child, this.itemNewParent, main);
+				cmd2.execute();
+				if( ( !((Property)child).getDescriptemes().isEmpty() || ((Property)child).getValue()!=null) && moments==null) {
+					for(MomentExperience m : moments) {
+						
+					}
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//main.refreshDataTreeView();
+		main.needToSave();
+	}
+	
+	public void updateMomentCat(MomentExperience m, Category newC) {
+		for(Category c : m.getCategories()) {
+			if(c.getName().equals(newC.getName())) {
+				m.getCategories().remove(c);
+				m.getCategories().add(newC);
+				break;
+			}
+		}
+	}
+	
+	public LinkedList<MomentExperience> getMomentsContainsCatExcept(LinkedList<MomentExperience> root, Category category, Category exception){
+		LinkedList<MomentExperience> ret = new LinkedList<MomentExperience>();
+		for(MomentExperience m : root) {
+			if(m.getCategories().contains(category) && !m.getCategories().contains(exception)) {
+				ret.add(m);
+				break;
+			}
+			if(!m.getSubMoments().isEmpty())
+				ret.addAll(getMomentsContainsCatExcept(m.getSubMoments(), category, exception));
+		}
+		return ret;
+	}
+	
+
+	@Override
+	public boolean canExecute() {
+		return false;
+	}
+
+}
