@@ -167,7 +167,7 @@ public class Project implements Serializable {
 	}
 	
 	private void saveData(String filename) {
-		GsonBuilder gsonBuilder = new GsonBuilder();
+/*		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
 		gsonBuilder.setPrettyPrinting();
 		gsonBuilder.setDateFormat("MMM dd, yyyy, hh:mm:ss a");
@@ -178,7 +178,7 @@ public class Project implements Serializable {
 		}catch(Exception e) {
 			//e.printStackTrace();
 			//System.out.println("lol");
-		}
+		}*/
 	}
 	
 	private void saveFile(String filename){
@@ -216,81 +216,8 @@ public class Project implements Serializable {
 	public void setVersion(int v) {
 		this.SAVE_VERSION=v;
 	}
-	
-	public static Project loadData(String projet, String path) {
-		try {
-			GsonBuilder gsonBuilder = new GsonBuilder();
-			gsonBuilder.registerTypeAdapter(Type.class, new InterfaceAdapter<Type>());
-			gsonBuilder.setDateFormat("MMM dd, yyyy, hh:mm:ss a");
-			gsonBuilder.setPrettyPrinting();
-			Gson gson = gsonBuilder.create();
 
-		    Project p;
 
-		    int projectVersion = getVersionProj(path+projet);
-		    if(Project.VERSION_OF_APP>projectVersion) {
-		    	String updatedJson = updateSaveFile(path+projet, projectVersion);
-				p = gson.fromJson(updatedJson, Project.class);
-				p.save();
-		    }
-		    else {
-		    	p = gson.fromJson(new FileReader(path+projet), Project.class);
-		    }
-			p.setVersion(Project.VERSION_OF_APP);
-			p.save();
-			p.reloadMomentParentLost();
-			return p;
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			return null;
-		}
-	}
-	
-	private static int getVersionProj(String path) {
-		int projVersion=0;
-		String json="";
-		try {
-			json = new String (Files.readAllBytes(Paths.get(path)));
-			int i = json.indexOf("\"SAVE_VERSION\": ");
-			if(i!=-1) {
-				i= i+16;
-				String currentVersionString = "";
-				while(!json.substring(i, i+1).equals(",")) {
-					currentVersionString+=json.substring(i, i+1);
-					i++;
-				}
-				projVersion = Integer.parseInt(currentVersionString);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return projVersion;
-	}
-	
-	private static String updateSaveFile(String path, int projVersion) {
-		String ret="";
-		try {
-			ret = new String (Files.readAllBytes(Paths.get(path)));
-			int i;
-			for(i=projVersion; i<Project.VERSION_OF_APP;i++) {
-				if(i==0) ret = UpdateVersions.version0To1(ret);
-				if(i==1) ret = UpdateVersions.version1To2(ret);
-				if(i==2) ret = UpdateVersions.version2To3(ret);
-			}
-	
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return ret;
-	}
-	
-	
-	
-	protected void reloadMomentParentLost() {
-		
-	}
 	
 	public static Project load(String projet){
 		ObjectInputStream ois = null;

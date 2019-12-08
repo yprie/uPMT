@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Main.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright � 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,29 +21,17 @@
 package application;
 	
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
+import Project.Controllers.ProjectSelectionController;
 import SchemaTree.Cell.Models.IPropertyAdapter;
-import controller.LaunchingScreenController;
+import application.Configuration.Configuration;
 import controller.MainViewController;
 import controller.MomentExpVBox;
 import controller.RootLayoutController;
@@ -66,25 +54,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import model.Category;
 import model.DescriptionInterview;
-import model.Folder;
 import model.MomentExperience;
 import model.Project;
-import model.Property;
 import model.Schema;
-import utils.LoadDataProjects;
 import utils.MomentID;
 import utils.ResourceLoader;
 import utils.SchemaTransformations;
 import utils.Utils;
-import java.util.ResourceBundle;
-
-import com.google.gson.Gson;
 
 
 public class Main extends Application {
@@ -96,21 +76,19 @@ public class Main extends Application {
 	private BorderPane rootLayout;
 	private Stage primaryStage;
 	
-	// This is implemented for internationalization	
-	private Locale _locale;
-	public ResourceBundle _langBundle;
-	
 	// Main Model references and containers
 	private LinkedList<Project> projects = new LinkedList<Project>();
 	private Project currentProject;
 	private DescriptionInterview currentDescription;
-	private Schema BasicSchema;
+
 	private TreeView<TypeController> treeViewSchema;
 	private TreeView<DescriptionInterview> treeViewInterview;
 	private GridPane grid;
 	private MainViewController mainViewController = new MainViewController(this);
 	private RootLayoutController rootLayoutController;
-	
+
+	public ResourceBundle _langBundle;
+
 	//Main reference to the clicked moment
 	private MomentExpVBox currentMoment;
 	private String bundleRes=null;
@@ -126,71 +104,21 @@ public class Main extends Application {
 		          System.exit(0);
 		       }
 		    });
-		loadProperties();
 
+		Configuration.loadAppConfiguration();
+		_langBundle = Configuration.langBundle;
 
-
-		//initProjects();
-		createBasicSchema();
-		
 		currentProject = new Project("--emptyProject--", new Schema("SchemaTemporaire"));
 
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle(_langBundle.getString("main_title"));
+		this.primaryStage.setTitle(Configuration.langBundle.getString("main_title"));
 		
 		//Launching layouts
-		
 		initRootLayout();
-		showLaunchingScreen();
+		ProjectSelectionController controller = ProjectSelectionController.openProjectSelection();
 	}
-	
-	/**
-	 *  Method used to load the selected LANGUAGES
-	 */
-	private void loadProperties () {
-		Properties pros = new Properties();
-		InputStream is = ResourceLoader.loadBundleInput("Current.properties");
-			
-		try {
- 			pros.load(is);
- 		} catch (Exception e) {
- 		}
-		String loc = pros.getProperty("locale","fr");
-		_locale= new Locale(pros.getProperty("locale","fr"));
-		set_langBundle(ResourceBundle.getBundle("bundles.Lang", _locale));
-		
-		//set locale for local control language
-		
-		if (loc.equals("fr")){
-			Locale.setDefault(Locale.FRANCE);
-		} else if (loc.equals("en")) {
-			Locale.setDefault(Locale.US);
-		} else if (loc.equals("es")) {
-			Locale.setDefault(Locale.US);
-		}
-		else {
 
-		}
-	}
-	
-	
-	/**
-	 * Method used to load all the projects
-	 * @throws IOException 
-	 */
-	private void initProjects() throws IOException{
-		this.projects = new LinkedList<Project>();
-		LoadDataProjects dc = LoadDataProjects.instance();
-		dc.setProjets(projects);
-		String initPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().replace("bin/", "save");
-		initPath = initPath.replace("uPMT.jar", "save");
-		initPath = initPath.replace("%20", " ");
-		savePath(initPath);
-		if(Utils.checkRecovery(this)) {
-			this.mainViewController.alertRecovery();
-		}
-		Utils.loadProjects(projects, this);
-	}
+
 	/**
      * Initializes the root layout.
      */
@@ -199,10 +127,10 @@ public class Main extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/RootLayout.fxml"));
-            loader.setResources(ResourceBundle.getBundle("bundles.Lang",new Locale("en", "EN")));
+            loader.setResources(Configuration.langBundle);
             this.rootLayoutController = new RootLayoutController(this, primaryStage);
             loader.setController(rootLayoutController);
-            loader.setResources(get_langBundle());
+            loader.setResources(Configuration.langBundle);
             rootLayout = (BorderPane) loader.load();
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
@@ -214,43 +142,13 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Launch and show the launching screen
-     */
-    public void showLaunchingScreen(){
-		Stage promptWindow = new Stage(StageStyle.UTILITY);
-		promptWindow.setTitle(get_langBundle().getString("home"));
-		//promptWindow.setAlwaysOnTop(true);
-		promptWindow.initModality(Modality.APPLICATION_MODAL);
-		try {
-			FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/view/LaunchingScreen.fxml"));
-            loader.setController(new LaunchingScreenController(this,promptWindow));
-            loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
-            BorderPane layout = (BorderPane) loader.load();
-			Scene launchingScene = new Scene(layout);
-			//ENLEVER LE COMMENTAIRE POUR ACTIVER LA BETA CSS FLAT DESIGN
-			if(activateBetaDesign) {
-				rootLayout.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				//rootLayout.getStylesheets().add(getClass().getResource("t.css").toExternalForm());
-			}
-			promptWindow.setScene(launchingScene);
-			promptWindow.showAndWait();
 
-			if(this.getProjectInCreation()!=null) {
-				this.getRootLayoutController().newInterview();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
     
     public void showRecentProject(Menu openProject) {
     	openProject.getItems().clear();
     	System.out.println(this.getProjects().size());
 		for(Project p : this.getProjects()) {
-			MenuItem child = new MenuItem(p.getName() + " (froom " + p.getPath() +")");
+			MenuItem child = new MenuItem(p.getName() + " (from " + p.getPath() +")");
 			child.setOnAction(new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent t) {
 		        	setCurrentProject(p);
@@ -269,9 +167,9 @@ public class Main extends Application {
 	    	FXMLLoader loader = new FXMLLoader();
 	        loader.setLocation(getClass().getResource("/view/MainView.fxml"));
 	        loader.setController(mainViewController);
-	        loader.setResources(ResourceBundle.getBundle("bundles.Lang", _locale));
+	        loader.setResources(Configuration.langBundle);
 	        
-	        rootLayoutController.fonct_test(_locale);
+	        rootLayoutController.fonct_test(Configuration.locale);
 	        
 	        BorderPane mainView = (BorderPane) loader.load();
 	        this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
@@ -284,29 +182,7 @@ public class Main extends Application {
     		e.printStackTrace();
     	}
     }
-    
-    /**
-     * Creates a basic scheme as a default 
-     * should be improved if desired
-     */
-    private void createBasicSchema(){
-    	Schema s = new Schema((_langBundle.getString("default_scheme")));
-    	Folder general = new Folder(_langBundle.getString("general"));
-    	Folder autre = new Folder(_langBundle.getString("other"));
-    	Category visuel = new Category(_langBundle.getString("visual"));
-    	Property image = new Property(_langBundle.getString("picture"));
-		Category sensoriel = new Category(_langBundle.getString("sensory"));
-		Category emotionnel = new Category(_langBundle.getString("emotional"));
-		Category sonore = new Category(_langBundle.getString("acoustic"));
-		visuel.addProperty(image);
-		general.addCategory(visuel);
-		general.addCategory(sensoriel);
-		general.addCategory(emotionnel);
-		general.addCategory(sonore);
-		s.addFolder(general);
-		s.addFolder(autre);
-		this.BasicSchema = s;
-    }
+
     
     /**
      * Method used to refresh the TreeView related to the scheme if it is out of synch with the model
@@ -360,76 +236,16 @@ public class Main extends Application {
 	public void saveCurrentProjectAs(String pathLocation, String name) throws IOException{
 		needSave = false;
 		currentProject.saveAs(pathLocation, name.replace(".upmt", ""));
-		pathLocation = pathLocation.replace("\\"+name, "");
-		this.savePath(pathLocation.replace("/"+name, ""));
+		Configuration.addToProjects(pathLocation);
 		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 	}
-	
-	/**
-	 * Serialization of project's path
-	 * @path: path to save
-	 */
-	public void savePath(String path) throws IOException {
-		if(path.contains("\\")) {
-			path = path.replace("\\", "/");
-		}
-		if(path.contains("/C")) {
-			path = path.replace("/C", "C");
-		}
-        LinkedList<String> list = null;
-        if (!Files.exists(Paths.get(System.getProperty("user.home")+"/.upmt/"))) {
-		    new File(System.getProperty("user.home")+"/.upmt/").mkdir();
-		}
-        
-        if(new File(fileOfPath).isFile()) {
-        	list = loadPath();
-        	if(!list.contains(path)) {
-        		list.add(path);
-            	Gson gson = new Gson();
-            	Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
-                gson.toJson(list, osWriter);
-                osWriter.close();
-        	}
-        } else {
-        	Gson gson = new Gson();
-            Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
-            list = new LinkedList<String>();
-            list.add(path);
-            gson.toJson(list, osWriter);
-            osWriter.close();
-        }  
-	}
-	
-	/**
-	 * Derialisation of project path
-	 * @return : path list to save
-	 */
-	public LinkedList<String> loadPath() throws IOException {
-		Gson gson = new Gson();
-		Reader isReader = new InputStreamReader( new FileInputStream((fileOfPath)));
-		LinkedList<String> pathList = gson.fromJson(isReader, LinkedList.class);
-		
-		for(String path : pathList) {
-        	File tmpDir = new File(path);
-        	if(!tmpDir.exists()) {
-        		pathList.remove(path);
-        	}
-        	
-        }
-        
-		Writer osWriter = new OutputStreamWriter(new FileOutputStream(fileOfPath));
-        gson.toJson(pathList, osWriter);
-        osWriter.close();
-        isReader.close();
-        
-        return pathList;
-	}
-	
+
+
 	/**
 	 *  Open project from a path
 	 */
 	public void openProjectAs() throws IOException{
-		final FileChooser fileChooser = new FileChooser();
+		/*final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open your project");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
 		File file = fileChooser.showOpenDialog(this.primaryStage);
@@ -442,50 +258,50 @@ public class Main extends Application {
         			this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
         			this.launchMainView();
         			isProject=true;
-        		} 
+        		}
         	}
-        	
-        	if(!isProject) { //project is not in the project's list 
+
+        	if(!isProject) { //project is not in the project's list
         		String name = file.getPath();
-        		name = name.replace("/"+file.getName(), "");
-        		name = name.replace("\\"+file.getName(), "");
-        		this.savePath(name);
+*//*        		name = name.replace("/"+file.getName(), "");
+        		name = name.replace("\\"+file.getName(), "");*//*
+        		Configuration.addToProjects(name);
         		Utils.loadProjects(projects, this);
         		for(Project p : projects) {
         			if(p.getName().equals(projectToLoad)) {
                 		this.setCurrentProject(p);
                 		this.launchMainView();
                 		isProject=true;
-               		} 
+               		}
                	}
         	}
-         }
+         }*/
 	}
-	
+
 
 	public void needToSave(){
 		needSave = true;
 		currentProject.autosave();
 		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT*");
 	}
-	
+
 	public boolean isNeedToBeSaved() {return needSave;}
-	
+
 	public void changeLocaleAndReload(String locale){
 		saveCurrentProject();
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(_langBundle.getString("confirmation_dialog"));
+        alert.setTitle(Configuration.langBundle.getString("confirmation_dialog"));
         if(locale.equals("it")) {
-        	alert.setHeaderText(_langBundle.getString("take_effect_text_it"));
+        	alert.setHeaderText(Configuration.langBundle.getString("take_effect_text_it"));
         	locale = "en";
         } else if (locale.equals("es")) {
-        	alert.setHeaderText(_langBundle.getString("take_effect_text_es"));
+        	alert.setHeaderText(Configuration.langBundle.getString("take_effect_text_es"));
         	locale = "en";
         } else {
-        	 alert.setHeaderText(_langBundle.getString("take_effect_text"));
+        	 alert.setHeaderText(Configuration.langBundle.getString("take_effect_text"));
         }
         
-        alert.setContentText(_langBundle.getString("ok_text"));
+        alert.setContentText(Configuration.langBundle.getString("ok_text"));
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
@@ -569,8 +385,8 @@ public class Main extends Application {
 		    writer.close();
 		    
 		    Alert alert = new Alert(AlertType.INFORMATION);
-	        alert.setTitle(_langBundle.getString("export_project"));
-	        alert.setHeaderText(_langBundle.getString("export_ok"));
+	        alert.setTitle(Configuration.langBundle.getString("export_project"));
+	        alert.setHeaderText(Configuration.langBundle.getString("export_ok"));
 	        alert.show();
 	        
 		} catch (final IOException ex){
@@ -621,7 +437,7 @@ public class Main extends Application {
 	}
 	
 	public Schema getDefaultSchema(){
-		return this.BasicSchema;
+		return null;
 	}
 	
 	public TypeTreeView droppingTmp;
@@ -663,12 +479,5 @@ public class Main extends Application {
 	public RootLayoutController getRootLayoutController(){
 		return rootLayoutController;
 	}
-	
-	public ResourceBundle get_langBundle() {
-		return _langBundle;
-	}
 
-	public void set_langBundle(ResourceBundle _langBundle) {
-		this._langBundle = _langBundle;
-	}
 }

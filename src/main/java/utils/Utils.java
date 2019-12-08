@@ -52,84 +52,6 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 
 public abstract class Utils {
-	/**
-	 * load all of the project in different path
-	 * @param projects: list of project
-	 * @param main: application's main
-	 */
-	public static void loadProjects(LinkedList<Project> projects, Main main) throws IOException{
-		List<String> listPath = main.loadPath();
-		for(String path : listPath) {
-
-			if(path.charAt(0) == '/'){
-				path = path.substring(1, path.length()-1);
-			}
-			path+="/";
-
-			HashSet<String> projectNames = loadProjectsNames(path);
-			if(!projectNames.isEmpty()){
-				for (String projectName : projectNames) {
-					if(projectName.contains(Project.FORMAT) && !projectName.contains(Project.RECOVERY)) {
-
-						Project project = Project.loadData(projectName, path);
-
-						if(!project.getPath().equals(path)) {
-							project.setPath(path);
-							project.autosave();
-						}
-						
-						if(!project.getName().equals(projectName)) {
-							project.setName(projectName);
-							project.setName(project.getName().replace(".upmt", ""));
-							File autoSaveFile = new File(path);
-							autoSaveFile.delete();
-							project.save();
-						}
-
-						if(project==null) {
-							Alert alert = new Alert(AlertType.CONFIRMATION);
-							alert.setTitle(main._langBundle.getString("error_version"));
-							alert.setHeaderText(main._langBundle.getString("error_version_text_alarm"));
-							alert.setContentText(main._langBundle.getString("error_version_text_contact"));
-						    Optional<ButtonType> result = alert.showAndWait();
-						    if (result.get() == ButtonType.OK){
-						    	alert.close();
-						    } else {
-						         alert.close();
-						    }
-						} else {
-								projects.add(project);
-						}
-					}
-				}
-			}
-			
-		}
-		
-	}
-
-	
-	public static boolean checkRecovery(Main main) throws IOException {
-		List<String> listPath = main.loadPath();
-		boolean ret = false;
-		for(String path : listPath) {
-			path+="/";
-			HashSet<String> projectNames = loadProjectsNames(path);
-			if(projectNames.isEmpty()){
-				// For debug purposes
-			}else{
-				for (String s : projectNames) {
-					if(s.contains(Project.FORMAT)) {
-						if(projectNames.contains(Project.RECOVERY+s)) {
-							ret=true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		return ret;
-	}
 	
 	/**
 	 * Load project name in a path
@@ -163,28 +85,7 @@ public abstract class Utils {
 			    }
 			}
 	}
-		
-	
-	public static void replaceRecovery(Main main) throws IOException {
-		List<String> listPath = main.loadPath();
-		boolean ret = false;
-		for(String path : listPath) {
-			path+="/";
-			//Search RecpveryFiles
-			File[] files = new File(path).listFiles();
-			//If this pathname does not denote a directory, then listFiles() returns null. 
-			for (File file : files)
-			    if (file.isFile()) 
-			    	if(file.getName().contains(Project.RECOVERY)) {
-			    		String fileName = file.getName().replace(Project.RECOVERY, "");
-			    		//System.out.println();
-			    		File fileToDelete = new File(path+fileName);
-			    		fileToDelete.delete();
-			    		file.renameTo(new File(path+fileName));
-			    	}
-		}
-		
-	}
+
 	
 	public static String toRGBCode( Color color )
     {

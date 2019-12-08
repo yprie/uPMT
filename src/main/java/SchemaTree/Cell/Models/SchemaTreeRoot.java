@@ -71,4 +71,7 @@ public class SchemaTreeRoot extends SchemaElement {
         folders.remove(f);
         Utils.setupListenerOnChildRemoving(this, f);
     }
+
+    @Override
+    public String toString() { return getName(); }
 }

@@ -296,34 +296,5 @@ public class MainViewController implements Initializable, Observer {
 	public void updateVue(Observable obs, Object value) {
 		// TODO Auto-generated method stub
 	}
-	
-	public void alertRecovery() throws IOException{
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle(main._langBundle.getString("recovery"));
-    	alert.setHeaderText(main._langBundle.getString("recovery_alarm"));
-    	ButtonType buttonTypeOne = new ButtonType(main._langBundle.getString("ok"));
-    	ButtonType buttonTypeTwo = new ButtonType(main._langBundle.getString("no"));
-    	
-    	alert.getButtonTypes().setAll(buttonTypeOne,buttonTypeTwo);
 
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == buttonTypeOne){
-    		Utils.replaceRecovery(main);
-    		alert.close();
-    	} else if (result.get() == buttonTypeTwo) {
-    		Utils.deleteRecovery();
-    		alert.close();
-    	} else{
-    	   
-    	}
-	}
-
-	public String getDroppableText() {
-		if(droppableText==null) return null;
-		else return this.droppableText.getText();
-	}
-
-	public Text getTextInterviewTitle() {
-		return this.textInterviewTitle;
-	}
 }
