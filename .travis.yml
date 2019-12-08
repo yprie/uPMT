@@ -7,10 +7,13 @@ jdk: openjdk11
 
 before_install:
  - chmod +x gradlew
+ - wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
+ - unzip openjdk-11.0.2_windows-x64_bin.zip
 
 script:
  - ./gradlew build
  - ./gradlew runtimeZip
+ - ls build
 
 before_deploy:
  - git config --local user.name "Thykof"
@@ -21,7 +24,11 @@ before_deploy:
 deploy:
  provider: releases
  token: $token
- file: "./build/libs/uPMT.jar"
+ file:
+  - "./build/libs/uPMT.jar"
+  - "build/uPMT.zip"
+  - "build/image-osx-x64.zip"
+  - "build/image-win-x64.zip"
  on: try-ci
  skip_cleanup: true
 
