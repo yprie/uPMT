@@ -20,7 +20,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
     // Use JUnit test framework
-    //testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
     /* uncomment for cross-platform jar: */
     runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:win"
