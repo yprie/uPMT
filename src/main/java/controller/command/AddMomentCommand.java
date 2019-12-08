@@ -1,7 +1,7 @@
 /*****************************************************************************
  * AddMomentCommand.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright © 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ import utils.MainViewTransformations;
 import utils.Undoable;
 
 public class AddMomentCommand implements Command,Undoable{
-	
+
 	private MomentExperience moment;
 	private MomentExperience parentMoment=null;
 	private Main main;
@@ -45,14 +45,14 @@ public class AddMomentCommand implements Command,Undoable{
 	private DescriptionInterview dataAfter;
 	private int indexInterview;
 	private int index;
-	
+
 	public AddMomentCommand(int index, MomentExperience moment, Main main){
 		this.moment = moment;
 		this.main = main;
 		this.index = index;
-		
+
 	}
-	
+
 	public AddMomentCommand(int index, MomentExperience moment, MomentExperience parentMoment, Main main){
 		this(index, moment, main);
 		this.parentMoment = parentMoment;
@@ -63,7 +63,7 @@ public class AddMomentCommand implements Command,Undoable{
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
 		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataBefore.clone());
-		
+
 		//Edit Current Interview
 		main.setCurrentDescription((DescriptionInterview)this.dataBefore.clone());
 		MainViewTransformations.updateGrid(main);
@@ -75,7 +75,7 @@ public class AddMomentCommand implements Command,Undoable{
 		//Update Interview in the project
 		main.getCurrentProject().removeEntretiens(indexInterview);
 		main.getCurrentProject().addEntretiens(indexInterview, (DescriptionInterview)this.dataAfter.clone());
-		
+
 		//Edit Current Interview
 		main.setCurrentDescription((DescriptionInterview)this.dataAfter.clone());
 		MainViewTransformations.updateGrid(main);
@@ -102,7 +102,7 @@ public class AddMomentCommand implements Command,Undoable{
 		    this.dataAfter  = (DescriptionInterview)main.getCurrentDescription().clone();
 		}catch(Exception e) {e.printStackTrace();}
 	}
-	
+
 	@Override
 	public boolean canExecute() {
 		return false;

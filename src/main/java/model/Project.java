@@ -1,7 +1,7 @@
 /*****************************************************************************
  * Projet.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright © 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

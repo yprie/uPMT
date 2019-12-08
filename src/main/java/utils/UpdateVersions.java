@@ -24,7 +24,7 @@ public abstract class UpdateVersions {
 			JsonParser parser = new JsonParser();
 			JsonObject rootObj = parser.parse(json).getAsJsonObject();
 			
-			//Pour chaque interview on regarde chaque moment pour convertir également chaque type
+			//Pour chaque interview on regarde chaque moment pour convertir galement chaque type
 			JsonArray interviews = rootObj.getAsJsonArray("mInterviews");
 			for(JsonElement i : interviews) {
 				JsonArray moments = i.getAsJsonObject().getAsJsonArray("mMoments");
@@ -109,7 +109,7 @@ public abstract class UpdateVersions {
 			//On convertit le fichier en Objet Json
 			JsonParser parser = new JsonParser();
 			JsonObject rootObj = parser.parse(json).getAsJsonObject();
-			//On récupère le schéma pour convertir les anciens type en nouveau
+			//On rcupre le schma pour convertir les anciens type en nouveau
 			JsonObject schema = rootObj.getAsJsonObject("mSchema");
 			/*rootObj.remove("SAVE_VERSION");
 			rootObj.addProperty("SAVE_VERSION", 2);*/
@@ -122,7 +122,7 @@ public abstract class UpdateVersions {
 				f = UpdateVersions.version2Folder(f.getAsJsonObject());
 			}
 			
-			//Pour chaque interview on regarde chaque moment pour convertir également chaque type
+			//Pour chaque interview on regarde chaque moment pour convertir galement chaque type
 			JsonArray interviews = rootObj.getAsJsonArray("mInterviews");
 			for(JsonElement i : interviews) {
 				JsonArray moments = i.getAsJsonObject().getAsJsonArray("mMoments");
@@ -150,7 +150,7 @@ public abstract class UpdateVersions {
 		for(JsonElement type : types) {
 			JsonObject o = type.getAsJsonObject();
 			JsonObject c = o.get("data").getAsJsonObject();
-			//On convertit aussi les propriétés de la catégorie
+			//On convertit aussi les proprits de la catgorie
 			JsonArray prop = new JsonArray();
 			for(JsonElement p : c.get("mTypes").getAsJsonArray()) {
 				prop.add(p.getAsJsonObject().get("data"));
@@ -170,23 +170,23 @@ public abstract class UpdateVersions {
 	
 	
 	protected static JsonElement version2Folder(JsonObject folder) {
-		//On recupère les données du dossier pour le mettre au bon endroit
+		//On recupre les donnes du dossier pour le mettre au bon endroit
 		folder.remove("type");
 		folder.add("tmp", folder.get("data").getAsJsonObject().get("mTypes"));
 		folder.add("mName", folder.get("data").getAsJsonObject().get("mName"));
 		folder.add("mDescription", folder.get("data").getAsJsonObject().get("mDescription"));
 		folder.add("mColor", folder.get("data").getAsJsonObject().get("mColor"));
 		folder.remove("data");
-		//On regarde tous les types pour séparer les catégories des sous dossiers
+		//On regarde tous les types pour sparer les catgories des sous dossiers
 		JsonArray types = folder.getAsJsonArray("tmp");
 		JsonArray cat = new JsonArray();
 		JsonArray fold = new JsonArray();
 		for(JsonElement type : types) {
 			JsonObject o = type.getAsJsonObject();
-			//Si c'est une catégorie
+			//Si c'est une catgorie
 			if(o.get("type").getAsString().equals("model.Category")) {
 				JsonObject c = o.get("data").getAsJsonObject();
-				//On convertit aussi les propriétés de la catégorie
+				//On convertit aussi les proprits de la catgorie
 				JsonArray prop = new JsonArray();
 				for(JsonElement p : c.get("mTypes").getAsJsonArray()) {
 					prop.add(p.getAsJsonObject().get("data"));

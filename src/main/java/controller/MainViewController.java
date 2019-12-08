@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewController.java
  *****************************************************************************
- * Copyright 锟� 2017 uPMT
+ * Copyright 锟 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -194,7 +194,7 @@ public class MainViewController implements Initializable, Observer {
 		});
 
 
-		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour � nouveau rendre le texte selectionnable
+		//Quand on clique sur la panel qui s'est mit par dessus le texte, on l'enleve pour  nouveau rendre le texte selectionnable
 		paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {

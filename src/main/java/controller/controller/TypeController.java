@@ -1,7 +1,7 @@
 /*****************************************************************************
  * TypeController.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright © 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,9 +58,9 @@ public class TypeController {
 				this.addClassSchemeController = new AddCategorySchemeController((Folder)parent);
 				this.removeClassSchemeController = new RemoveCategorySchemeController((Folder)parent);
 			}
-			else if(t.isCategory()) System.out.println("Mais son p�re n'est pas un dossier ? :"+parent.getName());
+			else if(t.isCategory()) System.out.println("Mais son pre n'est pas un dossier ? :"+parent.getName());
 		}else {
-			if(t.isCategory()) System.out.println("Mais son p�re est null ???");
+			if(t.isCategory()) System.out.println("Mais son pre est null ???");
 		}
 	}
 	

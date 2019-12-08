@@ -1,5 +1,3 @@
-
-
 package controller.command;
 
 import NewModel.IDescriptemeAdapter;

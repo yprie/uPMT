@@ -1,7 +1,7 @@
 /*****************************************************************************
  * MainViewTransformations.java
  *****************************************************************************
- * Copyright 锟� 2017 uPMT
+ * Copyright 锟 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -657,7 +657,7 @@ public abstract class MainViewTransformations {
 				grid.add(p,j*2,i);
 				
 				//System.out.println("On ajoute un moment");
-				//System.out.println("J'ajoute un moment 锟� "+j);
+				//System.out.println("J'ajoute un moment 锟 "+j);
 				MomentExpVBox mp = new MomentExpVBox(main);
 				addBorderPaneMomentListener(mp, main);
 				
@@ -665,7 +665,7 @@ public abstract class MainViewTransformations {
 				boolean hasMoment = false;
 				if (main.getCurrentDescription() != null) {
 					for (MomentExperience m : d.getMoments()) {
-						//System.out.println(m.getNom()+" est 锟� "+m.getGridCol()+" et j est 锟� "+j);
+						//System.out.println(m.getNom()+" est 锟 "+m.getGridCol()+" et j est 锟 "+j);
 						if(m.getGridCol() == j){
 							mom = m;
 							mp.setMoment(mom);
@@ -699,7 +699,7 @@ public abstract class MainViewTransformations {
 		
 	public static void deleteMoment(MomentExperience toCompare, Main main) {
 		for(MomentExperience current:main.getCurrentDescription().getMoments()) {
-		//System.out.println("On compare "+current.getNom()+" 锟� "+toCompare.getNom());
+		//System.out.println("On compare "+current.getNom()+" 锟 "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				main.getCurrentDescription().removeMomentExp(current);
 			//System.out.println("On supprime "+current.getNom());
@@ -767,7 +767,7 @@ public abstract class MainViewTransformations {
 	
 	public static void deleteMomentFromParent(MomentExperience parent, MomentExperience toCompare) {
 		for(MomentExperience current:parent.getSubMoments()) {
-		//System.out.println("**On compare "+current.getNom()+" 锟� "+toCompare.getNom());
+		//System.out.println("**On compare "+current.getNom()+" 锟 "+toCompare.getNom());
 			if(current.equals(toCompare)) {
 				parent.removeSubMoment(current);
 			//System.out.println("**On supprime "+current.getNom());

@@ -1,7 +1,7 @@
 /*****************************************************************************
  * OpenProjectWithListDialogController.java
  *****************************************************************************
- * Copyright � 2017 uPMT
+ * Copyright © 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class OpenProjectWithListDialogController implements Initializable{
 	private LinkedList<Project> m_projectList;
 	private Main main;
 	private Stage window;
-	
+
 	public OpenProjectWithListDialogController(Main main,Stage window){
 		this.main = main;
 		m_projectList = main.getProjects();
@@ -56,15 +56,15 @@ public class OpenProjectWithListDialogController implements Initializable{
 		tousLesProjets.setItems(items);
 		tousLesProjets.getFocusModel().focus(0);
 	}
-	
+
 	public void closeDialog(){
 		window.close();
 	}
-	
+
 	public void openProject(){
 		window.close();
 		main.getPrimaryStage().show();
 		main.setCurrentProject(tousLesProjets.getFocusModel().getFocusedItem());
-		
+
 	}
 }

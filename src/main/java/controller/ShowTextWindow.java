@@ -1,7 +1,7 @@
 /*****************************************************************************
  * ShowTextWindow.java
  *****************************************************************************
- * Copyright © 2017 uPMT
+ * Copyright Â© 2017 uPMT
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class ShowTextWindow implements Initializable{
-	
+
 	private String text;
 	private @FXML TextArea textArea;
 	private Stage window;
-	
+
 	public ShowTextWindow(String text) {
 		this.text = text;
 	}
@@ -46,7 +46,7 @@ public class ShowTextWindow implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		textArea.setEditable(false);
 	}
-	
+
 	public void show(){
 		try {
 			window = new Stage();
@@ -54,7 +54,7 @@ public class ShowTextWindow implements Initializable{
 	        loader.setLocation(getClass().getResource("/view/ShowTextWindow.fxml"));
 	        loader.setController(this);
 	        BorderPane mainView = (BorderPane) loader.load();
-	
+
 	        // Show the scene containing the root layout.
 	        Scene scene = new Scene(mainView);
 	        window.setScene(scene);
@@ -62,8 +62,8 @@ public class ShowTextWindow implements Initializable{
     	catch (IOException e) {
     		e.printStackTrace();
     	}
-		
-		textArea.setText(text);	
+
+		textArea.setText(text);
 		window.show();
 	}
 }
