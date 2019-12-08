@@ -20,9 +20,9 @@ before_deploy:
 deploy:
  provider: releases
  token: $token
- file: "./build/libs/myhelloworldJavaFX.jar"
+ file: "./build/libs/uPMT.jar"
  on: try-ci
- skip_cleanup: true
+ cleanup: false
 
 before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
