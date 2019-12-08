@@ -22,12 +22,11 @@ package model;
 
 import SchemaTree.Cell.Models.ICategoryAdapter;
 import SchemaTree.Cell.Models.IPropertyAdapter;
-import SchemaTree.Cell.Models.SchemaTreePluggable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import SchemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.input.DataFormat;
-import utils.ReactiveTree.ReactiveTreePluggable;
 
 import java.util.LinkedList;
 

@@ -1,20 +1,11 @@
 package SchemaTree.Cell.Models;
 
 
-import NewModel.IDescriptemeAdapter;
 import NewModel.IRemovable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import SchemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.scene.control.TreeItem;
-import utils.ReactiveTree.ReactiveTreeElement;
-import utils.ReactiveTree.ReactiveTreePluggable;
 import javafx.scene.input.DataFormat;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.LinkedList;
 
 public class SchemaProperty extends SchemaElement implements IRemovable {
 

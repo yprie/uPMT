@@ -1,7 +1,7 @@
 package SchemaTree.Cell.Commands;
 
 import ApplicationHistory.ICommand;
-import SchemaTree.Cell.Models.SchemaTreePluggable;
+import SchemaTree.Cell.SchemaTreePluggable;
 
 public class MoveSchemaTreePluggable extends ICommand<Void, Void> {
 

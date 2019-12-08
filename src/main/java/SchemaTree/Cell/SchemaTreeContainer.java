@@ -1,4 +1,4 @@
-package SchemaTree.Cell.Models;
+package SchemaTree.Cell;
 
 
 import SchemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;

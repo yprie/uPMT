@@ -1,6 +1,6 @@
 package SchemaTree.Cell.Commands;
 
-import SchemaTree.Cell.Models.SchemaTreePluggable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import utils.ReactiveTree.Commands.RenameReactiveTreePluggableCommand;
 
 public class RenameSchemaTreePluggable extends RenameReactiveTreePluggableCommand {

@@ -1,4 +1,5 @@
 package SchemaTree.Cell.Models;
+import SchemaTree.Cell.SchemaTreePluggable;
 import javafx.beans.property.*;
 
 public abstract class SchemaElement implements SchemaTreePluggable {

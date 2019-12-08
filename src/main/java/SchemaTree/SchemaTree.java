@@ -1,6 +1,6 @@
 package SchemaTree;
 
-import SchemaTree.Cell.Models.SchemaTreePluggable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import SchemaTree.Cell.Models.SchemaTreeRoot;
 import SchemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import SchemaTree.Cell.SchemaTreeCell;
@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;

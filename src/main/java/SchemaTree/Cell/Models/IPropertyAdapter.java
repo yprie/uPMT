@@ -2,6 +2,7 @@ package SchemaTree.Cell.Models;
 
 
 import NewModel.IDescriptemeAdapter;
+import SchemaTree.Cell.SchemaTreePluggable;
 
 import java.io.Serializable;
 import java.util.LinkedList;

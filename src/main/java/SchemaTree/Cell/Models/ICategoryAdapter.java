@@ -1,5 +1,7 @@
 package SchemaTree.Cell.Models;
 
+import SchemaTree.Cell.SchemaTreePluggable;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 

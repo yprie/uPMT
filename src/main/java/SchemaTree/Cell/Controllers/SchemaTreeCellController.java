@@ -2,16 +2,9 @@ package SchemaTree.Cell.Controllers;
 
 import ApplicationHistory.HistoryManager;
 import ApplicationHistory.HistoryManagerFactory;
-import NewModel.Commands.DeleteRemovableCommand;
 import SchemaTree.Cell.Commands.RenameSchemaTreePluggable;
-import SchemaTree.Cell.Models.SchemaTreePluggable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import utils.ReactiveTree.Commands.RenameReactiveTreePluggableCommand;
-import utils.ReactiveTree.ReactiveTreePluggable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;

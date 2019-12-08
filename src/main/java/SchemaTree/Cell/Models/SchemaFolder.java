@@ -1,6 +1,7 @@
 package SchemaTree.Cell.Models;
 
 import NewModel.IRemovable;
+import SchemaTree.Cell.SchemaTreePluggable;
 import SchemaTree.Cell.Utils;
 import SchemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
 import javafx.beans.property.*;

@@ -1,6 +1,8 @@
 package SchemaTree.Cell.Visitors;
 
 import SchemaTree.Cell.Models.*;
+import SchemaTree.Cell.SchemaTreeContainer;
+import SchemaTree.Cell.SchemaTreePluggable;
 import utils.ReactiveTree.ReactiveTreeElement;
 
 public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {
