@@ -27,9 +27,8 @@ deploy:
  token: $token
  file:
   - "./build/libs/uPMT.jar"
-  - "build/uPMT.zip"
-  - "build/image-osx-x64.zip"
-  - "build/image-win-x64.zip"
+  - "build/uPMT-osx-x64.zip"
+  - "build/uPMT-win-x64.zip"
  on: try-ci
  skip_cleanup: true
 
