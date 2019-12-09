@@ -402,7 +402,7 @@ public class Main extends Application {
 		export(currentProject);
 	}
     
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
 		launch(args);
 	}
     
