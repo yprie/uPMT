@@ -39,7 +39,6 @@ public class Configuration {
     public static String[] getProjectsPath() { return convertProjectPathsToArray(projects_paths); }
 
     public static boolean setLocale(Locale locale) throws IOException {
-        System.out.println(locale);
         langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
         return savePropertiesFile();
     }

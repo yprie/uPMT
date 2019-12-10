@@ -13,6 +13,7 @@ public class ApplicationCommandFactory {
 
     public CloseApplicationCommand closeApplication() { return new CloseApplicationCommand(application); }
     public ChangeApplicationTitleCommand changeApplicationTitle(String newTitle) { return new ChangeApplicationTitleCommand(application, newTitle); }
+    public NewProjectCommand newProject() { return new NewProjectCommand(application); }
     public OpenProjectFromFileCommand openProject() { return new OpenProjectFromFileCommand(application); }
     public OpenRecentProjectCommand openRecentProject(String path) { return new OpenRecentProjectCommand(application, path); }
     public SaveProjectCommand saveProject() { return new SaveProjectCommand(application); }

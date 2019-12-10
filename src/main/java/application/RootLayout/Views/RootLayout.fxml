@@ -12,6 +12,7 @@
         <menus>
           <Menu fx:id="menu" mnemonicParsing="false" text="%file">
             <items>
+                  <MenuItem fx:id="newProject" mnemonicParsing="false" onAction="#newProject" text="%new_project" />
 				  <Menu fx:id="openRecentProject" mnemonicParsing="false" text="%open_project" />
                   <MenuItem fx:id="openProject" mnemonicParsing="false" onAction="#openProject" text="%open_project_as" />
                   <MenuItem fx:id="saveProject" mnemonicParsing="false" onAction="#saveProject" text="%save_project" />

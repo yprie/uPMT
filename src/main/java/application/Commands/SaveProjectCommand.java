@@ -18,7 +18,7 @@ public class SaveProjectCommand extends ApplicationCommand<Void> {
     @Override
     public Void execute() {
         //check if there is a current project.
-        if(Configuration.getProjectsPath().length > 0) {
+        if(upmtApp.getCurrentProjectPath() != null) {
             try {
                 ProjectSaver.save(upmtApp.getCurrentProject(), Configuration.getProjectsPath()[0]);
             } catch (Exception e) {

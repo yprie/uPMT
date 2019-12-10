@@ -39,7 +39,7 @@ public class NewProjectController implements Initializable  {
         NewProjectController controller = new NewProjectController(stage);
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("../Views/ProjectSelectionView.fxml"));
+            loader.setLocation(controller.getClass().getResource("../Views/NewProjectView.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             BorderPane layout = (BorderPane) loader.load();

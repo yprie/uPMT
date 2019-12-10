@@ -22,8 +22,9 @@ public class SetProjectCommand extends ApplicationCommand<Void> {
     public Void execute() {
         new ChangeApplicationTitleCommand(upmtApp, project.getName()).execute();
         try{
-            Configuration.addToProjects(projectPath);
-            upmtApp.setCurrentProject(project);
+            if(projectPath != null)
+                Configuration.addToProjects(projectPath);
+            upmtApp.setCurrentProject(project, projectPath);
         }
         catch(IOException e) {
             e.printStackTrace();

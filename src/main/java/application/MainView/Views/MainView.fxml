@@ -10,7 +10,7 @@
    <center>
       <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639, 0.7314629258517034">
          <items>
-            <SplitPane dividerPositions="0.7" maxWidth="400.0" orientation="VERTICAL" prefWidth="400.0">
+            <SplitPane dividerPositions="0.7" minWidth="300" maxWidth="400.0" orientation="VERTICAL" prefWidth="400.0">
                <items>
                   <SchemaTree fx:id="schemaTree"/>
                   <TreeView fx:id="treeViewInterview" prefWidth="400.0" />

@@ -94,6 +94,11 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
+	public void newProject() {
+		appCommandFactory.newProject().execute();
+	}
+
+	@FXML
 	public void openProject(){
 		appCommandFactory.openProject().execute();
 	}
@@ -104,7 +109,7 @@ public class RootLayoutController implements Initializable {
 	}
 	
 	@FXML
-	public void saveProjectAs() throws IOException{
+	public void saveProjectAs() {
 		appCommandFactory.saveProjectAs().execute();
 	}
 	
@@ -291,7 +296,7 @@ public class RootLayoutController implements Initializable {
 	public void close() {
 		appCommandFactory.closeApplication().execute();
 	} 
-	
+
 	@FXML
 	public void openEnglishVersion(){
 		appCommandFactory.changeLanguage(Locale.ENGLISH).execute();

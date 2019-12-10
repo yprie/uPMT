@@ -369,9 +369,7 @@ public class RootLayoutController implements Initializable {
 	
 	
 	public void fonct_test(Locale langue) {
-		System.out.println(langue);
 		if(langue.toString().equals("en")) {
-			System.out.println("en");
 			anglais.setDisable(true);
 		}
 		else if(langue.toString().equals("fr")) {

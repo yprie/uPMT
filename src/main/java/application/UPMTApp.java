@@ -4,10 +4,8 @@ import Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
 import application.RootLayout.Controllers.RootLayoutController;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -18,6 +16,7 @@ public class UPMTApp {
     private RootLayoutController rootLayoutController;
     private ApplicationCommandFactory appCommandFactory;
     private Project currentProject;
+    private String currentProjectPath;
 
     public UPMTApp(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
@@ -32,6 +31,7 @@ public class UPMTApp {
 
     private void startApp() {
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
+        primaryStage.setTitle("uPMT");
         primaryStage.setScene(mainScene);
         primaryStage.setMaximized(true);
         primaryStage.show();
@@ -42,18 +42,19 @@ public class UPMTApp {
         return primaryStage;
     }
 
-    public void setCurrentProject(Project project) {
+    public void setCurrentProject(Project project, String path) {
         currentProject = project;
+        currentProjectPath = path;
         rootLayoutController.setProject(project);
     }
-
     public Project getCurrentProject() {
         return currentProject;
     }
+    public String getCurrentProjectPath() { return currentProjectPath; }
 
     public void restartApp() {
         startApp();
         if(getCurrentProject() != null)
-            setCurrentProject(getCurrentProject());
+            setCurrentProject(getCurrentProject(), currentProjectPath);
     }
 }
