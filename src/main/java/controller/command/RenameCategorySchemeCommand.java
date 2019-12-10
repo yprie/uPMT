@@ -20,14 +20,8 @@
 
 package controller.command;
 
-import controller.controller.Observer;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import model.Type;
-
-import java.util.LinkedList;
-
 import application.Main;
+
 import controller.controller.Observable;
 import utils.Undoable;
 

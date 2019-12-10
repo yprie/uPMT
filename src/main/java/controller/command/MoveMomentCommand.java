@@ -21,16 +21,8 @@
 package controller.command;
 
 import application.Main;
-import controller.MomentExpVBox;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.Control;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import model.DescriptionInterview;
 import model.MomentExperience;
-import model.Property;
 import utils.MainViewTransformations;
 import utils.Undoable;
 

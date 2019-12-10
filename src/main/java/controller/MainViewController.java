@@ -20,28 +20,19 @@
 
 package controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.lang.Object;
 
-import Project.Models.Project;
-import Project.Persistency.ProjectLoader;
-import Project.Persistency.ProjectSaver;
 import SchemaTree.Cell.Models.SchemaCategory;
 import SchemaTree.Cell.Models.SchemaFolder;
 import SchemaTree.Cell.Models.SchemaProperty;
 import SchemaTree.Cell.Models.SchemaTreeRoot;
 import SchemaTree.SchemaTree;
-import javafx.application.Platform;
 import application.Main;
+import javafx.application.Platform;
 import controller.controller.Observer;
-import controller.controller.TypeController;
 import controller.controller.Observable;
 import controller.interviewTreeView.InterviewTreeView;
 import javafx.event.EventHandler;
@@ -49,15 +40,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -75,7 +63,6 @@ import model.DescriptionInterview;
 import utils.MainViewTransformations;
 import utils.ResourceLoader;
 import utils.SchemaTransformations;
-import utils.Utils;
 
 public class MainViewController implements Initializable, Observer {
 

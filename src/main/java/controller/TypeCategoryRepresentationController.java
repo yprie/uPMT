@@ -65,7 +65,7 @@ public class TypeCategoryRepresentationController extends BorderPane implements 
 	
 	private Deque<Property> stack = new ArrayDeque<Property>();
 	
-	public TypeCategoryRepresentationController(Category classe,MomentExpVBox moment,Main main) {
+	public TypeCategoryRepresentationController(Category classe, MomentExpVBox moment, Main main) {
 		
 		this.classe = classe;
         this.moment = moment;

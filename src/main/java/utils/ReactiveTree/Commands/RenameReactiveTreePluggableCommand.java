@@ -1,9 +1,9 @@
 package utils.ReactiveTree.Commands;
 
-import ApplicationHistory.ICommand;
+import ApplicationHistory.ModelUserActionCommand;
 import utils.ReactiveTree.ReactiveTreePluggable;
 
-public class RenameReactiveTreePluggableCommand extends ICommand<Void, Void> {
+public class RenameReactiveTreePluggableCommand extends ModelUserActionCommand<Void, Void> {
 
     private ReactiveTreePluggable element;
     private String temp;
@@ -22,7 +22,7 @@ public class RenameReactiveTreePluggableCommand extends ICommand<Void, Void> {
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         String t = element.nameProperty().get();
         element.nameProperty().set(temp);
         temp = t;

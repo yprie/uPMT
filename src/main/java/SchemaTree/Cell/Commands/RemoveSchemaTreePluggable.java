@@ -1,9 +1,9 @@
 package SchemaTree.Cell.Commands;
 
-import ApplicationHistory.ICommand;
+import ApplicationHistory.ModelUserActionCommand;
 import SchemaTree.Cell.SchemaTreePluggable;
 
-public class RemoveSchemaTreePluggable extends ICommand<Void, Void> {
+public class RemoveSchemaTreePluggable extends ModelUserActionCommand<Void, Void> {
 
     private SchemaTreePluggable parent;
     private SchemaTreePluggable element;
@@ -20,7 +20,7 @@ public class RemoveSchemaTreePluggable extends ICommand<Void, Void> {
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         parent.addChild(element);
         return null;
     }

@@ -20,21 +20,15 @@
 
 package controller;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
-import controller.command.ChangeExtractPropertyCommand;
-import controller.command.RenameMomentCommand;
-import controller.controller.PropertyExtractController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import model.Record;
-import utils.UndoCollector;
 
 public class SelectDescriptemePartController implements Initializable {
 	

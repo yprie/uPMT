@@ -20,16 +20,9 @@
 
 package controller.command;
 
-import controller.controller.Observer;
-import controller.typeTreeView.TypeTreeViewControllerFolder;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import model.Type;
-
-import java.util.LinkedList;
-
 import application.Main;
-import controller.controller.Observable;
+import controller.typeTreeView.TypeTreeViewControllerFolder;
+
 import utils.Undoable;
 
 public class RenameFolderSchemeCommand implements Command,Undoable{

@@ -1,9 +1,9 @@
 package NewModel.Commands;
 
-import ApplicationHistory.ICommand;
+import ApplicationHistory.ModelUserActionCommand;
 import NewModel.IRemovable;
 
-public class DeleteRemovableCommand extends ICommand<Void, Void> {
+public class DeleteRemovableCommand extends ModelUserActionCommand<Void, Void> {
 
     private IRemovable removable;
 
@@ -19,7 +19,7 @@ public class DeleteRemovableCommand extends ICommand<Void, Void> {
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         removable.existsProperty().setValue(true);
         return null;
     }

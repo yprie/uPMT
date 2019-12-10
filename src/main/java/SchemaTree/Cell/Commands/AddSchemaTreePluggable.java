@@ -1,9 +1,9 @@
 package SchemaTree.Cell.Commands;
 
-import ApplicationHistory.ICommand;
+import ApplicationHistory.ModelUserActionCommand;
 import SchemaTree.Cell.SchemaTreePluggable;
 
-public class AddSchemaTreePluggable extends ICommand<Void, Void> {
+public class AddSchemaTreePluggable extends ModelUserActionCommand<Void, Void> {
 
     private SchemaTreePluggable parent;
     private SchemaTreePluggable element;
@@ -26,7 +26,7 @@ public class AddSchemaTreePluggable extends ICommand<Void, Void> {
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         element.setMustBeRenamed(shouldElementAlreadyBeRenamed);
         parent.removeChild(element);
         return null;

@@ -1,15 +1,9 @@
 package controller.command;
 
-import java.util.LinkedList;
-
 import application.Main;
 import controller.controller.TypeController;
 import controller.typeTreeView.TypeTreeView;
-import javafx.application.Platform;
 import javafx.scene.control.TreeItem;
-import model.Category;
-import model.Folder;
-import model.Schema;
 import utils.Undoable;
 
 public class AddFolderSchemeCommand implements Command,Undoable{

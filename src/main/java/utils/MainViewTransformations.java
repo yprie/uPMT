@@ -514,7 +514,7 @@ public abstract class MainViewTransformations {
 	}
 	
 	
-	public static void addTypeListener(TypeCategoryRepresentationController boutType,MomentExpVBox m,Type type,Main main){
+	public static void addTypeListener(TypeCategoryRepresentationController boutType, MomentExpVBox m, Type type, Main main){
 		boutType.focusedProperty().addListener(new ChangeListener<Boolean>()
 		{
 		    @Override
@@ -551,7 +551,7 @@ public abstract class MainViewTransformations {
 		});
 	}
 	
-	public static void loadTypes(MomentExpVBox mp,Main main){
+	public static void loadTypes(MomentExpVBox mp, Main main){
 		
 		//System.out.println(mp.getMoment().getNom()+": ");
 		for (Type t : mp.getMoment().getCategories()) {
@@ -609,7 +609,7 @@ public abstract class MainViewTransformations {
 	//private static int PANELSIZE = 20;
 	
 	// Method used to load the grid related to a certain Interview
-	public static void loadGridData(GridPane grid,Main main, DescriptionInterview d){
+	public static void loadGridData(GridPane grid, Main main, DescriptionInterview d){
 		// Grid initialization ( reset )
 		grid.getChildren().clear();
 		grid.getColumnConstraints().clear();
@@ -712,7 +712,7 @@ public abstract class MainViewTransformations {
 		}
 	}
 	
-	public static void loadSousMoment(MomentExpVBox mev,Main main){
+	public static void loadSousMoment(MomentExpVBox mev, Main main){
 				
 		if(mev.getChildren().size() == 1){
 			mev.getChildren().add(mev.getSousMomentPane());

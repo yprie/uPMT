@@ -1,10 +1,6 @@
 package controller.command;
 
-import java.util.LinkedList;
-
 import application.Main;
-import controller.MomentExpVBox;
-import javafx.scene.Node;
 import model.DescriptionInterview;
 import model.MomentExperience;
 import utils.MainViewTransformations;

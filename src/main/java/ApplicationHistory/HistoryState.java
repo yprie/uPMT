@@ -5,17 +5,17 @@ import java.util.UUID;
 
 public class HistoryState {
 
-    private Stack<ICommand> previous;
-    private Stack<ICommand> next;
+    private Stack<ModelUserActionCommand> previous;
+    private Stack<ModelUserActionCommand> next;
     private UUID currentUserActionId;
 
     HistoryState() {
-        previous = new Stack<ICommand>();
-        next = new Stack<ICommand>();
+        previous = new Stack<ModelUserActionCommand>();
+        next = new Stack<ModelUserActionCommand>();
     }
 
-    Stack<ICommand> getPreviousStack() {return previous;}
-    Stack<ICommand> getNextStack() {return next;}
+    Stack<ModelUserActionCommand> getPreviousStack() {return previous;}
+    Stack<ModelUserActionCommand> getNextStack() {return next;}
     UUID getCurrentUserActionId() { return currentUserActionId; }
 
     void startNewUserAction() { currentUserActionId = UUID.randomUUID(); }

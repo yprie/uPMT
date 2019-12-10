@@ -20,31 +20,15 @@
 
 package controller.command;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import application.Main;
-import controller.MomentExpVBox;
-import controller.TypeCategoryRepresentationController;
-import controller.controller.Observable;
 import controller.controller.TypeController;
-import controller.typeTreeView.TypeTreeView;
 import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
-import javafx.scene.input.DragEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
 import model.Category;
 import model.Folder;
-import model.Property;
 import model.Schema;
-import model.Type;
-import utils.MainViewTransformations;
 import utils.Undoable;
 
 public class RemoveFolderSchemeCommand implements Command,Undoable{

@@ -20,19 +20,9 @@
 
 package controller.command;
 
-import java.util.LinkedList;
-import java.util.Random;
-
 import application.Main;
-import controller.MomentExpVBox;
-import javafx.scene.control.Control;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import model.DescriptionInterview;
 import model.MomentExperience;
-import model.Property;
 import utils.MainViewTransformations;
 import utils.Undoable;
 

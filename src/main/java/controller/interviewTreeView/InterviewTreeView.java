@@ -24,22 +24,16 @@ import java.io.IOException;
 import java.util.Optional;
 
 import application.Main;
-import controller.MomentExpVBox;
-import controller.TypeCategoryRepresentationController;
-import controller.command.RemoveTypeCommand;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import model.Category;
 import model.DescriptionInterview;
-import utils.MainViewTransformations;
 
 public class InterviewTreeView extends TreeCell<DescriptionInterview>{
 	

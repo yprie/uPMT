@@ -42,7 +42,7 @@ public class RootInterviewTreeViewController extends TreeViewController implemen
 	private DescriptionInterview interview;
 	private Main main;
 
-	public RootInterviewTreeViewController(DescriptionInterview interview,Main  main) {
+	public RootInterviewTreeViewController(DescriptionInterview interview, Main main) {
 		this.interview = interview;
 		this.main = main;
 	}

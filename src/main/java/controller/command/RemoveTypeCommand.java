@@ -23,8 +23,6 @@ package controller.command;
 import application.Main;
 import controller.MomentExpVBox;
 import controller.TypeCategoryRepresentationController;
-import javafx.scene.control.Button;
-import model.Type;
 import utils.Undoable;
 
 public class RemoveTypeCommand implements Command,Undoable {

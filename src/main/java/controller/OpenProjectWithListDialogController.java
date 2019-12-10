@@ -29,9 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.stage.*;
-import javafx.util.Callback;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
@@ -44,7 +42,7 @@ public class OpenProjectWithListDialogController implements Initializable{
 	private Main main;
 	private Stage window;
 
-	public OpenProjectWithListDialogController(Main main,Stage window){
+	public OpenProjectWithListDialogController(Main main, Stage window){
 		this.main = main;
 		m_projectList = main.getProjects();
 		this.window = window;

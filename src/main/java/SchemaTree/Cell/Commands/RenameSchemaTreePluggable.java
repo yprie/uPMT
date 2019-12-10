@@ -23,10 +23,10 @@ public class RenameSchemaTreePluggable extends RenameReactiveTreePluggableComman
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         if(mustBeRenamed)
             element.setMustBeRenamed(true);
-        super.unexecute();
+        super.undo();
         return null;
     }
 }

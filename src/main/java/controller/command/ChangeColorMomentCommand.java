@@ -20,7 +20,6 @@
 
 package controller.command;
 
-import controller.controller.Observer;
 import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;

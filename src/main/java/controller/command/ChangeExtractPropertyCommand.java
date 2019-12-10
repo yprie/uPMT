@@ -1,12 +1,10 @@
 package controller.command;
 
 import NewModel.IDescriptemeAdapter;
-import controller.controller.Observer;
-import model.Descripteme;
+import application.Main;
 
 import java.util.LinkedList;
 
-import application.Main;
 import controller.controller.Observable;
 import utils.Undoable;
 

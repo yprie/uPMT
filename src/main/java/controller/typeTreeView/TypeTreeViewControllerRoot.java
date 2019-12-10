@@ -50,7 +50,7 @@ public class TypeTreeViewControllerRoot extends TypeTreeViewController {
 	private static int classNumber = 1;
 	private static int folderNumber = 1;
 	
-	public TypeTreeViewControllerRoot(TypeController type, TypeTreeView typeTreeView,Main m) {
+	public TypeTreeViewControllerRoot(TypeController type, TypeTreeView typeTreeView, Main m) {
 		super(type,typeTreeView, m);
 	}
 	

@@ -1,5 +1,7 @@
 package application.Configuration;
 
+import Project.Models.Project;
+
 import java.io.*;
 import java.util.Locale;
 import java.util.Properties;
@@ -34,14 +36,13 @@ public class Configuration {
         saveProjectsPath();
     }
 
-    public static String[] getProjectsPath(int nFirsts) {
-        return convertProjectPathsToArray(projects_paths.getFirsts(nFirsts));
-    }
     public static String[] getProjectsPath() { return convertProjectPathsToArray(projects_paths); }
 
-
-
-
+    public static boolean setLocale(Locale locale) throws IOException {
+        System.out.println(locale);
+        langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
+        return savePropertiesFile();
+    }
 
 
     //Loading data from files ------------------------------------------------------------
@@ -105,6 +106,7 @@ public class Configuration {
         return true;
     }
 
+
     private static boolean createProjectPathsFile() throws IOException {
         File projectList = new File(HOME_DIRECTORY + projects_paths_file);
         if(!projectList.exists())
@@ -122,6 +124,20 @@ public class Configuration {
             writer.println(path);
         }
         writer.close();
+    }
+
+    private static boolean savePropertiesFile() throws IOException {
+        File upmtProperties = new File(HOME_DIRECTORY + properties_file);
+        //Create property file if not exists.
+        if(!upmtProperties.exists()){
+            if(!upmtProperties.createNewFile())
+                return false;
+
+            Properties props = new Properties();
+            props.setProperty("locale", langBundle.getLocale().toString());
+            props.store(new FileOutputStream(upmtProperties), null);
+        }
+        return true;
     }
 
     private static String[] convertProjectPathsToArray(RecentFirstList<String> projects_paths) {

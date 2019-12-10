@@ -20,16 +20,8 @@
 
 package controller.command;
 
-import controller.controller.Observer;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableStringValue;
-import javafx.beans.value.ObservableValue;
-import model.Type;
 import application.Main;
 import controller.TypePropertyRepresentation;
-import controller.controller.Observable;
 import utils.Undoable;
 
 public class ChangePropertyValueCommand implements Command,Undoable{

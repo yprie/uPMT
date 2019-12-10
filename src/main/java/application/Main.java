@@ -97,7 +97,9 @@ public class Main extends Application {
 	public final String fileOfPath = System.getProperty("user.home")+"/.upmt/path.json";
 	
 	public void start(Stage primaryStage) throws IOException {
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		UPMTApp app = new UPMTApp(primaryStage);
+
+		/*primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		       @Override
 		       public void handle(WindowEvent e) {
 		          Platform.exit();
@@ -115,7 +117,7 @@ public class Main extends Application {
 		
 		//Launching layouts
 		initRootLayout();
-		ProjectSelectionController controller = ProjectSelectionController.openProjectSelection();
+		ProjectSelectionController controller = ProjectSelectionController.openProjectSelection();*/
 	}
 
 
@@ -123,7 +125,7 @@ public class Main extends Application {
      * Initializes the root layout.
      */
     private void initRootLayout() {
-        try {
+/*        try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/view/RootLayout.fxml"));
@@ -140,12 +142,12 @@ public class Main extends Application {
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     
     public void showRecentProject(Menu openProject) {
-    	openProject.getItems().clear();
+/*    	openProject.getItems().clear();
     	System.out.println(this.getProjects().size());
 		for(Project p : this.getProjects()) {
 			MenuItem child = new MenuItem(p.getName() + " (from " + p.getPath() +")");
@@ -156,14 +158,14 @@ public class Main extends Application {
 		        }
 		    });
 			openProject.getItems().addAll(child);
-		}
+		}*/
     }
     
     /**
      * Load and sets the main vue (center)
      */
     public void launchMainView(){
-    	try {
+/*    	try {
 	    	FXMLLoader loader = new FXMLLoader();
 	        loader.setLocation(getClass().getResource("/view/MainView.fxml"));
 	        loader.setController(mainViewController);
@@ -180,7 +182,7 @@ public class Main extends Application {
     	}
     	catch (IOException e) {
     		e.printStackTrace();
-    	}
+    	}*/
     }
 
     
@@ -188,12 +190,12 @@ public class Main extends Application {
      * Method used to refresh the TreeView related to the scheme if it is out of synch with the model
      */
     public void refreshDataTreeView(){
-		//TreeItem<TypeController> schemaRoot = new TreeItem<TypeController>();
+/*		//TreeItem<TypeController> schemaRoot = new TreeItem<TypeController>();
 		TreeItem<DescriptionInterview> interviewRoot = new TreeItem<DescriptionInterview>();
 		//schemaRoot.getChildren().add(SchemaTransformations.SchemaToTreeView(this.currentProject.getSchema()));
 		interviewRoot.getChildren().add(SchemaTransformations.EntretienToTreeView(this.currentProject.getInterviews()));
 		//this.treeViewSchema.setRoot(schemaRoot);
-		this.treeViewInterview.setRoot(interviewRoot);
+		this.treeViewInterview.setRoot(interviewRoot);*/
 	}
 	private Project projetInCreation=null;
     public void setProjectInCreation(Project p) {
@@ -212,20 +214,20 @@ public class Main extends Application {
      * also updates the inspector
      */
 	public void setCurrentMoment(MomentExpVBox s){
-		//render to the inspector
+/*		//render to the inspector
 		if(this.getCurrentMoment() != s) {
 			currentMoment = s;
-		}	
+		}	*/
 	}
 	
 	/**
 	 * saves the current project
 	 */
 	public void saveCurrentProject(){
-
+/*
 		needSave = false;
 		currentProject.save();
-		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
+		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");*/
 	}
 	
 	/**
@@ -234,10 +236,10 @@ public class Main extends Application {
 	 * @ name: project name to save
 	 */
 	public void saveCurrentProjectAs(String pathLocation, String name) throws IOException{
-		needSave = false;
+/*		needSave = false;
 		currentProject.saveAs(pathLocation, name.replace(".upmt", ""));
 		Configuration.addToProjects(pathLocation);
-		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
+		this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");*/
 	}
 
 
@@ -288,7 +290,7 @@ public class Main extends Application {
 	public boolean isNeedToBeSaved() {return needSave;}
 
 	public void changeLocaleAndReload(String locale){
-		saveCurrentProject();
+		/*saveCurrentProject();
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(Configuration.langBundle.getString("confirmation_dialog"));
         if(locale.equals("it")) {
@@ -317,7 +319,7 @@ public class Main extends Application {
     	    }
         } else {
             // ... user chose CANCEL or closed the dialog
-        }
+        }*/
 	}
 	
 	private String format(String c){
@@ -332,7 +334,7 @@ public class Main extends Application {
 	 * Recursive method used to recursively transform a Moment and its sub Moments into CSV compatible DATAZ
 	 */
 	private void writeMoment(DescriptionInterview ent, MomentExperience m, PrintWriter writer, String hierarchy){
-		LinkedList<String> classes = new LinkedList<String>();
+/*		LinkedList<String> classes = new LinkedList<String>();
 		//SchemaCategory, SchemaProperty, Value
 		for(Category c : m.getCategories()){
 			for(IPropertyAdapter p : c.getProperties()){
@@ -354,7 +356,7 @@ public class Main extends Application {
 		for (int i = 0; i < m.getSubMoments().size(); i++) {
 			MomentExperience sub = m.getSubMoments().get(i);
 			writeMoment(ent,sub, writer, hierarchy+"."+(i+1));
-		}
+		}*/
 	}
 	
 
@@ -362,7 +364,7 @@ public class Main extends Application {
 	 * Exports the project p into a CSV file
 	 */
 	public void export(Project p){
-		ObjectOutputStream oos = null;
+/*		ObjectOutputStream oos = null;
 		try {
 			//get date and time
 			DateFormat df = new SimpleDateFormat("dd.MM.yy_HH//mm");
@@ -391,7 +393,7 @@ public class Main extends Application {
 	        
 		} catch (final IOException ex){
 			ex.printStackTrace();
-		}
+		}*/
 	}
 	
 	public MomentExpVBox getCurrentMoment(){
@@ -427,13 +429,13 @@ public class Main extends Application {
 	}
 	
 	public void setCurrentProject(Project current){
-		currentProject = current;
+/*		currentProject = current;
 		if(currentProject!=null) {
 			this.primaryStage.setTitle("uPMT - "+this.currentProject.getName()+".uPMT");
 		}
 		else {
 
-		}
+		}*/
 	}
 	
 	public Schema getDefaultSchema(){

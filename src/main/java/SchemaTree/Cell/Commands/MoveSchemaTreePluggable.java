@@ -1,9 +1,9 @@
 package SchemaTree.Cell.Commands;
 
-import ApplicationHistory.ICommand;
+import ApplicationHistory.ModelUserActionCommand;
 import SchemaTree.Cell.SchemaTreePluggable;
 
-public class MoveSchemaTreePluggable extends ICommand<Void, Void> {
+public class MoveSchemaTreePluggable extends ModelUserActionCommand<Void, Void> {
 
     SchemaTreePluggable oldParent;
     SchemaTreePluggable newParent;
@@ -22,7 +22,7 @@ public class MoveSchemaTreePluggable extends ICommand<Void, Void> {
     }
 
     @Override
-    public Void unexecute() {
+    public Void undo() {
         move(newParent, oldParent, element);
         return null;
     }

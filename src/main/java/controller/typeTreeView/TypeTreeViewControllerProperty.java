@@ -216,7 +216,7 @@ public class TypeTreeViewControllerProperty extends TypeTreeViewController imple
 		}
 	}
 	
-	public void setLabelChangeName(Main main,TypeTreeViewControllerProperty thiss){
+	public void setLabelChangeName(Main main, TypeTreeViewControllerProperty thiss){
 		nomType.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override

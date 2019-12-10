@@ -38,6 +38,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -107,28 +108,19 @@ public class ProjectSelectionController implements Initializable{
 			stage.close();
 		}
 		else {
-			projectCreationFailed();
+			ProjectDialogBox.projectCreationFailed();
 		}
 	}
 	
 	/**
 	 *  Open project from a path
 	 */
-	public void openProjectAs() throws IOException {
-		final FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open a Project");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
-		File file = fileChooser.showOpenDialog(stage);
-		if(file == null)
-			projectLoadingFailed();
-		try {
-			String filePath = file.getPath();
-			resultProject = ProjectLoader.load(filePath);
-			Configuration.addToProjects(filePath);
+	public void openProject() throws IOException {
+		OpenProjectController controller = OpenProjectController.createOpenProjectController(stage);
+		if(controller.getState() == OpenProjectController.State.SUCCESS){
+			resultProject = controller.getResultProject();
 			state = State.SUCCESS;
 			stage.close();
-		} catch (Exception e) {
-			projectLoadingFailed();
 		}
 	}
 	
@@ -138,30 +130,13 @@ public class ProjectSelectionController implements Initializable{
 			state = State.SUCCESS;
 			stage.close();
 		} catch (Exception e) {
-			projectLoadingFailed();
+			ProjectDialogBox.projectLoadingFailed();
 		}
-	}
-
-	private static void projectCreationFailed() {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Error");
-		alert.setHeaderText("Unable to create a new project !");
-		alert.setContentText("Please contact us to know more about this issue.");
-		alert.showAndWait();
-	}
-
-	private static void projectLoadingFailed () {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Error");
-		alert.setHeaderText("Loading of the project failed !");
-		alert.setContentText("Please make sure this is a valid .upmt file.");
-		alert.showAndWait();
 	}
 
 	public State getState() {
 		return state;
 	}
-
 	public Project getChoosenProject() { return resultProject; }
 
 }

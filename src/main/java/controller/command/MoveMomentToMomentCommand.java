@@ -1,7 +1,6 @@
 package controller.command;
 
 import application.Main;
-import controller.MomentExpVBox;
 import model.DescriptionInterview;
 import model.MomentExperience;
 import utils.MainViewTransformations;

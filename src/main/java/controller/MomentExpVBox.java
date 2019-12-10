@@ -31,9 +31,9 @@ import java.util.ResourceBundle;
 
 import NewModel.IDescriptemeAdapter;
 import SchemaTree.Cell.Models.IPropertyAdapter;
+import application.Main;
 import javafx.scene.control.ColorPicker;
 
-import application.Main;
 import controller.command.ChangeColorMomentCommand;
 import controller.command.ChangeDateMomentCommand;
 import controller.command.ChangeExtractMomentCommand;
@@ -466,7 +466,7 @@ public class MomentExpVBox extends VBox implements Initializable, Observer, Seri
         ClipboardContent content = new ClipboardContent();
 	}
 	
-	private void setLabelChangeName(Main main,MomentExpVBox thiss){
+	private void setLabelChangeName(Main main, MomentExpVBox thiss){
 		label.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override

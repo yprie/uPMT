@@ -13,7 +13,7 @@ public class HistoryManager {
     public void executeUserAction() {
         UUID actionIdentifier = state.getNextStack().peek().getUserActionIdentifier();
         while(canGoForward(actionIdentifier)) {
-            ICommand c = state.getNextStack().pop();
+            ModelUserActionCommand c = state.getNextStack().pop();
             c.execute();
             state.getPreviousStack().push(c);
         }
@@ -22,8 +22,8 @@ public class HistoryManager {
     public void unexecuteUserAction() {
         UUID actionIdentifier = state.getPreviousStack().peek().getUserActionIdentifier();
         while(canGoForward(actionIdentifier)) {
-            ICommand c = state.getPreviousStack().pop();
-            c.unexecute();
+            ModelUserActionCommand c = state.getPreviousStack().pop();
+            c.undo();
             state.getNextStack().push(c);
         }
     }
@@ -32,7 +32,7 @@ public class HistoryManager {
         state.startNewUserAction();
     }
 
-    public void addCommand(ICommand command) {
+    public void addCommand(ModelUserActionCommand command) {
         command.setUserActionIdentifier(state.getCurrentUserActionId());
         command.execute();
         state.getPreviousStack().push(command);

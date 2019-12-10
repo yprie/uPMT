@@ -21,8 +21,6 @@
 package controller.command;
 
 import NewModel.IDescriptemeAdapter;
-import controller.controller.Observer;
-import model.Descripteme;
 
 import java.util.LinkedList;
 
