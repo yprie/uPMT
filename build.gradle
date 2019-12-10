@@ -39,7 +39,7 @@ mainClassName = 'application.Launcher'
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java", "src/main/resources"]
+            srcDirs = ["src/main/resources"]
             includes = ["**/*.fxml", "**/*.css", "**/*.lang", "**/*.properties", "**/*.png", "**/*.gif" ]
         }
     }

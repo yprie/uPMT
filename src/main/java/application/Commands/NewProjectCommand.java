@@ -1,6 +1,6 @@
 package application.Commands;
 
-import Project.Controllers.NewProjectController;
+import application.Project.Controllers.NewProjectController;
 import application.UPMTApp;
 
 public class NewProjectCommand extends ApplicationCommand<Void> {

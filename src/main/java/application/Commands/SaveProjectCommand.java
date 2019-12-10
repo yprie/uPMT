@@ -1,12 +1,9 @@
 package application.Commands;
 
-import Project.Controllers.ProjectDialogBox;
-import Project.Models.Project;
-import Project.Persistency.ProjectSaver;
+import application.Project.Controllers.ProjectDialogBox;
+import Persistency.ProjectSaver;
 import application.Configuration.Configuration;
 import application.UPMTApp;
-
-import java.io.IOException;
 
 public class SaveProjectCommand extends ApplicationCommand<Void> {
 

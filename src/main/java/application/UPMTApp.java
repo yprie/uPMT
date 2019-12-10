@@ -1,9 +1,10 @@
 package application;
 
-import Project.Models.Project;
+import application.Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
-import application.RootLayout.Controllers.RootLayoutController;
+import Components.RootLayout.Controllers.RootLayoutController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -27,6 +28,12 @@ public class UPMTApp {
         startApp();
 
         primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication().execute(); });
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/MainView/MainView.fxml"));
+        loader.setResources(Configuration.langBundle);
+        loader.setClassLoader(getClass().getClassLoader());
+        loader.load();
     }
 
     private void startApp() {

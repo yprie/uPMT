@@ -1,11 +1,10 @@
 package application.Commands;
 
-import Project.Models.Project;
+import application.Project.Models.Project;
 import application.Configuration.Configuration;
 import application.UPMTApp;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class SetProjectCommand extends ApplicationCommand<Void> {
 

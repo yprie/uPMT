@@ -1,7 +1,5 @@
 package application.Configuration;
 
-import Project.Models.Project;
-
 import java.io.*;
 import java.util.Locale;
 import java.util.Properties;

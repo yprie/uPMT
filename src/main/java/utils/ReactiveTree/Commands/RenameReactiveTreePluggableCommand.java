@@ -1,6 +1,6 @@
 package utils.ReactiveTree.Commands;
 
-import ApplicationHistory.ModelUserActionCommand;
+import application.History.ModelUserActionCommand;
 import utils.ReactiveTree.ReactiveTreePluggable;
 
 public class RenameReactiveTreePluggableCommand extends ModelUserActionCommand<Void, Void> {
