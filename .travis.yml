@@ -14,7 +14,7 @@ before_install:
  - wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
  - unzip openjdk-11.0.2_windows-x64_bin.zip
 
-script: gradlew runtimeZip
+script: ./gradlew runtimeZip
 
 before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
