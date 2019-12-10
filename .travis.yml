@@ -1,20 +1,29 @@
 language: java
-
-install: true
-
 os: osx
 jdk: openjdk11
+
+cache:
+ directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
+install: skip
 
 before_install:
  - chmod +x gradlew
  - wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
  - unzip openjdk-11.0.2_windows-x64_bin.zip
 
-script:
- - ./gradlew build
- - ./gradlew runtimeZip
- - ls build
- - ls
+script: gradlew runtimeZip
+
+before_cache:
+ - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+ - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+# test
+after_success:
+ - java build/libs/uPMT.jar
+ - build/image/bin/uPMT
 
 before_deploy:
  - git config --local user.name "Thykof"
@@ -26,16 +35,9 @@ deploy:
  provider: releases
  token: $token
  file:
-  - "./build/libs/uPMT.jar"
+  - "build/libs/uPMT.jar"
   - "build/uPMT-osx-x64.zip"
   - "build/uPMT-win-x64.zip"
  on: try-ci
  skip_cleanup: true
 
-before_cache:
- - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
- - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
- directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
