@@ -22,6 +22,7 @@ package Components.MainView.Controller;
 
 import application.Project.Models.Project;
 import Components.SchemaTree.Controllers.SchemaTreeController;
+import Components.InterviewPanel.Controllers.InterviewPanelController;
 import application.Configuration.Configuration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,6 +72,10 @@ public class MainViewController implements Initializable {
 		//Set SchemaTree view
 		SchemaTreeController schemaController = new SchemaTreeController(project.getSchemaTreeRoot());
 		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
+
+		//Set the interview panel
+		InterviewPanelController interviewPanel = new InterviewPanelController();
+		leftPane.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));
 
 		//TODO replace the following content with the real interview selector !
 		//Set InterviewSelector
