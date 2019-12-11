@@ -6,8 +6,6 @@
  * User Manual available at https://docs.gradle.org/6.0.1/userguide/tutorial_java_projects.html
  */
 
-apply plugin: 'idea'
-
 plugins {
     id 'java'
     id 'application'
@@ -45,6 +43,14 @@ sourceSets {
             includes = ["**/*.fxml", "**/*.css", "**/*.lang", "**/*.properties", "**/*.png", "**/*.gif" ]
         }
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    systemProperty "file.encoding", "utf-8"
 }
 
 jar {

@@ -7,12 +7,12 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
-install: skip
-
 before_install:
  - chmod +x gradlew
  - wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
  - unzip openjdk-11.0.2_windows-x64_bin.zip
+
+install: skip
 
 script: ./gradlew runtimeZip
 

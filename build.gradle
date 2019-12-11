@@ -45,6 +45,13 @@ sourceSets {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+test {
+    systemProperty "file.encoding", "utf-8"
+}
+
 jar {
     manifest {
         attributes 'Main-Class': 'application.Launcher'
