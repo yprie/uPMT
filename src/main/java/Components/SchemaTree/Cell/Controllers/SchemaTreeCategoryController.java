@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import utils.Removable.Commands.DeleteRemovableCommand;
 import Components.SchemaTree.Cell.Commands.AddSchemaTreePluggable;
 import Components.SchemaTree.Cell.Models.SchemaCategory;
@@ -26,19 +25,13 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
         MenuItem addPropertyButton = new MenuItem("Nouvelle propriété");
         addPropertyButton.setOnAction(actionEvent -> {
-            HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-            AddSchemaTreePluggable cmd = new AddSchemaTreePluggable(category, new SchemaProperty("propriété"), true);
-            hm.startNewUserAction();
-            hm.addCommand(cmd);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(category, new SchemaProperty("propriété"), true), true);
         });
         optionsMenu.getItems().add(addPropertyButton);
 
         MenuItem deleteButton = new MenuItem("Supprimer");
         deleteButton.setOnAction(actionEvent -> {
-            HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-            DeleteRemovableCommand cmd = new DeleteRemovableCommand(category);
-            hm.startNewUserAction();
-            hm.addCommand(cmd);
+            HistoryManager.addCommand(new DeleteRemovableCommand(category), true);
         });
         optionsMenu.getItems().add(deleteButton);
     }

@@ -1,5 +1,7 @@
 package application.Commands;
 
+import Persistency.ProjectSaver;
+import application.History.HistoryManager;
 import application.Project.Controllers.SaveAsProjectController;
 import application.Configuration.Configuration;
 import application.UPMTApp;
@@ -17,6 +19,9 @@ public class SaveProjectAsCommand extends ApplicationCommand<Void> {
         SaveAsProjectController controller = SaveAsProjectController.createSaveAsProjectController(upmtApp.getPrimaryStage(), upmtApp.getCurrentProject());
         if(controller.getState() == SaveAsProjectController.State.SUCCESS) {
             try {
+                ProjectSaver.save(upmtApp.getCurrentProject(), controller.getSavePath());
+                upmtApp.setLastSavedCommandId(HistoryManager.getCurrentCommandId());
+                new ProjectSavingStatusChangedCommand(upmtApp).execute();
                 Configuration.addToProjects(controller.getSavePath());
             } catch (IOException e) {
                 e.printStackTrace();

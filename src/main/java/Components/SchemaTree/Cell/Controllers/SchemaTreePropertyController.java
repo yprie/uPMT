@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import utils.Removable.Commands.DeleteRemovableCommand;
 import Components.SchemaTree.Cell.Models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -24,10 +23,7 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
         super.initialize(url, resourceBundle);
         MenuItem deleteButton = new MenuItem("Supprimer");
         deleteButton.setOnAction(actionEvent -> {
-            HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-            DeleteRemovableCommand cmd = new DeleteRemovableCommand(property);
-            hm.startNewUserAction();
-            hm.addCommand(cmd);
+            HistoryManager.addCommand(new DeleteRemovableCommand(property), true);
         });
 
         optionsMenu.getItems().add(deleteButton);

@@ -19,4 +19,5 @@ public class ApplicationCommandFactory {
     public SaveProjectCommand saveProject() { return new SaveProjectCommand(application); }
     public SaveProjectAsCommand saveProjectAs() { return new SaveProjectAsCommand(application); }
     public ChangeLanguageCommand changeLanguage(Locale locale) { return new ChangeLanguageCommand(application, locale); }
+    public ProjectSavingStatusChangedCommand projectSavingStatusChanged() { return new ProjectSavingStatusChangedCommand(application); }
 }

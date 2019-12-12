@@ -1,49 +1,35 @@
 package application.History;
 
+import application.Commands.ApplicationCommandFactory;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+
 import java.util.UUID;
 
 public class HistoryManager {
 
-    HistoryState state;
+    private static ApplicationCommandFactory applicationCommandFactory;
+    private static HistoryState state = new HistoryState();
 
-    public HistoryManager(HistoryState state) {
-        this.state = state;
+    public static void init(ApplicationCommandFactory applicationCommandFactory) { HistoryManager.applicationCommandFactory = applicationCommandFactory; }
+
+    public static void addCommand(ModelUserActionCommand cmd, boolean newModelUserActionCommand) {
+        state.addCommand(cmd, newModelUserActionCommand);
+        applicationCommandFactory.projectSavingStatusChanged().execute();
+    }
+    public static UUID getCurrentCommandId() { return state.getCurrentCommandId(); };
+
+    public static void goBack() {
+        state.unexecuteUserAction();
+        applicationCommandFactory.projectSavingStatusChanged().execute();
+    }
+    public static void goForward() {
+        state.executeUserAction();
+        applicationCommandFactory.projectSavingStatusChanged().execute();
     }
 
-    public void executeUserAction() {
-        UUID actionIdentifier = state.getNextStack().peek().getUserActionIdentifier();
-        while(canGoForward(actionIdentifier)) {
-            ModelUserActionCommand c = state.getNextStack().pop();
-            c.execute();
-            state.getPreviousStack().push(c);
-        }
-    }
+    public static void clearActionStack() { state.clear(); }
 
-    public void unexecuteUserAction() {
-        UUID actionIdentifier = state.getPreviousStack().peek().getUserActionIdentifier();
-        while(canGoForward(actionIdentifier)) {
-            ModelUserActionCommand c = state.getPreviousStack().pop();
-            c.undo();
-            state.getNextStack().push(c);
-        }
-    }
+    public static ReadOnlyBooleanProperty canGoBackProperty() { return state.canGoBackProperty(); }
+    public static ReadOnlyBooleanProperty canGoForwardProperty() { return state.canGoForwardProperty(); }
 
-    public void startNewUserAction() {
-        state.startNewUserAction();
-    }
-
-    public void addCommand(ModelUserActionCommand command) {
-        command.setUserActionIdentifier(state.getCurrentUserActionId());
-        command.execute();
-        state.getPreviousStack().push(command);
-        state.getNextStack().removeAllElements();
-    }
-
-    private boolean canGoBack(UUID lastCommandIdentifier) {
-        return state.getPreviousStack().size() > 0 && state.getPreviousStack().peek().getUserActionIdentifier() == lastCommandIdentifier;
-    }
-
-    private boolean canGoForward(UUID lastCommandIdentifier) {
-        return state.getNextStack().size() > 0 && state.getNextStack().peek().getUserActionIdentifier() == lastCommandIdentifier;
-    }
 }
