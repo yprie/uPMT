@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import Components.SchemaTree.Cell.Commands.MoveSchemaTreePluggable;
 import Components.SchemaTree.Cell.Models.*;
 import Components.SchemaTree.Cell.Controllers.SchemaTreeCellController;
@@ -140,15 +139,11 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                     SchemaTreePluggable target = selfCell.getItem();
 
                     //Drag and drop command
-                    HistoryManager m = HistoryManagerFactory.createHistoryManager();
-                    m.startNewUserAction();
-                    m.addCommand(new MoveSchemaTreePluggable(
+                    HistoryManager.addCommand(new MoveSchemaTreePluggable(
                             ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue(),
                             target,
-                            source
-                    ));
+                            source), true);
                     selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-
                     event.setDropCompleted(true);
                 }
                 else

@@ -21,6 +21,7 @@
 
 package Components.RootLayout.Controllers;
 
+import application.History.HistoryManager;
 import application.Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
@@ -84,10 +85,12 @@ public class RootLayoutController implements Initializable {
 
 	public void setProject(Project project) {
 		Platform.runLater(() -> {
+			bindUndoRedoButtons(false);
 			MainViewController controller = new MainViewController(project);
 			rootLayout.setCenter(MainViewController.createMainView(controller));
 			appCommandFactory.changeApplicationTitle("uPMT - "+ project.getName()).execute();
 			setProjectRelatedControlsDisable(false);
+			bindUndoRedoButtons(true);
 		});
 
 	}
@@ -120,14 +123,12 @@ public class RootLayoutController implements Initializable {
 	
 	@FXML
 	public void undo(){
-		//TODO
-		System.out.println("Undo not available yet !");
+		HistoryManager.goBack();
 	}
 	
 	@FXML
 	public void redo(){
-		//TODO
-		System.out.println("Redo not available yet !");
+		HistoryManager.goForward();
 	}
 	
 	@FXML
@@ -365,5 +366,16 @@ public class RootLayoutController implements Initializable {
 		newInterview.setDisable(YoN);
 		undo.setDisable(YoN);
 		redo.setDisable(YoN);
+	}
+
+	private void bindUndoRedoButtons(boolean YoN) {
+		if(YoN){
+			undo.disableProperty().bind(HistoryManager.canGoBackProperty().not());
+			redo.disableProperty().bind(HistoryManager.canGoForwardProperty().not());
+		}
+		else {
+			undo.disableProperty().unbind();
+			redo.disableProperty().unbind();
+		}
 	}
 }

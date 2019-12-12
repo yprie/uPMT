@@ -1,5 +1,6 @@
 package application;
 
+import application.History.HistoryManager;
 import application.Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.UUID;
 
 
 public class UPMTApp {
@@ -18,6 +20,7 @@ public class UPMTApp {
     private ApplicationCommandFactory appCommandFactory;
     private Project currentProject;
     private String currentProjectPath;
+    private UUID lastSavedCommandId;
 
     public UPMTApp(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
@@ -25,6 +28,7 @@ public class UPMTApp {
         this.rootLayoutController = new RootLayoutController(appCommandFactory);
 
         Configuration.loadAppConfiguration();
+        HistoryManager.init(appCommandFactory);
         startApp();
 
         primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication().execute(); });
@@ -59,9 +63,13 @@ public class UPMTApp {
     }
     public String getCurrentProjectPath() { return currentProjectPath; }
 
+    public void setLastSavedCommandId(UUID lastCommandId) { this.lastSavedCommandId = lastCommandId; }
+    public UUID getLastSavedCommandId() { return lastSavedCommandId; }
+
     public void restartApp() {
         startApp();
         if(getCurrentProject() != null)
             setCurrentProject(getCurrentProject(), currentProjectPath);
     }
+    
 }

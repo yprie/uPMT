@@ -1,5 +1,6 @@
 package application.Commands;
 
+import application.History.HistoryManager;
 import application.Project.Models.Project;
 import application.Configuration.Configuration;
 import application.UPMTApp;
@@ -24,6 +25,7 @@ public class SetProjectCommand extends ApplicationCommand<Void> {
             if(projectPath != null)
                 Configuration.addToProjects(projectPath);
             upmtApp.setCurrentProject(project, projectPath);
+            HistoryManager.clearActionStack();
         }
         catch(IOException e) {
             e.printStackTrace();

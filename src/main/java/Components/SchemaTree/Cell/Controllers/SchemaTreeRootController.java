@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import Components.SchemaTree.Cell.Commands.AddSchemaTreePluggable;
 import Components.SchemaTree.Cell.Models.SchemaFolder;
 import Components.SchemaTree.Cell.Models.SchemaTreeRoot;
@@ -32,10 +31,7 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
 
         MenuItem addFolderButton = new MenuItem("Nouveau dossier");
         addFolderButton.setOnAction(actionEvent -> {
-            HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-            AddSchemaTreePluggable cmd = new AddSchemaTreePluggable(root, new SchemaFolder("dossier"), true);
-            hm.startNewUserAction();
-            hm.addCommand(cmd);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(root, new SchemaFolder("dossier"), true), true);
         });
         optionsMenu.getItems().add(addFolderButton);
         optionsMenu.setVisible(false);
