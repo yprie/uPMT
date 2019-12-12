@@ -1,5 +1,6 @@
 package application.Commands;
 
+import application.History.HistoryManager;
 import application.Project.Controllers.ProjectDialogBox;
 import Persistency.ProjectSaver;
 import application.Configuration.Configuration;
@@ -18,6 +19,8 @@ public class SaveProjectCommand extends ApplicationCommand<Void> {
         if(upmtApp.getCurrentProjectPath() != null) {
             try {
                 ProjectSaver.save(upmtApp.getCurrentProject(), Configuration.getProjectsPath()[0]);
+                upmtApp.setLastSavedCommandId(HistoryManager.getCurrentCommandId());
+                new ProjectSavingStatusChangedCommand(upmtApp).execute();
             } catch (Exception e) {
                 ProjectDialogBox.projectSavingFailed();
                 e.printStackTrace();

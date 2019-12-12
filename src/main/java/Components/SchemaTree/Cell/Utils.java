@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import utils.Removable.IRemovable;
 import Components.SchemaTree.Cell.Commands.RemoveSchemaTreePluggable;
 import Components.SchemaTree.Cell.Models.*;
@@ -15,8 +14,7 @@ public class Utils {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(aBoolean != t1 && !t1){
-                    HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-                    hm.addCommand(new RemoveSchemaTreePluggable(parent, e));
+                    HistoryManager.addCommand(new RemoveSchemaTreePluggable(parent, e), false);
                     observableValue.removeListener(this);
                 }
             }

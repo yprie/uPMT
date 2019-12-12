@@ -1,7 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
 import application.History.HistoryManager;
-import application.History.HistoryManagerFactory;
 import Components.SchemaTree.Cell.Commands.RenameSchemaTreePluggable;
 import Components.SchemaTree.Cell.SchemaTreePluggable;
 import javafx.application.Platform;
@@ -78,9 +77,7 @@ public abstract class SchemaTreeCellController implements Initializable {
 
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
-                        HistoryManager hm = HistoryManagerFactory.createHistoryManager();
-                        hm.startNewUserAction();
-                        hm.addCommand(new RenameSchemaTreePluggable(element, renamingField.getText()));
+                        HistoryManager.addCommand(new RenameSchemaTreePluggable(element, renamingField.getText()), !element.mustBeRenamed());
                         passInRenamingMode(false);
                     }
                 });

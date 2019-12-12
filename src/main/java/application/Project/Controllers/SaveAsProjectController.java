@@ -27,7 +27,6 @@ public class SaveAsProjectController {
         if(file != null){
             try {
                 this.savePath = file.getPath();
-                ProjectSaver.save(project, savePath);
                 this.state = State.SUCCESS;
             } catch (Exception e) {
                 ProjectDialogBox.projectSavingFailed();
