@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<<<<<<< Updated upstream
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="$CONTROLLER_NAME$"
+            prefHeight="400.0" prefWidth="600.0">
+
+</AnchorPane>
+=======
+<?import javafx.scene.control.Button?>
+
+<fx:root prefHeight="400.0" prefWidth="600.0" type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <Button layoutX="256.0" layoutY="175.0" mnemonicParsing="false" text="OKAY !" />
+   </content>
+</fx:root>
+>>>>>>> Stashed changes
