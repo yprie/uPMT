@@ -61,7 +61,7 @@ public class NewProjectController implements Initializable  {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        SchemaTreeRoot empty = new SchemaTreeRoot("Empty Schema");
+        SchemaTreeRoot empty = new SchemaTreeRoot(Configuration.langBundle.getString("empty_schema_tree_view"));
         choixSchema.getItems().add(empty);
         choixSchema.setValue(empty);
     }

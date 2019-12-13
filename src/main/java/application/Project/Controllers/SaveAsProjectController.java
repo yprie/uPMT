@@ -1,5 +1,6 @@
 package application.Project.Controllers;
 
+import application.Configuration.Configuration;
 import application.Project.Models.Project;
 import Persistency.ProjectSaver;
 import javafx.stage.FileChooser;
@@ -21,7 +22,7 @@ public class SaveAsProjectController {
         this.state = State.CLOSED;
 
         final FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save a Project");
+        fileChooser.setTitle(Configuration.langBundle.getString("save_project_as"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
         File file = fileChooser.showSaveDialog(stage);
         if(file != null){

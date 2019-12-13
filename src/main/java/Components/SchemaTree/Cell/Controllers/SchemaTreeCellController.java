@@ -1,5 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
+import application.Configuration.Configuration;
 import application.History.HistoryManager;
 import Components.SchemaTree.Cell.Commands.RenameSchemaTreePluggable;
 import Components.SchemaTree.Cell.SchemaTreePluggable;
@@ -47,7 +48,7 @@ public abstract class SchemaTreeCellController implements Initializable {
         name.setText(element.nameProperty().get());
         this.name.textProperty().bind(element.nameProperty());
 
-        MenuItem renameButton = new MenuItem("renommer");
+        MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
         renameButton.setOnAction(actionEvent -> {
             passInRenamingMode(true);
         });

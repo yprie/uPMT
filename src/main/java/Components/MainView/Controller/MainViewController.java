@@ -75,7 +75,7 @@ public class MainViewController implements Initializable {
 		//TODO replace the following content with the real interview selector !
 		//Set InterviewSelector
 		treeViewInterview = new TreeView<>();
-		treeViewInterview.setRoot(new TreeItem<String>("Entretiens"));
+		treeViewInterview.setRoot(new TreeItem<String>(Configuration.langBundle.getString("interviews")));
 		leftPane.getItems().add(treeViewInterview);
 	}
 

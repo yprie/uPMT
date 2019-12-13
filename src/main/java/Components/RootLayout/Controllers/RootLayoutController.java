@@ -62,6 +62,9 @@ public class RootLayoutController implements Initializable {
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
 
+	public @FXML MenuItem espanol;
+	public @FXML MenuItem italiano;
+
 	public @FXML MenuItem userGuide;
 
 	private ApplicationCommandFactory appCommandFactory;
@@ -317,6 +320,10 @@ public class RootLayoutController implements Initializable {
 
 		setupRecentProjectUpdate();
 		setProjectRelatedControlsDisable(true);
+
+		//temporary disable
+		espanol.setDisable(true);
+		italiano.setDisable(true);
 	}
 
 	private void setupRecentProjectUpdate() {

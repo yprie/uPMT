@@ -1,5 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
+import application.Configuration.Configuration;
 import application.History.HistoryManager;
 import utils.Removable.Commands.DeleteRemovableCommand;
 import Components.SchemaTree.Cell.Commands.AddSchemaTreePluggable;
@@ -23,13 +24,13 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        MenuItem addPropertyButton = new MenuItem("Nouvelle propriété");
+        MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new AddSchemaTreePluggable(category, new SchemaProperty("propriété"), true), true);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(category, new SchemaProperty(Configuration.langBundle.getString("property")), true), true);
         });
         optionsMenu.getItems().add(addPropertyButton);
 
-        MenuItem deleteButton = new MenuItem("Supprimer");
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             HistoryManager.addCommand(new DeleteRemovableCommand(category), true);
         });
