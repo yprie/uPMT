@@ -150,7 +150,8 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void newInterview() {
-		//TODO -- maybe move this control somewhere else ?
+		//TODO -- maybe move this control somewhere else? // deprecated TODO?
+		appCommandFactory.newInterview().execute();
 	}
 
 	private void saveRequest(WindowEvent event) throws IOException{

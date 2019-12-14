@@ -1,6 +1,8 @@
 package application.Commands;
 
 import application.UPMTApp;
+import utils.Command.Executable;
+
 import java.util.Locale;
 
 public class ApplicationCommandFactory {
@@ -20,4 +22,5 @@ public class ApplicationCommandFactory {
     public SaveProjectAsCommand saveProjectAs() { return new SaveProjectAsCommand(application); }
     public ChangeLanguageCommand changeLanguage(Locale locale) { return new ChangeLanguageCommand(application, locale); }
     public ProjectSavingStatusChangedCommand projectSavingStatusChanged() { return new ProjectSavingStatusChangedCommand(application); }
+    public NewInterviewCommand newInterview() { return new NewInterviewCommand(application); }
 }

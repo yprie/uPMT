@@ -3,6 +3,8 @@ package application.Project.Controllers;
 import application.Project.Models.Project;
 import Components.SchemaTree.Cell.Models.SchemaTreeRoot;
 import application.Configuration.Configuration;
+import utils.DialogState;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,9 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NewProjectController implements Initializable  {
-
-    public enum State {CLOSED, SUCCESS}
-    private State state;
+    private DialogState state;
 
     private @FXML Button valider;
     private @FXML Button cancel;
@@ -56,7 +56,7 @@ public class NewProjectController implements Initializable  {
 
     public NewProjectController(Stage stage) {
         this.stage = stage;
-        this.state = State.CLOSED;
+        this.state = DialogState.CLOSED;
     }
 
     @Override
@@ -70,15 +70,15 @@ public class NewProjectController implements Initializable  {
         SchemaTreeRoot selectedRoot = choixSchema.getSelectionModel().getSelectedItem();
         selectedRoot.setName(nomProjet.getText());
         resultProject = new Project(nomProjet.getText(), selectedRoot);
-        state = State.SUCCESS;
+        state = DialogState.SUCCESS;
         stage.close();
     }
 
     public void closeWindow() {
-        state = State.CLOSED;
+        state = DialogState.CLOSED;
         stage.close();
     }
 
-    public State getState() { return state; }
+    public DialogState getState() { return state; }
     public Project getCreatedProject() { return resultProject; }
 }
