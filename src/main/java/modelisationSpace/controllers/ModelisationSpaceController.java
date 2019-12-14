@@ -1,11 +1,19 @@
 package modelisationSpace.controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ScrollPane;
-
+import javafx.fxml.Initializable;
 import java.io.IOException;
+import java.net.URL;
 
-public class ModelisationSpaceController extends ScrollPane {
+import javafx.scene.image.ImageView;
+import utils.ResourceLoader;
+import utils.ScrollOnDragPane.ScrollOnDragPane;
+import java.util.ResourceBundle;
+
+public class ModelisationSpaceController extends ScrollOnDragPane implements Initializable {
+
+    private  @FXML ImageView fake_view;
 
     public ModelisationSpaceController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ModelisationSpace/ModelisationSpace.fxml"));
@@ -16,6 +24,12 @@ public class ModelisationSpaceController extends ScrollPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+        fake_view.setImage(ResourceLoader.loadImage("fake_modelisation.png"));
     }
 }
 
