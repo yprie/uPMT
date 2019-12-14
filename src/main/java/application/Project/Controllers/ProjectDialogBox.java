@@ -1,29 +1,29 @@
 package application.Project.Controllers;
 
+import application.Configuration.Configuration;
 import javafx.scene.control.Alert;
 
 public class ProjectDialogBox {
 
     public static void projectCreationFailed() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Unable to create a new project !");
-        alert.setContentText("Please contact us to know more about this issue.");
+        alert.setTitle(Configuration.langBundle.getString("error"));
+        alert.setHeaderText(Configuration.langBundle.getString("project_creating_error_occured"));
         alert.showAndWait();
     }
 
     public static void projectLoadingFailed () {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("Loading of the project failed !");
-        alert.setContentText("Please make sure this is a valid .upmt file.");
+        alert.setTitle(Configuration.langBundle.getString("error"));
+        alert.setHeaderText(Configuration.langBundle.getString("project_loading_error_occured"));
+        alert.setContentText(Configuration.langBundle.getString("project_loading_error_reason"));
         alert.showAndWait();
     }
 
     public static void projectSavingFailed () {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("The project saving process failed !");
+        alert.setTitle(Configuration.langBundle.getString("error"));
+        alert.setHeaderText(Configuration.langBundle.getString("project_saving_error_occured"));
         alert.showAndWait();
     }
 }
