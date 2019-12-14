@@ -1,6 +1,8 @@
 package Components.InterviewPanel.Models;
 
-public class InterviewText {
+import java.io.Serializable;
+
+public class InterviewText implements Serializable {
 
     private String text;
 

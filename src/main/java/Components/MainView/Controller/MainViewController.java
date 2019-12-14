@@ -29,6 +29,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class MainViewController implements Initializable {
 	private @FXML
 	SchemaTreeController schemaTree;
 	private @FXML SplitPane leftPane;
+	private @FXML SplitPane paneOfTextArea;
 	private @FXML TreeView<String> treeViewInterview;
 
 	public static Node createMainView(MainViewController controller) {
@@ -74,8 +76,8 @@ public class MainViewController implements Initializable {
 		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
 
 		//Set the interview panel
-		InterviewPanelController interviewPanel = new InterviewPanelController();
-		leftPane.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));
+		InterviewPanelController interviewPanel = new InterviewPanelController(project.getInterview());
+		paneOfTextArea.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));
 
 		//TODO replace the following content with the real interview selector !
 		//Set InterviewSelector

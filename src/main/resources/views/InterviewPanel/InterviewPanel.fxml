@@ -9,19 +9,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.geometry.Insets?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
-    <center>
-        <StackPane fx:id="stackForDragDrop" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <TextArea id="textInterview" fx:id="droppableText" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
-            </children>
-        </StackPane>
-    </center>
     <top>
         <BorderPane fx:id="topBarContainerTextInterview" prefHeight="64.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <center>
-                <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER">
+                <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" >
                     <font>
                         <Font size="22.0" />
                     </font>
@@ -39,4 +31,14 @@
             </left>
         </BorderPane>
     </top>
+    <center>
+        <StackPane fx:id="stackForDragDrop" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextArea id="textInterview" fx:id="textInterview" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+            </children>
+        </StackPane>
+    </center>
+    <bottom>
+        <Text fx:id="textInterviewComment" strokeType="OUTSIDE" strokeWidth="0.0"></Text>
+    </bottom>
 </BorderPane>
