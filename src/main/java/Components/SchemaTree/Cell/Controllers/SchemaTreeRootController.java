@@ -1,5 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
+import application.Configuration.Configuration;
 import application.History.HistoryManager;
 import Components.SchemaTree.Cell.Commands.AddSchemaTreePluggable;
 import Components.SchemaTree.Cell.Models.SchemaFolder;
@@ -29,9 +30,9 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
         pictureView.setImage(ResourceLoader.loadImage(element.getIconPath()));
         name.setText(element.nameProperty().get());
 
-        MenuItem addFolderButton = new MenuItem("Nouveau dossier");
+        MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
         addFolderButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new AddSchemaTreePluggable(root, new SchemaFolder("dossier"), true), true);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(root, new SchemaFolder(Configuration.langBundle.getString("folder")), true), true);
         });
         optionsMenu.getItems().add(addFolderButton);
         optionsMenu.setVisible(false);

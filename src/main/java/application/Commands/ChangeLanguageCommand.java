@@ -24,8 +24,8 @@ public class ChangeLanguageCommand extends ApplicationCommand<Void> {
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Unable to change the program language !");
+            alert.setTitle(Configuration.langBundle.getString("error"));
+            alert.setHeaderText(Configuration.langBundle.getString("application_language_change_failed"));
             alert.showAndWait();
         }
         return null;

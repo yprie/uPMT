@@ -1,5 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
+import application.Configuration.Configuration;
 import application.History.HistoryManager;
 import utils.Removable.Commands.DeleteRemovableCommand;
 import Components.SchemaTree.Cell.Commands.AddSchemaTreePluggable;
@@ -23,19 +24,19 @@ public class SchemaTreeFolderController extends SchemaTreeCellController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        MenuItem addFolderButton = new MenuItem("Nouveau dossier");
+        MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
         addFolderButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new AddSchemaTreePluggable(folder, new SchemaFolder("dossier"), true), true);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(folder, new SchemaFolder(Configuration.langBundle.getString("folder")), true), true);
         });
         optionsMenu.getItems().add(addFolderButton);
 
-        MenuItem addCategoryButton = new MenuItem("Nouvelle catégorie");
+        MenuItem addCategoryButton = new MenuItem(Configuration.langBundle.getString("add_category"));
         addCategoryButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new AddSchemaTreePluggable(folder, new SchemaCategory("catégorie"), true), true);
+            HistoryManager.addCommand(new AddSchemaTreePluggable(folder, new SchemaCategory("category"), true), true);
         });
         optionsMenu.getItems().add(addCategoryButton);
 
-        MenuItem deleteButton = new MenuItem("Supprimer");
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             HistoryManager.addCommand(new DeleteRemovableCommand(folder), true);
         });

@@ -1,5 +1,6 @@
 package application.Project.Controllers;
 
+import application.Configuration.Configuration;
 import application.Project.Models.Project;
 import Persistency.ProjectLoader;
 import javafx.stage.FileChooser;
@@ -23,7 +24,7 @@ public class OpenProjectController {
         this.state = State.CLOSED;
 
         final FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open a Project");
+        fileChooser.setTitle(Configuration.langBundle.getString("open_project_as"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("uPMT", "*.upmt"));
         File file = fileChooser.showOpenDialog(stage);
         if(file != null){

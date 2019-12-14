@@ -1,5 +1,6 @@
 package Components.SchemaTree.Cell.Controllers;
 
+import application.Configuration.Configuration;
 import application.History.HistoryManager;
 import utils.Removable.Commands.DeleteRemovableCommand;
 import Components.SchemaTree.Cell.Models.SchemaProperty;
@@ -21,7 +22,7 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        MenuItem deleteButton = new MenuItem("Supprimer");
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             HistoryManager.addCommand(new DeleteRemovableCommand(property), true);
         });

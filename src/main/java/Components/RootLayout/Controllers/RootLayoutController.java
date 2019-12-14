@@ -21,6 +21,7 @@
 
 package Components.RootLayout.Controllers;
 
+import Components.AboutUs.Controllers.AboutUsController;
 import application.History.HistoryManager;
 import application.Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
@@ -60,6 +61,9 @@ public class RootLayoutController implements Initializable {
 
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
+
+	public @FXML MenuItem espanol;
+	public @FXML MenuItem italiano;
 
 	public @FXML MenuItem userGuide;
 
@@ -132,35 +136,7 @@ public class RootLayoutController implements Initializable {
 	}
 	
 	@FXML
-	public void aboutUs(){
-		//TODO
-		/*Stage helpWindow = new Stage(StageStyle.UTILITY);
-		helpWindow.setTitle(main._langBundle.getString("about_us"));
-		helpWindow.setResizable(false);
-		//helpWindow.setAlwaysOnTop(true);
-		helpWindow.initModality(Modality.APPLICATION_MODAL);
-		//helpWindow.setWidth(610);  
-		//helpWindow.setHeight(350);
- 
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			
-            loader.setLocation(getClass().getResource("/view/HelpView.fxml"));
-            loader.setController(new AboutController(main, helpWindow));
-            
-//          loader.setController(new HelpController(main, helpWindow, this.document));
-            loader.setResources(main._langBundle);
-            AnchorPane layout = (AnchorPane) loader.load();
-            Scene sc = new Scene(layout);
-			helpWindow.setScene(sc);
-			helpWindow.showAndWait();
-			
-		} catch (IOException e) {
-			// TODO Exit Program
-			e.printStackTrace();
-		}*/
-	}
-	// ----------------------------modifier: open a document
+	public void aboutUs(){ AboutUsController.createAboutUs(); }
 
 	@FXML
 	public void openALink() {
@@ -344,6 +320,10 @@ public class RootLayoutController implements Initializable {
 
 		setupRecentProjectUpdate();
 		setProjectRelatedControlsDisable(true);
+
+		//temporary disable
+		espanol.setDisable(true);
+		italiano.setDisable(true);
 	}
 
 	private void setupRecentProjectUpdate() {
