@@ -14,7 +14,7 @@ before_install:
 
 install: skip
 
-script: ./gradlew -b build-travis.gradle jpackage --warning-mode all
+script: ./gradlew -b build-travis.gradle runtimeZip --warning-mode all
 
 before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -24,8 +24,6 @@ before_cache:
 after_success:
  - java build/libs/uPMT.jar
  - build/image/bin/uPMT
- - ls -la build
- - ls -la build/jpackage
 
 before_deploy:
  - git config --local user.name "Thykof"

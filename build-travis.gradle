@@ -69,9 +69,10 @@ runtime {
     targetPlatform('win-x64', 'jdk-11.0.2')
 
     // OSX
+    /*
     jpackage {
         targetPlatformName = "osx-x64"
-        jpackageHome = '/Users/travis/openjdk11'
+        jpackageHome = '/Users/travis/openjdk11' // /Users/travis/openjdk11/bin/jpackage does not exist.
         //outputDir = 'my-packaging' // default: jpackage
         // imageOutputDir = file("$buildDir/my-packaging-image")
         // installerOutputDir = file("$buildDir/my-packaging-installer")
@@ -82,7 +83,7 @@ runtime {
         installerType = 'dmg'
         installerOptions = ['--win-menu', '--win-shortcut']
     }
-
+    */
     // Windows
     /*
     jpackage {
