@@ -1,6 +1,5 @@
 package Components.InterviewTree;
 
-import Components.InterviewTree.Commands.AddInterviewPluggable;
 import Components.InterviewTree.Commands.DeleteItemPluggable;
 import application.History.HistoryManager;
 import javafx.beans.value.ChangeListener;

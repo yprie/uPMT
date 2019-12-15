@@ -2,14 +2,10 @@ package Components.InterviewTree;
 
 import Components.InterviewTree.Controller.InterviewTreeCellController;
 import Components.InterviewTree.visiter.CreateControllerVisitor;
-import application.History.HistoryManager;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
 import javafx.scene.input.*;
-import utils.DragAndDrop.DragStore;
-import utils.ReactiveTree.LeafToRootIterator;
+
 
 
 public class InterviewTreeCell extends TreeCell<InterviewTreePluggable> {

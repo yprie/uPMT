@@ -1,6 +1,7 @@
 package Components.InterviewTree.Cell.Model;
 
 
+import Components.InterviewSelector.Models.Interview;
 import Components.InterviewTree.InterviewTreePluggable;
 import Components.InterviewTree.visiter.InterviewTreePluggableVisitor;
 import utils.Removable.IRemovable;
@@ -11,9 +12,10 @@ public class InterviewItem extends InterviewElement implements IRemovable {
 
     public static final DataFormat format = new DataFormat("InterviewItem");
     private SimpleBooleanProperty exists;
+    private Interview interview;
 
-    public InterviewItem(String name) {
-        super(name);
+    public InterviewItem(Interview interview) {
+        super(interview.getTitle());
         this.exists = new SimpleBooleanProperty(true);
     }
 
@@ -47,6 +49,14 @@ public class InterviewItem extends InterviewElement implements IRemovable {
     @Override
     public BooleanProperty existsProperty() {
         return exists;
+    }
+
+    public Interview getInterview() {
+        return interview;
+    }
+
+    public void setInterview(Interview interview) {
+        this.interview = interview;
     }
 
 }

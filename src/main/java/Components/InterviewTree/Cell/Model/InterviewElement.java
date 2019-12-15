@@ -1,9 +1,6 @@
 package Components.InterviewTree.Cell.Model;
 
 import Components.InterviewTree.InterviewTreePluggable;
-import Components.SchemaTree.Cell.SchemaTreePluggable;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 

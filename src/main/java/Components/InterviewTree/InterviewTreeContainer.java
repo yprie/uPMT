@@ -2,8 +2,6 @@ package Components.InterviewTree;
 
 
 import Components.InterviewTree.visiter.CreateInterviewTreeItemVisitor;
-import Components.SchemaTree.Cell.SchemaTreePluggable;
-import Components.SchemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import utils.ReactiveTree.ReactiveTreeContainer;
 import utils.ReactiveTree.ReactiveTreeElement;
 

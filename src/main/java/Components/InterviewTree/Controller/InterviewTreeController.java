@@ -4,7 +4,6 @@ package Components.InterviewTree.Controller;
 import Components.InterviewTree.Cell.Model.InterviewTreeRoot;
 import Components.InterviewTree.InterviewTreeCell;
 import Components.InterviewTree.InterviewTreePluggable;
-import Components.InterviewTree.visiter.CreateControllerVisitor;
 import Components.InterviewTree.visiter.CreateInterviewTreeItemVisitor;
 import application.Configuration.Configuration;
 import javafx.fxml.FXML;
@@ -12,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

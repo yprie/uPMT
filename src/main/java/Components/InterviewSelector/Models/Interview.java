@@ -25,4 +25,8 @@ public class Interview implements Serializable {
     public String getComment() { return this.comment; }
     public void setComment(String comment) { this.comment = comment; }
 
+    //display interview in trees
+    public String getTitle(){
+        return(this.participantName+" "+date.toString());
+    }
 }
