@@ -20,7 +20,6 @@
 
 package Components.MainView.Controller;
 
-import Components.InterviewTree.Cell.Model.InterviewTreeRoot;
 import Components.InterviewTree.Controller.InterviewTreeController;
 import application.Project.Models.Project;
 import Components.SchemaTree.Controllers.SchemaTreeController;
@@ -75,7 +74,7 @@ public class MainViewController implements Initializable {
 		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
 
 		//Set InterviewTree view
-		InterviewTreeController interviewController = new InterviewTreeController(new InterviewTreeRoot(Configuration.langBundle.getString("interviews")));
+		InterviewTreeController interviewController = new InterviewTreeController(project.getInterviewTreeRoot());
 		leftPane.getItems().add(InterviewTreeController.createInterviewTree(interviewController));
 
 	}

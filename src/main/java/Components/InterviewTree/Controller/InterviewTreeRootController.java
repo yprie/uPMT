@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import utils.ResourceLoader;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
