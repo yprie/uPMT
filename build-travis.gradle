@@ -59,6 +59,7 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 runtime {
@@ -83,8 +84,9 @@ runtime {
     }
 
     // Windows
+    /*
     jpackage {
-        targetPlatformName = "windows"
+        targetPlatformName = "win"
         jpackageHome = 'jdk-11.0.2'
         //outputDir = 'my-packaging' // default: jpackage
         // imageOutputDir = file("$buildDir/my-packaging-image")
@@ -95,5 +97,5 @@ runtime {
         installerName = 'uPMT'
         installerType = 'exe' // msi
         installerOptions = ['--win-menu', '--win-shortcut']
-    }
+    }*/
 }
