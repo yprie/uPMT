@@ -74,14 +74,10 @@ public class MainViewController implements Initializable {
 		SchemaTreeController schemaController = new SchemaTreeController(project.getSchemaTreeRoot());
 		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
 
+		//Set InterviewTree view
 		InterviewTreeController interviewController = new InterviewTreeController(new InterviewTreeRoot(Configuration.langBundle.getString("interviews")));
 		leftPane.getItems().add(InterviewTreeController.createInterviewTree(interviewController));
 
-		//		TODO replace the following content with the real interview selector !
-//		//Set InterviewSelector
-//		treeViewInterview = new TreeView<>();
-//		treeViewInterview.setRoot(new TreeItem<String>(Configuration.langBundle.getString("interviews")));
-//		leftPane.getItems().add(treeViewInterview);
 	}
 
 	@Override
