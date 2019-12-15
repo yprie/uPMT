@@ -3,7 +3,9 @@ package Components.InterviewSelector.Controllers;
 import Components.InterviewSelector.Models.Interview;
 import application.Configuration.Configuration;
 import Components.InterviewPanel.Models.InterviewText;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import utils.InterviewUtils;
 import utils.DialogState;
 
@@ -46,7 +48,7 @@ public class NewInterviewController implements Initializable {
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             AnchorPane layout = (AnchorPane) loader.load();
-            Scene main = new Scene(layout,404,250);
+            Scene main = new Scene(layout);
             stage.setScene(main);
             stage.showAndWait();
             return controller;
@@ -62,13 +64,17 @@ public class NewInterviewController implements Initializable {
         this.state = DialogState.CLOSED;
     }
 
+    public DialogState getState() { return state; }
+    public Interview getCreatedInterview() { return resultInterview; }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         validateButton.setDisable(true);
         validateForm();
     }
 
-    public void createInterview(){
+    @FXML
+    private void createInterview(){
         if (validateForm()) {
 
             resultInterview = new Interview(interviewTitle.getText(),
@@ -81,27 +87,14 @@ public class NewInterviewController implements Initializable {
         }
     }
 
-    private boolean validateForm() {
-        System.out.println(participantName.getText());
-        System.out.println(interviewDate.getValue());
-        System.out.println(chosenFile);
-        boolean formIsValide = (!participantName.getText().equals("") &&
-                interviewDate.getValue() != null &&
-                chosenFile != null
-        );
-        validateButton.setDisable(!formIsValide);
-        return formIsValide;
-    }
-
-    public void closeWindow() {
+    @FXML
+    private void closeWindow() {
         state = DialogState.CLOSED;
         stage.close();
     }
 
-    public DialogState getState() { return state; }
-    public Interview getCreatedInterview() { return resultInterview; }
-
-    public void openFileChooser(){
+    @FXML
+    private void openFileChooser(){
         FileChooser fileChooser = new FileChooser();
         ArrayList<String> l = new ArrayList<String>();
         l.add("*.txt");
@@ -129,6 +122,47 @@ public class NewInterviewController implements Initializable {
             chosenFilename.setText("/");
             interviewTextExtract.setText("");
         }
+        validateForm();
+    }
+
+    // Helpers:
+    private boolean validateForm() {
+        boolean formIsValide = (!participantName.getText().equals("") &&
+                interviewDate.getValue() != null &&
+                chosenFile != null
+        );
+        validateButton.setDisable(!formIsValide);
+        return formIsValide;
+    }
+
+    private void setTitle() {
+        if (interviewDate.getValue() != null) {
+            String date = interviewDate.getValue().toString();
+            if(!date.equals("")) {
+                interviewTitle.setText(participantName.getText() + "_" + date);
+            }
+            if(participantName.getText().equals("")) {
+                interviewTitle.setText("");
+            }
+        }
+    }
+
+    // Events:
+    @FXML
+    private void participantNameOnKeyReleased(KeyEvent keyEvent) {
+        setTitle();
+        validateForm();
+    }
+
+    @FXML
+    private void interviewDateOnKeyReleased(KeyEvent keyEvent) {
+        setTitle();
+        validateForm();
+    }
+
+    @FXML
+    private void interviewDateOnAction(ActionEvent actionEvent) {
+        setTitle();
         validateForm();
     }
 }
