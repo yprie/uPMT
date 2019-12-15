@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +26,7 @@ import java.time.LocalDate;
 public class InterviewPanelController implements Initializable {
     private Interview interview;
     private boolean collapsed = false;
+    private double panePosition;
 
     static private BorderPane root;
     @FXML private TextArea textInterview;
@@ -34,8 +36,10 @@ public class InterviewPanelController implements Initializable {
     @FXML private BorderPane headerGrid;
     @FXML private StackPane stackForDragDrop;
     @FXML private BorderPane topBarContainerTextInterview;
+    private SplitPane mainSplitPane;
 
-    public InterviewPanelController(Interview interview) {
+    public InterviewPanelController(Interview interview, SplitPane mainSplitPane) {
+        this.mainSplitPane = mainSplitPane;
         // DEBUG >>>
         interview = new Interview("Joseph", LocalDate.now(), new InterviewText("blablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhoho"));
         this.interview = interview;
@@ -62,6 +66,7 @@ public class InterviewPanelController implements Initializable {
         textInterview.setText(interview.getInterviewText().getText());
         textInterviewTitle.setText(interview.getParticipantName());
         textInterviewComment.setText(interview.getComment());
+        panePosition = mainSplitPane.getDividers().get(1).getPosition();
     }
 
     // Events:
@@ -72,25 +77,14 @@ public class InterviewPanelController implements Initializable {
             buttonCollapseInterviewPanel.setImage(new Image("/images/openMenuBlack.png"));
             topBarContainerTextInterview.setCenter(null);
             root.setCenter(null);
-            //root.setMaxWidth(root.USE_COMPUTED_SIZE);
-
-            /*headerGrid.setVisible(false);
-            headerGrid.managedProperty().bind(headerGrid.visibleProperty());
-            stackForDragDrop.setVisible(false);
-            stackForDragDrop.managedProperty().bind(stackForDragDrop.visibleProperty());
-            */
+            mainSplitPane.setDividerPosition(1,1.0);
         } else {
             // open
             buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
             topBarContainerTextInterview.setCenter(headerGrid);
             root.setCenter(stackForDragDrop);
-            //root.setMaxWidth(buttonCollapseInterviewPanel.getFitWidth());
-
-            /*headerGrid.setVisible(true);
-            headerGrid.managedProperty().bind(headerGrid.visibleProperty());
-            stackForDragDrop.setVisible(true);
-            stackForDragDrop.managedProperty().bind(stackForDragDrop.visibleProperty());
-            */
+            //root.setMaxWidth(root.USE_COMPUTED_SIZE);
+            mainSplitPane.setDividerPosition(1,panePosition);
         }
         collapsed = !collapsed;
     }
