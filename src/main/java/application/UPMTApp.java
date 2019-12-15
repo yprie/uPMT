@@ -29,23 +29,18 @@ public class UPMTApp {
 
         Configuration.loadAppConfiguration();
         HistoryManager.init(appCommandFactory);
-        startApp();
 
+        Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
+        primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication().execute(); });
+        primaryStage.show();
+
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/MainView/MainView.fxml"));
         loader.setResources(Configuration.langBundle);
         loader.setClassLoader(getClass().getClassLoader());
         loader.load();
-    }
-
-    private void startApp() {
-        Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
-        primaryStage.setTitle("uPMT");
-        primaryStage.setScene(mainScene);
-        primaryStage.setMaximized(true);
-        primaryStage.show();
     }
 
 
@@ -67,7 +62,7 @@ public class UPMTApp {
     public UUID getLastSavedCommandId() { return lastSavedCommandId; }
 
     public void restartApp() {
-        startApp();
+        primaryStage.getScene().setRoot(RootLayoutController.createRootLayout(rootLayoutController));
         if(getCurrentProject() != null)
             setCurrentProject(getCurrentProject(), currentProjectPath);
     }

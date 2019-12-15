@@ -78,7 +78,8 @@ public abstract class SchemaTreeCellController implements Initializable {
 
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
-                        HistoryManager.addCommand(new RenameSchemaTreePluggable(element, renamingField.getText()), !element.mustBeRenamed());
+                        if(renamingField.getLength() > 0)
+                            HistoryManager.addCommand(new RenameSchemaTreePluggable(element, renamingField.getText()), !element.mustBeRenamed());
                         passInRenamingMode(false);
                     }
                 });
