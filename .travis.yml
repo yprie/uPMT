@@ -24,6 +24,8 @@ before_cache:
 after_success:
  - java build/libs/uPMT.jar
  - build/image/bin/uPMT
+ - ls -la build
+ - ls -la build/jpackage
 
 before_deploy:
  - git config --local user.name "Thykof"
