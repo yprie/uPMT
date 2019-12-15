@@ -69,6 +69,7 @@ runtime {
 
     // OSX
     jpackage {
+        targetPlatformName = "osx"
         jpackageHome = '/Users/travis/openjdk11'
         //outputDir = 'my-packaging' // default: jpackage
         // imageOutputDir = file("$buildDir/my-packaging-image")
@@ -83,6 +84,7 @@ runtime {
 
     // Windows
     jpackage {
+        targetPlatformName = "windows"
         jpackageHome = 'jdk-11.0.2'
         //outputDir = 'my-packaging' // default: jpackage
         // imageOutputDir = file("$buildDir/my-packaging-image")
