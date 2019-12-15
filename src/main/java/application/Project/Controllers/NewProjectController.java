@@ -64,6 +64,9 @@ public class NewProjectController implements Initializable  {
         SchemaTreeRoot empty = new SchemaTreeRoot(Configuration.langBundle.getString("empty_schema_tree_view"));
         choixSchema.getItems().add(empty);
         choixSchema.setValue(empty);
+
+        valider.setDisable(true);
+        valider.disableProperty().bind(nomProjet.lengthProperty().isEqualTo(0));
     }
 
     public void createProject(){
