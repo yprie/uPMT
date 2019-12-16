@@ -4,21 +4,20 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
        <ButtonBar prefHeight="40.0" prefWidth="200.0">
            <buttons>
-               <Button fx:id="addInterviewButton" mnemonicParsing="false" stylesheets="/css/application.css" text="%add_interview"/>
+               <Button fx:id="addInterviewButton" mnemonicParsing="false" stylesheets="/css/application.css" text="%add_interview" />
            </buttons>
-           <VBox.margin>
-               <Insets left="15.0" right="15.0" />
-           </VBox.margin>
+         <padding>
+            <Insets left="15.0" right="15.0" />
+         </padding>
        </ButtonBar>
    </top>
     <center>
-        <ListView fx:id="interviewList"/>
+        <ListView fx:id="interviewList" />
     </center>
 </BorderPane>
