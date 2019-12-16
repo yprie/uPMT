@@ -35,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.DialogState;
 
 import java.io.IOException;
 import java.net.URL;
@@ -98,7 +99,7 @@ public class ProjectSelectionController implements Initializable{
 
 	public void NewProjectDialog(){
 		NewProjectController newProjectController = NewProjectController.createNewProject();
-		if(newProjectController.getState() == NewProjectController.State.SUCCESS) {
+		if(newProjectController.getState() == DialogState.SUCCESS) {
 			resultProject = newProjectController.getCreatedProject();
 			state = State.SUCCESS;
 			stage.close();

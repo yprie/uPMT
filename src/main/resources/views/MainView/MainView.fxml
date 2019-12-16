@@ -15,10 +15,17 @@
                   <!-- InterviewSelectorController here -->
                </items>
             </SplitPane>
+
             <!-- modelisationSpace -->
-            <ModelisationSpaceController />
+            <ModelisationSpaceController fx:id=""/>
+
             <!-- Interview are -->
-            <BorderPane fx:id="paneOfTextArea" prefHeight="200.0" prefWidth="200.0"></BorderPane>
+            <SplitPane fx:id="paneOfTextArea" prefHeight="200.0" prefWidth="200.0">
+               <items>
+                  <!-- Interview here -->
+               </items>
+            </SplitPane>
+
          </items>
       </SplitPane>
    </center>

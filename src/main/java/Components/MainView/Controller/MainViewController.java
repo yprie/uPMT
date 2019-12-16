@@ -22,6 +22,7 @@ package Components.MainView.Controller;
 
 import application.Project.Models.Project;
 import Components.SchemaTree.Controllers.SchemaTreeController;
+import Components.InterviewPanel.Controllers.InterviewPanelController;
 import application.Configuration.Configuration;
 import interviewSelector.commands.InterviewSelectorCommandFactory;
 import interviewSelector.controllers.InterviewSelectorController;
@@ -30,6 +31,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,6 +45,7 @@ public class MainViewController implements Initializable {
 	private @FXML SplitPane leftPane;
 
 	private InterviewSelectorController interviewSelector;
+	private @FXML SplitPane paneOfTextArea;
 
 	public static Node createMainView(MainViewController controller) {
 		try {
@@ -77,6 +80,10 @@ public class MainViewController implements Initializable {
 			interviewSelector.unbind();
 		interviewSelector = new InterviewSelectorController(project.interviewsProperty(), new InterviewSelectorCommandFactory(project));
 		leftPane.getItems().add(InterviewSelectorController.createInterviewSelector(interviewSelector));
+
+		//Set the interview panel
+		InterviewPanelController interviewPanel = new InterviewPanelController(project.getSelectedInterview());
+		paneOfTextArea.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));
 	}
 
 	@Override

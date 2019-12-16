@@ -7,12 +7,14 @@ import java.time.LocalDate;
 
 public class Interview implements Serializable {
 
+    private String title;
     private String participantName;
     private LocalDate date;
     private String comment;
     private InterviewText interviewText;
 
-    public Interview(String participantName, LocalDate date, InterviewText interviewText) {
+    public Interview(String title, String participantName, LocalDate date, InterviewText interviewText) {
+        this.title = title;
         this.participantName = participantName;
         this.date = date;
         this.interviewText = interviewText;

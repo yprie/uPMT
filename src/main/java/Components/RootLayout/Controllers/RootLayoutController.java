@@ -27,6 +27,7 @@ import application.Project.Models.Project;
 import application.Commands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
 import Components.MainView.Controller.MainViewController;
+import interviewSelector.controllers.NewInterviewController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +39,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.*;
+import utils.DialogState;
 import utils.OS;
 
 import java.awt.im.InputContext;
@@ -150,7 +152,10 @@ public class RootLayoutController implements Initializable {
 
 	@FXML
 	public void newInterview() {
-		//TODO -- maybe move this control somewhere else ?
+		NewInterviewController controller = NewInterviewController.createNewInterview();
+		if(controller.getState() == DialogState.SUCCESS){
+			HistoryManager.addCommand(appCommandFactory.addInterview(controller.getCreatedInterview()), true);
+		}
 	}
 
 	private void saveRequest(WindowEvent event) throws IOException{

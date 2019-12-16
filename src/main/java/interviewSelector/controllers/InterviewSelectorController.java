@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import utils.DialogState;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,10 @@ public class InterviewSelectorController implements Initializable  {
     public void initialize(URL location, ResourceBundle resources) {
 
         addInterviewButton.setOnAction(event -> {
-            HistoryManager.addCommand(commandFactory.addInterview(new Interview("Joe", LocalDate.now(), new InterviewText("awesome"))), true);
+            NewInterviewController controller = NewInterviewController.createNewInterview();
+            if(controller.getState() == DialogState.SUCCESS){
+                HistoryManager.addCommand(commandFactory.addInterview(controller.getCreatedInterview()), true);
+            }
         });
 
         interviewList.setCellFactory(listView -> {return new InterviewSelectorCell(commandFactory); });

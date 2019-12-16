@@ -48,7 +48,7 @@ public class ProjectLoader {
 
     private static Interview convertInterview(InterviewV1 interview) {
         return pool.getOrCreateElement(interview, (interviewV1) -> {
-            return new Interview(interviewV1.participantName, interviewV1.date, convertInterviewText(interviewV1.interviewText));
+            return new Interview("FakeTitle", interviewV1.participantName, interviewV1.date, convertInterviewText(interviewV1.interviewText));
         });
     }
 
