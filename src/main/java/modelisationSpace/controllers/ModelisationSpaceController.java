@@ -1,4 +1,4 @@
-package modelisationSpace.controllers;
+package modelisation_space.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

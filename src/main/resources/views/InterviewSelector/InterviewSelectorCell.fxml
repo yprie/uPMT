@@ -9,7 +9,7 @@
 <?import javafx.scene.control.MenuButton?>
 <BorderPane fx:id="container" prefHeight="40.0" prefWidth="176.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 <left>
-    <ImageView fx:id="imageIcon" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+    <ImageView fx:id="pictureView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
 </left>
     <right>
         <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview" stylesheets="/css/application.css" BorderPane.alignment="CENTER">
@@ -28,14 +28,6 @@
             <padding>
                 <Insets left="10.0" />
             </padding>
-         <right>
-
-         </right>
-         <right>
-            <ImageView fx:id="imageView"  fitHeight="30.0"  fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-
-            </ImageView>
-         </right>
         </BorderPane>
     </center>
 </BorderPane>
