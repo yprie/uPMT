@@ -46,6 +46,8 @@ public class InterviewSelectorCellControler implements Initializable {
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
             if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
         });
+
+
     }
 
     public void setOnHover(boolean YoN) {
@@ -56,4 +58,6 @@ public class InterviewSelectorCellControler implements Initializable {
     }
 
     public boolean getOnHover() { return optionsMenu.isVisible(); }
+
+
 }

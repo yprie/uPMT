@@ -6,10 +6,12 @@ import interviewSelector.Models.Interview;
 public class AddInterviewCommand extends InterviewSelectorCommand<Void, Void> {
 
     private Interview interview;
+    private Interview previousSelectedInterview;
 
     public AddInterviewCommand(Project p, Interview i) {
         super(p);
         this.interview = i;
+        this.previousSelectedInterview = p.getSelectedInterview();
     }
 
     @Override
@@ -21,6 +23,8 @@ public class AddInterviewCommand extends InterviewSelectorCommand<Void, Void> {
     @Override
     public Void undo() {
         project.removeInterview(interview);
+        if(previousSelectedInterview != null)
+            new SelectCurrentInterviewCommand(project, previousSelectedInterview).execute();
         return null;
     }
 }

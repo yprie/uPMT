@@ -1,8 +1,10 @@
 package interviewSelector;
 
 import interviewSelector.commands.InterviewSelectorCommandFactory;
+import interviewSelector.commands.SelectCurrentInterviewCommand;
 import interviewSelector.controllers.InterviewSelectorCellControler;
 import interviewSelector.Models.Interview;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;

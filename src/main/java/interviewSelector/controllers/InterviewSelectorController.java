@@ -6,6 +6,11 @@ import application.History.HistoryManager;
 import interviewSelector.InterviewSelectorCell;
 import interviewSelector.Models.Interview;
 import interviewSelector.commands.InterviewSelectorCommandFactory;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,10 +35,15 @@ public class InterviewSelectorController implements Initializable  {
 
     private ObservableList<Interview> interviews;
     private ListChangeListener<Interview> listChangeListener;
+
+    private ObservableValue<Interview> selectedInterview;
+    private ChangeListener<Interview> selectedInterviewChanged;
+
     private InterviewSelectorCommandFactory commandFactory;
 
-    public InterviewSelectorController(ObservableList<Interview> interviews, InterviewSelectorCommandFactory commandFactory) {
+    public InterviewSelectorController(ObservableList<Interview> interviews, ObservableValue<Interview> selectedInterview, InterviewSelectorCommandFactory commandFactory) {
         this.interviews = interviews;
+        this.selectedInterview = selectedInterview;
         this.commandFactory = commandFactory;
     }
 
@@ -79,11 +89,23 @@ public class InterviewSelectorController implements Initializable  {
             }
         };
         interviews.addListener(listChangeListener);
+
+        selectedInterviewChanged = (observable, oldValue, newValue) -> {
+            interviewList.getSelectionModel().select(interviewList.getItems().indexOf(newValue));
+        };
+        selectedInterview.addListener(selectedInterviewChanged);
+
+        interviewList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(oldValue != newValue)
+                commandFactory.selectInterview(newValue).execute();
+        });
     }
 
     public void unbind() {
         if(this.interviews != null && listChangeListener != null) {
             this.interviews.removeListener(listChangeListener);
         }
+        if(selectedInterview != null && selectedInterviewChanged != null)
+            selectedInterview.removeListener(selectedInterviewChanged);
     }
 }

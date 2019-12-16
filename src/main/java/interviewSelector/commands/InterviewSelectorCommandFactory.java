@@ -10,4 +10,5 @@ public class InterviewSelectorCommandFactory {
 
     public AddInterviewCommand addInterview(Interview interview) { return new AddInterviewCommand(project, interview); }
     public DeleteInterviewCommand removeInterview(Interview interview) { return new DeleteInterviewCommand(project, interview); }
+    public SelectCurrentInterviewCommand selectInterview(Interview interview) { return new SelectCurrentInterviewCommand(project, interview); }
 }

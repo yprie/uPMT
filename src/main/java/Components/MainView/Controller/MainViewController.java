@@ -78,7 +78,7 @@ public class MainViewController implements Initializable {
 		//Set interviewSelector
 		if(interviewSelector != null)
 			interviewSelector.unbind();
-		interviewSelector = new InterviewSelectorController(project.interviewsProperty(), new InterviewSelectorCommandFactory(project));
+		interviewSelector = new InterviewSelectorController(project.interviewsProperty(), project.selectedInterviewProperty(), new InterviewSelectorCommandFactory(project));
 		leftPane.getItems().add(InterviewSelectorController.createInterviewSelector(interviewSelector));
 
 		//Set the interview panel

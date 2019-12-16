@@ -4,6 +4,7 @@ import Persistency.ProjectSaver;
 import Components.SchemaTree.Cell.Models.SchemaTreeRoot;
 import interviewSelector.Models.Interview;
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,8 +21,7 @@ public class Project implements Serializable {
     private SimpleListProperty<Interview> interviews;
     private ReadOnlyListWrapper<Interview> readOnlyInterviews;
 
-    private Interview selectedInterview;
-    private ReadOnlyObjectWrapper<Interview> readOnlySelectedInterview;
+    private SimpleObjectProperty<Interview> selectedInterview;
 
     public Project(String name, SchemaTreeRoot baseScheme) {
         this.name = new SimpleStringProperty(name);
@@ -30,7 +30,7 @@ public class Project implements Serializable {
         this.interviews = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.readOnlyInterviews = new ReadOnlyListWrapper<>(this.interviews);
 
-        this.readOnlySelectedInterview = new ReadOnlyObjectWrapper<Interview>(selectedInterview);
+        this.selectedInterview = new SimpleObjectProperty<>();
     }
 
     public String getName() { return this.name.get(); };
@@ -45,14 +45,21 @@ public class Project implements Serializable {
     }
     public void removeInterview(Interview i) {
         interviews.remove(i);
-        if(i == selectedInterview)
+        if(i == selectedInterview.get())
             setSelectedInterview(interviews.size() > 0 ? interviews.get(0) : null);
     }
     public ReadOnlyListWrapper<Interview> interviewsProperty() { return readOnlyInterviews; }
 
-    public Interview getSelectedInterview() { return selectedInterview; }
-    public void setSelectedInterview(Interview interview) { selectedInterview = interview; }
-    public ReadOnlyObjectWrapper<Interview> selectedInterviewProperty() { return readOnlySelectedInterview; }
+    public Interview getSelectedInterview() { return selectedInterview.get(); }
+    public void setSelectedInterview(Interview interview) {
+        System.out.println(interview);
+        if(interviews.contains(interview) || interview == null){
+            selectedInterview.set(interview);
+        }
+        else
+            throw new IllegalArgumentException("The selected interview is not contained in the current project !");
+    }
+    public ObservableValue<Interview> selectedInterviewProperty() { return selectedInterview; }
 
     public void saveAs(String name, String path) throws IOException {
         if(!name.contains(".upmt"))
