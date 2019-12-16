@@ -1,4 +1,4 @@
-package Components.InterviewSelector.Models;
+package interviewSelector.Models;
 
 import Components.InterviewPanel.Models.InterviewText;
 

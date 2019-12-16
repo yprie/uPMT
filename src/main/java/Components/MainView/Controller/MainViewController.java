@@ -20,10 +20,11 @@
 
 package Components.MainView.Controller;
 
-import Components.InterviewTree.Controller.InterviewTreeController;
 import application.Project.Models.Project;
 import Components.SchemaTree.Controllers.SchemaTreeController;
 import application.Configuration.Configuration;
+import interviewSelector.commands.InterviewSelectorCommandFactory;
+import interviewSelector.controllers.InterviewSelectorController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,10 +40,9 @@ public class MainViewController implements Initializable {
 	private Project project;
 
 	private @FXML SplitPane mainSplitPane;
-	private @FXML
-	SchemaTreeController schemaTree;
 	private @FXML SplitPane leftPane;
-	private @FXML TreeView<String> treeViewInterview;
+
+	private InterviewSelectorController interviewSelector;
 
 	public static Node createMainView(MainViewController controller) {
 		try {
@@ -70,13 +70,13 @@ public class MainViewController implements Initializable {
 
 	private void refreshContent() {
 		//Set SchemaTree view
-		SchemaTreeController schemaController = new SchemaTreeController(project.getSchemaTreeRoot());
-		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
+		leftPane.getItems().add(SchemaTreeController.createSchemaTree(project.getSchemaTreeRoot()));
 
-		//Set InterviewTree view
-		InterviewTreeController interviewController = new InterviewTreeController(project.getInterviewTreeRoot());
-		leftPane.getItems().add(InterviewTreeController.createInterviewTree(interviewController));
-
+		//Set interviewSelector
+		if(interviewSelector != null)
+			interviewSelector.unbind();
+		interviewSelector = new InterviewSelectorController(project.interviewsProperty(), new InterviewSelectorCommandFactory(project));
+		leftPane.getItems().add(InterviewSelectorController.createInterviewSelector(interviewSelector));
 	}
 
 	@Override

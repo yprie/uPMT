@@ -1,7 +1,9 @@
-package interviewSelector.Controllers;
+package interviewSelector.controllers;
 
+import application.History.HistoryManager;
 import interviewSelector.Models.Interview;
 import application.Configuration.Configuration;
+import interviewSelector.commands.InterviewSelectorCommandFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -13,7 +15,7 @@ import utils.ResourceLoader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InterviewListCellControler implements Initializable {
+public class InterviewSelectorCellControler implements Initializable {
 
     @FXML Label name;
     @FXML ImageView pictureView;
@@ -21,9 +23,11 @@ public class InterviewListCellControler implements Initializable {
 
     protected Interview interview;
     private boolean shouldRemoveMenuButtonVisibility;
+    private InterviewSelectorCommandFactory commandFactory;
 
-    public InterviewListCellControler(Interview interview) {
+    public InterviewSelectorCellControler(Interview interview, InterviewSelectorCommandFactory commandFactory) {
         this.interview = interview;
+        this.commandFactory = commandFactory;
     }
 
     @Override
@@ -34,8 +38,9 @@ public class InterviewListCellControler implements Initializable {
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
-            System.out.println("delete !");
+            HistoryManager.addCommand(commandFactory.removeInterview(interview), true);
         });
+        optionsMenu.getItems().add(deleteButton);
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {

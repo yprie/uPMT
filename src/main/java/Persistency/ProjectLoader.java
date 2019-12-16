@@ -1,6 +1,6 @@
 package Persistency;
 
-import Components.InterviewSelector.Models.Interview;
+import interviewSelector.Models.Interview;
 import Components.InterviewPanel.Models.InterviewText;
 import application.Project.Models.Project;
 import Persistency.v1.*;
