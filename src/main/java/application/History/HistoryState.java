@@ -28,12 +28,16 @@ public class HistoryState {
         if(startNewUserAction)
             currentUserActionId = UUID.randomUUID();
 
-        command.setUserActionIdentifier(currentUserActionId);
-        next.removeAllElements();
-        canGoForward.set(false);
+        if(!(!canGoBack() && !startNewUserAction)) {
+            command.setUserActionIdentifier(currentUserActionId);
+            next.removeAllElements();
+            canGoForward.set(false);
+            next.push(command);
+            executeSingleAction();
+        }
+        else
+            command.execute();
 
-        next.push(command);
-        executeSingleAction();
     }
 
     void executeUserAction() {
