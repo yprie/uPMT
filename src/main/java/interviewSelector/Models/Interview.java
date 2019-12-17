@@ -18,6 +18,7 @@ public class Interview implements Serializable {
         this.participantName = participantName;
         this.date = date;
         this.interviewText = interviewText;
+        this.comment = "";
     }
 
     public String getParticipantName() { return this.participantName; }

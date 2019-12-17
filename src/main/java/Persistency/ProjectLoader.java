@@ -43,7 +43,10 @@ public class ProjectLoader {
 
     private static Project convertProject(PersistentProject project) {
         ProjectV1 p = (ProjectV1)project;
-        return new Project(p.name, convertSchemaTreeRoot(p.schemaTreeRoot));
+        Project r = new Project(p.name, convertSchemaTreeRoot(p.schemaTreeRoot));
+        for(InterviewV1 i: p.interviews)
+            r.addInterview(convertInterview(i));
+        return r;
     }
 
     private static Interview convertInterview(InterviewV1 interview) {
