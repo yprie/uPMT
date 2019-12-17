@@ -1,4 +1,4 @@
-package Components.InterviewSelector.Models;
+package interviewSelector.Models;
 
 import Components.InterviewPanel.Models.InterviewText;
 
@@ -7,12 +7,14 @@ import java.time.LocalDate;
 
 public class Interview implements Serializable {
 
+    private String title;
     private String participantName;
     private LocalDate date;
     private String comment;
     private InterviewText interviewText;
 
-    public Interview(String participantName, LocalDate date, InterviewText interviewText) {
+    public Interview(String title, String participantName, LocalDate date, InterviewText interviewText) {
+        this.title = title;
         this.participantName = participantName;
         this.date = date;
         this.interviewText = interviewText;
@@ -25,4 +27,8 @@ public class Interview implements Serializable {
     public String getComment() { return this.comment; }
     public void setComment(String comment) { this.comment = comment; }
 
+    //display interview in trees
+    public String getTitle(){
+        return(this.participantName+" "+date.toString());
+    }
 }

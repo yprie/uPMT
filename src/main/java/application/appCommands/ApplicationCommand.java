@@ -1,4 +1,4 @@
-package application.Commands;
+package application.appCommands;
 
 import application.UPMTApp;
 import utils.Command.Executable;

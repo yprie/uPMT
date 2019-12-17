@@ -5,7 +5,7 @@
 
 <?import modelisationSpace.controllers.ModelisationSpaceController?>
 
-<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
          <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
@@ -13,9 +13,9 @@
             <!-- InterviewSelector here -->
          </SplitPane>
          <!-- modelisationSpace -->
-         <ModelisationSpaceController minWidth="400"/>
+         <ModelisationSpaceController />
          <!-- Interview are -->
-         <SplitPane fx:id="paneOfTextArea" prefHeight="200.0" prefWidth="200.0" />
+         <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
       </SplitPane>
    </center>
 </BorderPane>

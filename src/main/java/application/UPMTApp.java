@@ -2,7 +2,7 @@ package application;
 
 import application.History.HistoryManager;
 import application.Project.Models.Project;
-import application.Commands.ApplicationCommandFactory;
+import application.appCommands.ApplicationCommandFactory;
 import application.Configuration.Configuration;
 import Components.RootLayout.Controllers.RootLayoutController;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +34,13 @@ public class UPMTApp {
         primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication().execute(); });
         primaryStage.show();
+
+        //Load the last used project or ask for a new one.
+        if(Configuration.getProjectsPath().length > 0)
+            appCommandFactory.openRecentProject(Configuration.getProjectsPath()[0]).execute();
+        else
+            appCommandFactory.openProjectManagerCommand().execute();
+
 
 
         FXMLLoader loader = new FXMLLoader();

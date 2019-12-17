@@ -24,12 +24,13 @@ import application.Project.Models.Project;
 import Components.SchemaTree.Controllers.SchemaTreeController;
 import Components.InterviewPanel.Controllers.InterviewPanelController;
 import application.Configuration.Configuration;
+import interviewSelector.appCommands.InterviewSelectorCommandFactory;
+import interviewSelector.controllers.InterviewSelectorController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,11 +41,11 @@ public class MainViewController implements Initializable {
 	private Project project;
 
 	private @FXML SplitPane mainSplitPane;
-	private @FXML
-	SchemaTreeController schemaTree;
 	private @FXML SplitPane leftPane;
 	private @FXML SplitPane paneOfTextArea;
-	private @FXML TreeView<String> treeViewInterview;
+
+	private InterviewSelectorController interviewSelector;
+	private InterviewPanelController interviewPanel;
 
 	public static Node createMainView(MainViewController controller) {
 		try {
@@ -72,18 +73,19 @@ public class MainViewController implements Initializable {
 
 	private void refreshContent() {
 		//Set SchemaTree view
-		SchemaTreeController schemaController = new SchemaTreeController(project.getSchemaTreeRoot());
-		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
+		leftPane.getItems().add(SchemaTreeController.createSchemaTree(project.getSchemaTreeRoot()));
+
+		//Set interviewSelector
+		if(interviewSelector != null)
+			interviewSelector.unbind();
+		interviewSelector = new InterviewSelectorController(project.interviewsProperty(), project.selectedInterviewProperty(), new InterviewSelectorCommandFactory(project));
+		leftPane.getItems().add(InterviewSelectorController.createInterviewSelector(interviewSelector));
 
 		//Set the interview panel
-/*		InterviewPanelController interviewPanel = new InterviewPanelController(project.getInterview(), mainSplitPane);
-		paneOfTextArea.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));*/
-
-		//TODO replace the following content with the real interview selector !
-		//Set InterviewSelector
-		treeViewInterview = new TreeView<>();
-		treeViewInterview.setRoot(new TreeItem<String>(Configuration.langBundle.getString("interviews")));
-		leftPane.getItems().add(treeViewInterview);
+		if(interviewPanel != null)
+			interviewPanel.unbind();
+		interviewPanel = new InterviewPanelController(project.selectedInterviewProperty(), mainSplitPane);
+		paneOfTextArea.getItems().add(InterviewPanelController.createInterviewPanel(interviewPanel));
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.DialogState;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +46,7 @@ public class ProjectSelectionController implements Initializable{
 	public enum State { CLOSED, SUCCESS }
 	private State state;
 	private Project resultProject;
+	private String resultProjectPath;
 
 	private Stage stage;
 	private @FXML Button btn_nouveauProjet;
@@ -60,7 +62,7 @@ public class ProjectSelectionController implements Initializable{
 		ProjectSelectionController controller = new ProjectSelectionController(stage);
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(controller.getClass().getResource("views/ProjectSelectionView.fxml"));
+			loader.setLocation(controller.getClass().getResource("/views/Project/ProjectSelectionView.fxml"));
 			loader.setController(controller);
 			loader.setResources(Configuration.langBundle);
 			BorderPane layout = (BorderPane) loader.load();
@@ -98,7 +100,7 @@ public class ProjectSelectionController implements Initializable{
 
 	public void NewProjectDialog(){
 		NewProjectController newProjectController = NewProjectController.createNewProject();
-		if(newProjectController.getState() == NewProjectController.State.SUCCESS) {
+		if(newProjectController.getState() == DialogState.SUCCESS) {
 			resultProject = newProjectController.getCreatedProject();
 			state = State.SUCCESS;
 			stage.close();
@@ -115,6 +117,7 @@ public class ProjectSelectionController implements Initializable{
 		OpenProjectController controller = OpenProjectController.createOpenProjectController(stage);
 		if(controller.getState() == OpenProjectController.State.SUCCESS){
 			resultProject = controller.getResultProject();
+			resultProjectPath = controller.getProjectPath();
 			state = State.SUCCESS;
 			stage.close();
 		}
@@ -122,7 +125,8 @@ public class ProjectSelectionController implements Initializable{
 	
 	public void OpenProjectDialog(){
 		try {
-			resultProject = ProjectLoader.load(tousLesProjets.getSelectionModel().getSelectedItem());
+			resultProjectPath = tousLesProjets.getSelectionModel().getSelectedItem();
+			resultProject = ProjectLoader.load(resultProjectPath);
 			state = State.SUCCESS;
 			stage.close();
 		} catch (Exception e) {
@@ -134,5 +138,5 @@ public class ProjectSelectionController implements Initializable{
 		return state;
 	}
 	public Project getChoosenProject() { return resultProject; }
-
+	public String getChoosenProjectPath() { return resultProjectPath; }
 }
