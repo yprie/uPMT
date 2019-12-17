@@ -19,7 +19,9 @@ import javafx.stage.StageStyle;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
+import java.io.FileInputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.IOException;
 import java.io.File;
@@ -77,11 +79,23 @@ public class NewInterviewController implements Initializable {
     private void createInterview(){
         if (validateForm()) {
 
+            String res = "error during text loading !";
+            byte[] data = new byte[(int) chosenFile.length()];
+            try {
+                FileInputStream fis = new FileInputStream(chosenFile);
+                fis.read(data);
+                fis.close();
+                res = new String(data, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             resultInterview = new Interview(interviewTitle.getText(),
                     participantName.getText(),
                     interviewDate.getValue(),
-                    new InterviewText(interviewComment.getText())
+                    new InterviewText(res)
             );
+            resultInterview.setComment(interviewComment.getText());
             state = DialogState.SUCCESS;
             stage.close();
         }

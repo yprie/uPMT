@@ -96,9 +96,9 @@ public class InterviewPanelController implements Initializable {
     
     private void refreshContent(Interview newInterview) {
         if(newInterview != null) {
-            textInterview.setText(newInterview.getInterviewText().getText());
             textInterviewTitle.setText(newInterview.getParticipantName());
-            textInterviewTitle.setVisible(true);
+            textInterview.setText(newInterview.getInterviewText().getText());
+            textInterview.setVisible(true);
             textInterviewComment.setText(newInterview.getComment());
             textInterviewComment.setVisible(true);
         }
