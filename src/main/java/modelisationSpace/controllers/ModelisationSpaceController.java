@@ -16,7 +16,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     private  @FXML ImageView fake_view;
 
     public ModelisationSpaceController() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/ModelisationSpace/ModelisationSpace.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/modelisationSpace/ModelisationSpace.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
