@@ -76,8 +76,8 @@ public class MainViewController implements Initializable {
 		leftPane.getItems().add(SchemaTreeController.createSchemaTree(schemaController));
 
 		//Set the interview panel
-		InterviewPanelController interviewPanel = new InterviewPanelController(project.getInterview(), mainSplitPane);
-		paneOfTextArea.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));
+/*		InterviewPanelController interviewPanel = new InterviewPanelController(project.getInterview(), mainSplitPane);
+		paneOfTextArea.getItems().add(interviewPanel.createInterviewPanel(interviewPanel));*/
 
 		//TODO replace the following content with the real interview selector !
 		//Set InterviewSelector

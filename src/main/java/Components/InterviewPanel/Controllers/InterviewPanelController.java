@@ -4,6 +4,8 @@ import Components.InterviewPanel.Models.InterviewText;
 import Components.InterviewSelector.Models.Interview;
 import application.Configuration.Configuration;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,9 +26,7 @@ import java.util.ResourceBundle;
 import java.time.LocalDate;
 
 public class InterviewPanelController implements Initializable {
-    private Interview interview;
-    private boolean collapsed = false;
-    private double panePosition;
+
 
     static private BorderPane root;
     @FXML private TextArea textInterview;
@@ -36,15 +36,18 @@ public class InterviewPanelController implements Initializable {
     @FXML private BorderPane headerGrid;
     @FXML private StackPane stackForDragDrop;
     @FXML private BorderPane topBarContainerTextInterview;
+
+    private boolean collapsed = false;
+    private double panePosition;
     private SplitPane mainSplitPane;
 
-    public InterviewPanelController(Interview interview, SplitPane mainSplitPane) {
+    private ObservableValue<Interview> interview;
+    private ChangeListener<Interview> interviewChangeListener;
+
+    public InterviewPanelController(ObservableValue<Interview> interview, SplitPane mainSplitPane) {
         this.mainSplitPane = mainSplitPane;
-        // DEBUG >>>
-        interview = new Interview("Joseph", LocalDate.now(), new InterviewText("blablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablablahohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhohoblablabla\nhoho"));
         this.interview = interview;
-        this.interview.setComment("La description est ici.La description est ici.La description est ici.La description est ici.La description est ici.La description est ici.La description est ici.");
-        // <<< DEBUG
+        this.interviewChangeListener = (observable, oldValue, newValue) -> refreshContent();
     }
 
     public static Node createInterviewPanel(InterviewPanelController controller) {
@@ -63,9 +66,7 @@ public class InterviewPanelController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        textInterview.setText(interview.getInterviewText().getText());
-        textInterviewTitle.setText(interview.getParticipantName());
-        textInterviewComment.setText(interview.getComment());
+        bind();
         panePosition = mainSplitPane.getDividers().get(1).getPosition();
     }
 
@@ -87,5 +88,14 @@ public class InterviewPanelController implements Initializable {
             mainSplitPane.setDividerPosition(1,panePosition);
         }
         collapsed = !collapsed;
+    }
+
+    private void bind() { interview.addListener(interviewChangeListener); }
+    public void unbind() { interview.removeListener(interviewChangeListener); }
+    
+    private void refreshContent() {
+        textInterview.setText(interview.getValue().getInterviewText().getText());
+        textInterviewTitle.setText(interview.getValue().getParticipantName());
+        textInterviewComment.setText(interview.getValue().getComment());
     }
 }
