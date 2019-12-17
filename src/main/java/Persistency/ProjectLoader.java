@@ -1,6 +1,6 @@
 package Persistency;
 
-import Components.InterviewSelector.Models.Interview;
+import interviewSelector.Models.Interview;
 import Components.InterviewPanel.Models.InterviewText;
 import application.Project.Models.Project;
 import Persistency.v1.*;
@@ -43,12 +43,15 @@ public class ProjectLoader {
 
     private static Project convertProject(PersistentProject project) {
         ProjectV1 p = (ProjectV1)project;
-        return new Project(p.name, convertSchemaTreeRoot(p.schemaTreeRoot));
+        Project r = new Project(p.name, convertSchemaTreeRoot(p.schemaTreeRoot));
+        for(InterviewV1 i: p.interviews)
+            r.addInterview(convertInterview(i));
+        return r;
     }
 
     private static Interview convertInterview(InterviewV1 interview) {
         return pool.getOrCreateElement(interview, (interviewV1) -> {
-            return new Interview(interviewV1.participantName, interviewV1.date, convertInterviewText(interviewV1.interviewText));
+            return new Interview("FakeTitle", interviewV1.participantName, interviewV1.date, convertInterviewText(interviewV1.interviewText));
         });
     }
 

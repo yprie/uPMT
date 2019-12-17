@@ -1,10 +1,9 @@
-package application.Commands;
+package application.appCommands;
 
 import application.Configuration.Configuration;
 import application.UPMTApp;
 import javafx.scene.control.Alert;
 
-import java.io.IOException;
 import java.util.Locale;
 
 public class ChangeLanguageCommand extends ApplicationCommand<Void> {

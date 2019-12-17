@@ -26,7 +26,8 @@ public class SchemaTreeController implements Initializable {
 
     public SchemaTreeController(SchemaTreeRoot root) { this.root = root; }
 
-    public static Node createSchemaTree(SchemaTreeController controller) {
+    public static Node createSchemaTree(SchemaTreeRoot root) {
+        SchemaTreeController controller = new SchemaTreeController(root);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(controller.getClass().getResource("/views/SchemaTree/SchemaTree.fxml"));

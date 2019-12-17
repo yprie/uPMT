@@ -1,6 +1,6 @@
 package Persistency;
 
-import Components.InterviewSelector.Models.Interview;
+import interviewSelector.Models.Interview;
 import Components.InterviewPanel.Models.InterviewText;
 import application.Project.Models.Project;
 import Persistency.v1.*;
@@ -31,6 +31,9 @@ public class ProjectSaver {
         ProjectV1 r = new ProjectV1();
         r.name = project.getName();
         r.schemaTreeRoot = convertSchemaTreeRoot(project.getSchemaTreeRoot());
+        r.interviews = new PersistentListV1<InterviewV1>(InterviewV1::new);
+        for(Interview i: project.interviewsProperty().get())
+            r.interviews.add(convertInterview(i));
         return r;
     }
 
@@ -62,7 +65,7 @@ public class ProjectSaver {
         return pool.getOrCreateElement(root, schemaTreeRoot -> {
             SchemaTreeRootV1 r = new SchemaTreeRootV1();
             convertSchemaElement(schemaTreeRoot, r);
-            r.folders = new PersistentListV1<>(() -> new SchemaFolderV1());
+            r.folders = new PersistentListV1<>(SchemaFolderV1::new);
             for(SchemaFolder f: schemaTreeRoot.foldersProperty()) { r.folders.add(convertSchemaFolder(f)); };
             return r;
         });

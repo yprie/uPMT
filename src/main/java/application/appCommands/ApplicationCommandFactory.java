@@ -1,6 +1,9 @@
-package application.Commands;
+package application.appCommands;
 
 import application.UPMTApp;
+import interviewSelector.Models.Interview;
+import interviewSelector.modelCommands.AddInterviewCommand;
+
 import java.util.Locale;
 
 public class ApplicationCommandFactory {
@@ -13,6 +16,7 @@ public class ApplicationCommandFactory {
 
     public CloseApplicationCommand closeApplication() { return new CloseApplicationCommand(application); }
     public ChangeApplicationTitleCommand changeApplicationTitle(String newTitle) { return new ChangeApplicationTitleCommand(application, newTitle); }
+    public OpenProjectManagerCommand openProjectManagerCommand() { return new OpenProjectManagerCommand(application); }
     public NewProjectCommand newProject() { return new NewProjectCommand(application); }
     public OpenProjectFromFileCommand openProject() { return new OpenProjectFromFileCommand(application); }
     public OpenRecentProjectCommand openRecentProject(String path) { return new OpenRecentProjectCommand(application, path); }
@@ -20,4 +24,6 @@ public class ApplicationCommandFactory {
     public SaveProjectAsCommand saveProjectAs() { return new SaveProjectAsCommand(application); }
     public ChangeLanguageCommand changeLanguage(Locale locale) { return new ChangeLanguageCommand(application, locale); }
     public ProjectSavingStatusChangedCommand projectSavingStatusChanged() { return new ProjectSavingStatusChangedCommand(application); }
+    public AddInterviewCommand addInterview(Interview interview) { return new AddInterviewCommand(application.getCurrentProject(), interview); }
+
 }

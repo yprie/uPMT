@@ -1,6 +1,6 @@
 package application.History;
 
-import application.Commands.ApplicationCommandFactory;
+import application.appCommands.ApplicationCommandFactory;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 
 import java.util.UUID;

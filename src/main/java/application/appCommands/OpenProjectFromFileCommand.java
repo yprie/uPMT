@@ -1,4 +1,4 @@
-package application.Commands;
+package application.appCommands;
 
 import application.Project.Controllers.OpenProjectController;
 import application.UPMTApp;
