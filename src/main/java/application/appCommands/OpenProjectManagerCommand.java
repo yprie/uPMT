@@ -1,8 +1,8 @@
 package application.appCommands;
 
-import application.Project.Controllers.ProjectSelectionController;
+import application.project.controllers.ProjectSelectionController;
 import application.UPMTApp;
-import interviewSelector.appCommands.CreateNewInterviewCommand;
+import components.interviewSelector.appCommands.CreateNewInterviewCommand;
 
 public class OpenProjectManagerCommand extends ApplicationCommand<Void> {
 

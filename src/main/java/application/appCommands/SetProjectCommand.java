@@ -1,8 +1,8 @@
 package application.appCommands;
 
-import application.History.HistoryManager;
-import application.Project.Models.Project;
-import application.Configuration.Configuration;
+import application.history.HistoryManager;
+import application.project.models.Project;
+import application.configuration.Configuration;
 import application.UPMTApp;
 
 import java.io.IOException;

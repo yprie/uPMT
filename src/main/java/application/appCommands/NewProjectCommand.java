@@ -1,6 +1,6 @@
 package application.appCommands;
 
-import application.Project.Controllers.NewProjectController;
+import application.project.controllers.NewProjectController;
 import application.UPMTApp;
 import utils.DialogState;
 

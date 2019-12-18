@@ -1,8 +1,8 @@
 package application.appCommands;
 
-import application.Project.Controllers.ProjectDialogBox;
-import application.Project.Models.Project;
-import Persistency.ProjectLoader;
+import application.project.controllers.ProjectDialogBox;
+import application.project.models.Project;
+import persistency.ProjectLoader;
 import application.UPMTApp;
 
 public class OpenRecentProjectCommand extends ApplicationCommand<Void> {

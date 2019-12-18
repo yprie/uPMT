@@ -1,7 +1,7 @@
 package application.appCommands;
 
 import application.UPMTApp;
-import utils.Command.Executable;
+import utils.command.Executable;
 
 public abstract class ApplicationCommand<ExecuteResult> implements Executable<ExecuteResult> {
 

@@ -1,8 +1,8 @@
 package application.appCommands;
 
 import application.UPMTApp;
-import interviewSelector.Models.Interview;
-import interviewSelector.modelCommands.AddInterviewCommand;
+import components.interviewSelector.models.Interview;
+import components.interviewSelector.modelCommands.AddInterviewCommand;
 
 import java.util.Locale;
 

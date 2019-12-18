@@ -1,10 +1,10 @@
 package application;
 
-import application.History.HistoryManager;
-import application.Project.Models.Project;
+import application.history.HistoryManager;
+import application.project.models.Project;
 import application.appCommands.ApplicationCommandFactory;
-import application.Configuration.Configuration;
-import Components.RootLayout.Controllers.RootLayoutController;
+import application.configuration.Configuration;
+import components.rootLayout.Controllers.RootLayoutController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

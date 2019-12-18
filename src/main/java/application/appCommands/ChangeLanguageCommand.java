@@ -1,6 +1,6 @@
 package application.appCommands;
 
-import application.Configuration.Configuration;
+import application.configuration.Configuration;
 import application.UPMTApp;
 import javafx.scene.control.Alert;
 

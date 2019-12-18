@@ -1,9 +1,9 @@
 package application.appCommands;
 
-import application.History.HistoryManager;
-import application.Project.Controllers.ProjectDialogBox;
-import Persistency.ProjectSaver;
-import application.Configuration.Configuration;
+import application.history.HistoryManager;
+import application.project.controllers.ProjectDialogBox;
+import persistency.ProjectSaver;
+import application.configuration.Configuration;
 import application.UPMTApp;
 
 public class SaveProjectCommand extends ApplicationCommand<Void> {

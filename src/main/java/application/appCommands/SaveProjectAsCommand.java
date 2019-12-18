@@ -1,9 +1,9 @@
 package application.appCommands;
 
-import Persistency.ProjectSaver;
-import application.History.HistoryManager;
-import application.Project.Controllers.SaveAsProjectController;
-import application.Configuration.Configuration;
+import persistency.ProjectSaver;
+import application.history.HistoryManager;
+import application.project.controllers.SaveAsProjectController;
+import application.configuration.Configuration;
 import application.UPMTApp;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package application.appCommands;
 
-import application.Project.Controllers.OpenProjectController;
+import application.project.controllers.OpenProjectController;
 import application.UPMTApp;
 
 public class OpenProjectFromFileCommand extends ApplicationCommand<OpenProjectController> {

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<!-- fx:controller="Components.InterviewSelector.Controllers.NewInterviewController" -->
+<!-- fx:controller="components.InterviewSelector.Controllers.NewInterviewController" -->
 <AnchorPane
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <VBox prefHeight="480.0" prefWidth="800.0">
