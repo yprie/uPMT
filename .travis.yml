@@ -38,6 +38,6 @@ deploy:
   - "build/libs/uPMT.jar"
   - "build/uPMT-osx-x64.zip"
   - "build/uPMT-win-x64.zip"
- on: try-ci
+ on: master
  skip_cleanup: true
 
