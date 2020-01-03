@@ -22,7 +22,8 @@ before_cache:
 
 # test
 after_success:
- - java build/libs/uPMT.jar
+ - java -jar build/libs/uPMT.jar
+ - ls build
  - build/image/bin/uPMT
 
 before_deploy:
