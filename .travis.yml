@@ -20,12 +20,6 @@ before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
-# test
-after_success:
- - java -jar build/libs/uPMT.jar
- - ls build
- - build/image/bin/uPMT
-
 before_deploy:
  - git config --local user.name "Thykof"
  - git config --local user.email "thykof@protonmail.ch"
