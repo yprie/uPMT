@@ -1,7 +1,7 @@
 package components.schemaTree.Cell;
 
 import application.history.HistoryManager;
-import components.schemaTree.Cell.Commands.MoveSchemaTreePluggable;
+import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Models.*;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
 import javafx.scene.control.TreeItem;
@@ -64,7 +64,8 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
     }
 
     private SchemaTreeCellController updateController(SchemaTreePluggable element) {
-        CreateControllerVisitor visitor = new CreateControllerVisitor();
+        SchemaTreePluggable parent = getTreeItem().getParent() != null ? getTreeItem().getParent().getValue() : null;
+        CreateControllerVisitor visitor = new CreateControllerVisitor(parent);
         element.accept(visitor);
         return visitor.getResultController();
     }

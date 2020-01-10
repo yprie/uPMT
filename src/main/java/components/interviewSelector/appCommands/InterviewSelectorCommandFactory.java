@@ -8,8 +8,8 @@ public class InterviewSelectorCommandFactory {
     private Project project;
     public InterviewSelectorCommandFactory(Project project) { this.project = project; }
 
-    public CreateNewInterviewCommand createNewInterview() { return new CreateNewInterviewCommand(project); }
-    public SelectCurrentInterviewCommand selectCurrentInterview(Interview interview) { return new SelectCurrentInterviewCommand(project, interview); }
-    public DeleteInterviewCommand deleteInterview(Interview interview) { return new DeleteInterviewCommand(project, interview); }
+    public InterviewSelectorCommand<Void> createNewInterview() { return new CreateNewInterviewCommand(project); }
+    public InterviewSelectorCommand<Void> selectCurrentInterview(Interview interview) { return new SelectCurrentInterviewCommand(project, interview); }
+    public InterviewSelectorCommand<Void> deleteInterview(Interview interview) { return new DeleteInterviewCommand(project, interview); }
 
 }

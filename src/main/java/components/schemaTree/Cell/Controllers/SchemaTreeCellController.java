@@ -2,7 +2,7 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.schemaTree.Cell.Commands.RenameSchemaTreePluggable;
+import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

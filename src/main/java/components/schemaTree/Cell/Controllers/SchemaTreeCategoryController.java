@@ -2,8 +2,10 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import utils.removable.Commands.DeleteRemovableCommand;
-import components.schemaTree.Cell.Commands.AddSchemaTreePluggable;
+import components.schemaTree.Cell.Models.SchemaFolder;
+import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.modelCommands.RemoveSchemaTreePluggable;
+import components.schemaTree.Cell.modelCommands.AddSchemaTreePluggable;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import components.schemaTree.Cell.Models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -14,10 +16,12 @@ import java.util.ResourceBundle;
 public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
     private SchemaCategory category;
+    private SchemaTreePluggable parent;
 
-    public SchemaTreeCategoryController(SchemaCategory category) {
+    public SchemaTreeCategoryController(SchemaTreePluggable parent, SchemaCategory category) {
         super(category);
         this.category = category;
+        this.parent = parent;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new DeleteRemovableCommand(category), true);
+            HistoryManager.addCommand(new RemoveSchemaTreePluggable<SchemaCategory>(parent, category), true);
         });
         optionsMenu.getItems().add(deleteButton);
     }

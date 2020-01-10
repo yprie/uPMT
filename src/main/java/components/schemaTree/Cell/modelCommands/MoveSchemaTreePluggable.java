@@ -1,4 +1,4 @@
-package components.schemaTree.Cell.Commands;
+package components.schemaTree.Cell.modelCommands;
 
 import application.history.ModelUserActionCommand;
 import components.schemaTree.Cell.SchemaTreePluggable;

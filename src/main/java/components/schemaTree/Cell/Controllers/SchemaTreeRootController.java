@@ -2,7 +2,7 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.schemaTree.Cell.Commands.AddSchemaTreePluggable;
+import components.schemaTree.Cell.modelCommands.AddSchemaTreePluggable;
 import components.schemaTree.Cell.Models.SchemaFolder;
 import components.schemaTree.Cell.Models.SchemaTreeRoot;
 import javafx.scene.control.MenuItem;

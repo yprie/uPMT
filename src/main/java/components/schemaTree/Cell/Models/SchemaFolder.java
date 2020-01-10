@@ -81,7 +81,6 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
 
     private void addCategory(SchemaCategory c){
         categories.add(c);
-        Utils.setupListenerOnChildRemoving(this, c);
     }
     private void removeCategory(SchemaCategory c){
         categories.remove(c);
@@ -89,7 +88,6 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
 
     private void addFolder(SchemaFolder f){
         folders.add(f);
-        Utils.setupListenerOnChildRemoving(this, f);
     }
     private void removeFolder(SchemaFolder f){
         folders.remove(f);

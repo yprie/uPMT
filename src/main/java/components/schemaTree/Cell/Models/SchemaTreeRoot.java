@@ -65,11 +65,9 @@ public class SchemaTreeRoot extends SchemaElement {
 
     public void addFolder(SchemaFolder f){
         folders.add(f);
-        Utils.setupListenerOnChildRemoving(this, f);
     }
     public void removeFolder(SchemaFolder f){
         folders.remove(f);
-        Utils.setupListenerOnChildRemoving(this, f);
     }
 
     @Override

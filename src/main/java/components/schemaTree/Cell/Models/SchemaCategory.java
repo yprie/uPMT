@@ -72,7 +72,6 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     private void addProperty(SchemaProperty p){
         properties.add(p);
-        Utils.setupListenerOnChildRemoving(this, p);
     }
     private void removeProperty(SchemaProperty p){
         properties.remove(p);
