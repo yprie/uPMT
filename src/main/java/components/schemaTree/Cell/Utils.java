@@ -1,5 +1,7 @@
 package components.schemaTree.Cell;
 
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.Models.*;
 
@@ -21,4 +23,19 @@ public class Utils {
         return item.getDataFormat() == SchemaProperty.format;
     }
 
+    public static <E, T> TreeItem<T> findTreeElement(TreeItem<E> item , T value)
+    {
+        if(item == null)
+            return null;
+
+        if (item.getValue() == value)
+            return (TreeItem<T>) item;
+
+        for (TreeItem<E> child : item.getChildren()){
+            TreeItem<T> r = findTreeElement(child, value);
+            if(r != null)
+                return r;
+        }
+        return null;
+    }
 }

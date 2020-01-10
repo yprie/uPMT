@@ -2,6 +2,7 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.AddSchemaTreePluggable;
 import components.schemaTree.Cell.Models.SchemaFolder;
 import components.schemaTree.Cell.Models.SchemaTreeRoot;
@@ -19,10 +20,12 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
     BorderPane container;
 
     SchemaTreeRoot root;
+    SchemaTreeCommandFactory cmdFactory;
 
-    public SchemaTreeRootController(SchemaTreeRoot root) {
+    public SchemaTreeRootController(SchemaTreeRoot root, SchemaTreeCommandFactory cmdFactory) {
         super(root);
         this.root = root;
+        this.cmdFactory = cmdFactory;
     }
 
     @Override
@@ -32,8 +35,10 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
 
         MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
         addFolderButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new AddSchemaTreePluggable(root, new SchemaFolder(Configuration.langBundle.getString("folder")), true), true);
+            SchemaFolder f = new SchemaFolder(Configuration.langBundle.getString("folder"));
+            cmdFactory.addSchemaTreeChild(f).execute();
         });
+
         optionsMenu.getItems().add(addFolderButton);
         optionsMenu.setVisible(false);
     }

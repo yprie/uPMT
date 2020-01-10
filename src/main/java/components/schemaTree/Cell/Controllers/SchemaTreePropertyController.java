@@ -4,6 +4,7 @@ import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.schemaTree.Cell.Models.SchemaFolder;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.RemoveSchemaTreePluggable;
 import components.schemaTree.Cell.Models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -15,12 +16,12 @@ import java.util.ResourceBundle;
 public class SchemaTreePropertyController extends SchemaTreeCellController {
 
     private SchemaProperty property;
-    private SchemaTreePluggable parent;
+    private SchemaTreeCommandFactory cmdFactory;
 
-    public SchemaTreePropertyController(SchemaTreePluggable parent, SchemaProperty property) {
+    public SchemaTreePropertyController(SchemaProperty property, SchemaTreeCommandFactory cmdFactory) {
         super(property);
         this.property = property;
-        this.parent = parent;
+        this.cmdFactory = cmdFactory;
     }
 
     @Override
@@ -28,9 +29,16 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
         super.initialize(url, resourceBundle);
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
-            HistoryManager.addCommand(new RemoveSchemaTreePluggable<SchemaProperty>(parent, property), true);
+            cmdFactory.removeTreeElement(property).execute();
         });
-
         optionsMenu.getItems().add(deleteButton);
+
+        MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
+        addFolderButton.setOnAction(actionEvent -> {
+            SchemaFolder f = new SchemaFolder(Configuration.langBundle.getString("folder"));
+            cmdFactory.addSchemaTreeChild(f).execute();
+        });
+        optionsMenu.getItems().add(addFolderButton);
+
     }
 }
