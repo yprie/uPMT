@@ -32,13 +32,5 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
             cmdFactory.removeTreeElement(property).execute();
         });
         optionsMenu.getItems().add(deleteButton);
-
-        MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
-        addFolderButton.setOnAction(actionEvent -> {
-            SchemaFolder f = new SchemaFolder(Configuration.langBundle.getString("folder"));
-            cmdFactory.addSchemaTreeChild(f).execute();
-        });
-        optionsMenu.getItems().add(addFolderButton);
-
     }
 }
