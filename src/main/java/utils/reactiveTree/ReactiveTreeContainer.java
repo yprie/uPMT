@@ -11,12 +11,14 @@ public abstract class ReactiveTreeContainer<T extends ReactiveTreePluggable> ext
 
     private SimpleBooleanProperty expanded;
     private ListChangeListener<T> onChildChangeListener = change -> {
+
         while (change.next()) {
             for (T removed : change.getRemoved()) {
                 removeChildren(removed);
             }
             for (T added : change.getAddedSubList()) {
-                addChildren(added);
+                addChildrenAt(added, change.getList().indexOf(added));
+                //addChildren(added);
             }
         }
     };;
@@ -34,6 +36,9 @@ public abstract class ReactiveTreeContainer<T extends ReactiveTreePluggable> ext
 
     private void addChildren(T item) {
         getChildren().add(createTreeItem(item));
+    }
+    private void addChildrenAt(T item, int index) {
+        getChildren().add(index, createTreeItem(item));
     }
 
     abstract protected ReactiveTreeElement<T> createTreeItem(T item);

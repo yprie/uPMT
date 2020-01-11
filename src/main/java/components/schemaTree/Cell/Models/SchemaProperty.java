@@ -28,8 +28,18 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
     }
 
     @Override
+    public void addChildAt(SchemaTreePluggable item, int index) {
+        throw new IllegalArgumentException("Can't receive this kind of child !");
+    }
+
+    @Override
     public void removeChild(SchemaTreePluggable item) {
         throw new IllegalArgumentException("Can't receive this kind of child !");
+    }
+
+    @Override
+    public int getChildIndex(SchemaTreePluggable item) {
+        throw new IllegalArgumentException("The provided item is not a child of this element!");
     }
 
     @Override

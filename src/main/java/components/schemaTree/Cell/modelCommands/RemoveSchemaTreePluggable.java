@@ -8,6 +8,7 @@ public class RemoveSchemaTreePluggable<E extends SchemaTreePluggable&IRemovable>
 
     private SchemaTreePluggable parent;
     private E element;
+    private int element_index;
 
     public RemoveSchemaTreePluggable(SchemaTreePluggable parent, E element) {
         this.parent = parent;
@@ -16,6 +17,7 @@ public class RemoveSchemaTreePluggable<E extends SchemaTreePluggable&IRemovable>
 
     @Override
     public Void execute() {
+        element_index = parent.getChildIndex(element);
         parent.removeChild(element);
         element.existsProperty().setValue(false);
         return null;
@@ -24,7 +26,7 @@ public class RemoveSchemaTreePluggable<E extends SchemaTreePluggable&IRemovable>
     @Override
     public Void undo() {
         element.existsProperty().setValue(true);
-        parent.addChild(element);
+        parent.addChildAt(element, element_index);
         return null;
     }
 }

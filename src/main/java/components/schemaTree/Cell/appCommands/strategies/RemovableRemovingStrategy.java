@@ -17,6 +17,7 @@ public class RemovableRemovingStrategy<E extends SchemaTreePluggable&IRemovable>
     public RemovableRemovingStrategy(TreeView<SchemaTreePluggable> view, SchemaTreePluggable parent, E item) {
         super(view, item);
         this.parent = parent;
+        this.item = item;
     }
 
     @Override

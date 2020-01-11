@@ -30,7 +30,15 @@ public class SchemaTreeRoot extends SchemaElement {
     @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeFolder(item))
-            addFolder((SchemaFolder)item);
+            addFolder((SchemaFolder)item, -1);
+        else
+            throw new IllegalArgumentException("Can't receive this kind of child !");
+    }
+
+    @Override
+    public void addChildAt(SchemaTreePluggable item, int index) {
+        if(Utils.IsSchemaTreeFolder(item))
+            addFolder((SchemaFolder)item, index);
         else
             throw new IllegalArgumentException("Can't receive this kind of child !");
     }
@@ -41,6 +49,14 @@ public class SchemaTreeRoot extends SchemaElement {
             removeFolder((SchemaFolder)item);
         else
             throw new IllegalArgumentException("Can't remove this kind of child !");
+    }
+
+    @Override
+    public int getChildIndex(SchemaTreePluggable item) {
+        int r = this.folders.get().indexOf(item);
+        if(r == -1)
+            throw new IllegalArgumentException("The provided item is not a child of this element!");
+        return r;
     }
 
     @Override
@@ -63,8 +79,11 @@ public class SchemaTreeRoot extends SchemaElement {
         visitor.visit(this);
     }
 
-    public void addFolder(SchemaFolder f){
-        folders.add(f);
+    public void addFolder(SchemaFolder f, int index){
+        if(index == -1)
+            folders.add(f);
+        else
+            folders.add(index, f);
     }
     public void removeFolder(SchemaFolder f){
         folders.remove(f);

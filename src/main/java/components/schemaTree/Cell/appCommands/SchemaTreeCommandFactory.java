@@ -23,7 +23,7 @@ public class SchemaTreeCommandFactory {
         return v.getResultStrategy();
     }
     public <E extends SchemaTreePluggable&IRemovable> RemovingStrategy removeTreeElement(E element) {
-        CreateRemovingStrategyVisitor v = new CreateRemovingStrategyVisitor<>(view, item.getValue(), element);
+        CreateRemovingStrategyVisitor v = new CreateRemovingStrategyVisitor<>(view, item.getParent().getValue(), element);
         element.accept(v);
         return v.getResultStrategy();
     }

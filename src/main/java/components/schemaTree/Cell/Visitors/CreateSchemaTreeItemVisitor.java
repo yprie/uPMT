@@ -19,8 +19,9 @@ public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {
     @Override
     public void visit(SchemaFolder element) {
         SchemaTreeContainer item = new SchemaTreeContainer(element);
-        item.bindChildrenCollection(element.foldersProperty());
-        item.bindChildrenCollection(element.categoriesProperty());
+        /*item.bindChildrenCollection(element.foldersProperty());
+        item.bindChildrenCollection(element.categoriesProperty());*/
+        item.bindChildrenCollection(element.childrenProperty());
         result = item;
     }
 

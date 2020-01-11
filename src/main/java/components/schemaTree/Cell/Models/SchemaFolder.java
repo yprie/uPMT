@@ -18,16 +18,20 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     private ListProperty<SchemaFolder> folders;
     private SimpleBooleanProperty exists;
 
+    public ListProperty<SchemaTreePluggable> children;
+
     public SchemaFolder(String name) {
         super(name);
         this.categories = new SimpleListProperty<SchemaCategory>(FXCollections.observableList(new LinkedList<SchemaCategory>()));
         this.folders = new SimpleListProperty<SchemaFolder>(FXCollections.observableList(new LinkedList<SchemaFolder>()));
         this.exists = new SimpleBooleanProperty(true);
+
+        this.children = new SimpleListProperty<SchemaTreePluggable>(FXCollections.observableList(new LinkedList<SchemaTreePluggable>()));
     }
 
     public final ObservableList<SchemaCategory> categoriesProperty() { return categories; }
     public final ObservableList<SchemaFolder> foldersProperty() { return folders; }
-
+    public final ObservableList<SchemaTreePluggable> childrenProperty() { return children; }
 
     @Override
     public DataFormat getDataFormat() {
@@ -47,9 +51,19 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeCategory(item))
-            addCategory((SchemaCategory) item);
+            addCategory((SchemaCategory) item, -1);
         else if(Utils.IsSchemaTreeFolder(item))
-            addFolder((SchemaFolder) item);
+            addFolder((SchemaFolder) item, -1);
+        else
+            throw new IllegalArgumentException("Can't receive this kind of child ! ");
+    }
+
+    @Override
+    public void addChildAt(SchemaTreePluggable item, int index) {
+        if(Utils.IsSchemaTreeCategory(item))
+            addCategory((SchemaCategory) item, index);
+        else if(Utils.IsSchemaTreeFolder(item))
+            addFolder((SchemaFolder) item, index);
         else
             throw new IllegalArgumentException("Can't receive this kind of child ! ");
     }
@@ -62,6 +76,17 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
             removeFolder((SchemaFolder) item);
         else
             throw new IllegalArgumentException("Can't remove this kind of child !");
+    }
+
+    @Override
+    public int getChildIndex(SchemaTreePluggable item) {
+        int r = this.folders.indexOf(item);
+        if(r == -1) {
+            r = this.categories.indexOf(item);
+        }
+        if(r == -1)
+            throw new IllegalArgumentException("The provided item is not a child of this element!");
+        return r;
     }
 
     @Override
@@ -79,17 +104,35 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         return exists;
     }
 
-    private void addCategory(SchemaCategory c){
-        categories.add(c);
+    private void addCategory(SchemaCategory c, int index){
+        if(index == -1) {
+            categories.add(c);
+            children.add(c);
+        }
+        else {
+            categories.add(index, c);
+            children.add(folders.size() + index, c);
+        }
     }
     private void removeCategory(SchemaCategory c){
         categories.remove(c);
+        children.remove(c);
     }
 
-    private void addFolder(SchemaFolder f){
-        folders.add(f);
+    private void addFolder(SchemaFolder f, int index){
+        if(index == -1) {
+            folders.add(f);
+            children.add(folders.size()-1 ,f);
+        }
+        else {
+            folders.add(index, f);
+            children.add(index ,f);
+        }
+
+
     }
     private void removeFolder(SchemaFolder f){
         folders.remove(f);
+        children.remove(f);
     }
 }

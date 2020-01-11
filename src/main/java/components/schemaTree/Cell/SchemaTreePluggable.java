@@ -15,7 +15,9 @@ public interface SchemaTreePluggable extends ReactiveTreePluggable, IDraggable {
 
     boolean canContain(SchemaTreePluggable item);
     void addChild(SchemaTreePluggable item);
+    void addChildAt(SchemaTreePluggable item, int index);
     void removeChild(SchemaTreePluggable item);
+    int getChildIndex(SchemaTreePluggable item);
 
     void accept(SchemaTreePluggableVisitor visitor);
 }
