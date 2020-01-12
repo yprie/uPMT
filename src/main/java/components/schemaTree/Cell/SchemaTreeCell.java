@@ -5,6 +5,8 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Models.*;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
+import components.schemaTree.Cell.modelCommands.PermuteSchemaTreePluggable;
+import components.schemaTree.Section;
 import javafx.scene.control.TreeItem;
 import utils.reactiveTree.LeafToRootIterator;
 import components.schemaTree.Cell.Visitors.CreateControllerVisitor;
@@ -107,9 +109,15 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                // TODO: get size of the target
+                //Section sect = controller.mouseIsDraggingOn(event.getY());
+                //System.out.println("Ready to drop for re-order " + sect);
+
                 if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
                     SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
                     SchemaTreePluggable target = selfCell.getItem();
+
+                    //event.acceptTransferModes(TransferMode.MOVE); // DEBUG
 
                     //basic checking for drag and drop operation in tree structure.
                     if(source == target || !target.canContain(source)) { event.consume(); return; }
@@ -140,19 +148,47 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                     DragStore.clearStore();
                     SchemaTreePluggable target = selfCell.getItem();
 
+                    Section sect = controller.mouseIsDraggingOn(event.getY());
+
+                    SchemaTreePluggable parent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                    int oldIndex = parent.getChildIndex(source);
+                    int newIndex = parent.getChildIndex(target);
+
                     //Drag and drop command
-                    HistoryManager.addCommand(new MoveSchemaTreePluggable(
-                            ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue(),
-                            target,
-                            source), true);
-                    selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-                    event.setDropCompleted(true);
+                    switch (sect) {
+                        case top:
+                            if (oldIndex < newIndex) {
+                                newIndex--;
+                            }
+                            HistoryManager.addCommand(new PermuteSchemaTreePluggable(parent, oldIndex, newIndex, source), true);
+                            // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
+                            event.setDropCompleted(true);
+                            break;
+                        case middle:
+                            //Drag and drop command
+                            HistoryManager.addCommand(new MoveSchemaTreePluggable(
+                                    ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue(),
+                                    target,
+                                    source), true);
+                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
+                            event.setDropCompleted(true);
+                            break;
+                        case bottom:
+                            if (oldIndex > newIndex) {
+                                newIndex++;
+                            }
+                            HistoryManager.addCommand(new PermuteSchemaTreePluggable(parent, oldIndex, newIndex, source), true);
+                            // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
+                            event.setDropCompleted(true);
+                            break;
+                    }
                 }
                 else
                     event.setDropCompleted(false);
                 event.consume();
             }
         });
+
 
         selfCell.setOnDragDone(new EventHandler<DragEvent>() {
             @Override

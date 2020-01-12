@@ -3,6 +3,7 @@ package components.schemaTree.Cell.Visitors;
 import components.schemaTree.Cell.Models.*;
 import components.schemaTree.Cell.SchemaTreeContainer;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Section;
 import utils.reactiveTree.ReactiveTreeElement;
 
 public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {
@@ -39,5 +40,17 @@ public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {
 
     public ReactiveTreeElement<SchemaTreePluggable> getSchemaTreeItem() {
         return result;
+    }
+
+    public Section mouseIsDraggingOn(double y) {
+        if(y < 10) {
+            return Section.bottom;
+        }
+        else if (y > 20){
+            return Section.top;
+        }
+        else {
+            return Section.middle;
+        }
     }
 }

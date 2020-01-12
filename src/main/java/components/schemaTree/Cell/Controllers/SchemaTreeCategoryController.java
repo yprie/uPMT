@@ -1,17 +1,10 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.schemaTree.Cell.SchemaTreePluggable;
-import components.schemaTree.Cell.Utils;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.modelCommands.RemoveSchemaTreePluggable;
-import components.schemaTree.Cell.modelCommands.AddSchemaTreePluggable;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import components.schemaTree.Cell.Models.SchemaProperty;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
