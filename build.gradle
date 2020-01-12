@@ -8,6 +8,7 @@
 
 plugins {
     id 'java'
+    id 'idea'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'org.beryx.runtime' version '1.8.0'
@@ -19,6 +20,8 @@ repositories {
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    compile group: 'org.json', name: 'json', version: '20190722'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'

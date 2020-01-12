@@ -4,10 +4,12 @@ import application.history.HistoryManager;
 import application.project.models.Project;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
+
 import components.rootLayout.Controllers.RootLayoutController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class UPMTApp {
     private UUID lastSavedCommandId;
 
     public UPMTApp(Stage primaryStage) throws IOException {
+
         this.primaryStage = primaryStage;
         this.appCommandFactory = new ApplicationCommandFactory(this);
         this.rootLayoutController = new RootLayoutController(appCommandFactory);
