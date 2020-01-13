@@ -10,8 +10,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.json.JSONObject;
+import persistency.newSaveSystem.SInterview;
+import persistency.newSaveSystem.SProject;
+import persistency.newSaveSystem.SSchemaTreeRoot;
+import persistency.newSaveSystem.serialization.JSONSerializer;
+import persistency.newSaveSystem.serialization.JSONSerializerPool;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -25,6 +31,27 @@ public class UPMTApp {
     private UUID lastSavedCommandId;
 
     public UPMTApp(Stage primaryStage) throws IOException {
+
+        //Testing section !
+        int pr = 5;
+        int r = 4;
+        int i = 10;
+
+        JSONObject obj = new JSONObject();
+        JSONSerializerPool pool = new JSONSerializerPool();
+        JSONSerializer serializer = new JSONSerializer(obj, pool);
+        SProject p = new SProject(pr);
+
+        p.name = "Mon super projet !";
+        p.schemaTreeRoot = new SSchemaTreeRoot(r);
+        p.interviews = new ArrayList<>();
+        p.interviews.add(new SInterview(i));
+        p.interviews.add(new SInterview(i));
+
+        p.save(serializer);
+        System.out.println(obj.toString(4));
+
+        //END of testing section !
 
         this.primaryStage = primaryStage;
         this.appCommandFactory = new ApplicationCommandFactory(this);
