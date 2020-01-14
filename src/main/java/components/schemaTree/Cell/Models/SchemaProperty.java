@@ -39,7 +39,7 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
 
     @Override
     public int getChildIndex(SchemaTreePluggable item) {
-        throw new IllegalArgumentException("The provided item is not a child of this element!");
+        throw new IllegalArgumentException("(SchemaProperty) The provided item is not a child of this element!");
     }
 
     @Override

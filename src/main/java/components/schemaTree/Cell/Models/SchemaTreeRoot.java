@@ -55,7 +55,7 @@ public class SchemaTreeRoot extends SchemaElement {
     public int getChildIndex(SchemaTreePluggable item) {
         int r = this.folders.get().indexOf(item);
         if(r == -1)
-            throw new IllegalArgumentException("The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaTreeRoot) The provided item is not a child of this element!");
         return r;
     }
 

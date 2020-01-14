@@ -110,27 +110,30 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 // TODO: get size of the target
-                //Section sect = controller.mouseIsDraggingOn(event.getY());
-                //System.out.println("Ready to drop for re-order " + sect);
+                Section sect = controller.mouseIsDraggingOn(event.getY());
+                SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
+                SchemaTreePluggable target = selfCell.getItem();
 
-                if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
-                    SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
-                    SchemaTreePluggable target = selfCell.getItem();
+                SchemaTreePluggable Sourceparent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                SchemaTreePluggable Targetparent = selfCell.getTreeItem().getParent().getValue();
 
-                    //event.acceptTransferModes(TransferMode.MOVE); // DEBUG
+                if (sect == Section.middle || Sourceparent != Targetparent) {
+                    // we want the same behaviour if the source if moved in another folder
+                    if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
+                        //basic checking for drag and drop operation in tree structure.
+                        if(source == target || !target.canContain(source)) { event.consume(); return; }
 
-                    //basic checking for drag and drop operation in tree structure.
-                    if(source == target || !target.canContain(source)) { event.consume(); return; }
+                        if (isDirectParent(source, selfCell) || isAncestor(source, selfCell)) {
+                            event.consume(); return;
+                        }
 
-                    //Checking for target being a direct parent of source
-                    for(TreeItem i: selfCell.getTreeItem().getChildren())
-                        if(i.getValue() == source) { event.consume(); return; }
-
-                    //Checking for source not being an ancestor of the target
-                    TreeItem<SchemaTreePluggable> receiverItem  = selfCell.getTreeItem();
-                    LeafToRootIterator iterator = new LeafToRootIterator(receiverItem);
-                    while (iterator.hasNext())
-                        if(iterator.next().getValue() == source) { event.consume(); return; }
+                        event.acceptTransferModes(TransferMode.MOVE);
+                    }
+                }
+                else {
+                    if(source == target) {
+                        event.consume(); return;
+                    }
 
                     event.acceptTransferModes(TransferMode.MOVE);
                 }
@@ -150,41 +153,29 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
                     Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                    SchemaTreePluggable parent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
-                    int oldIndex = parent.getChildIndex(source);
-                    int newIndex = parent.getChildIndex(target);
+                    SchemaTreePluggable Sourceparent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                    SchemaTreePluggable Targetparent = selfCell.getTreeItem().getParent().getValue();
 
-                    //Drag and drop command
-                    switch (sect) {
-                        case top:
-                            if (oldIndex < newIndex) {
-                                newIndex--;
-                            }
-                            HistoryManager.addCommand(new PermuteSchemaTreePluggable(parent, oldIndex, newIndex, source), true);
-                            // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
-                            event.setDropCompleted(true);
-                            break;
-                        case middle:
-                            //Drag and drop command
-                            HistoryManager.addCommand(new MoveSchemaTreePluggable(
-                                    ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue(),
-                                    target,
-                                    source), true);
-                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-                            event.setDropCompleted(true);
-                            break;
-                        case bottom:
-                            if (oldIndex > newIndex) {
-                                newIndex++;
-                            }
-                            HistoryManager.addCommand(new PermuteSchemaTreePluggable(parent, oldIndex, newIndex, source), true);
-                            // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
-                            event.setDropCompleted(true);
-                            break;
+                    if (sect == Section.middle || Sourceparent != Targetparent) {
+                        //Drag and drop command
+                        HistoryManager.addCommand(new MoveSchemaTreePluggable(Sourceparent, target, source), true);
+                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
+                    }
+                    else {
+                        int oldIndex = Sourceparent.getChildIndex(source);
+                        int newIndex = Sourceparent.getChildIndex(target);
+
+                        if (sect == Section.top && oldIndex < newIndex) {
+                            newIndex--;
+                        }
+                        else if (sect == Section.bottom && oldIndex > newIndex) {
+                            newIndex++;
+                        }
+                        HistoryManager.addCommand(new PermuteSchemaTreePluggable(Sourceparent, oldIndex, newIndex, source), true);
+                        // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
                     }
                 }
-                else
-                    event.setDropCompleted(false);
+                event.setDropCompleted(false);
                 event.consume();
             }
         });
@@ -209,6 +200,28 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                         db.hasContent(SchemaFolder.format) ||
                         db.hasContent(SchemaProperty.format)
         );
+    }
+
+    private static boolean isDirectParent(SchemaTreePluggable source, SchemaTreeCell target) {
+        //Checking for target being a direct parent of source
+        boolean res = false;
+        for(TreeItem i: target.getTreeItem().getChildren())
+            if(i.getValue() == source) {
+                res = true;
+            }
+        return res;
+    }
+
+    private static boolean isAncestor(SchemaTreePluggable source, SchemaTreeCell target){
+        //Checking for source not being an ancestor of the target
+        TreeItem<SchemaTreePluggable> receiverItem  = target.getTreeItem();
+        LeafToRootIterator iterator = new LeafToRootIterator(receiverItem);
+        while (iterator.hasNext()) {
+            if(iterator.next().getValue() == source) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

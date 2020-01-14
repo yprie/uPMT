@@ -85,7 +85,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
             r = this.categories.indexOf(item);
         }
         if(r == -1)
-            throw new IllegalArgumentException("The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaFolder) The provided item is not a child of this element!");
         return r;
     }
 

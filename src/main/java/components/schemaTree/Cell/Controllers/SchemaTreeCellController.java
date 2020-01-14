@@ -106,7 +106,6 @@ public abstract class SchemaTreeCellController implements Initializable {
     public boolean getOnHover() { return optionsMenu.isVisible(); }
 
     public Section mouseIsDraggingOn(double y) {
-        System.out.println("mouseIsDraggingOn " + y);
         if(y < 10) {
             return Section.top;
         }
