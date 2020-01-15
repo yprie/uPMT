@@ -127,16 +127,26 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                             event.consume(); return;
                         }
 
+                        selfCell.setStyle("-fx-border-width: 0;");
                         event.acceptTransferModes(TransferMode.MOVE);
+
                     }
                 }
                 else {
                     if(source == target) {
                         event.consume(); return;
                     }
-
-                    event.acceptTransferModes(TransferMode.MOVE);
+                    else {
+                        if (sect == Section.bottom) {
+                            selfCell.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                        }
+                        else {
+                            selfCell.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                        }
+                        event.acceptTransferModes(TransferMode.MOVE);
+                    }
                 }
+
                 event.consume();
             }
         });
