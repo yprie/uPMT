@@ -15,4 +15,7 @@ public class RecentFirstList<E> extends LinkedList<E> {
         return true;
     }
 
+    public void push(E e) {
+        super.add(e);
+    }
 }

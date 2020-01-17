@@ -22,8 +22,6 @@ public class ProjectLoader {
         }
         fileReader.close();
 
-        System.out.println(fileContents);
-
         JSONObject obj = new JSONObject(fileContents);
         JSONReadPool pool = new JSONReadPool();
         SerializationPool<Object> modelsPool = new SerializationPool<>();

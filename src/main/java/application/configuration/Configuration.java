@@ -67,7 +67,7 @@ public class Configuration {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
             if(new File(line).exists())
-                projects_paths.add(line);
+                projects_paths.push(line);
         }
         //Removing of old unexisting files
         saveProjectsPath();

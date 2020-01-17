@@ -26,7 +26,10 @@ public interface ObjectSerializer {
     void writeLocalDate(String name, LocalDate d);
 
     <T extends Serializable> T getObject(String name, Function<ObjectSerializer, T> serializableCreator);
+    <T extends Serializable> T getFacultativeObject(String name, Function<ObjectSerializer, T> serializableCreator);
+
     void writeObject(String name, Serializable object);
+    void writeFacultativeObject(String name, Serializable object);
 
     <T extends Serializable> ArrayList<T> getArray(String name, Function<ObjectSerializer, T> serializableCreator);
     void writeArray(String name, ArrayList<? extends Serializable> objects);

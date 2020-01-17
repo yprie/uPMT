@@ -84,7 +84,6 @@ public abstract class Serializable<ModelType> {
         }
         catch(IllegalArgumentException e) {
             m =  createModel();
-            System.out.println("Adding element with id " + serializationId + "to the pool");
             serializer.getModelsPool().add(serializationId, m);
             return m;
         }

@@ -108,12 +108,25 @@ public class JSONSerializer implements ObjectSerializer {
     }
 
     @Override
+    public <T extends Serializable> T getFacultativeObject(String name, Function<ObjectSerializer, T> serializableCreator) {
+        try {
+            return getObject(name, serializableCreator);
+        }
+        catch (JSONException e){
+            return null;
+        }
+    }
+
+    @Override
     public void writeObject(String name, Serializable object) {
         jsonObject.put(name, fillJSONObject(object));
     }
 
-
-
+    @Override
+    public void writeFacultativeObject(String name, Serializable object) {
+        if(object != null)
+            writeObject(name, object);
+    }
 
 
     @Override

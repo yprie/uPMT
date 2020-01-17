@@ -15,6 +15,7 @@ public class SProject extends Serializable<Project> {
     public String name;
     public SSchemaTreeRoot schemaTreeRoot;
     public ArrayList<SInterview> interviews;
+    public SInterview selectedInterview;
 
     public SProject(ObjectSerializer serializer) {
         super(serializer);
@@ -22,13 +23,14 @@ public class SProject extends Serializable<Project> {
 
     public SProject(Project modelReference) {
         super(modelName, version, modelReference);
-        //TODO
+
         this.name = modelReference.getName();
         this.schemaTreeRoot = new SSchemaTreeRoot(modelReference.getSchemaTreeRoot());
         this.interviews = new ArrayList<>();
         for(Interview i : modelReference.interviewsProperty()){
             interviews.add(new SInterview(i));
         }
+        this.selectedInterview = new SInterview(modelReference.getSelectedInterview());
     }
 
     @Override
@@ -41,6 +43,7 @@ public class SProject extends Serializable<Project> {
         name = serializer.getString("name");
         schemaTreeRoot = serializer.getObject(SSchemaTreeRoot.modelName, SSchemaTreeRoot::new);
         interviews = serializer.getArray(serializer.setListSuffix(SInterview.modelName), SInterview::new);
+        selectedInterview = serializer.getFacultativeObject("selectedInterview", SInterview::new);
     }
 
     @Override
@@ -48,6 +51,7 @@ public class SProject extends Serializable<Project> {
         serializer.writeString("name", name);
         serializer.writeObject(SSchemaTreeRoot.modelName, schemaTreeRoot);
         serializer.writeArray(serializer.setListSuffix(SInterview.modelName), interviews);
+        serializer.writeFacultativeObject("selectedInterview", selectedInterview);
     }
 
     @Override
@@ -57,6 +61,9 @@ public class SProject extends Serializable<Project> {
         for(SInterview i: interviews) {
             p.addInterview(i.convertToModel());
         }
+
+        if(selectedInterview != null)
+            p.setSelectedInterview(selectedInterview.convertToModel());
 
         return p;
     }
