@@ -90,7 +90,7 @@ public class NewInterviewController implements Initializable {
                 e.printStackTrace();
             }
 
-            resultInterview = new Interview(interviewTitle.getText(),
+            resultInterview = new Interview(
                     participantName.getText(),
                     interviewDate.getValue(),
                     new InterviewText(res)

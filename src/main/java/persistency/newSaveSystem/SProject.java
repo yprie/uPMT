@@ -1,12 +1,13 @@
 package persistency.newSaveSystem;
 
+import application.project.models.Project;
+import components.interviewSelector.models.Interview;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
-
 import java.util.ArrayList;
 
-public class SProject extends Serializable {
+public class SProject extends Serializable<Project> {
 
     public static final int version = 1;
     public static final String modelName = "project";
@@ -19,8 +20,15 @@ public class SProject extends Serializable {
         super(serializer);
     }
 
-    public SProject(Object modelReference) {
+    public SProject(Project modelReference) {
         super(modelName, version, modelReference);
+        //TODO
+        this.name = modelReference.getName();
+        this.schemaTreeRoot = new SSchemaTreeRoot(modelReference.getSchemaTreeRoot());
+        this.interviews = new ArrayList<>();
+        for(Interview i : modelReference.interviewsProperty()){
+            interviews.add(new SInterview(i));
+        }
     }
 
     @Override
@@ -31,19 +39,26 @@ public class SProject extends Serializable {
     @Override
     protected void read() {
         name = serializer.getString("name");
-        schemaTreeRoot = new SSchemaTreeRoot(serializer.getObject(modelName));
-
-        interviews = new ArrayList<>();
-        ArrayList<ObjectSerializer> interview_serializers = serializer.getArray(SInterview.modelName);
-        for (ObjectSerializer interview_serializer : interview_serializers)
-            interviews.add(new SInterview(interview_serializer));
+        schemaTreeRoot = serializer.getObject(SSchemaTreeRoot.modelName, SSchemaTreeRoot::new);
+        interviews = serializer.getArray(serializer.setListSuffix(SInterview.modelName), SInterview::new);
     }
 
     @Override
     public void write(ObjectSerializer serializer) {
         serializer.writeString("name", name);
         serializer.writeObject(SSchemaTreeRoot.modelName, schemaTreeRoot);
-        serializer.writeArray(SInterview.modelName + "_list", interviews);
+        serializer.writeArray(serializer.setListSuffix(SInterview.modelName), interviews);
+    }
+
+    @Override
+    protected Project createModel() {
+        Project p = new Project(this.name, schemaTreeRoot.convertToModel());
+
+        for(SInterview i: interviews) {
+            p.addInterview(i.convertToModel());
+        }
+
+        return p;
     }
 
 }

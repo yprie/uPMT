@@ -1,19 +1,32 @@
 package persistency.newSaveSystem;
 
+import components.interviewSelector.models.Interview;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
-public class SInterview extends Serializable {
+import java.time.LocalDate;
 
+public class SInterview extends Serializable<Interview> {
+
+    //General info
     public static final int version = 1;
     public static final String modelName = "interview";
+
+    //Fields
+    public String participantName;
+    public LocalDate date;
+    public String comment;
+    public SInterviewText interviewText;
 
     public SInterview(ObjectSerializer serializer) {
         super(serializer);
     }
-
-    public SInterview(Object modelReference) {
+    public SInterview(Interview modelReference) {
         super(modelName, version, modelReference);
+        this.participantName = modelReference.getParticipantName();
+        this.date = modelReference.getDate();
+        this.comment = modelReference.getComment();
+        this.interviewText = new SInterviewText(modelReference.getInterviewText());
     }
 
     @Override
@@ -23,12 +36,26 @@ public class SInterview extends Serializable {
 
     @Override
     protected void read() {
-
+        participantName = serializer.getString("participantName");
+        date = serializer.getLocalDate("date");
+        comment = serializer.getFacultativeString("comment", null);
+        interviewText = serializer.getObject(SInterviewText.modelName, SInterviewText::new);
     }
 
     @Override
     public void write(ObjectSerializer serializer) {
-        serializer.writeInt("randomValue", 15);
+        serializer.writeString("participantName", participantName);
+        serializer.writeLocalDate("date", date);
+        serializer.writeFacultativeString("comment", comment);
+        serializer.writeObject(SInterviewText.modelName, interviewText);
+    }
+
+    @Override
+    protected Interview createModel() {
+        Interview i = new Interview(participantName, date, interviewText.convertToModel());
+        if(this.comment != null)
+            i.setComment(comment);
+        return i;
     }
 
 

@@ -2,21 +2,21 @@ package persistency.newSaveSystem.serialization;
 
 import java.util.HashMap;
 
-public class JSONSerializerPool {
+public class SerializationPool<T> {
 
-    HashMap<Integer, JSONSerializer> hashmap = new HashMap<>();
+    HashMap<Integer, T> hashmap = new HashMap<>();
 
-    void add(int id, JSONSerializer s) {
+    public void add(int id, T s) {
         if(contain(id))
             throw new IllegalArgumentException("Serializable with id = " + id + " is already present in the pool !");
         hashmap.put(id, s);
     }
 
-    boolean contain(int id) {
+    public boolean contain(int id) {
         return hashmap.containsKey(id);
     }
 
-    JSONSerializer get(int id) {
+    public T get(int id) {
         if(!contain(id))
             throw new IllegalArgumentException("Serializable with id = " + id + " is not present in the pool !");
         return hashmap.get(id);

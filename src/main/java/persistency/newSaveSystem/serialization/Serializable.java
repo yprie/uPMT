@@ -4,7 +4,7 @@ import persistency.newSaveSystem.upgrades.UpgradeStrategy;
 
 import java.util.HashMap;
 
-public abstract class Serializable {
+public abstract class Serializable<ModelType> {
 
     protected ObjectSerializer serializer;
     private int version;
@@ -17,6 +17,7 @@ public abstract class Serializable {
     //Reading initialization
     public Serializable(ObjectSerializer serializer) {
         this.serializer = serializer;
+        this.upgrade_strategies = new HashMap<>();
         readHeader();
         read();
 
@@ -24,7 +25,9 @@ public abstract class Serializable {
         upgrade();
     }
 
+    //writing initialization
     public Serializable(String modelName, int version, Object modelReference) {
+        this.upgrade_strategies = new HashMap<>();
         this.name = modelName;
         this.version = version;
         this.serializationId = System.identityHashCode(modelReference);
@@ -56,6 +59,7 @@ public abstract class Serializable {
     protected void readHeader() {
         this.name = serializer.getString("@model");
         this.version = serializer.getInt("@version");
+        this.serializationId = serializer.getInt("@id");
     }
 
     protected abstract void write(ObjectSerializer serializer);
@@ -71,4 +75,20 @@ public abstract class Serializable {
         serializer.writeInt("@id", getSerializationId());
         serializer.writeString("@model", name);
     }
+
+    public ModelType convertToModel() {
+        ModelType m;
+        try {
+            m = (ModelType)serializer.getModelsPool().get(serializationId);
+            return m;
+        }
+        catch(IllegalArgumentException e) {
+            m =  createModel();
+            System.out.println("Adding element with id " + serializationId + "to the pool");
+            serializer.getModelsPool().add(serializationId, m);
+            return m;
+        }
+    }
+
+    protected abstract ModelType createModel();
 }
