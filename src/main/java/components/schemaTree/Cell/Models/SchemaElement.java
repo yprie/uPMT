@@ -1,5 +1,6 @@
 package components.schemaTree.Cell.Models;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.Utils;
 import javafx.beans.property.*;
 
 public abstract class SchemaElement implements SchemaTreePluggable {
@@ -35,4 +36,8 @@ public abstract class SchemaElement implements SchemaTreePluggable {
     public String getName() { return name.get(); }
     public void setName(String name) { this.name.set(name); }
 
+    @Override
+    public boolean isSameType(SchemaTreePluggable source) {
+        return Utils.IsSameType(this, source);
+    }
 }

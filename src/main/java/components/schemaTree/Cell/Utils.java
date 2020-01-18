@@ -23,6 +23,10 @@ public class Utils {
         return item.getDataFormat() == SchemaProperty.format;
     }
 
+    public static boolean IsSameType(SchemaTreePluggable a, SchemaTreePluggable b) {
+        return a.getDataFormat() == b.getDataFormat();
+    }
+
     public static <E, T> TreeItem<T> findTreeElement(TreeItem<E> item , T value)
     {
         if(item == null)

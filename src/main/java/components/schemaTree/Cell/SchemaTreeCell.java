@@ -229,7 +229,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
     private static boolean canMove(SchemaTreePluggable sourceParent, SchemaTreePluggable targetParent,
                                    SchemaTreePluggable source, SchemaTreePluggable target, Section section) {
         // Target section is top or bottom: need to check same parent and if the move action will really move something.
-        if (sourceParent == targetParent) {
+        if (sourceParent == targetParent && target.isSameType(source)) {
             // this will be a permutation
             int sourceIndex = sourceParent.getChildIndex(source);
             int targetIndex = sourceParent.getChildIndex(target);

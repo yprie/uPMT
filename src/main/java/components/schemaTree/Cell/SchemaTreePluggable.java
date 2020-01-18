@@ -23,4 +23,6 @@ public interface SchemaTreePluggable extends ReactiveTreePluggable, IDraggable {
     void accept(SchemaTreePluggableVisitor visitor);
 
     boolean canChangeParent();
+
+    boolean isSameType(SchemaTreePluggable source);
 }
