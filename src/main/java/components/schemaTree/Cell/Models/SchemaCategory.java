@@ -50,6 +50,11 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     }
 
     @Override
+    public boolean hasChild(SchemaTreePluggable item) {
+        return this.properties.indexOf(item) != -1;
+    }
+
+    @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeProperty(item))
             addProperty((SchemaProperty)item, -1);
@@ -77,13 +82,18 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     public int getChildIndex(SchemaTreePluggable item) {
         int r = this.properties.indexOf(item);
         if(r == -1)
-            throw new IllegalArgumentException("The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaCategory) The provided item is not a child of this element!");
         return r;
     }
 
     @Override
     public void accept(SchemaTreePluggableVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean canChangeParent() {
+        return true;
     }
 
     private void addProperty(SchemaProperty p, int index){

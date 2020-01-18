@@ -49,6 +49,11 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     }
 
     @Override
+    public boolean hasChild(SchemaTreePluggable item) {
+        return this.children.indexOf(item) != -1;
+    }
+
+    @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeCategory(item))
             addCategory((SchemaCategory) item, -1);
@@ -85,7 +90,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
             r = this.categories.indexOf(item);
         }
         if(r == -1)
-            throw new IllegalArgumentException("The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaFolder) The provided item is not a child of this element!");
         return r;
     }
 
@@ -97,6 +102,11 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     @Override
     public void accept(SchemaTreePluggableVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean canChangeParent() {
+        return true;
     }
 
     @Override

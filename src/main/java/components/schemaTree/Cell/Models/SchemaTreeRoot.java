@@ -28,6 +28,11 @@ public class SchemaTreeRoot extends SchemaElement {
     }
 
     @Override
+    public boolean hasChild(SchemaTreePluggable item) {
+        return this.folders.indexOf(item) != -1;
+    }
+
+    @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder)item, -1);
@@ -55,7 +60,7 @@ public class SchemaTreeRoot extends SchemaElement {
     public int getChildIndex(SchemaTreePluggable item) {
         int r = this.folders.get().indexOf(item);
         if(r == -1)
-            throw new IllegalArgumentException("The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaTreeRoot) The provided item is not a child of this element!");
         return r;
     }
 
@@ -77,6 +82,11 @@ public class SchemaTreeRoot extends SchemaElement {
     @Override
     public void accept(SchemaTreePluggableVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean canChangeParent() {
+        return false;
     }
 
     public void addFolder(SchemaFolder f, int index){

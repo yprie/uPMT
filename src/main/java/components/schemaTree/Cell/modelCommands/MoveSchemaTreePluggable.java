@@ -5,9 +5,10 @@ import components.schemaTree.Cell.SchemaTreePluggable;
 
 public class MoveSchemaTreePluggable extends ModelUserActionCommand<Void, Void> {
 
-    SchemaTreePluggable oldParent;
-    SchemaTreePluggable newParent;
-    SchemaTreePluggable element;
+    private SchemaTreePluggable oldParent;
+    private SchemaTreePluggable newParent;
+    private SchemaTreePluggable element;
+    private int elementIndex;
 
     public MoveSchemaTreePluggable(SchemaTreePluggable oldParent, SchemaTreePluggable newParent, SchemaTreePluggable element) {
         this.oldParent = oldParent;
@@ -17,18 +18,24 @@ public class MoveSchemaTreePluggable extends ModelUserActionCommand<Void, Void> 
 
     @Override
     public Void execute() {
-        move(oldParent, newParent, element);
+        elementIndex = oldParent.getChildIndex(element);
+        move(oldParent, newParent, element, -1);
         return null;
     }
 
     @Override
     public Void undo() {
-        move(newParent, oldParent, element);
+        move(newParent, oldParent, element, this.elementIndex);
         return null;
     }
 
-    private void move(SchemaTreePluggable source, SchemaTreePluggable target, SchemaTreePluggable element) {
+    private void move(SchemaTreePluggable source, SchemaTreePluggable target, SchemaTreePluggable element, int elementIndex) {
         source.removeChild(element);
-        target.addChild(element);
+        if (elementIndex == -1) {
+            target.addChild(element);
+        }
+        else{
+            target.addChildAt(element, elementIndex);
+        }
     }
 }

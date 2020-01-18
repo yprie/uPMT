@@ -14,10 +14,13 @@ public interface SchemaTreePluggable extends ReactiveTreePluggable, IDraggable {
     BooleanProperty expandedProperty();
 
     boolean canContain(SchemaTreePluggable item);
+    boolean hasChild(SchemaTreePluggable item);
     void addChild(SchemaTreePluggable item);
     void addChildAt(SchemaTreePluggable item, int index);
     void removeChild(SchemaTreePluggable item);
     int getChildIndex(SchemaTreePluggable item);
 
     void accept(SchemaTreePluggableVisitor visitor);
+
+    boolean canChangeParent();
 }

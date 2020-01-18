@@ -4,6 +4,7 @@ import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Section;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,12 +13,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import utils.ResourceLoader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class SchemaTreeCellController implements Initializable {
+    @FXML private BorderPane container;
 
     @FXML
     BorderPane nameDisplayer;
@@ -103,4 +106,27 @@ public abstract class SchemaTreeCellController implements Initializable {
     }
 
     public boolean getOnHover() { return optionsMenu.isVisible(); }
+
+    public Section mouseIsDraggingOn(double y) {
+        if(y < 10) {
+            return Section.top;
+        }
+        else if (y > 20){
+            return Section.bottom;
+        }
+        else {
+            return Section.middle;
+        }
+    }
+
+    public void createPane(Section sect) {
+        Pane pane = new Pane();
+        pane.setStyle("-fx-background-color:#f4b4b4;");
+        pane.setOpacity(0.2);
+        pane.setPrefSize(230, 5);
+    }
+
+    public void setStyle(String style) {
+        container.setStyle(style);
+    }
 }

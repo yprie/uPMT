@@ -23,6 +23,11 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
     }
 
     @Override
+    public boolean hasChild(SchemaTreePluggable item) {
+        return false;
+    }
+
+    @Override
     public void addChild(SchemaTreePluggable item) {
         throw new IllegalArgumentException("Can't receive this kind of child !");
     }
@@ -39,7 +44,7 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
 
     @Override
     public int getChildIndex(SchemaTreePluggable item) {
-        throw new IllegalArgumentException("The provided item is not a child of this element!");
+        throw new IllegalArgumentException("(SchemaProperty) The provided item is not a child of this element!");
     }
 
     @Override
@@ -47,11 +52,16 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
 
     @Override
     public boolean isDraggable() {
-        return false;
+        return true;
     }
 
     @Override
     public void accept(SchemaTreePluggableVisitor visitor) { visitor.visit(this); }
+
+    @Override
+    public boolean canChangeParent() {
+        return false;
+    }
 
     @Override
     public String getIconPath() {
