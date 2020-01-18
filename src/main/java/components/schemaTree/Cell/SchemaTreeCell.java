@@ -90,16 +90,6 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
             }
         });
 
-        selfCell.setOnDragEntered(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent dragEvent) {
-                if (dragEvent.getGestureSource() != selfCell) {
-                    selfCell.setStyle("-fx-font-weight: bold;");
-                }
-                dragEvent.consume();
-            }
-        });
-
         selfCell.setOnDragExited(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 selfCell.setStyle("-fx-font-weight: normal;");
@@ -114,39 +104,28 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                 SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
                 SchemaTreePluggable target = selfCell.getItem();
 
-                SchemaTreePluggable Sourceparent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
-                SchemaTreePluggable Targetparent = selfCell.getTreeItem().getParent().getValue();
+                SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
 
-                if (sect == Section.middle || Sourceparent != Targetparent) {
-                    // we want the same behaviour if the source if moved in another folder
-                    if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
-                        //basic checking for drag and drop operation in tree structure.
-                        if(source == target || !target.canContain(source)) { event.consume(); return; }
-
-                        if (isDirectParent(source, selfCell) || isAncestor(source, selfCell)) {
-                            event.consume(); return;
+                if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
+                    if (sect == Section.middle) {
+                        if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
+                            selfCell.setStyle("-fx-font-weight: bold;-fx-border-width: 0;");
+                            event.acceptTransferModes(TransferMode.MOVE);
                         }
-
-                        selfCell.setStyle("-fx-border-width: 0;");
-                        event.acceptTransferModes(TransferMode.MOVE);
-
-                    }
-                }
-                else {
-                    if(source == target) {
-                        event.consume(); return;
                     }
                     else {
-                        if (sect == Section.bottom) {
-                            selfCell.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                        if (canMove(sourceParent, targetParent, source, target, sect)) {
+                            if (sect == Section.bottom) {
+                                selfCell.setStyle("-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                            }
+                            else if (sect == Section.top) {
+                                selfCell.setStyle("-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                            }
+                            event.acceptTransferModes(TransferMode.MOVE);
                         }
-                        else {
-                            selfCell.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
-                        }
-                        event.acceptTransferModes(TransferMode.MOVE);
                     }
                 }
-
                 event.consume();
             }
         });
@@ -212,6 +191,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
         );
     }
 
+
     private static boolean isDirectParent(SchemaTreePluggable source, SchemaTreeCell target) {
         //Checking for target being a direct parent of source
         boolean res = false;
@@ -234,4 +214,29 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
         return false;
     }
 
+    private static boolean canMove(SchemaTreePluggable sourceParent, SchemaTreePluggable targetParent,
+                                   SchemaTreePluggable source, SchemaTreePluggable target, Section section) {
+        // Target section is top or bottom: need to check same parent and if the move action will really move something.
+        if (sourceParent == targetParent) {
+            // this will be a permutation
+            int sourceIndex = sourceParent.getChildIndex(source);
+            int targetIndex = sourceParent.getChildIndex(target);
+
+            if (section == Section.top) {
+                if(sourceIndex == targetIndex - 1) {
+                    return false;
+                }
+            }
+            else if (section == Section.bottom) {
+                if(targetIndex == sourceIndex - 1) {
+                    return false;
+                }
+            }
+        }
+        else {
+            // this will be a move from one folder to another
+            return false;
+        }
+        return true;
+    }
 }

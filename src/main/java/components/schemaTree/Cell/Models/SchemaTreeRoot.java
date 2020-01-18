@@ -28,6 +28,11 @@ public class SchemaTreeRoot extends SchemaElement {
     }
 
     @Override
+    public boolean hasChild(SchemaTreePluggable item) {
+        return this.folders.indexOf(item) != -1;
+    }
+
+    @Override
     public void addChild(SchemaTreePluggable item) {
         if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder)item, -1);
@@ -77,6 +82,11 @@ public class SchemaTreeRoot extends SchemaElement {
     @Override
     public void accept(SchemaTreePluggableVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean canChangeParent() {
+        return false;
     }
 
     public void addFolder(SchemaFolder f, int index){
