@@ -92,13 +92,15 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragExited(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                selfCell.setStyle("-fx-font-weight: normal;");
+                selfCell.setStyle("");
+                controller.setStyle("");
                 event.consume();
             }
         });
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                boolean accept = false;
                 // TODO: get size of the target
                 Section sect = controller.mouseIsDraggingOn(event.getY());
                 SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
@@ -110,21 +112,31 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                 if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
                     if (sect == Section.middle) {
                         if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
-                            selfCell.setStyle("-fx-font-weight: bold;-fx-border-width: 0;");
-                            event.acceptTransferModes(TransferMode.MOVE);
+                            //selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;-fx-border-width: 0;");
+                            selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                            accept = true;
                         }
                     }
                     else {
                         if (canMove(sourceParent, targetParent, source, target, sect)) {
                             if (sect == Section.bottom) {
-                                selfCell.setStyle("-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
                             }
                             else if (sect == Section.top) {
-                                selfCell.setStyle("-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
                             }
-                            event.acceptTransferModes(TransferMode.MOVE);
+                            accept = true;
                         }
                     }
+                }
+                if (accept) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                else {
+                    selfCell.setStyle("");
+                    controller.setStyle("");
                 }
                 event.consume();
             }

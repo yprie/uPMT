@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class SchemaTreeCellController implements Initializable {
+    @FXML private BorderPane container;
+
     @FXML
     BorderPane nameDisplayer;
 
@@ -122,5 +124,9 @@ public abstract class SchemaTreeCellController implements Initializable {
         pane.setStyle("-fx-background-color:#f4b4b4;");
         pane.setOpacity(0.2);
         pane.setPrefSize(230, 5);
+    }
+
+    public void setStyle(String style) {
+        container.setStyle(style);
     }
 }
