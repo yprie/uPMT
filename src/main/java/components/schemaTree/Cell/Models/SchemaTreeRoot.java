@@ -37,7 +37,7 @@ public class SchemaTreeRoot extends SchemaElement {
         if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder)item, -1);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child !");
+            throw new IllegalArgumentException("(SchemaTreeRoot::addChild) Can't receive this kind of child !");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SchemaTreeRoot extends SchemaElement {
         if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder)item, index);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child !");
+            throw new IllegalArgumentException("(SchemaTreeRoot::addChildAt) Can't receive this kind of child !");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SchemaTreeRoot extends SchemaElement {
         if(Utils.IsSchemaTreeFolder(item))
             removeFolder((SchemaFolder)item);
         else
-            throw new IllegalArgumentException("Can't remove this kind of child !");
+            throw new IllegalArgumentException("(SchemaTreeRoot::removeChild) Can't remove this kind of child !");
     }
 
     @Override

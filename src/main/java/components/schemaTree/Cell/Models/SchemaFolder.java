@@ -60,7 +60,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder) item, -1);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child ! ");
+            throw new IllegalArgumentException("(SchemaFolder::addChild) Can't receive this kind of child ! ");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder) item, index);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child ! ");
+            throw new IllegalArgumentException("(SchemaFolder::addChildAt) Can't receive this kind of child ! ");
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             removeFolder((SchemaFolder) item);
         else
-            throw new IllegalArgumentException("Can't remove this kind of child !");
+            throw new IllegalArgumentException("(SchemaFolder::removeChild) Can't remove this kind of child !");
     }
 
     @Override

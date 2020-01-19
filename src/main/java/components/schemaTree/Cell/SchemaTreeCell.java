@@ -154,17 +154,17 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
                     Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                    SchemaTreePluggable Sourceparent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
-                    SchemaTreePluggable Targetparent = selfCell.getTreeItem().getParent().getValue();
+                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                    SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
 
-                    if (sect == Section.middle || Sourceparent != Targetparent) {
-                        //Drag and drop command
-                        HistoryManager.addCommand(new MoveSchemaTreePluggable(Sourceparent, target, source), true);
-                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-                    }
-                    else {
-                        int oldIndex = Sourceparent.getChildIndex(source);
-                        int newIndex = Sourceparent.getChildIndex(target);
+                    SchemaTreePluggable newParent = null;
+
+                    int newIndex = -1;
+
+                    if (sect != Section.middle) {
+                        newParent = parentTarget;
+                        int oldIndex = sourceParent.getChildIndex(source);
+                        newIndex = sourceParent.getChildIndex(target);
 
                         if (sect == Section.top && oldIndex < newIndex) {
                             newIndex--;
@@ -172,9 +172,15 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                         else if (sect == Section.bottom && oldIndex > newIndex) {
                             newIndex++;
                         }
-                        HistoryManager.addCommand(new PermuteSchemaTreePluggable(Sourceparent, oldIndex, newIndex, source), true);
-                        // selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem()); // TODO: select the target item
                     }
+                    else {
+                        // sect == middle so change parent
+                        newParent = target;
+                    }
+                    selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
+                    HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
+                            true);
+
                 }
                 event.setDropCompleted(false);
                 event.consume();
