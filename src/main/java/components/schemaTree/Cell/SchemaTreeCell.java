@@ -5,7 +5,6 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Models.*;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
-import components.schemaTree.Cell.modelCommands.PermuteSchemaTreePluggable;
 import components.schemaTree.Section;
 import javafx.scene.control.TreeItem;
 import utils.reactiveTree.LeafToRootIterator;
@@ -106,14 +105,15 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                 SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
                 SchemaTreePluggable target = selfCell.getItem();
 
-                SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                        .getParent().getValue();
                 SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
 
                 if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
                     if (sect == Section.middle) {
                         if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
-                            //selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;-fx-border-width: 0;");
                             selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                            controller.setStyle("");
                             accept = true;
                         }
                     }
@@ -154,7 +154,8 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
                     Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem().getParent().getValue();
+                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                            .getParent().getValue();
                     SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
 
                     SchemaTreePluggable newParent = null;
@@ -164,20 +165,29 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                     if (sect != Section.middle) {
                         newParent = parentTarget;
                         int oldIndex = sourceParent.getChildIndex(source);
-                        newIndex = sourceParent.getChildIndex(target);
+                        newIndex = parentTarget.getChildIndex(target);
 
-                        if (sect == Section.top && oldIndex < newIndex) {
-                            newIndex--;
+                        if (sourceParent == parentTarget) {
+                            if (sect == Section.top && oldIndex < newIndex) {
+                                newIndex--;
+                            }
+                            else if (sect == Section.bottom && oldIndex > newIndex) {
+                                newIndex++;
+                            }
                         }
-                        else if (sect == Section.bottom && oldIndex > newIndex) {
-                            newIndex++;
+                        else {
+                            if (sect == Section.bottom) {
+                                newIndex++;
+                            }
                         }
+                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
+                                .getSelectedItem()); // TODO: fix
                     }
                     else {
                         // sect == middle so change parent
                         newParent = target;
+                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
                     }
-                    selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
                     HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
                             true);
 
@@ -235,24 +245,24 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
     private static boolean canMove(SchemaTreePluggable sourceParent, SchemaTreePluggable targetParent,
                                    SchemaTreePluggable source, SchemaTreePluggable target, Section section) {
         // Target section is top or bottom: need to check same parent and if the move action will really move something.
-        if (sourceParent == targetParent && target.isSameType(source)) {
-            // this will be a permutation
+        if (target.isSameType(source)) {
             int sourceIndex = sourceParent.getChildIndex(source);
-            int targetIndex = sourceParent.getChildIndex(target);
+            int targetIndex = targetParent.getChildIndex(target);
 
-            if (section == Section.top) {
-                if(sourceIndex == targetIndex - 1) {
-                    return false;
+            if (sourceParent == targetParent) {
+                if (section == Section.top) {
+                    if(sourceIndex == targetIndex - 1) {
+                        return false;
+                    }
                 }
-            }
-            else if (section == Section.bottom) {
-                if(targetIndex == sourceIndex - 1) {
-                    return false;
+                else if (section == Section.bottom) {
+                    if(targetIndex == sourceIndex - 1) {
+                        return false;
+                    }
                 }
             }
         }
         else {
-            // this will be a move from one folder to another
             return false;
         }
         return true;
