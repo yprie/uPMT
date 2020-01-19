@@ -5,11 +5,15 @@ import components.schemaTree.Cell.Models.SchemaTreeRoot;
 import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import components.schemaTree.Cell.SchemaTreeCell;
 import application.configuration.Configuration;
+import components.schemaTree.Section;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +25,12 @@ public class SchemaTreeController implements Initializable {
     private
     TreeView<SchemaTreePluggable> schemaTree;
 
+    @FXML private Pane bottomScroll;
+    @FXML private Pane topScroll;
+
+    private int visibleRow;
+    private long lastScrollTime;
+    private long milliSecondsBetweenScrolls = 200;
     private SchemaTreeRoot root;
 
     public SchemaTreeController(SchemaTreeRoot root) { this.root = root; }
@@ -46,11 +56,46 @@ public class SchemaTreeController implements Initializable {
             return new SchemaTreeCell();
         });
         setTreeRoot(root);
+
+        //Scrolling system
+        bottomScroll.setOnDragEntered(event -> {
+            lastScrollTime = System.currentTimeMillis();
+            visibleRow = schemaTree.getRow(schemaTree.getSelectionModel().getSelectedItem())-1;
+        });
+        bottomScroll.setOnDragOver(event -> {
+            scrollSchemaTree(Section.bottom);
+        });
+
+        topScroll.setOnDragEntered(event -> {
+            lastScrollTime = System.currentTimeMillis();
+            visibleRow = schemaTree.getRow(schemaTree.getSelectionModel().getSelectedItem())+1;
+        });
+        topScroll.setOnDragOver(event -> {
+            scrollSchemaTree(Section.top);
+        });
     }
 
     private void setTreeRoot(SchemaTreeRoot root) {
         CreateSchemaTreeItemVisitor visitor = new CreateSchemaTreeItemVisitor();
         root.accept(visitor);
         schemaTree.setRoot(visitor.getSchemaTreeItem());
+    }
+
+    private void scrollSchemaTree(Section s) {
+        long currentTime = System.currentTimeMillis();
+        if(currentTime - lastScrollTime > milliSecondsBetweenScrolls){
+            if(s == Section.top) {
+                if(visibleRow > 0)
+                    visibleRow--;
+                schemaTree.scrollTo(visibleRow);
+                lastScrollTime = currentTime;
+            }
+            else if(s == Section.bottom) {
+                visibleRow++;
+                schemaTree.scrollTo(visibleRow);
+                lastScrollTime = currentTime;
+            }
+        }
+
     }
 }
