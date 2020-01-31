@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
+import utils.AutoSuggestions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +23,8 @@ public class SchemaTreeController implements Initializable {
     TreeView<SchemaTreePluggable> schemaTree;
 
     private SchemaTreeRoot root;
+
+    private AutoSuggestions autoSuggestions = AutoSuggestions.getAutoSuggestions();
 
     public SchemaTreeController(SchemaTreeRoot root) { this.root = root; }
 
@@ -42,10 +45,9 @@ public class SchemaTreeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         schemaTree.setEditable(true);
-        schemaTree.setCellFactory(modelTreeElementTreeView -> {
-            return new SchemaTreeCell();
-        });
+        schemaTree.setCellFactory(modelTreeElementTreeView -> new SchemaTreeCell());
         setTreeRoot(root);
+        autoSuggestions.setSchemaTreeRoot(root);
     }
 
     private void setTreeRoot(SchemaTreeRoot root) {
