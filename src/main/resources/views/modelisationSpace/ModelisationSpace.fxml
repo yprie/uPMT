@@ -7,7 +7,7 @@
 
 <fx:root type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <AnchorPane>
+      <AnchorPane fx:id="mainAnchorPane">
          <children>
             <ImageView fx:id="fake_view" fitHeight="453.0" fitWidth="715.0" layoutX="177.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             </ImageView>
