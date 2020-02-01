@@ -1,16 +1,16 @@
 package components.modelisationSpace.UI;
 
+import utils.AutoSuggestions;
+import components.schemaTree.Cell.SchemaTreePluggable;
+
 import javafx.geometry.Side;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ContextMenu;
-import utils.AutoSuggestions;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 // https://stackoverflow.com/a/40369435
@@ -19,6 +19,9 @@ public class AutoSuggestionsTextField extends TextField {
     //Local variables
     //entries to autocomplete
     private final SortedSet<String> entries;
+
+    // entries map where key are element name (String) and value are the elements (SchemaTreePluggable)
+    private Map<String, SchemaTreePluggable> suggestions;
     //popup GUI
     private ContextMenu entriesPopup;
 
@@ -63,7 +66,15 @@ public class AutoSuggestionsTextField extends TextField {
     }
 
     private void fetchEntries() {
-        entries.addAll(AutoSuggestions.getAutoSuggestions().getSuggestions());
+        entries.clear();
+        suggestions = AutoSuggestions.getAutoSuggestions().getSuggestions();
+        Set<Map.Entry<String, SchemaTreePluggable>> setHm = suggestions.entrySet();
+        Iterator<Map.Entry<String, SchemaTreePluggable>> it = setHm.iterator();
+        while(it.hasNext()){
+            Map.Entry<String, SchemaTreePluggable> e = it.next();
+            entries.add(e.getKey());
+        }
+
     }
 
     private void searchSuggestions() {
@@ -113,14 +124,20 @@ public class AutoSuggestionsTextField extends TextField {
 
             //if any suggestion is select set it into text and close popup
             item.setOnAction(actionEvent -> {
-                setText(result);
-                positionCaret(result.length());
-                entriesPopup.hide();
+                onClick(result);
             });
         }
 
         //"Refresh" context menu
         entriesPopup.getItems().addAll(menuItems);
+    }
+
+    private void onClick(String result) {
+        setText(result);
+        positionCaret(result.length());
+        hide();
+        SchemaTreePluggable selectedElement = suggestions.get(result);
+        System.out.println(selectedElement);
     }
 
 

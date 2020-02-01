@@ -3,9 +3,10 @@ package utils;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import components.schemaTree.Cell.Models.SchemaFolder;
 import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import components.schemaTree.Cell.SchemaTreePluggable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AutoSuggestions {
 
@@ -23,30 +24,30 @@ public class AutoSuggestions {
         this.root = root;
     }
 
-    public List<String> getSuggestions() {
-        List<String> result = new ArrayList<>();
+    public Map<String, SchemaTreePluggable> getSuggestions() {
+        Map<String, SchemaTreePluggable> result = new HashMap<>();
 
         // Loop over the folders of the root
         for(SchemaFolder folder: root.foldersProperty()) {
-            result.add(folder.getName());
+            result.put(folder.getName(), folder);
             iterateOverFolder(folder, result);
         }
         return result;
     }
 
-    private void iterateOverFolder(SchemaFolder folder, List<String> result) {
+    private void iterateOverFolder(SchemaFolder folder, Map<String, SchemaTreePluggable> result) {
         // Iterate over the tree
 
         // Loop over the folders
         for(SchemaFolder subFolder: folder.foldersProperty()) {
-            result.add(subFolder.getName());
+            result.put(subFolder.getName(), subFolder);
             // recursively call
             iterateOverFolder(subFolder, result);
         }
 
         // Loop over the categories
         for(SchemaCategory category: folder.categoriesProperty()) {
-            result.add(category.getName());
+            result.put(category.getName(), category);
         }
     }
 }
