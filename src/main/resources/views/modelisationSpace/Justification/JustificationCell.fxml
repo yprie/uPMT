@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<center>
+    <Label fx:id="text"/>
+</center>
+<right>
+    <HBox>
+        <Button fx:id="duplicateButton">D</Button>
+        <Button fx:id="removeButton">X</Button>
+    </HBox>
+</right>
+</BorderPane>
