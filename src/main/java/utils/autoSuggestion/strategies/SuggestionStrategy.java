@@ -17,21 +17,5 @@ public abstract class SuggestionStrategy {
         return root;
     }
     public abstract Map<String, SchemaTreePluggable> fetchSuggestions();
-
-    protected void iterateOverFolder(SchemaFolder folder, Map<String, SchemaTreePluggable> result) {
-        // Used by fetchSuggestions
-        // Iterate over the tree
-
-        // Loop over the folders
-        for(SchemaFolder subFolder: folder.foldersProperty()) {
-            result.put(subFolder.getName(), subFolder);
-            // recursively call
-            iterateOverFolder(subFolder, result);
-        }
-
-        // Loop over the categories
-        for(SchemaCategory category: folder.categoriesProperty()) {
-            result.put(category.getName(), category);
-        }
-    }
+    protected abstract void iterateOverFolder(SchemaFolder folder, Map<String, SchemaTreePluggable> result);
 }

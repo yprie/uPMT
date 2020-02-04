@@ -10,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ContextMenu;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 // https://stackoverflow.com/a/40369435
@@ -31,13 +30,13 @@ public class AutoSuggestionsTextField extends TextField {
         this.entries = new TreeSet<>();
         this.entriesPopup = new ContextMenu();
 
-        setListner();
+        setListener();
     }
 
     /**
-     * "Suggestion" specific listners
+     * "Suggestion" specific listeners
      */
-    private void setListner() {
+    private void setListener() {
         //Add "suggestions" by changing text
         textProperty().addListener((observable, oldValue, newValue) -> {
             showSuggestions();
@@ -45,11 +44,7 @@ public class AutoSuggestionsTextField extends TextField {
 
         //Hide always by focus-in (optional) and out
         focusedProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (!newValue) {
-                entriesPopup.getItems().clear();
-                hide();
-            }
-            else {
+            if (newValue) {
                 showSuggestions();
             }
         });
@@ -81,6 +76,7 @@ public class AutoSuggestionsTextField extends TextField {
                 entries.add(e.getKey());
             }
 
+            // filter the list of result with the entered text
             List<String> searchResult = AutoSuggestions.getAutoSuggestions().searchSuggestions(enteredText, entries);
             populatePopup(searchResult);
             show();
@@ -97,8 +93,7 @@ public class AutoSuggestionsTextField extends TextField {
         //List of "suggestions"
         List<CustomMenuItem> menuItems = new LinkedList<>();
         //List size - 10 or founded suggestions count
-        //int maxEntries = 10;
-        int maxEntries = 50;
+        int maxEntries = 50; // TODO: chose a value
         int count = Math.min(searchResult.size(), maxEntries);
         //Build list as set of labels
         for (int i = 0; i < count; i++) {

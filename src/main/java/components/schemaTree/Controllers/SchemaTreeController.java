@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeView;
 import utils.autoSuggestion.AutoSuggestions;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
+import utils.autoSuggestion.strategies.SuggestionStrategyFolder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,6 +51,7 @@ public class SchemaTreeController implements Initializable {
         setTreeRoot(root);
         autoSuggestions.setSchemaTreeRoot(root);
         autoSuggestions.setStrategy(new SuggestionStrategyCategory());
+        autoSuggestions.setStrategy(new SuggestionStrategyFolder());
     }
 
     private void setTreeRoot(SchemaTreeRoot root) {
