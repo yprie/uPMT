@@ -1,6 +1,6 @@
 package components.modelisationSpace.UI;
 
-import utils.AutoSuggestions;
+import utils.autoSuggestion.AutoSuggestions;
 import components.schemaTree.Cell.SchemaTreePluggable;
 
 import javafx.geometry.Side;
@@ -9,9 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ContextMenu;
 
-
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 // https://stackoverflow.com/a/40369435
 
@@ -40,19 +40,17 @@ public class AutoSuggestionsTextField extends TextField {
     private void setListner() {
         //Add "suggestions" by changing text
         textProperty().addListener((observable, oldValue, newValue) -> {
-            searchSuggestions();
+            showSuggestions();
         });
 
         //Hide always by focus-in (optional) and out
         focusedProperty().addListener((observableValue, oldValue, newValue) -> {
-            entriesPopup.getItems().clear();
-            fetchEntries();
-            searchSuggestions();
             if (!newValue) {
+                entriesPopup.getItems().clear();
                 hide();
             }
             else {
-                show();
+                showSuggestions();
             }
         });
     }
@@ -65,49 +63,37 @@ public class AutoSuggestionsTextField extends TextField {
         entriesPopup.hide();
     }
 
-    private void fetchEntries() {
-        entries.clear();
-        suggestions = AutoSuggestions.getAutoSuggestions().getSuggestions();
-        Set<Map.Entry<String, SchemaTreePluggable>> setHm = suggestions.entrySet();
-        Iterator<Map.Entry<String, SchemaTreePluggable>> it = setHm.iterator();
-        while(it.hasNext()){
-            Map.Entry<String, SchemaTreePluggable> e = it.next();
-            entries.add(e.getKey());
-        }
-
-    }
-
-    private void searchSuggestions() {
+    private void showSuggestions() {
         String enteredText = getText();
-        //always hide suggestion if nothing has been entered (only "spacebars" are dissalowed in TextField)
         if (enteredText == null || enteredText.isEmpty()) {
-            entriesPopup.hide();
-        } else {
-            //filter all possible suggestions depends on "Text", case insensitive
-            List<String> filteredEntries = entries.stream()
-                    .filter(e -> e.toLowerCase().contains(enteredText.toLowerCase()))
-                    .collect(Collectors.toList());
-            //some suggestions are found
-            if (!filteredEntries.isEmpty()) {
-                //build popup - list of "CustomMenuItem"
-                populatePopup(filteredEntries, enteredText);
-                if (!entriesPopup.isShowing()) { //optional
-                    show();
-                }
-                //no suggestions -> hide
-            } else {
-                hide();
+            hide();
+        }
+        else {
+            this.suggestions = AutoSuggestions.getAutoSuggestions().getStrategy().fetchSuggestions();
+
+            // Populate the list of possibilities
+            entries.clear();
+            Set<Map.Entry<String, SchemaTreePluggable>> setHm = suggestions.entrySet();
+            Iterator<Map.Entry<String, SchemaTreePluggable>> it = setHm.iterator();
+            while(it.hasNext()){
+                Map.Entry<String, SchemaTreePluggable> e = it.next();
+                System.out.print(e.getKey());
+                entries.add(e.getKey());
             }
+
+            List<String> searchResult = AutoSuggestions.getAutoSuggestions().searchSuggestions(enteredText, entries);
+            populatePopup(searchResult);
+            show();
         }
     }
-
 
     /**
      * Populate the entry set with the given search results. Display is limited to 10 entries, for performance.
      *
      * @param searchResult The set of matching strings.
      */
-    private void populatePopup(List<String> searchResult, String searchReauest) {
+    private void populatePopup(List<String> searchResult) {
+        entriesPopup.getItems().clear();
         //List of "suggestions"
         List<CustomMenuItem> menuItems = new LinkedList<>();
         //List size - 10 or founded suggestions count
@@ -137,17 +123,14 @@ public class AutoSuggestionsTextField extends TextField {
         positionCaret(result.length());
         hide();
         SchemaTreePluggable selectedElement = suggestions.get(result);
-        System.out.println(selectedElement);
     }
 
-
-    /**
-     * Get the existing set of autocomplete entries.
-     *
-     * @return The existing autocomplete entries.
-     */
-    public SortedSet<String> getEntries() {
-        return entries;
+    private void onEnter() {
+        // On press Enter: create a category
+        /*
+        SchemaTreeCommandFactory cmdFactory = new SchemaTreeCommandFactory(AutoSuggestions.getAutoSuggestions(), getTreeItem());
+        SchemaCategory newModel = new SchemaCategory(result);
+        cmdFactory.addSchemaTreeChild(newModel).execute();
+        */
     }
-
 }

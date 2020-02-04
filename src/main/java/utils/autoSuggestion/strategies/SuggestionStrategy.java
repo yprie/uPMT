@@ -1,41 +1,25 @@
-package utils;
+package utils.autoSuggestion.strategies;
 
 import components.schemaTree.Cell.Models.SchemaCategory;
 import components.schemaTree.Cell.Models.SchemaFolder;
 import components.schemaTree.Cell.Models.SchemaTreeRoot;
 import components.schemaTree.Cell.SchemaTreePluggable;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class AutoSuggestions {
-
-    private static final AutoSuggestions autoSuggestions = new AutoSuggestions();
-
+public abstract class SuggestionStrategy {
     private SchemaTreeRoot root;
-
-    private AutoSuggestions() {}
-
-    public static AutoSuggestions getAutoSuggestions() {
-        return autoSuggestions;
-    }
 
     public void setSchemaTreeRoot(SchemaTreeRoot root) {
         this.root = root;
     }
-
-    public Map<String, SchemaTreePluggable> getSuggestions() {
-        Map<String, SchemaTreePluggable> result = new HashMap<>();
-
-        // Loop over the folders of the root
-        for(SchemaFolder folder: root.foldersProperty()) {
-            result.put(folder.getName(), folder);
-            iterateOverFolder(folder, result);
-        }
-        return result;
+    public SchemaTreeRoot getSchemaTreeRoot() {
+        return root;
     }
+    public abstract Map<String, SchemaTreePluggable> fetchSuggestions();
 
-    private void iterateOverFolder(SchemaFolder folder, Map<String, SchemaTreePluggable> result) {
+    protected void iterateOverFolder(SchemaFolder folder, Map<String, SchemaTreePluggable> result) {
+        // Used by fetchSuggestions
         // Iterate over the tree
 
         // Loop over the folders

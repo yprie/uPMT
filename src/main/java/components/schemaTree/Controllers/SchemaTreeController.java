@@ -10,7 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
-import utils.AutoSuggestions;
+import utils.autoSuggestion.AutoSuggestions;
+import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +49,7 @@ public class SchemaTreeController implements Initializable {
         schemaTree.setCellFactory(modelTreeElementTreeView -> new SchemaTreeCell());
         setTreeRoot(root);
         autoSuggestions.setSchemaTreeRoot(root);
+        autoSuggestions.setStrategy(new SuggestionStrategyCategory());
     }
 
     private void setTreeRoot(SchemaTreeRoot root) {

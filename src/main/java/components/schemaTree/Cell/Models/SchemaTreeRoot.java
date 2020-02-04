@@ -7,7 +7,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
-import utils.AutoSuggestions;
+import utils.autoSuggestion.AutoSuggestions;
 
 import java.util.LinkedList;
 
