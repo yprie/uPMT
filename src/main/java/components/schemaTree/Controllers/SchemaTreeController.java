@@ -50,8 +50,6 @@ public class SchemaTreeController implements Initializable {
         schemaTree.setCellFactory(modelTreeElementTreeView -> new SchemaTreeCell());
         setTreeRoot(root);
         autoSuggestions.setSchemaTreeRoot(root);
-        autoSuggestions.setStrategy(new SuggestionStrategyCategory());
-        autoSuggestions.setStrategy(new SuggestionStrategyFolder());
     }
 
     private void setTreeRoot(SchemaTreeRoot root) {

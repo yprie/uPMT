@@ -1,6 +1,5 @@
 package components.modelisationSpace.UI;
 
-import utils.autoSuggestion.AutoSuggestions;
 import components.schemaTree.Cell.SchemaTreePluggable;
 
 import javafx.geometry.Side;
@@ -8,6 +7,7 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ContextMenu;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
 
 import java.util.*;
 
@@ -15,22 +15,26 @@ import java.util.*;
 // https://stackoverflow.com/a/40369435
 
 public class AutoSuggestionsTextField extends TextField {
-    //Local variables
-    //entries to autocomplete
-    private final SortedSet<String> entries;
+    // Local variables
 
-    // entries map where key are element name (String) and value are the elements (SchemaTreePluggable)
+    // Entries map where key are element name (String) and value are the elements (SchemaTreePluggable)
     private Map<String, SchemaTreePluggable> suggestions;
-    //popup GUI
+
+    // Popup GUI
     private ContextMenu entriesPopup;
 
+    // Suggestion Strategy
+    private SuggestionStrategy suggestionStrategy;
 
-    public AutoSuggestionsTextField() {
+    public AutoSuggestionsTextField(SuggestionStrategy suggestionStrategy) {
         super();
-        this.entries = new TreeSet<>();
         this.entriesPopup = new ContextMenu();
-
+        this.suggestionStrategy = suggestionStrategy;
         setListener();
+    }
+
+    public void setStrategy(SuggestionStrategy newSuggestionStrategy) {
+        suggestionStrategy = newSuggestionStrategy;
     }
 
     /**
@@ -59,28 +63,9 @@ public class AutoSuggestionsTextField extends TextField {
     }
 
     private void showSuggestions() {
-        String enteredText = getText();
-        if (enteredText == null || enteredText.isEmpty()) {
-            hide();
-        }
-        else {
-            this.suggestions = AutoSuggestions.getAutoSuggestions().getStrategy().fetchSuggestions();
-
-            // Populate the list of possibilities
-            entries.clear();
-            Set<Map.Entry<String, SchemaTreePluggable>> setHm = suggestions.entrySet();
-            Iterator<Map.Entry<String, SchemaTreePluggable>> it = setHm.iterator();
-            while(it.hasNext()){
-                Map.Entry<String, SchemaTreePluggable> e = it.next();
-                System.out.print(e.getKey());
-                entries.add(e.getKey());
-            }
-
-            // filter the list of result with the entered text
-            List<String> searchResult = AutoSuggestions.getAutoSuggestions().searchSuggestions(enteredText, entries);
-            populatePopup(searchResult);
-            show();
-        }
+        suggestions = this.suggestionStrategy.getSuggestions(getText());
+        populatePopup(suggestions);
+        show();
     }
 
     /**
@@ -88,7 +73,7 @@ public class AutoSuggestionsTextField extends TextField {
      *
      * @param searchResult The set of matching strings.
      */
-    private void populatePopup(List<String> searchResult) {
+    private void populatePopup(Map<String, SchemaTreePluggable> searchResult) {
         entriesPopup.getItems().clear();
         //List of "suggestions"
         List<CustomMenuItem> menuItems = new LinkedList<>();
@@ -96,16 +81,15 @@ public class AutoSuggestionsTextField extends TextField {
         int maxEntries = 50; // TODO: chose a value
         int count = Math.min(searchResult.size(), maxEntries);
         //Build list as set of labels
-        for (int i = 0; i < count; i++) {
-            final String result = searchResult.get(i);
+        for (Map.Entry<String, SchemaTreePluggable> entry : searchResult.entrySet()) {
             //label with graphic (text flow) to highlight founded subtext in suggestions
-            Label entryLabel = new Label(result);
+            Label entryLabel = new Label(entry.getKey());
             CustomMenuItem item = new CustomMenuItem(entryLabel, true);
             menuItems.add(item);
 
             //if any suggestion is select set it into text and close popup
             item.setOnAction(actionEvent -> {
-                onClick(result);
+                onClick(entry.getKey());
             });
         }
 
@@ -118,6 +102,7 @@ public class AutoSuggestionsTextField extends TextField {
         positionCaret(result.length());
         hide();
         SchemaTreePluggable selectedElement = suggestions.get(result);
+        System.out.println(selectedElement);
     }
 
     private void onEnter() {
