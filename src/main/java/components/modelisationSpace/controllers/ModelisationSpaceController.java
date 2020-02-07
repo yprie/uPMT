@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
-import utils.autoSuggestion.strategies.SuggestionStrategyFolder;
+import utils.autoSuggestion.strategies.SuggestionStrategyNoSense;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 import java.util.ResourceBundle;
 
@@ -36,7 +36,8 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         super.initialize(location, resources);
         fake_view.setImage(ResourceLoader.loadImage("fake_modelisation.png"));
         AutoSuggestionsTextField autoSuggestionsTextField = new AutoSuggestionsTextField(new SuggestionStrategyCategory());
-        autoSuggestionsTextField.setStrategy(new SuggestionStrategyFolder());
+        //autoSuggestionsTextField.setStrategy(new SuggestionStrategyFolder());
+        autoSuggestionsTextField.setStrategy(new SuggestionStrategyNoSense());
         mainAnchorPane.getChildren().add(autoSuggestionsTextField);
     }
 }
