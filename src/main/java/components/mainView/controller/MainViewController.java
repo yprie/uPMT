@@ -21,6 +21,9 @@
 package components.mainView.controller;
 
 import application.project.models.Project;
+import components.modelisationSpace.controllers.ModelisationSpaceController;
+import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.model.RootMoment;
 import components.schemaTree.Controllers.SchemaTreeController;
 import components.interviewPanel.Controllers.InterviewPanelController;
 import application.configuration.Configuration;
@@ -43,6 +46,7 @@ public class MainViewController implements Initializable {
 	private @FXML SplitPane mainSplitPane;
 	private @FXML SplitPane leftPane;
 	private @FXML SplitPane paneOfTextArea;
+	private @FXML ModelisationSpaceController modelisationSpaceController;
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
@@ -90,6 +94,21 @@ public class MainViewController implements Initializable {
 
 		//Update the current interview
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview()).execute();
+
+		//Set the modelisation space
+		RootMoment moment = new RootMoment();
+		Moment m1 = new Moment("Main");
+		Moment m2 = new Moment("Main2");
+
+		Moment m3 = new Moment("Sub1");
+		Moment m4 = new Moment("Sub2");
+		m1.addMoment(m3);
+		m1.addMoment(m4);
+
+		moment.addMoment(m1);
+		moment.addMoment(m2);
+
+		modelisationSpaceController.setRootMoment(moment);
 	}
 
 	@Override
