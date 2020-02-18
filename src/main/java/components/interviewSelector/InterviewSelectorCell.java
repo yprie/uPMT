@@ -1,7 +1,7 @@
 package components.interviewSelector;
 
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
-import components.interviewSelector.controllers.InterviewSelectorCellControler;
+import components.interviewSelector.controllers.InterviewSelectorCellController;
 import components.interviewSelector.models.Interview;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 
 public class InterviewSelectorCell extends ListCell<Interview> {
 
-    private InterviewSelectorCellControler controller;
+    private InterviewSelectorCellController controller;
     private InterviewSelectorCommandFactory commandFactory;
 
     public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory) {
@@ -29,9 +29,9 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/views/InterviewSelector/InterviewSelectorCell.fxml"));
             //Cell Controller
-            InterviewSelectorCellControler newController = new InterviewSelectorCellControler(item, commandFactory);
+            InterviewSelectorCellController newController = new InterviewSelectorCellController(item, commandFactory);
             loader.setController(newController);
-            controller =  newController;
+            controller = newController;
 
             //Mouse click event
             setOnMouseClicked(event -> commandFactory.selectCurrentInterview(item).execute());
