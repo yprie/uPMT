@@ -32,7 +32,7 @@ public class RootMomentController implements Initializable {
                 momentsHBox.remove(remitem);
             }
             for (Moment additem : change.getAddedSubList()) {
-                momentsHBox.add(change.getTo(), additem);
+                momentsHBox.add(change.getTo()-1, additem);
             }
         }
     };

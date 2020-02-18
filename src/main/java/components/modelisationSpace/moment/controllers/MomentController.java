@@ -1,6 +1,7 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
 import javafx.collections.ListChangeListener;
@@ -19,6 +20,7 @@ import utils.modelControllers.HBox.HBoxModelUpdate;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 
 public class MomentController extends HBoxModelController<Moment> implements Initializable {
@@ -42,7 +44,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
                 momentsHBox.remove(remitem);
             }
             for (Moment additem : change.getAddedSubList()) {
-                momentsHBox.add(change.getTo(), additem);
+                momentsHBox.add(change.getTo()-1, additem);
             }
         }
     };
@@ -85,6 +87,12 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         }
         momentContainer.getChildren().add(momentsHBox);
         moment.momentsProperty().addListener(childChangeListener);
+
+        //bottom separator works only when there is no child yet !
+        separatorBottom.setOnDragDone(descripteme -> {
+            if(moment.momentsProperty().size() < 1)
+                childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
+        });
     }
 
     @Override
@@ -110,7 +118,9 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
             if(grid.getChildren().indexOf(separatorRight.getNode()) == -1)
                 grid.add(separatorRight.getNode(), 2, 0);
 
-
+            //set operation on descripteme DND over borders
+            separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
+            separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
         }
         else {
             //Hide an show the separators
@@ -118,6 +128,15 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
                 grid.getChildren().remove(separatorLeft.getNode());
             if(grid.getChildren().indexOf(separatorRight.getNode()) == -1)
                 grid.add(separatorRight.getNode(), 2, 0);
+
+            //Do nothing with the left separator
+            separatorLeft.setOnDragDone(descripteme -> {});
+            if(index == siblingsCount - 1) {
+                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
+            }
+            else {
+                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+            }
         }
     }
 }

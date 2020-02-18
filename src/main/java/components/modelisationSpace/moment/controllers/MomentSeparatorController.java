@@ -1,6 +1,9 @@
 package components.modelisationSpace.moment.controllers;
 
 import components.interviewPanel.Models.Descripteme;
+import components.interviewPanel.Models.InterviewText;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 import java.util.function.Consumer;
@@ -11,7 +14,7 @@ public class MomentSeparatorController {
     final static int size = 15;
     private Pane p;
 
-    private Consumer<Descripteme> onDragDone;
+    private Consumer<Descripteme> onDragDone = descripteme -> {};
 
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
@@ -22,6 +25,10 @@ public class MomentSeparatorController {
         else {
             p.setMinHeight(size);
         }
+
+        p.setOnMouseEntered(mouseEvent -> {
+            onDragDone.accept(new Descripteme(new InterviewText("LOURD"), 0, 1));
+        });
     }
 
     public void setOnDragDone(Consumer<Descripteme> consumer) {
