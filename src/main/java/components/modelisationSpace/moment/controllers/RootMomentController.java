@@ -1,6 +1,7 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
 import javafx.collections.ListChangeListener;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 public class RootMomentController implements Initializable {
 
     private RootMoment moment;
+    private MomentCommandFactory childCmdFactory;
 
     private @FXML BorderPane momentsSpace;
     private HBoxModel<Moment, MomentController> momentsHBox;
@@ -37,11 +39,15 @@ public class RootMomentController implements Initializable {
 
     public RootMomentController(RootMoment m) {
         this.moment = m;
+        this.childCmdFactory = new MomentCommandFactory(moment);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        momentsHBox = new HBoxModel<Moment, MomentController>((MomentController::new), MomentController::createMoment);
+        momentsHBox = new HBoxModel<Moment, MomentController>(
+                (m -> new MomentController(m, childCmdFactory)),
+                MomentController::createMoment);
+
         for(Moment m : moment.momentsProperty()) {
             momentsHBox.add(m);
         }

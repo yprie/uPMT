@@ -31,7 +31,7 @@
                            <center>
                               <BorderPane BorderPane.alignment="CENTER">
                                  <center>
-                                    <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                                    <Button fx:id="btn" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
                                  </center>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" />
