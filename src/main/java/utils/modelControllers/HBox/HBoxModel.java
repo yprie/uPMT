@@ -70,8 +70,6 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
     }
 
 
-
-
     private void notifyChildren() {
         int childrenCount =  getChildren().size();
         System.out.println(childrenCount);
@@ -92,7 +90,7 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
         return getControllerFromIndex(i).getModel();
     }
 
-    private Controller getControllerFromIndex(int i) {
+    public Controller getControllerFromIndex(int i) {
         return indexControllerMap.get(i);
     }
 }

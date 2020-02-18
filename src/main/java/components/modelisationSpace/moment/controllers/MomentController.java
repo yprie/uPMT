@@ -8,6 +8,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +20,6 @@ import utils.modelControllers.HBox.HBoxModelUpdate;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 
 public class MomentController extends HBoxModelController<Moment> implements Initializable {
@@ -120,6 +120,10 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
             //set operation on descripteme DND over borders
             separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
             separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+
+            //Make moment aligned, no need to understand that !
+            Insets ins = momentContainer.getPadding();
+            momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
         }
         else {
             //Hide an show the separators
@@ -136,6 +140,10 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
             else {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
             }
+
+            //Make moment aligned, no need to understand that !
+            Insets ins = momentContainer.getPadding();
+            momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
     }
 }

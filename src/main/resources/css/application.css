@@ -179,8 +179,18 @@
     -fx-border-radius:3;
 }
 
+.moment-header {
+    -fx-font-weight: bold;
+}
 
+.moment-dnd-zone {
+    -fx-background-radius: 50px;
+    -fx-background-color: red;
+}
 
+moment-no-left-padding {
+    -fx-padding-left: 0px;
+}
 
 /*BUTTON MOMENTVIEW */
 .buttonMomentViewDisabled, .buttonMomentView, .momentMenu{

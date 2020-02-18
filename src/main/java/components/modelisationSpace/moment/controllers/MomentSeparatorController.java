@@ -18,7 +18,7 @@ public class MomentSeparatorController {
 
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
-        p.setStyle("-fx-background-color: #000");
+        p.getStyleClass().add("moment-dnd-zone");
         if(vertical) {
             p.setMinWidth(size);
         }
