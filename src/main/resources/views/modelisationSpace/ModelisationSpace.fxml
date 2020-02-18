@@ -3,7 +3,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<fx:root type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <content>
       <BorderPane fx:id="pane">
 
