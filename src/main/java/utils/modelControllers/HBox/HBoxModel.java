@@ -1,5 +1,6 @@
 package utils.modelControllers.HBox;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import utils.modelControllers.IModelController;
@@ -20,6 +21,7 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
         this.indexControllerMap = new LinkedList<>();
         this.controllerFactory = controllerFactory;
         this.nodeFactory = nodeFactory;
+        this.setAlignment(Pos.CENTER);
     }
 
     public void add(int index, Model m) {

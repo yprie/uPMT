@@ -26,7 +26,7 @@ public class MomentSeparatorController {
             p.setMinHeight(size);
         }
 
-        p.setOnMouseEntered(mouseEvent -> {
+        p.setOnMouseClicked(mouseEvent -> {
             onDragDone.accept(new Descripteme(new InterviewText("LOURD"), 0, 1));
         });
     }

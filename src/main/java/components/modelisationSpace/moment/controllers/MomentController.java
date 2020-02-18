@@ -11,8 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import utils.modelControllers.HBox.HBoxModel;
 import utils.modelControllers.HBox.HBoxModelController;
 import utils.modelControllers.HBox.HBoxModelUpdate;
@@ -29,7 +28,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     private MomentCommandFactory cmdFactory;
     private MomentCommandFactory childCmdFactory;
 
-    @FXML private VBox momentContainer;
+    @FXML private BorderPane momentContainer;
     @FXML private Label momentName;
     @FXML private Button btn;
 
@@ -85,7 +84,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         for(Moment m : moment.momentsProperty()) {
             momentsHBox.add(m);
         }
-        momentContainer.getChildren().add(momentsHBox);
+        momentContainer.setCenter(momentsHBox);
         moment.momentsProperty().addListener(childChangeListener);
 
         //bottom separator works only when there is no child yet !
