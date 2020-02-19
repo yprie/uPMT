@@ -107,6 +107,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     @Override
     public void onUnmount() {
         moment.momentsProperty().removeListener(childChangeListener);
+        momentsHBox.onUnmount();
     }
 
     private void updateBorders(int index, int siblingsCount) {

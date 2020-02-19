@@ -30,7 +30,11 @@ public class SProject extends Serializable<Project> {
         for(Interview i : modelReference.interviewsProperty()){
             interviews.add(new SInterview(i));
         }
-        this.selectedInterview = new SInterview(modelReference.getSelectedInterview());
+
+        if(modelReference.getSelectedInterview() != null){
+            this.selectedInterview = new SInterview(modelReference.getSelectedInterview());
+        }
+
     }
 
     @Override

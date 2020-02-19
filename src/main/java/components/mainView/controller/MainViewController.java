@@ -21,6 +21,7 @@
 package components.mainView.controller;
 
 import application.project.models.Project;
+import components.interviewSelector.models.Interview;
 import components.modelisationSpace.controllers.ModelisationSpaceController;
 import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
@@ -29,6 +30,8 @@ import components.interviewPanel.Controllers.InterviewPanelController;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -50,6 +53,15 @@ public class MainViewController implements Initializable {
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
+
+	private ChangeListener<Interview> onSelectedInterviewChanges = (observableValue, o, t1) -> {
+		if(t1 != null){
+			modelisationSpaceController.setRootMoment(t1.getRootMoment());
+		}
+		else {
+			modelisationSpaceController.setRootMoment(null);
+		}
+	};
 
 	public static Node createMainView(MainViewController controller) {
 		try {
@@ -92,27 +104,13 @@ public class MainViewController implements Initializable {
 		interviewPanel = new InterviewPanelController(project.selectedInterviewProperty(), mainSplitPane);
 		paneOfTextArea.getItems().add(InterviewPanelController.createInterviewPanel(interviewPanel));
 
-		//Update the current interview
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview()).execute();
-
-		//Set the modelisation space
-		RootMoment moment = new RootMoment();
-		Moment m1 = new Moment("Main");
-		Moment m2 = new Moment("Main2");
-
-		Moment m3 = new Moment("Sub1");
-		Moment m4 = new Moment("Sub2");
-		m1.addMoment(m3);
-		m1.addMoment(m4);
-
-		moment.addMoment(m1);
-		moment.addMoment(m2);
-
-		modelisationSpaceController.setRootMoment(moment);
+		modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refreshContent();
+		project.selectedInterviewProperty().addListener(onSelectedInterviewChanges);
 	}
 }

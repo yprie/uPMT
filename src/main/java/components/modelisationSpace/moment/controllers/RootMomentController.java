@@ -68,7 +68,8 @@ public class RootMomentController implements Initializable {
         }
     }
 
-    private void unbindMomentListener() {
+    public void unmount() {
         moment.momentsProperty().removeListener(childChangeListener);
+        momentsHBox.onUnmount();
     }
 }

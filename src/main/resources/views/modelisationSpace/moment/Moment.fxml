@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -31,12 +32,12 @@
                         <BorderPane minWidth="150.0" styleClass="momentCard" stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <center>
                               <BorderPane BorderPane.alignment="CENTER">
-                                 <center>
-                                    <Button fx:id="btn" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
-                                 </center>
                                  <BorderPane.margin>
-                                    <Insets bottom="10.0" />
+                                    <Insets />
                                  </BorderPane.margin>
+                                 <center>
+                                    <TextArea prefHeight="200.0" prefWidth="200.0" text="Ceci est un super texte area&#10;on peut imaginer que les futurs &#10;moments seront rmeplis comme &#10;ça à l'avenir !" BorderPane.alignment="CENTER" />
+                                 </center>
                               </BorderPane>
                            </center>
                            <top>
@@ -49,6 +50,9 @@
                                  </padding>
                               </HBox>
                            </top>
+                           <bottom>
+                              <Button mnemonicParsing="false" text="Ajouter Catégorie" BorderPane.alignment="CENTER" />
+                           </bottom>
                         </BorderPane>
                      </children>
                   </AnchorPane>

@@ -3,6 +3,8 @@ package components.interviewSelector.controllers;
 import components.interviewSelector.models.Interview;
 import application.configuration.Configuration;
 import components.interviewPanel.Models.InterviewText;
+import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.model.RootMoment;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -90,10 +92,14 @@ public class NewInterviewController implements Initializable {
                 e.printStackTrace();
             }
 
+            RootMoment rm = new RootMoment();
+            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
+            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
             resultInterview = new Interview(
                     participantName.getText(),
                     interviewDate.getValue(),
-                    new InterviewText(res)
+                    new InterviewText(res),
+                    rm
             );
             resultInterview.setComment(interviewComment.getText());
             state = DialogState.SUCCESS;

@@ -93,4 +93,10 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
     public Controller getControllerFromIndex(int i) {
         return indexControllerMap.get(i);
     }
+
+    public void onUnmount() {
+        for(int i = 0; i < getChildren().size(); i++) {
+            getControllerFromIndex(i).onUnmount();
+        }
+    }
 }

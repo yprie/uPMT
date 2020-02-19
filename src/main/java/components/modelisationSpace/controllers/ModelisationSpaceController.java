@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 public class ModelisationSpaceController extends ScrollOnDragPane implements Initializable {
 
+    private RootMomentController rmController;
     private  @FXML BorderPane pane;
 
     public ModelisationSpaceController() {
@@ -32,8 +33,18 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     }
 
     public void setRootMoment(RootMoment m) {
-        RootMomentController controller = new RootMomentController(m);
-        pane.setCenter(RootMomentController.createRootMoment(controller));
+        //Set new moment
+        clearSpace();
+        if(m != null) {
+            rmController = new RootMomentController(m);
+            pane.setCenter(RootMomentController.createRootMoment(rmController));
+        }
+    }
+
+    public void clearSpace() {
+        if(rmController != null)
+            rmController.unmount();
+        pane.setCenter(null);
     }
 }
 
