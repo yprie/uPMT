@@ -56,10 +56,10 @@ public class TextAreaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         textInterview.setText(interview.getInterviewText().getText());
-        setEvent();
+        setupDragAndDrop();
     }
 
-    private void setEvent() {
+    private void setupDragAndDrop() {
 
         Pane paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");

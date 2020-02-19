@@ -8,7 +8,9 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.layout.StackPane?>
-<BorderPane minWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <BorderPane fx:id="topBarContainerTextInterview" BorderPane.alignment="CENTER">
             <center>
@@ -29,10 +31,22 @@
                </padding>
                 </BorderPane>
             </center>
+            <left>
+                <ImageView fx:id="buttonCollapseInterviewPanel"
+                           fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"
+                >
+                    <image>
+                        <Image url="/images/closeMenuBlack.png" />
+                    </image>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                </ImageView>
+            </left>
         </BorderPane>
     </top>
     <center>
-        <StackPane fx:id="borderPaneCenter">
+        <StackPane fx:id="stackPaneInterview">
             <!-- Here is inserted InterviewTextArea.fxml -->
         </StackPane>
     </center>
