@@ -1,15 +1,11 @@
 package components.modelisationSpace.moment.controllers;
 
 import components.interviewPanel.Models.Descripteme;
-import components.interviewPanel.Models.InterviewText;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import utils.dragAndDrop.DragStore;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class MomentSeparatorController {
 
@@ -33,9 +29,17 @@ public class MomentSeparatorController {
             onDragDone.accept(new Descripteme(new InterviewText("LOURD"), 0, 1));
         });*/
 
+        p.setOnDragEntered(dragEvent -> {
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                p.setStyle("-fx-background-color: #999;");
+                dragEvent.consume();
+            }
+        });
+
         p.setOnDragOver(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
+                dragEvent.consume();
             }
         });
 
@@ -45,6 +49,13 @@ public class MomentSeparatorController {
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
+        });
+
+        p.setOnDragExited(dragEvent -> {
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                p.setStyle("");
+                dragEvent.consume();
+            }
         });
     }
 
