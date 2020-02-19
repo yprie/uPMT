@@ -1,7 +1,5 @@
 package utils.autoSuggestion.strategies;
 
-import components.schemaTree.Cell.SchemaTreePluggable;
-
 import java.util.HashMap;
 import java.util.Map;
 
