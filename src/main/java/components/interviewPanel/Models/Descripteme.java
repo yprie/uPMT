@@ -36,4 +36,12 @@ public class Descripteme implements IDraggable {
     public boolean isDraggable() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        String result = super.toString();
+        result += " - ";
+        result += interviewText.getText();
+        return result;
+    }
 }

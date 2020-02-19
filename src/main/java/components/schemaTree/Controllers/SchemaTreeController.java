@@ -6,13 +6,11 @@ import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import components.schemaTree.Cell.SchemaTreeCell;
 import application.configuration.Configuration;
 import components.schemaTree.Section;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;

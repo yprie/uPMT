@@ -14,7 +14,7 @@ import utils.ResourceLoader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InterviewSelectorCellControler implements Initializable {
+public class InterviewSelectorCellController implements Initializable {
 
     @FXML Label name;
     @FXML ImageView pictureView;
@@ -24,7 +24,7 @@ public class InterviewSelectorCellControler implements Initializable {
     private boolean shouldRemoveMenuButtonVisibility;
     private InterviewSelectorCommandFactory commandFactory;
 
-    public InterviewSelectorCellControler(Interview interview, InterviewSelectorCommandFactory commandFactory) {
+    public InterviewSelectorCellController(Interview interview, InterviewSelectorCommandFactory commandFactory) {
         this.interview = interview;
         this.commandFactory = commandFactory;
     }
