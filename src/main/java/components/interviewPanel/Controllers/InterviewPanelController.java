@@ -1,50 +1,36 @@
 package components.interviewPanel.Controllers;
 
-import components.interviewPanel.Models.Descripteme;
-import components.interviewPanel.Models.InterviewText;
 import components.interviewSelector.models.Interview;
 import application.configuration.Configuration;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InterviewPanelController implements Initializable {
-    // Handle the text area
-    String selectedText = "";
 
-
-
-
-    static private BorderPane root;
-    @FXML private TextArea textInterview;
     @FXML private Text textInterviewTitle;
     @FXML private Label textInterviewComment;
     @FXML private ImageView buttonCollapseInterviewPanel;
     @FXML private BorderPane headerGrid;
-    @FXML private StackPane stackForDragDrop;
     @FXML private BorderPane topBarContainerTextInterview;
+    @FXML private StackPane borderPaneCenter;
 
-    private boolean collapsed = false;
+    //private boolean collapsed = false;
     private double panePosition;
     private SplitPane mainSplitPane;
 
@@ -63,8 +49,7 @@ public class InterviewPanelController implements Initializable {
             loader.setLocation(controller.getClass().getResource("/views/InterviewPanel/InterviewPanel.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
-            root = (BorderPane) loader.load();
-            return root;
+            return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -76,10 +61,6 @@ public class InterviewPanelController implements Initializable {
         refreshContent(interview.getValue());
         bind();
         panePosition = mainSplitPane.getDividers().get(1).getPosition();
-
-
-
-        initializeTextArea();
     }
 
     // Events:
@@ -108,61 +89,16 @@ public class InterviewPanelController implements Initializable {
     private void refreshContent(Interview newInterview) {
         if(newInterview != null) {
             textInterviewTitle.setText(newInterview.getParticipantName());
-            textInterview.setText(newInterview.getInterviewText().getText());
-            textInterview.setVisible(true);
+            //textInterview.setVisible(true);
             textInterviewComment.setText(newInterview.getComment());
             textInterviewComment.setVisible(true);
         }
         else {
             textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
-            textInterview.setVisible(false);
+            //textInterview.setVisible(false);
             textInterviewComment.setVisible(false);
         }
-    }
 
-
-
-
-
-    void initializeTextArea() {
-        Pane paneDragText = new Pane();
-        paneDragText.setStyle("-fx-background-color:#f4f4f4;");
-        paneDragText.setCursor(Cursor.MOVE);
-        paneDragText.setOpacity(0.2);
-
-        // On click release on text area: add a pane over the text area
-        this.textInterview.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                selectedText = textInterview.getSelectedText().trim();
-                if(!selectedText.equals(""))
-                    stackForDragDrop.getChildren().add(paneDragText);
-            }
-        });
-
-        // On click on the added pane, remove the pane
-        paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent arg0) {
-                textInterview.deselect();
-                stackForDragDrop.getChildren().clear();
-                stackForDragDrop.getChildren().add(textInterview);
-            }
-        });
-
-        // On dragging the pane
-        paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Descripteme descripteme = new Descripteme(new InterviewText(selectedText), 0, 1);
-                Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.put(descripteme.getDataFormat(), 0);
-                DragStore.setDraggable(descripteme);
-                db.setContent(content);
-                System.out.println("a descripteme is created and ready to drop ");
-                System.out.println(descripteme);
-            }
-        });
+        borderPaneCenter.getChildren().add(TextAreaController.createTextAreaController(newInterview));
     }
 }

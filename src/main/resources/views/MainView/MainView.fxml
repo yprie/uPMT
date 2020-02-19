@@ -6,16 +6,16 @@
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
-         <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
-            <!-- schemaTree here -->
-            <!-- InterviewSelector here -->
-         </SplitPane>
-         <!-- components.modelisationSpace -->
-         <ModelisationSpaceController fx:id="modelisationSpaceController"/>
-         <!-- Interview are -->
-         <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+<center>
+   <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
+      <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
+         <!-- schemaTree here -->
+         <!-- InterviewSelector here -->
       </SplitPane>
-   </center>
+      <!-- components.modelisationSpace -->
+      <ModelisationSpaceController fx:id="modelisationSpaceController"/>
+      <!-- Interview are -->
+      <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+   </SplitPane>
+</center>
 </BorderPane>

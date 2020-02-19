@@ -2,13 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.layout.StackPane?>
 <BorderPane minWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <BorderPane fx:id="topBarContainerTextInterview" BorderPane.alignment="CENTER">
@@ -33,8 +32,8 @@
         </BorderPane>
     </top>
     <center>
-        <StackPane fx:id="stackForDragDrop" BorderPane.alignment="CENTER">
-            <TextArea id="textInterview" fx:id="textInterview" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
+        <StackPane fx:id="borderPaneCenter">
+            <!-- Here is inserted InterviewTextArea.fxml -->
         </StackPane>
     </center>
 </BorderPane>
