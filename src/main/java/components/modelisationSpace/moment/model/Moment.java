@@ -16,6 +16,12 @@ public class Moment extends RootMoment {
         this.justification = new Justification();
     }
 
+    public Moment(String name, Justification j) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.justification = j;
+    }
+
     public Moment(String name, Descripteme d) {
         super();
         this.name = new SimpleStringProperty(name);

@@ -10,7 +10,10 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <center>
-        <Label fx:id="text" maxWidth="100.0" text="Salut les loosers !" BorderPane.alignment="CENTER_LEFT" />
+        <Label fx:id="text" maxWidth="100.0" style="-fx-text-overrun: ellipsis;" text="Salut les loosers ! de la vie de ouf" BorderPane.alignment="CENTER_LEFT">
+         <BorderPane.margin>
+            <Insets right="20.0" />
+         </BorderPane.margin></Label>
     </center>
     <right>
         <HBox>
@@ -23,7 +26,7 @@
                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
             </HBox.margin></Button>
          <BorderPane.margin>
-            <Insets left="5.0" right="5.0" />
+            <Insets left="5.0" />
          </BorderPane.margin>
         </HBox>
     </right>

@@ -15,6 +15,10 @@ public class Descripteme implements IDraggable {
         this.interviewText = interviewText;
     }
 
+    public int getStartIndex() { return startIndex; }
+    public int getEndIndex() { return endIndex; }
+    public InterviewText getInterviewText() { return interviewText; }
+
     public final String getSelection() {
         return interviewText.getText().substring(startIndex, endIndex);
     }

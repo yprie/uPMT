@@ -2,13 +2,16 @@ package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
+import components.interviewPanel.Models.InterviewText;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.models.Justification;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -67,6 +70,8 @@ public class JustificationController implements Initializable{
                 (descripteme -> new JustificationCell(descripteme, cmdFactory)),
                 JustificationCell::create
         );
+        for(Descripteme d: justification.descriptemesProperty())
+            descriptemesVBox.add(d);
         container.getChildren().add(0, descriptemesVBox);
 
         //Setting up drag and drop operation
@@ -78,6 +83,10 @@ public class JustificationController implements Initializable{
     }
 
     private void setupDescriptemeDND() {
+
+        descriptemeDndZone.setOnMouseClicked(mouseEvent -> {
+            cmdFactory.addDescripteme(new Descripteme(new InterviewText("Awesome descripteme ! I like that so much it is wesome !!!"), 0, 20)).execute();
+        });
 
         descriptemeDndZone.setOnDragOver(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {

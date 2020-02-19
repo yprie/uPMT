@@ -105,7 +105,8 @@ public class MainViewController implements Initializable {
 		paneOfTextArea.getItems().add(InterviewPanelController.createInterviewPanel(interviewPanel));
 
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview()).execute();
-		modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
+		if(project.getSelectedInterview() != null)
+			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
 	}
 
 	@Override
