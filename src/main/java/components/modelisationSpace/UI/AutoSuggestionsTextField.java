@@ -101,7 +101,7 @@ public class AutoSuggestionsTextField extends TextField {
         setText(result);
         positionCaret(result.length());
         hide();
-        SchemaTreePluggable selectedElement = suggestions.get(result);
+        Object selectedElement = suggestions.get(result);
         System.out.println(selectedElement);
     }
 
