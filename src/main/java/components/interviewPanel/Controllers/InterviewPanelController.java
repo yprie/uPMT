@@ -92,13 +92,15 @@ public class InterviewPanelController implements Initializable {
             //textInterview.setVisible(true);
             textInterviewComment.setText(newInterview.getComment());
             textInterviewComment.setVisible(true);
+            borderPaneCenter.getChildren().add(TextAreaController.createTextAreaController(newInterview));
         }
         else {
             textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
             //textInterview.setVisible(false);
             textInterviewComment.setVisible(false);
+            borderPaneCenter.getChildren().clear();
         }
 
-        borderPaneCenter.getChildren().add(TextAreaController.createTextAreaController(newInterview));
+
     }
 }
