@@ -2,6 +2,7 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
+import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
 import javafx.collections.ListChangeListener;
@@ -29,9 +30,12 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     private MomentCommandFactory childCmdFactory;
 
     @FXML private BorderPane momentContainer;
+    @FXML private BorderPane momentBody;
     @FXML private Label momentName;
     @FXML private Button btn;
 
+    //Importants elements of a moment
+    private JustificationController justificationController;
     private HBoxModel<Moment, MomentController> momentsHBox;
 
     @FXML private GridPane grid;
@@ -56,6 +60,8 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         separatorLeft = new MomentSeparatorController(true);
         separatorRight = new MomentSeparatorController(true);
         separatorBottom = new MomentSeparatorController(false);
+
+        this.justificationController = new JustificationController(m.getJustification());
     }
 
     public static Node createMoment(MomentController controller) {
@@ -76,17 +82,20 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         grid.add(separatorBottom.getNode(), 1, 1);
         momentName.setText(moment.getName());
 
+        //Setup de la zone de DND des descriptemes
+        momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
         momentsHBox = new HBoxModel<Moment, MomentController>(
                 (m -> new MomentController(m, childCmdFactory)),
                 MomentController::createMoment);
-
         for(Moment m : moment.momentsProperty()) {
             momentsHBox.add(m);
         }
         momentContainer.setCenter(momentsHBox);
-        moment.momentsProperty().addListener(childChangeListener);
 
+
+        //Listeners SETUP
+        moment.momentsProperty().addListener(childChangeListener);
         //bottom separator works only when there is no child yet !
         separatorBottom.setOnDragDone(descripteme -> {
             if(moment.momentsProperty().size() < 1)

@@ -4,14 +4,16 @@ import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.models.Justification;
-import javafx.event.EventHandler;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
-import javafx.scene.input.*;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import utils.dragAndDrop.DragStore;
+import utils.modelControllers.VBox.VBoxModel;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,15 +21,31 @@ import java.util.ResourceBundle;
 
 public class JustificationController implements Initializable{
 
+    //Controller logical elements
     private Justification justification;
-    private JustificationCommandFactory factory;
+    private JustificationCommandFactory cmdFactory;
 
-    @FXML
-    private ListView<Descripteme> listView;
+
+    //Graphics elements
+    private VBoxModel<Descripteme, JustificationCell> descriptemesVBox;
+    @FXML private VBox container;
+    @FXML private HBox descriptemeDndZone;
+
+    //update listener
+    private ListChangeListener<Descripteme> changeListener = change -> {
+        while(change.next()) {
+            for (Descripteme remitem : change.getRemoved()) {
+                descriptemesVBox.remove(remitem);
+            }
+            for (Descripteme additem : change.getAddedSubList()) {
+                descriptemesVBox.add(additem);
+            }
+        }
+    };
 
     public JustificationController(Justification j) {
         this.justification = j;
-        this.factory = new JustificationCommandFactory(justification);
+        this.cmdFactory = new JustificationCommandFactory(justification);
     }
 
     public static Node createJustificationArea(JustificationController controller) {
@@ -44,28 +62,33 @@ public class JustificationController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listView.setCellFactory(descriptemeListView -> { return new JustificationCell(factory); });
-        listView.setItems(justification.descriptemesProperty());
-        setupDragAndDrop();
+        //Adding descripteme VBox
+        descriptemesVBox = new VBoxModel<>(
+                (descripteme -> new JustificationCell(descripteme, cmdFactory)),
+                JustificationCell::create
+        );
+        container.getChildren().add(0, descriptemesVBox);
+
+        //Setting up drag and drop operation
+        setupDescriptemeDND();
+
+        //listeners binding
+        justification.descriptemesProperty().addListener(changeListener);
+
     }
 
-    private void setupDragAndDrop() {
+    private void setupDescriptemeDND() {
 
-        JustificationController selfController = this;
-
-        listView.setOnDragOver(dragEvent -> {
+        descriptemeDndZone.setOnDragOver(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
             }
         });
 
-        listView.setOnDragDropped(dragEvent -> {
-            //Si on récupère depuis une JustificationCell
-            if(dragEvent.getGestureSource() instanceof JustificationCell){
-                JustificationCell source = (JustificationCell)dragEvent.getGestureSource();
-                source.getCommandFactory().moveDescripteme(DragStore.getDraggable(), selfController.factory).execute();
+        descriptemeDndZone.setOnDragDropped(dragEvent -> {
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format){
+                cmdFactory.addDescripteme(DragStore.getDraggable()).execute();
             }
-
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
         });

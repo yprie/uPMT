@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-<center>
-    <Label fx:id="text"/>
-</center>
-<right>
-    <HBox>
-        <Button fx:id="duplicateButton">D</Button>
-        <Button fx:id="removeButton">X</Button>
-    </HBox>
-</right>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <Label fx:id="text" maxWidth="100.0" text="Salut les loosers !" BorderPane.alignment="CENTER_LEFT" />
+    </center>
+    <right>
+        <HBox>
+            <Button fx:id="duplicateButton" text="D">
+            <HBox.margin>
+               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </HBox.margin></Button>
+            <Button fx:id="removeButton" text="X">
+            <HBox.margin>
+               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </HBox.margin></Button>
+         <BorderPane.margin>
+            <Insets left="5.0" right="5.0" />
+         </BorderPane.margin>
+        </HBox>
+    </right>
+   <left>
+      <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../images/hasExtractIcon.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets left="4.0" right="15.0" />
+         </BorderPane.margin>
+      </ImageView>
+   </left>
 </BorderPane>
