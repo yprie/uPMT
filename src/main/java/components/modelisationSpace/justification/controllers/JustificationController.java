@@ -84,10 +84,6 @@ public class JustificationController implements Initializable{
 
     private void setupDescriptemeDND() {
 
-        descriptemeDndZone.setOnMouseClicked(mouseEvent -> {
-            cmdFactory.addDescripteme(new Descripteme(new InterviewText("Awesome descripteme ! I like that so much it is wesome !!!"), 0, 20)).execute();
-        });
-
         descriptemeDndZone.setOnDragOver(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
