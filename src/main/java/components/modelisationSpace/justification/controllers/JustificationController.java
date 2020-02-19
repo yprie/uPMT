@@ -11,7 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,7 @@ public class JustificationController implements Initializable{
     private VBoxModel<Descripteme, JustificationCell> descriptemesVBox;
     @FXML private VBox container;
     @FXML private HBox descriptemeDndZone;
+    @FXML private ImageView descriptemeDndLogo;
 
     //update listener
     private ListChangeListener<Descripteme> changeListener = change -> {
@@ -84,6 +86,12 @@ public class JustificationController implements Initializable{
 
     private void setupDescriptemeDND() {
 
+        descriptemeDndZone.setOnDragEntered(dragEvent -> {
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                descriptemeDndLogo.setImage(new Image("/images/hasExtractIcon.png"));
+            }
+        });
+
         descriptemeDndZone.setOnDragOver(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
@@ -97,6 +105,11 @@ public class JustificationController implements Initializable{
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
         });
-    }
 
+        descriptemeDndZone.setOnDragExited(dragEvent -> {
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                descriptemeDndLogo.setImage(new Image("/images/hasExtractIconDisabled.png"));
+            }
+        });
+    }
 }
