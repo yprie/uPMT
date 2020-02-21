@@ -1,5 +1,6 @@
 package utils.modelControllers.VBox;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import utils.modelControllers.IModelController;
@@ -29,8 +30,11 @@ public class VBoxModel<Model, Controller extends IModelController<Model, Node, V
             getChildren().add(newNode);
             int lastChildIndex = getChildren().size() - 1;
             indexControllerMap.add(lastChildIndex, newController);
-
+            
             notifyChildren();
+            Platform.runLater(() -> {
+                newController.onMount();
+            });
         }
         else {
             throw new IllegalArgumentException("This model element already exists in VBox !");

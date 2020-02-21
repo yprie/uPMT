@@ -25,9 +25,6 @@ public class MomentSeparatorController {
         }
 
 
-/*        p.setOnMouseClicked(mouseEvent -> {
-            onDragDone.accept(new Descripteme(new InterviewText("LOURD"), 0, 1));
-        });*/
 
         p.setOnDragEntered(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {

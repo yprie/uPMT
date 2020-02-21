@@ -5,6 +5,7 @@ public interface IModelController<Model, GraphicNode extends javafx.scene.Node, 
 
     Model getModel();
 
+    void onMount();
     void onUpdate(UpdateNotification update);
     void onUnmount();
 

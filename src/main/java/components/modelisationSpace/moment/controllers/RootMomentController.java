@@ -1,6 +1,8 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import components.interviewPanel.Models.Descripteme;
+import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
@@ -9,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
+import utils.dragAndDrop.DragStore;
 import utils.modelControllers.HBox.HBoxModel;
 
 
@@ -21,6 +25,7 @@ public class RootMomentController implements Initializable {
 
     private RootMoment moment;
     private MomentCommandFactory childCmdFactory;
+    private ScrollPaneCommandFactory paneCmdFactory;
 
     private @FXML BorderPane momentsSpace;
     private HBoxModel<Moment, MomentController> momentsHBox;
@@ -37,15 +42,16 @@ public class RootMomentController implements Initializable {
         }
     };
 
-    public RootMomentController(RootMoment m) {
+    public RootMomentController(RootMoment m, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.childCmdFactory = new MomentCommandFactory(moment);
+        this.paneCmdFactory = paneCmdFactory;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         momentsHBox = new HBoxModel<Moment, MomentController>(
-                (m -> new MomentController(m, childCmdFactory)),
+                (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment);
 
         for(Moment m : moment.momentsProperty()) {
@@ -53,6 +59,8 @@ public class RootMomentController implements Initializable {
         }
         momentsSpace.setCenter(momentsHBox);
         moment.momentsProperty().addListener(childChangeListener);
+
+        //setupDragNDrop();
     }
 
     public static Node createRootMoment(RootMomentController controller) {

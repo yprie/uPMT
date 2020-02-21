@@ -75,6 +75,11 @@ public class JustificationCell extends VBoxModelController<Descripteme> implemen
     }
 
     @Override
+    public void onMount() {
+
+    }
+
+    @Override
     public void onUpdate(VBoxModelUpdate update) {
 
     }

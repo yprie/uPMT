@@ -5,6 +5,7 @@
 
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
 <center>
    <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
@@ -13,7 +14,10 @@
          <!-- InterviewSelector here -->
       </SplitPane>
       <!-- components.modelisationSpace -->
-      <ModelisationSpaceController fx:id="modelisationSpaceController"/>
+      <AnchorPane>
+         <ModelisationSpaceController fx:id="modelisationSpaceController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+      </AnchorPane>
+
       <!-- Interview are -->
       <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
    </SplitPane>

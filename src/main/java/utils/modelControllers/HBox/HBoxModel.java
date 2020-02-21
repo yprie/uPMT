@@ -1,5 +1,6 @@
 package utils.modelControllers.HBox;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
@@ -33,6 +34,10 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
             indexControllerMap.add(index, newController);
 
             notifyChildren();
+            Platform.runLater(() -> {
+                newController.onMount();
+            });
+
         }
         else {
             throw new IllegalArgumentException("This model element already exists in HBox !");
@@ -48,7 +53,11 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
             int lastChildIndex = getChildren().size() - 1;
             indexControllerMap.add(lastChildIndex, newController);
 
+
             notifyChildren();
+            Platform.runLater(() -> {
+                newController.onMount();
+            });
         }
         else {
             throw new IllegalArgumentException("This model element already exists in HBox !");
@@ -72,7 +81,6 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
 
     private void notifyChildren() {
         int childrenCount =  getChildren().size();
-        System.out.println(childrenCount);
         for(int i = 0; i < childrenCount; i++) {
             getControllerFromIndex(i).onUpdate(new HBoxModelUpdate(i, childrenCount));
         }

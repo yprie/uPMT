@@ -2,9 +2,11 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
+import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     private Moment moment;
     private MomentCommandFactory cmdFactory;
     private MomentCommandFactory childCmdFactory;
+    private ScrollPaneCommandFactory paneCmdFactory;
 
     @FXML private BorderPane momentContainer;
     @FXML private BorderPane momentBody;
@@ -55,10 +58,11 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         }
     };
 
-    public MomentController(Moment m, MomentCommandFactory cmdFactory) {
+    public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.cmdFactory = cmdFactory;
         this.childCmdFactory = new MomentCommandFactory(moment);
+        this.paneCmdFactory = paneCmdFactory;
 
         separatorLeft = new MomentSeparatorController(true);
         separatorRight = new MomentSeparatorController(true);
@@ -89,7 +93,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
         momentsHBox = new HBoxModel<Moment, MomentController>(
-                (m -> new MomentController(m, childCmdFactory)),
+                (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment);
         for(Moment m : moment.momentsProperty()) {
             momentsHBox.add(m);
@@ -116,6 +120,11 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     @Override
     public Moment getModel() {
         return moment;
+    }
+
+    @Override
+    public void onMount() {
+        paneCmdFactory.scrollToMoment(this).execute();
     }
 
     @Override
@@ -165,5 +174,9 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
             Insets ins = momentContainer.getPadding();
             momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
+    }
+
+    public Node getBoundingBox() {
+        return momentContainer;
     }
 }

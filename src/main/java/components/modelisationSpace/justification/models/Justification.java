@@ -23,7 +23,6 @@ public class Justification {
         //Mainly debug purposes
         //if(index > this.descriptemes.size())
         //    throw new IllegalArgumentException("[Justification] The descripteme couldn't not be added to the justification because of a wrong index : " + index + "/" + descriptemes.size() + " !");
-        System.out.println("Attempting Index : " + index);
         if(index == descriptemes.size())
             addDescripteme(d);
         else
