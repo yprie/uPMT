@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 public class MomentSeparatorController {
 
+    final String style = "-fx-background-radius: 50px;-fx-background-radius: 5, 4;";
     final static int size = 15;
     private Pane p;
 
@@ -31,7 +32,7 @@ public class MomentSeparatorController {
 
         p.setOnDragEntered(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                p.setStyle("-fx-background-color: #999;");
+                p.setStyle(this.style + "-fx-background-color: #999;");
                 dragEvent.consume();
             }
         });
@@ -45,7 +46,7 @@ public class MomentSeparatorController {
 
         p.setOnDragDropped(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format){
-                onDragDone.accept((Descripteme)DragStore.getDraggable());
+                onDragDone.accept(DragStore.getDraggable());
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
@@ -53,7 +54,7 @@ public class MomentSeparatorController {
 
         p.setOnDragExited(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                p.setStyle("");
+                p.setStyle(this.style);
                 dragEvent.consume();
             }
         });
