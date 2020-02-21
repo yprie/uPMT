@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import utils.modelControllers.HBox.HBoxModel;
 import utils.modelControllers.HBox.HBoxModelController;
@@ -33,6 +35,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     @FXML private BorderPane momentBody;
     @FXML private Label momentName;
     @FXML private Button btn;
+    @FXML private MenuButton menuButton;
 
     //Importants elements of a moment
     private JustificationController justificationController;
@@ -101,6 +104,13 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
             if(moment.momentsProperty().size() < 1)
                 childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
+
+        //Menu Button
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        deleteButton.setOnAction(actionEvent -> {
+            cmdFactory.deleteCommand(moment).execute();
+        });
+        menuButton.getItems().add(deleteButton);
     }
 
     @Override
