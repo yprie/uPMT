@@ -31,7 +31,8 @@ public class MomentSeparatorController {
                 DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
                 && active
             ) {
-                p.setStyle(this.style + "-fx-background-color: #80e2ff;");
+                /*p.setStyle(this.style + "-fx-background-color: #80e2ff;");*/
+                p.setStyle(this.style + "-fx-background-color: #bdc3c7;");
                 dragEvent.consume();
             }
         });

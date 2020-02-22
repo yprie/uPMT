@@ -131,6 +131,8 @@
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
   	-fx-background-image: url("/images/threedots.png");
+
+  	-fx-font-weight: normal;
 }
 .threedotsTreeview:hover{
 	-fx-background-color: #eee;
@@ -291,7 +293,11 @@ moment-no-left-padding {
 }
 
 
-
+.descripteme-button {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-font-weight: bold;
+}
 
 
 

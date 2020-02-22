@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
@@ -22,10 +24,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     private Label text;
 
     @FXML
-    private Button removeButton;
-
-    @FXML
-    private Button duplicateButton;
+    private MenuButton menuButton;
 
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
@@ -53,14 +52,19 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Text init
         text.setText(descripteme.getSelection());
 
-        //Remove init
+
+        //Actions
+        MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
         removeButton.setOnAction(actionEvent -> {
             factory.removeDescripteme(descripteme).execute();
         });
+        menuButton.getItems().add(removeButton);
 
+        MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
         duplicateButton.setOnAction(actionEvent -> {
             factory.duplicateDescripteme(descripteme).execute();
         });
+        menuButton.getItems().add(duplicateButton);
     }
 
     @Override

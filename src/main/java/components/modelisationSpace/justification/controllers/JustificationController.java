@@ -68,7 +68,7 @@ public class JustificationController implements Initializable{
 
         descriptemeDndZone.setOnDragEntered(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                descriptemeDndLogo.setImage(new Image("/images/hasExtractIcon.png"));
+                descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
             }
         });
 
@@ -88,7 +88,7 @@ public class JustificationController implements Initializable{
 
         descriptemeDndZone.setOnDragExited(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                descriptemeDndLogo.setImage(new Image("/images/hasExtractIconDisabled.png"));
+                descriptemeDndLogo.setImage(new Image("/images/addDescriptemeDisabled.png"));
             }
         });
     }
