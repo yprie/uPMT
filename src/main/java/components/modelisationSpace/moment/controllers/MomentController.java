@@ -25,6 +25,7 @@ import utils.modelControllers.HBox.HBoxModelUpdate;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 
 public class MomentController extends HBoxModelController<Moment> implements Initializable {
@@ -46,17 +47,6 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
-
-    private ListChangeListener<Moment> childChangeListener = change -> {
-        while(change.next()) {
-            for (Moment remitem : change.getRemoved()) {
-                momentsHBox.remove(remitem);
-            }
-            for (Moment additem : change.getAddedSubList()) {
-                momentsHBox.add(change.getTo()-1, additem);
-            }
-        }
-    };
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -93,21 +83,24 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
         momentsHBox = new HBoxModel<Moment, MomentController>(
+                moment.momentsProperty(),
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment);
-        for(Moment m : moment.momentsProperty()) {
-            momentsHBox.add(m);
-        }
+        momentsHBox.setOnListUpdate(change -> {
+            if(change.getList().size() == 0)
+                separatorBottom.setActive(true);
+            else
+                separatorBottom.setActive(false);
+        });
         momentContainer.setCenter(momentsHBox);
 
 
         //Listeners SETUP
-        moment.momentsProperty().addListener(childChangeListener);
         //bottom separator works only when there is no child yet !
         separatorBottom.setOnDragDone(descripteme -> {
-            if(moment.momentsProperty().size() < 1)
                 childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
+        separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
@@ -124,7 +117,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
 
     @Override
     public void onMount() {
-        paneCmdFactory.scrollToMoment(this).execute();
+        paneCmdFactory.scrollToNode(momentContainer).execute();
     }
 
     @Override
@@ -134,7 +127,6 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
 
     @Override
     public void onUnmount() {
-        moment.momentsProperty().removeListener(childChangeListener);
         momentsHBox.onUnmount();
     }
 
@@ -176,7 +168,4 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         }
     }
 
-    public Node getBoundingBox() {
-        return momentContainer;
-    }
 }

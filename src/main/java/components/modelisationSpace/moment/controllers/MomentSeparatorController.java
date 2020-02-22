@@ -12,6 +12,7 @@ public class MomentSeparatorController {
     final String style = "-fx-background-radius: 50px;-fx-background-radius: 5, 4;";
     final static int size = 15;
     private Pane p;
+    private boolean active = true;
 
     private Consumer<Descripteme> onDragDone = descripteme -> {};
 
@@ -25,24 +26,31 @@ public class MomentSeparatorController {
             p.setMinHeight(size);
         }
 
-
-
         p.setOnDragEntered(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+            if(
+                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && active
+            ) {
                 p.setStyle(this.style + "-fx-background-color: #80e2ff;");
                 dragEvent.consume();
             }
         });
 
         p.setOnDragOver(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+            if(
+                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && active
+            ) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
                 dragEvent.consume();
             }
         });
 
         p.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format){
+            if(
+                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && active
+            ){
                 onDragDone.accept(DragStore.getDraggable());
             }
             dragEvent.setDropCompleted(true);
@@ -50,11 +58,17 @@ public class MomentSeparatorController {
         });
 
         p.setOnDragExited(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+            if(
+                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
+            ) {
                 p.setStyle(this.style);
                 dragEvent.consume();
             }
         });
+    }
+
+    public void setActive(boolean b) {
+        active = b;
     }
 
     public void setOnDragDone(Consumer<Descripteme> consumer) {

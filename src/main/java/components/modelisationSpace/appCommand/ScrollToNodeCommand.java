@@ -6,14 +6,14 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import utils.command.Executable;
 
-public class ScrollToMomentCommand implements Executable<Void> {
+public class ScrollToNodeCommand implements Executable<Void> {
 
     private ScrollPane pane;
-    private MomentController controller;
+    private Node node;
 
-    public ScrollToMomentCommand(ScrollPane pane, MomentController controller){
+    public ScrollToNodeCommand(ScrollPane pane, Node n){
         this.pane = pane;
-        this.controller = controller;
+        this.node = n;
     }
 
 
@@ -28,8 +28,7 @@ public class ScrollToMomentCommand implements Executable<Void> {
     }
 
     private double genHValue() {
-        Node p = controller.getBoundingBox();
-        Bounds b = pane.getContent().sceneToLocal(p.localToScene(p.getBoundsInLocal()));
+        Bounds b = pane.getContent().sceneToLocal(node.localToScene(node.getBoundsInLocal()));
         double start = pane.getViewportBounds().getWidth() / 2;
         double end = pane.getContent().getBoundsInLocal().getWidth() - start;
         double a = ((b.getMinX() + b.getMaxX()) / 2);
@@ -37,8 +36,7 @@ public class ScrollToMomentCommand implements Executable<Void> {
     }
 
     private double genVValue() {
-        Node p = controller.getBoundingBox();
-        Bounds b = pane.getContent().sceneToLocal(p.localToScene(p.getBoundsInLocal()));
+        Bounds b = pane.getContent().sceneToLocal(node.localToScene(node.getBoundsInLocal()));
         double start = pane.getViewportBounds().getHeight() / 2;
         double end = pane.getContent().getBoundsInLocal().getHeight() - start;
         double a = ((b.getMinY() + b.getMaxY()) / 2);

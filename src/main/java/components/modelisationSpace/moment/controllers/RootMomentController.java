@@ -51,12 +51,9 @@ public class RootMomentController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         momentsHBox = new HBoxModel<Moment, MomentController>(
+                moment.momentsProperty(),
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment);
-
-        for(Moment m : moment.momentsProperty()) {
-            momentsHBox.add(m);
-        }
         momentsSpace.setCenter(momentsHBox);
         moment.momentsProperty().addListener(childChangeListener);
 

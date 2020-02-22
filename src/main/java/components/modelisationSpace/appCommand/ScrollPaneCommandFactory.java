@@ -1,6 +1,6 @@
 package components.modelisationSpace.appCommand;
 
-import components.modelisationSpace.moment.controllers.MomentController;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 
 public class ScrollPaneCommandFactory {
@@ -11,5 +11,5 @@ public class ScrollPaneCommandFactory {
         this.pane = pane;
     }
 
-    public ScrollToMomentCommand scrollToMoment(MomentController momentController) { return new ScrollToMomentCommand(pane, momentController); }
+    public ScrollToNodeCommand scrollToNode(Node node) { return new ScrollToNodeCommand(pane, node); }
 }

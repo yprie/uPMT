@@ -36,17 +36,6 @@ public class JustificationController implements Initializable{
     @FXML private HBox descriptemeDndZone;
     @FXML private ImageView descriptemeDndLogo;
 
-    //update listener
-    private ListChangeListener<Descripteme> changeListener = change -> {
-        while(change.next()) {
-            for (Descripteme remitem : change.getRemoved()) {
-                descriptemesVBox.remove(remitem);
-            }
-            for (Descripteme additem : change.getAddedSubList()) {
-                descriptemesVBox.add(additem);
-            }
-        }
-    };
 
     public JustificationController(Justification j) {
         this.justification = j;
@@ -69,19 +58,14 @@ public class JustificationController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Adding descripteme VBox
         descriptemesVBox = new VBoxModel<>(
+                justification.descriptemesProperty(),
                 (descripteme -> new JustificationCell(descripteme, cmdFactory)),
                 JustificationCell::create
         );
-        for(Descripteme d: justification.descriptemesProperty())
-            descriptemesVBox.add(d);
         container.getChildren().add(0, descriptemesVBox);
 
         //Setting up drag and drop operation
         setupDescriptemeDND();
-
-        //listeners binding
-        justification.descriptemesProperty().addListener(changeListener);
-
     }
 
     private void setupDescriptemeDND() {
