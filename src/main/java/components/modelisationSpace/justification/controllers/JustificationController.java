@@ -66,20 +66,29 @@ public class JustificationController implements Initializable{
 
     private void setupDescriptemeDND() {
 
-        descriptemeDndZone.setOnDragEntered(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+/*        descriptemeDndZone.setOnDragEntered(dragEvent -> {
+            if(
+                DragStore.getDraggable().isDraggable()
+                && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && justification.indexOf(DragStore.getDraggable()) == -1
+            ) {
                 descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
             }
-        });
+        });*/
 
         descriptemeDndZone.setOnDragOver(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+            if(
+                DragStore.getDraggable().isDraggable()
+                && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && justification.indexOf(DragStore.getDraggable()) == -1
+            ) {
+                descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
             }
         });
 
         descriptemeDndZone.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format){
+            if(DragStore.getDraggable().getDataFormat() == Descripteme.format){
                 cmdFactory.addDescripteme(DragStore.getDraggable()).execute();
             }
             dragEvent.setDropCompleted(true);

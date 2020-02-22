@@ -3,6 +3,8 @@ package components.modelisationSpace.justification.controllers;
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
+import components.modelisationSpace.justification.appCommands.RemoveDescriptemeCommand;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.*;
+import javafx.scene.layout.BorderPane;
+import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
@@ -25,6 +30,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     @FXML
     private MenuButton menuButton;
+
+    @FXML BorderPane container;
 
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
@@ -52,7 +59,6 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Text init
         text.setText(descripteme.getSelection());
 
-
         //Actions
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
         removeButton.setOnAction(actionEvent -> {
@@ -65,6 +71,31 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             factory.duplicateDescripteme(descripteme).execute();
         });
         menuButton.getItems().add(duplicateButton);
+
+        setupDnd();
+    }
+
+    private void setupDnd() {
+        container.setOnDragDetected(mouseEvent -> {
+            Dragboard db = container.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(descripteme.getDataFormat(), 0);
+            DragStore.setDraggable(descripteme);
+            db.setContent(content);
+
+            container.setStyle("-fx-background-color: #bdc3c7;");
+            mouseEvent.consume();
+        });
+
+        container.setOnDragDone(dragEvent -> {
+            container.setStyle("-fx-background-color: transparent;");
+            if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                RemoveDescriptemeCommand c = factory.removeDescripteme(DragStore.getDraggable());
+                c.isNotUserAction();
+                c.execute();
+            }
+            dragEvent.consume();
+        });
     }
 
     @Override
