@@ -27,7 +27,7 @@
                   <RowConstraints vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <AnchorPane GridPane.columnIndex="1">
+                  <AnchorPane fx:id="categoryDropper" GridPane.columnIndex="1">
                      <children>
                         <BorderPane fx:id="momentBody" styleClass="momentCard" stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <center>

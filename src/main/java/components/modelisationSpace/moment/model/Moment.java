@@ -3,6 +3,7 @@ package components.modelisationSpace.moment.model;
 import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.models.Justification;
+import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -58,5 +59,14 @@ public class Moment extends RootMoment {
         categories.remove(cc);
     }
     public ObservableList<ConcreteCategory> concreteCategoriesProperty() { return categories; }
-
+    public int indexOfConcreteCategory(ConcreteCategory cc) {
+        return categories.indexOf(cc);
+    }
+    public int indexOfSchemaCategory(SchemaCategory sc) {
+        int index = -1;
+        for(int i = 0; i < categories.size(); i++)
+            if(categories.get(i).isSchemaCategory(sc))
+                return i;
+        return index;
+    }
 }

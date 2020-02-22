@@ -9,8 +9,11 @@ import components.modelisationSpace.justification.controllers.JustificationContr
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
 import components.schemaTree.Cell.Models.SchemaCategory;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,8 +24,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
+import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
@@ -40,6 +47,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
 
+    @FXML private AnchorPane categoryDropper;
     @FXML private BorderPane momentContainer;
     @FXML private BorderPane momentBody;
     @FXML private Label momentName;
@@ -102,7 +110,6 @@ public class MomentController extends ListViewController<Moment> implements Init
                 separatorBottom.setActive(false);
         });
 
-
         categories = new ListView<>(
                 moment.concreteCategoriesProperty(),
                 (cc -> new ConcreteCategoryController(cc, paneCmdFactory)),
@@ -110,9 +117,6 @@ public class MomentController extends ListViewController<Moment> implements Init
                 categoryContainer
         );
 
-        momentName.setOnMouseClicked(mouseEvent -> {
-            moment.addCategory(new ConcreteCategory(new SchemaCategory("cate")));
-        });
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
@@ -127,6 +131,9 @@ public class MomentController extends ListViewController<Moment> implements Init
             cmdFactory.deleteCommand(moment).execute();
         });
         menuButton.getItems().add(deleteButton);
+
+        //DND
+        setupDragAndDrop();
     }
 
     @Override
@@ -136,7 +143,9 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     @Override
     public void onMount() {
-        paneCmdFactory.scrollToNode(momentContainer).execute();
+        Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
+                (EventHandler<ActionEvent>) event -> { paneCmdFactory.scrollToNode(momentContainer).execute(); }));
+        viewFocus.play();
     }
 
     @Override
@@ -185,6 +194,29 @@ public class MomentController extends ListViewController<Moment> implements Init
             Insets ins = momentContainer.getPadding();
             momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
+    }
+
+    private void setupDragAndDrop() {
+
+        categoryDropper.setOnDragOver(dragEvent -> {
+            if(
+                DragStore.getDraggable().isDraggable()
+                && DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+                && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
+            ) {
+                dragEvent.acceptTransferModes(TransferMode.MOVE);
+                dragEvent.consume();
+            }
+        });
+
+        categoryDropper.setOnDragDropped(dragEvent -> {
+            if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
+                moment.addCategory(new ConcreteCategory(DragStore.getDraggable()));
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+        });
+
     }
 
 }

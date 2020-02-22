@@ -84,20 +84,22 @@ public class JustificationController implements Initializable{
             ) {
                 descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
+                dragEvent.consume();
             }
         });
 
         descriptemeDndZone.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().getDataFormat() == Descripteme.format){
+            if(DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 cmdFactory.addDescripteme(DragStore.getDraggable()).execute();
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
             }
-            dragEvent.setDropCompleted(true);
-            dragEvent.consume();
         });
 
         descriptemeDndZone.setOnDragExited(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 descriptemeDndLogo.setImage(new Image("/images/addDescriptemeDisabled.png"));
+                dragEvent.consume();
             }
         });
     }

@@ -14,4 +14,5 @@ public class ConcreteCategory {
     public String getName() { return category.getName(); }
     public StringProperty nameProperty() { return category.nameProperty(); }
 
+    public boolean isSchemaCategory(SchemaCategory sc) { return sc == category; }
 }

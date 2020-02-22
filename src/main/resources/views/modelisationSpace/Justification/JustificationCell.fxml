@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="container" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <Label fx:id="text" maxWidth="-Infinity" minWidth="50.0" style="-fx-text-overrun: ellipsis;" text="Salut les loosers ! de la vie de ouf" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
@@ -18,16 +18,14 @@
    <left>
         <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
+         <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../images/hasExtractIconDisabled.png" />
+            </image>
+         </ImageView>
          <BorderPane.margin>
             <Insets right="10.0" />
          </BorderPane.margin>
         </HBox>
    </left>
-   <right>
-      <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="visibility: hidden;" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../../../images/hasExtractIconDisabled.png" />
-         </image>
-      </ImageView>
-   </right>
 </BorderPane>
