@@ -3,11 +3,15 @@ package components.modelisationSpace.moment.controllers;
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
+import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
+import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
@@ -41,10 +46,12 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private Button btn;
     @FXML private MenuButton menuButton;
     @FXML private HBox childrenBox;
+    @FXML private VBox categoryContainer;
 
     //Importants elements of a moment
     private JustificationController justificationController;
     private ListView<Moment, MomentController> momentsHBox;
+    private ListView<ConcreteCategory, ConcreteCategoryController> categories;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
@@ -95,6 +102,17 @@ public class MomentController extends ListViewController<Moment> implements Init
                 separatorBottom.setActive(false);
         });
 
+
+        categories = new ListView<>(
+                moment.concreteCategoriesProperty(),
+                (cc -> new ConcreteCategoryController(cc, paneCmdFactory)),
+                ConcreteCategoryController::create,
+                categoryContainer
+        );
+
+        momentName.setOnMouseClicked(mouseEvent -> {
+            moment.addCategory(new ConcreteCategory(new SchemaCategory("cate")));
+        });
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !

@@ -181,6 +181,18 @@
     -fx-border-radius:3;
 }
 
+.categoryCard {
+    -fx-background-color: #ffeaa7;
+	-fx-border-color: transparent;
+    -fx-background-insets: 3px;
+    -fx-background-radius: 3;
+    -fx-border-radius:3;
+}
+
+.categoryCard-header {
+    -fx-font-weight: bold;
+}
+
 .moment-header {
     -fx-font-weight: bold;
 }

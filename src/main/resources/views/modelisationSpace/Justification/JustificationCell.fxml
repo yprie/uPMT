@@ -18,14 +18,16 @@
    <left>
         <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
-         <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../images/hasExtractIconDisabled.png" />
-            </image>
-         </ImageView>
          <BorderPane.margin>
             <Insets right="10.0" />
          </BorderPane.margin>
         </HBox>
    </left>
+   <right>
+      <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" style="visibility: hidden;" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../images/hasExtractIconDisabled.png" />
+         </image>
+      </ImageView>
+   </right>
 </BorderPane>

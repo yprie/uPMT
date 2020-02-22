@@ -61,7 +61,8 @@ public class ListView<Model, Controller extends IModelController<Model, Node, Li
             indexControllerMap.add(index, newController);
 
             notifyChildren();
-            Platform.runLater(newController::onMount);
+            newController.onMount();
+            //Platform.runLater(newController::onMount);
         }
         else {
             throw new IllegalArgumentException("This model element already exists in HBox !");
@@ -78,7 +79,8 @@ public class ListView<Model, Controller extends IModelController<Model, Node, Li
             indexControllerMap.add(lastChildIndex, newController);
 
             notifyChildren();
-            Platform.runLater(newController::onMount);
+            newController.onMount();
+            //Platform.runLater(newController::onMount);
         }
         else {
             throw new IllegalArgumentException("This model element already exists in HBox !");
@@ -108,7 +110,6 @@ public class ListView<Model, Controller extends IModelController<Model, Node, Li
     }
 
     private int containsChild(Model m) {
-        System.out.println("Looking for : " + m + " ---------------");
         for(int i = 0; i < getChildren().size(); i++) {
             if(getModelFromIndex(i) == m)
                 return i;
