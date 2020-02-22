@@ -18,9 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
-import utils.modelControllers.HBox.HBoxModel;
-import utils.modelControllers.HBox.HBoxModelController;
-import utils.modelControllers.HBox.HBoxModelUpdate;
+import utils.modelControllers.ListView.ListView;
+import utils.modelControllers.ListView.ListViewController;
+import utils.modelControllers.ListView.ListViewUpdate;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 
-public class MomentController extends HBoxModelController<Moment> implements Initializable {
+public class MomentController extends ListViewController<Moment> implements Initializable {
 
     private Moment moment;
     private MomentCommandFactory cmdFactory;
@@ -40,10 +40,11 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     @FXML private Label momentName;
     @FXML private Button btn;
     @FXML private MenuButton menuButton;
+    @FXML private HBox childrenBox;
 
     //Importants elements of a moment
     private JustificationController justificationController;
-    private HBoxModel<Moment, MomentController> momentsHBox;
+    private ListView<Moment, MomentController> momentsHBox;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
@@ -82,17 +83,17 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
-        momentsHBox = new HBoxModel<Moment, MomentController>(
+        momentsHBox = new ListView<>(
                 moment.momentsProperty(),
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
-                MomentController::createMoment);
+                MomentController::createMoment,
+                childrenBox);
         momentsHBox.setOnListUpdate(change -> {
             if(change.getList().size() == 0)
                 separatorBottom.setActive(true);
             else
                 separatorBottom.setActive(false);
         });
-        momentContainer.setCenter(momentsHBox);
 
 
         //Listeners SETUP
@@ -121,7 +122,7 @@ public class MomentController extends HBoxModelController<Moment> implements Ini
     }
 
     @Override
-    public void onUpdate(HBoxModelUpdate update) {
+    public void onUpdate(ListViewUpdate update) {
         updateBorders(update.newIndex, update.totalCount);
     }
 

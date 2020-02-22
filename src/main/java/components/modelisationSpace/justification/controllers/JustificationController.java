@@ -2,11 +2,8 @@ package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
-import components.interviewPanel.Models.InterviewText;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.models.Justification;
-import javafx.collections.ListChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +14,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import utils.dragAndDrop.DragStore;
-import utils.modelControllers.VBox.VBoxModel;
+import utils.modelControllers.ListView.ListView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,11 +25,10 @@ public class JustificationController implements Initializable{
     //Controller logical elements
     private Justification justification;
     private JustificationCommandFactory cmdFactory;
-
+    private ListView<Descripteme, JustificationCell> descriptemes;
 
     //Graphics elements
-    private VBoxModel<Descripteme, JustificationCell> descriptemesVBox;
-    @FXML private VBox container;
+    @FXML private VBox childrenBox;
     @FXML private HBox descriptemeDndZone;
     @FXML private ImageView descriptemeDndLogo;
 
@@ -57,12 +53,12 @@ public class JustificationController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Adding descripteme VBox
-        descriptemesVBox = new VBoxModel<>(
+        descriptemes = new ListView<>(
                 justification.descriptemesProperty(),
                 (descripteme -> new JustificationCell(descripteme, cmdFactory)),
-                JustificationCell::create
+                JustificationCell::create,
+                childrenBox
         );
-        container.getChildren().add(0, descriptemesVBox);
 
         //Setting up drag and drop operation
         setupDescriptemeDND();

@@ -2,27 +2,21 @@ package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.Models.Descripteme;
-import components.modelisationSpace.justification.Section;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
-import components.modelisationSpace.justification.models.Justification;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.input.*;
-import utils.dragAndDrop.DragStore;
-import utils.modelControllers.VBox.VBoxModelController;
-import utils.modelControllers.VBox.VBoxModelUpdate;
+import utils.modelControllers.ListView.ListViewController;
+import utils.modelControllers.ListView.ListViewUpdate;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class JustificationCell extends VBoxModelController<Descripteme> implements Initializable {
+public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
 
     @FXML
     private Label text;
@@ -80,7 +74,7 @@ public class JustificationCell extends VBoxModelController<Descripteme> implemen
     }
 
     @Override
-    public void onUpdate(VBoxModelUpdate update) {
+    public void onUpdate(ListViewUpdate update) {
 
     }
 
@@ -88,6 +82,4 @@ public class JustificationCell extends VBoxModelController<Descripteme> implemen
     public void onUnmount() {
 
     }
-
-
 }

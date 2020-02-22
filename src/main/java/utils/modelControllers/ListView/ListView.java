@@ -1,21 +1,19 @@
-package utils.modelControllers.HBox;
+package utils.modelControllers.ListView;
 
-import components.modelisationSpace.moment.model.Moment;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import utils.modelControllers.IModelController;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class HBoxModel<Model, Controller extends IModelController<Model, Node, HBoxModelUpdate>> extends HBox {
+public class ListView<Model, Controller extends IModelController<Model, Node, ListViewUpdate>> {
 
+    private Pane parentController;
     private Function<Model, Controller> controllerFactory;
     private Function<Controller, Node> nodeFactory;
     private ObservableList<Model> models;
@@ -37,7 +35,8 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
     };
 
 
-    public HBoxModel(ObservableList<Model> models, Function<Model, Controller> controllerFactory, Function<Controller, Node> nodeFactory) {
+    public ListView(ObservableList<Model> models, Function<Model, Controller> controllerFactory, Function<Controller, Node> nodeFactory, Pane parentController) {
+        this.parentController = parentController;
         this.indexControllerMap = new LinkedList<>();
         this.controllerFactory = controllerFactory;
         this.nodeFactory = nodeFactory;
@@ -78,7 +77,6 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
             int lastChildIndex = getChildren().size() - 1;
             indexControllerMap.add(lastChildIndex, newController);
 
-
             notifyChildren();
             Platform.runLater(newController::onMount);
         }
@@ -105,11 +103,12 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
     private void notifyChildren() {
         int childrenCount =  getChildren().size();
         for(int i = 0; i < childrenCount; i++) {
-            getControllerFromIndex(i).onUpdate(new HBoxModelUpdate(i, childrenCount));
+            getControllerFromIndex(i).onUpdate(new ListViewUpdate(i, childrenCount));
         }
     }
 
     private int containsChild(Model m) {
+        System.out.println("Looking for : " + m + " ---------------");
         for(int i = 0; i < getChildren().size(); i++) {
             if(getModelFromIndex(i) == m)
                 return i;
@@ -131,4 +130,9 @@ public class HBoxModel<Model, Controller extends IModelController<Model, Node, H
             getControllerFromIndex(i).onUnmount();
         }
     }
+
+    private ObservableList<Node> getChildren() {
+        return parentController.getChildren();
+    }
+
 }

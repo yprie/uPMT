@@ -1,10 +1,10 @@
-package utils.modelControllers.HBox;
+package utils.modelControllers.ListView;
 
 import utils.modelControllers.ModelControllerUpdateNotification;
 
-public class HBoxModelUpdate extends ModelControllerUpdateNotification {
+public class ListViewUpdate extends ModelControllerUpdateNotification {
 
-    public HBoxModelUpdate(int newIndex, int totalCount) {
+    public ListViewUpdate(int newIndex, int totalCount) {
         this.newIndex = newIndex;
         this.totalCount = totalCount;
     }

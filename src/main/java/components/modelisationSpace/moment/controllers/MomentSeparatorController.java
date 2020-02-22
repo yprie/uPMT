@@ -67,14 +67,10 @@ public class MomentSeparatorController {
         });
     }
 
-    public void setActive(boolean b) {
-        active = b;
-    }
-
+    public void setActive(boolean b) { active = b; }
     public void setOnDragDone(Consumer<Descripteme> consumer) {
         this.onDragDone = consumer;
     }
-
     public Pane getNode() {
         return p;
     }
