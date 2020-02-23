@@ -26,15 +26,20 @@ public class HistoryState {
         if(startNewUserAction)
             currentUserActionId = UUID.randomUUID();
 
-        if(!(!canGoBack() && !startNewUserAction)) {
+/*        System.out.println();
+        System.out.println(canGoBack() + " && " + startNewUserAction);*/
+        //if(startNewUserAction) {
             command.setUserActionIdentifier(currentUserActionId);
             next.removeAllElements();
             canGoForward.set(false);
             next.push(command);
             executeSingleAction();
-        }
-        else
+       /* }
+        else {
+            System.out.println("executing new command " + command);
             command.execute();
+        }*/
+
 
     }
 

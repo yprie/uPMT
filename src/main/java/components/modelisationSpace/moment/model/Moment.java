@@ -54,7 +54,6 @@ public class Moment extends RootMoment {
 
     public Justification getJustification() { return justification; }
 
-
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);
         bindListener(cc);

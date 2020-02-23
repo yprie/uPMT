@@ -34,7 +34,7 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             controller = newController;
 
             //Mouse click event
-            setOnMouseClicked(event -> commandFactory.selectCurrentInterview(item).execute());
+            setOnMouseClicked(event -> commandFactory.selectCurrentInterview(item, true).execute());
 
             try {
                 this.setGraphic(loader.load());

@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
 import utils.dragAndDrop.IDraggable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.function.Supplier;
 
@@ -35,8 +36,9 @@ public class ConcreteCategory implements IDraggable {
                 new RemoveConcretePropertyCommand(this, properties.get(indexOfConcreteProperty(rem))).execute();
             }
             for (SchemaProperty added : change.getAddedSubList()) {
-                if(indexOfConcreteProperty(added) == -1)
-                    new AddConcretePropertyCommand(this, new ConcreteProperty(added));
+                if(indexOfConcreteProperty(added) == -1) {
+                    new AddConcretePropertyCommand(this, new ConcreteProperty(added), change.getTo()-1).execute();
+                }
             }
         }
     };
@@ -50,6 +52,17 @@ public class ConcreteCategory implements IDraggable {
             properties.add(new ConcreteProperty(p));
         c.propertiesProperty().addListener(onPropertiesUpdate);
     }
+
+    public ConcreteCategory(SchemaCategory c, Justification j, ArrayList<ConcreteProperty> properties) {
+        this.category = c;
+        this.justification = j;
+
+        this.properties = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.properties.addAll(properties);
+        c.propertiesProperty().addListener(onPropertiesUpdate);
+    }
+
+    public final SchemaCategory getSchemaCategory() { return category; }
 
     public String getName() { return category.getName(); }
     public StringProperty nameProperty() { return category.nameProperty(); }

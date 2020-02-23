@@ -8,15 +8,26 @@ public class AddConcreteProperty extends ModelUserActionCommand<Void, Void> {
 
     private ConcreteCategory parent;
     private ConcreteProperty property;
+    int index;
 
     public AddConcreteProperty(ConcreteCategory parent, ConcreteProperty p) {
         this.parent = parent;
         this.property = p;
+        this.index = -1;
+    }
+
+    public AddConcreteProperty(ConcreteCategory parent, ConcreteProperty p, int index) {
+        this.parent = parent;
+        this.property = p;
+        this.index = index;
     }
 
     @Override
     public Void execute() {
-        parent.addConcreteProperty(property);
+        if(index == -1)
+            parent.addConcreteProperty(property);
+        else
+            parent.addConcreteProperty(index, property);
         return null;
     }
 

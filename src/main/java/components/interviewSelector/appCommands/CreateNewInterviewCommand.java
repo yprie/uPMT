@@ -17,7 +17,7 @@ public class CreateNewInterviewCommand extends InterviewSelectorCommand<Void> {
         NewInterviewController controller = NewInterviewController.createNewInterview();
         if(controller.getState() == DialogState.SUCCESS){
             HistoryManager.addCommand(new AddInterviewCommand(project, controller.getCreatedInterview()), true);
-            new SelectCurrentInterviewCommand(project, controller.getCreatedInterview()).execute();
+            new SelectCurrentInterviewCommand(project, controller.getCreatedInterview(), false).execute();
         }
         return null;
     }

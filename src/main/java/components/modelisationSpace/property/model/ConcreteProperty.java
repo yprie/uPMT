@@ -19,12 +19,20 @@ public class ConcreteProperty {
         this.justification = new Justification();
     }
 
+    public ConcreteProperty(SchemaProperty p, Justification j) {
+        this.property = p;
+        this.value = new SimpleStringProperty("");
+        this.justification = j;
+    }
+
+    public final SchemaProperty getSchemaProperty() { return property; }
+
     public String getName() { return property.getName(); }
     public ObservableStringValue nameProperty() { return property.nameProperty(); }
 
     public String getValue() { return value.get(); }
     public ObservableStringValue valueProperty() { return value; }
-    public void setValue(String s) { value.set(s); }
+    public void setValue(String s) { value.set(s); System.out.println("V" + value.get());}
 
     public Justification getJustification() { return justification; }
 

@@ -24,7 +24,6 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
 
     @Override
     public Void undo() {
-        System.out.println("adding back !");
         moment.addCategory(prevIndex, concreteCategory);
         return null;
     }

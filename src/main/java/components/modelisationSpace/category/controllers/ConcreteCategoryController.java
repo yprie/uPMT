@@ -53,7 +53,6 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     //Listeners
     private ChangeListener<Boolean> onSchemaTreeRemoving = (ChangeListener<Boolean>) (observableValue, aBoolean, t1) -> {
         if(!t1) {
-            System.out.println("removing");
             cmdFactory.removeConcreteCategoryCommand(category, false).execute();
         }
     };

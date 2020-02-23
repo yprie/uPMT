@@ -10,15 +10,26 @@ public class AddConcretePropertyCommand implements Executable<Void> {
 
     private ConcreteCategory category;
     private ConcreteProperty property;
+    private int index;
 
     public AddConcretePropertyCommand(ConcreteCategory category, ConcreteProperty property) {
         this.category = category;
         this.property = property;
+        index = -1;
+    }
+
+    public AddConcretePropertyCommand(ConcreteCategory category, ConcreteProperty property, int index) {
+        this.category = category;
+        this.property = property;
+        this.index = index;
     }
 
     @Override
     public Void execute() {
-        HistoryManager.addCommand(new AddConcreteProperty(category, property), false);
+        if(index == -1)
+            HistoryManager.addCommand(new AddConcreteProperty(category, property), false);
+        else
+            HistoryManager.addCommand(new AddConcreteProperty(category, property, index), false);
         return null;
     }
 }
