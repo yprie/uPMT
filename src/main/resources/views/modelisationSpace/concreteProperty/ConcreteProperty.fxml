@@ -10,7 +10,7 @@
 
 <BorderPane fx:id="container" minWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" spacing="5.0" styleClass="concreteProperty" stylesheets="@../../../css/application.css" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -20,7 +20,7 @@
                   <Insets />
                </HBox.margin>
             </ImageView>
-            <Label fx:id="name" style="-fx-font-weight: bold;" text="Propriété">
+            <Label fx:id="name" text="Propriété">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

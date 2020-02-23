@@ -334,6 +334,10 @@ moment-no-left-padding {
 	-fx-padding: 0;
 }
 
+.concreteProperty:hover {
+    -fx-font-weight: bold;
+}
+
 
 
 
