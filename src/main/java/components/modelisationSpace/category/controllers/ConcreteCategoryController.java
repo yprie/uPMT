@@ -1,11 +1,15 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.justification.models.Justification;
+import components.modelisationSpace.property.controllers.ConcretePropertyController;
+import components.modelisationSpace.property.model.ConcreteProperty;
+import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -22,8 +26,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import utils.dragAndDrop.DragStore;
+import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
@@ -37,10 +43,12 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     private ConcreteCategoryCommandFactory cmdFactory;
     private ConcreteCategory category;
     private JustificationController justificationController;
+    private ListView<ConcreteProperty, ConcretePropertyController> properties;
 
     @FXML private BorderPane container;
     @FXML private Label name;
     @FXML private MenuButton menuButton;
+    @FXML private VBox propertiesContainer;
 
     //Listeners
     private ChangeListener<Boolean> onSchemaTreeRemoving = (ChangeListener<Boolean>) (observableValue, aBoolean, t1) -> {
@@ -68,6 +76,12 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         });
         menuButton.getItems().add(deleteButton);
 
+        properties = new ListView<>(
+                category.propertiesProperty(),
+                ConcretePropertyController::new,
+                ConcretePropertyController::create,
+                propertiesContainer
+        );
 
         setupDragAndDrop();
     }
@@ -101,6 +115,41 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
                 cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false).execute();
             }
         });
+
+
+        container.setOnDragOver(dragEvent -> {
+            container.setStyle("-fx-opacity: 1;");
+            if(
+                !dragEvent.isAccepted()
+                && DragStore.getDraggable().getDataFormat() == Descripteme.format
+            ){
+                if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
+                    container.setStyle("-fx-opacity: 0.5;");
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                }
+                else {
+                    dragEvent.acceptTransferModes(TransferMode.NONE);
+                }
+            }
+        });
+
+        container.setOnDragDropped(dragEvent -> {
+            if(DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
+                    justificationController.addDescripteme(DragStore.getDraggable());
+                    dragEvent.setDropCompleted(true);
+                }
+                dragEvent.consume();
+            }
+        });
+
+        container.setOnDragExited(dragEvent -> {
+            container.setStyle("-fx-opacity: 1;");
+        });
+
+        container.setOnDragEntered(dragEvent -> {
+            container.setStyle("-fx-opacity: 1;");
+        });
     }
 
     @Override
@@ -113,8 +162,6 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
                 (EventHandler<ActionEvent>) event -> { paneCommandFactory.scrollToNode(container).execute(); }));
         viewFocus.play();
-
-        //category.existsProperty().addListener(onSchemaTreeRemoving);
     }
 
     @Override
@@ -124,7 +171,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void onUnmount() {
-        //category.existsProperty().removeListener(onSchemaTreeRemoving);
+
     }
 
 

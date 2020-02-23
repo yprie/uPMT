@@ -1,10 +1,12 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.category.model.ConcreteCategory;
+import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
@@ -66,12 +68,11 @@ public class MomentController extends ListViewController<Moment> implements Init
         this.categoryCmdFactory = new ConcreteCategoryCommandFactory(moment);
         this.childCmdFactory = new MomentCommandFactory(moment);
         this.paneCmdFactory = paneCmdFactory;
+        this.justificationController = new JustificationController(m.getJustification());
 
         separatorLeft = new MomentSeparatorController(true);
         separatorRight = new MomentSeparatorController(true);
         separatorBottom = new MomentSeparatorController(false);
-
-        this.justificationController = new JustificationController(m.getJustification());
     }
 
     public static Node createMoment(MomentController controller) {
@@ -196,11 +197,20 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private void setupDragAndDrop() {
 
-
         categoryDropper.setOnDragOver(dragEvent -> {
+            categoryDropper.setStyle("-fx-opacity: 1;");
             if(DragStore.getDraggable().isDraggable()) {
-                //Simple Schema Category
+                //Descripteme
                 if(
+                    !dragEvent.isAccepted()
+                    && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                    && justificationController.acceptDescripteme(DragStore.getDraggable())
+                ){
+                    categoryDropper.setStyle("-fx-opacity: 0.5;");
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                }
+                //Simple Schema Category
+                else if(
                     DragStore.getDraggable().getDataFormat() == SchemaCategory.format
                     && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
                 ) {
@@ -218,7 +228,15 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
 
         categoryDropper.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
+            if(
+                DragStore.getDraggable().getDataFormat() == Descripteme.format
+                && dragEvent.isAccepted()
+            ) {
+                justificationController.addDescripteme(DragStore.getDraggable());
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+            else if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
                 categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
@@ -228,6 +246,11 @@ public class MomentController extends ListViewController<Moment> implements Init
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
             }
+        });
+
+        categoryDropper.setOnDragExited(dragEvent -> {
+            System.out.println("exited !");
+            categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
     }

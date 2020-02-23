@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane fx:id="container" minWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/property.png" />
+               </image>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="name" style="-fx-font-weight: bold;" text="Propriété">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Label text=":">
+               <HBox.margin>
+                  <Insets left="3.0" right="3.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="value" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+      </HBox>
+   </top>
+   <padding>
+      <Insets bottom="5.0" top="5.0" />
+   </padding>
+</BorderPane>

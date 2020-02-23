@@ -89,6 +89,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         container.setOnDragDone(dragEvent -> {
             container.setStyle("-fx-background-color: transparent;");
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                System.out.println("LOURD TOUT CA");
                 RemoveDescriptemeCommand c = factory.removeDescripteme(DragStore.getDraggable());
                 c.isNotUserAction();
                 c.execute();

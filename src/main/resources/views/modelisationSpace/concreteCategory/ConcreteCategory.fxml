@@ -10,11 +10,8 @@
 
 <BorderPane fx:id="container" styleClass="categoryCard" stylesheets="@../../../css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
    </padding>
-   <center>
-      <VBox BorderPane.alignment="CENTER" />
-   </center>
    <top>
       <HBox alignment="CENTER">
          <children>
@@ -33,4 +30,14 @@
          </children>
       </HBox>
    </top>
+   <bottom>
+      <VBox fx:id="propertiesContainer" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="5.0" top="10.0" />
+         </padding>
+      </VBox>
+   </bottom>
 </BorderPane>

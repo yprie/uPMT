@@ -29,8 +29,8 @@ public class JustificationController implements Initializable{
 
     //Graphics elements
     @FXML private VBox childrenBox;
-    @FXML private HBox descriptemeDndZone;
-    @FXML private ImageView descriptemeDndLogo;
+    /*@FXML private HBox descriptemeDndZone;
+    @FXML private ImageView descriptemeDndLogo;*/
 
 
     public JustificationController(Justification j) {
@@ -41,7 +41,7 @@ public class JustificationController implements Initializable{
     public static Node createJustificationArea(JustificationController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/Justification.fxml"));
+            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/Justification2.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             return loader.load();
@@ -64,6 +64,14 @@ public class JustificationController implements Initializable{
         setupDescriptemeDND();
     }
 
+    public boolean acceptDescripteme(Descripteme d) {
+        return justification.indexOf(DragStore.getDraggable()) == -1;
+    }
+
+    public void addDescripteme(Descripteme d) {
+        cmdFactory.addDescripteme(d).execute();
+    }
+
     private void setupDescriptemeDND() {
 
 /*        descriptemeDndZone.setOnDragEntered(dragEvent -> {
@@ -76,7 +84,8 @@ public class JustificationController implements Initializable{
             }
         });*/
 
-        descriptemeDndZone.setOnDragOver(dragEvent -> {
+        //First justification version
+       /* descriptemeDndZone.setOnDragOver(dragEvent -> {
             if(
                 DragStore.getDraggable().isDraggable()
                 && DragStore.getDraggable().getDataFormat() == Descripteme.format
@@ -88,19 +97,14 @@ public class JustificationController implements Initializable{
             }
         });
 
-        descriptemeDndZone.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                cmdFactory.addDescripteme(DragStore.getDraggable()).execute();
-                dragEvent.setDropCompleted(true);
-                dragEvent.consume();
-            }
-        });
+
 
         descriptemeDndZone.setOnDragExited(dragEvent -> {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
                 descriptemeDndLogo.setImage(new Image("/images/addDescriptemeDisabled.png"));
                 dragEvent.consume();
             }
-        });
+        });*/
+
     }
 }

@@ -306,11 +306,33 @@ moment-no-left-padding {
 
 
 .descripteme-button {
-    -fx-background-color: transparent;
-    -fx-border-width: 0;
-    -fx-font-weight: bold;
+    -fx-border-radius:100;
+    -fx-min-height:24px;
+    -fx-min-width:24px;
+
+	-fx-border-width: 0;
+    -fx-border-insets: 0px;
+
+    -fx-background-radius: 30px;
+    -fx-background-size: 15;
+    -fx-background-insets: 0px;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-image: url("/images/hasExtractIcon.png");
 }
 
+.descripteme-button:hover{
+	-fx-background-color: #eee;
+}
+
+.descripteme-button > .arrow-button{
+	-fx-padding: 0;
+}
+
+.descripteme-button > .arrow-button > .arrow{
+	-fx-padding: 0;
+}
 
 
 
