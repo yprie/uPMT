@@ -54,18 +54,19 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Text init
         text.setText(descripteme.getSelection());
 
-        //Actions
-        MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        removeButton.setOnAction(actionEvent -> {
-            factory.removeDescripteme(descripteme).execute();
-        });
-        menuButton.getItems().add(removeButton);
 
+        //Actions
         MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
         duplicateButton.setOnAction(actionEvent -> {
             factory.duplicateDescripteme(descripteme).execute();
         });
         menuButton.getItems().add(duplicateButton);
+
+        MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        removeButton.setOnAction(actionEvent -> {
+            factory.removeDescripteme(descripteme).execute();
+        });
+        menuButton.getItems().add(removeButton);
 
         //Descripteme tooltip
         Tooltip.install(text, new Tooltip(descripteme.getSelection()));

@@ -114,7 +114,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
                 (EventHandler<ActionEvent>) event -> { paneCommandFactory.scrollToNode(container).execute(); }));
         viewFocus.play();
 
-        category.existsProperty().addListener(onSchemaTreeRemoving);
+        //category.existsProperty().addListener(onSchemaTreeRemoving);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void onUnmount() {
-        category.existsProperty().removeListener(onSchemaTreeRemoving);
+        //category.existsProperty().removeListener(onSchemaTreeRemoving);
     }
 
 

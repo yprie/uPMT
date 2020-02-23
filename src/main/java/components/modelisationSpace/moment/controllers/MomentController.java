@@ -153,6 +153,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void onUnmount() {
         momentsHBox.onUnmount();
+        categories.onUnmount();
     }
 
     private void updateBorders(int index, int siblingsCount) {

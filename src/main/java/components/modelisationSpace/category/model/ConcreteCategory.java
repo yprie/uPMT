@@ -4,9 +4,13 @@ import components.modelisationSpace.justification.models.Justification;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.input.DataFormat;
 import utils.dragAndDrop.IDraggable;
+
+import java.util.function.Supplier;
 
 public class ConcreteCategory implements IDraggable {
 
@@ -25,6 +29,7 @@ public class ConcreteCategory implements IDraggable {
     public Justification getJustification() { return justification; }
 
     public boolean isSchemaCategory(SchemaCategory sc) { return sc == category; }
+
     public ObservableBooleanValue existsProperty() { return category.existsProperty(); }
 
     @Override

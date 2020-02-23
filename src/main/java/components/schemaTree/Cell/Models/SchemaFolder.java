@@ -113,8 +113,9 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     @Override
     public void setExists(boolean b) {
        exists.set(b);
-       for(SchemaFolder f: folders)
+       for(SchemaFolder f: folders){
            f.setExists(b);
+       }
        for(SchemaCategory c: categories)
            c.setExists(b);
     }
