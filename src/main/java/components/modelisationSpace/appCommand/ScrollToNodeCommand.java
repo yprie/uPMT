@@ -39,7 +39,6 @@ public class ScrollToNodeCommand implements Executable<Void> {
     }
 
     private double genVValue() {
-        System.out.println(node.getBoundsInLocal());
         Bounds b = pane.getContent().sceneToLocal(node.localToScene(node.getBoundsInLocal()));
         double start = pane.getViewportBounds().getHeight() / 2;
         double end = pane.getContent().getBoundsInLocal().getHeight() - start;

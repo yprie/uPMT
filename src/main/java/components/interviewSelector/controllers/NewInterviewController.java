@@ -8,7 +8,6 @@ import components.modelisationSpace.moment.model.RootMoment;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import utils.InterviewUtils;
 import utils.DialogState;
 
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import javafx.stage.FileChooser;
 
 import java.io.FileInputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.IOException;
 import java.io.File;
@@ -85,9 +83,11 @@ public class NewInterviewController implements Initializable {
             byte[] data = new byte[(int) chosenFile.length()];
             try {
                 FileInputStream fis = new FileInputStream(chosenFile);
-                fis.read(data);
+                //fis.read(data);
+                res = new String(fis.readAllBytes());
+                System.out.println(res);
                 fis.close();
-                res = new String(data, StandardCharsets.UTF_8);
+/*                res = new String(data, StandardCharsets.UTF_16);*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -127,16 +127,15 @@ public class NewInterviewController implements Initializable {
         if(chosenFile != null){
             chosenFilename.setText(chosenFile.getPath());
 
-            // >> was commented
-            /*
-			if (interviewTitle.getText().equals("") && interviewDate.getValue().toString()!= null) {
-                interviewTitle.setText(chosenFile.getName().replaceFirst("[.][^.]+$", "")
-						+ "_" + interviewDate.getValue().toString());
-			}
-             */
-			// <<
-
-            interviewTextExtract.setText(InterviewUtils.getExtract(chosenFile));
+            String res = "error during text loading !";
+            try {
+                FileInputStream fis = new FileInputStream(chosenFile);
+                res = new String(fis.readAllBytes());
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            interviewTextExtract.setText(res.substring(0, 100) + " ...");
         }
         else {
             chosenFilename.setText("/");

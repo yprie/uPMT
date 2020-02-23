@@ -70,7 +70,7 @@ public class TextAreaController implements Initializable {
         textInterview.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                selectedText = textInterview.getSelectedText().trim();
+                selectedText = textInterview.getSelectedText();
                 if(!selectedText.equals(""))
                     stackForDragDrop.getChildren().add(paneDragText);
             }
@@ -90,8 +90,7 @@ public class TextAreaController implements Initializable {
         paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                int startIndex = interview.getInterviewText().getText().indexOf(selectedText);
-                Descripteme descripteme = new Descripteme(interview.getInterviewText(), startIndex, startIndex + selectedText.length());
+                Descripteme descripteme = new Descripteme(interview.getInterviewText(), textInterview.getSelection().getStart(), textInterview.getSelection().getEnd());
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);

@@ -20,7 +20,7 @@ public class Descripteme implements IDraggable {
     public InterviewText getInterviewText() { return interviewText; }
 
     public final String getSelection() {
-        return interviewText.getText().substring(startIndex, endIndex);
+        return interviewText.getText().substring(startIndex, endIndex).replace("\n", "").replace("\r", "");
     }
 
     public Descripteme duplicate() {

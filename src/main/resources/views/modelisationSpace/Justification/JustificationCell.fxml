@@ -3,8 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
@@ -18,11 +16,6 @@
    <left>
         <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
-         <ImageView fx:id="descriptemeDndLogo" fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-               <Image url="@../../../images/hasExtractIconDisabled.png" />
-            </image>
-         </ImageView>
          <BorderPane.margin>
             <Insets right="10.0" />
          </BorderPane.margin>

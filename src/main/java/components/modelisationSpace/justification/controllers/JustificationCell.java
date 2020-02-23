@@ -16,19 +16,17 @@ import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
+import javax.tools.Tool;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
 
-    @FXML
-    private Label text;
-
-    @FXML
-    private MenuButton menuButton;
-
+    @FXML private Label text;
+    @FXML private MenuButton menuButton;
     @FXML BorderPane container;
+    @FXML ImageView descriptemeDndLogo;
 
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
@@ -68,6 +66,9 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             factory.duplicateDescripteme(descripteme).execute();
         });
         menuButton.getItems().add(duplicateButton);
+
+        //Descripteme tooltip
+        Tooltip.install(text, new Tooltip(descripteme.getSelection()));
 
         setupDnd();
     }
