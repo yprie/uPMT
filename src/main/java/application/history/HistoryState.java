@@ -15,6 +15,8 @@ public class HistoryState {
     private ReadOnlyBooleanWrapper canGoBack;
     private ReadOnlyBooleanWrapper canGoForward;
 
+    private boolean userMadeAnAction = false;
+
     HistoryState() {
         previous = new Stack<ModelUserActionCommand>();
         next = new Stack<ModelUserActionCommand>();
@@ -23,24 +25,16 @@ public class HistoryState {
     }
 
     void addCommand(ModelUserActionCommand command, boolean startNewUserAction) {
-        if(startNewUserAction)
+        if(startNewUserAction) {
+            userMadeAnAction = true;
             currentUserActionId = UUID.randomUUID();
+        }
 
-/*        System.out.println();
-        System.out.println(canGoBack() + " && " + startNewUserAction);*/
-        //if(startNewUserAction) {
-            command.setUserActionIdentifier(currentUserActionId);
-            next.removeAllElements();
-            canGoForward.set(false);
-            next.push(command);
-            executeSingleAction();
-       /* }
-        else {
-            System.out.println("executing new command " + command);
-            command.execute();
-        }*/
-
-
+        command.setUserActionIdentifier(currentUserActionId);
+        next.removeAllElements();
+        canGoForward.set(false);
+        next.push(command);
+        executeSingleAction();
     }
 
     void executeUserAction() {
@@ -79,7 +73,7 @@ public class HistoryState {
     UUID getCurrentCommandId() { return previous.size() > 0 ? previous.peek().getUserActionIdentifier() : null; };
 
     private boolean canGoBack() {
-        canGoBack.set(previous.size() > 0);
+        canGoBack.set(userMadeAnAction && previous.size() > 0);
         return canGoBack.get();
     }
 
@@ -92,7 +86,7 @@ public class HistoryState {
         ModelUserActionCommand c = next.pop();
         c.execute();
         previous.push(c);
-        canGoBack.set(true);
+        canGoBack.set(userMadeAnAction);
     }
 
     private void unexecuteSingleAction() {

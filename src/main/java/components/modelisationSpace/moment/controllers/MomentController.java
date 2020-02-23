@@ -1,6 +1,7 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import application.history.HistoryManager;
 import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -10,6 +11,7 @@ import components.modelisationSpace.justification.appCommands.JustificationComma
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.property.modelCommands.EditConcretePropertyValue;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,10 +29,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import utils.DialogState;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
+import utils.popups.TextEntryController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -91,7 +95,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         grid.add(separatorBottom.getNode(), 1, 1);
-        momentName.setText(moment.getName());
+        momentName.textProperty().bind(moment.nameProperty());
 
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
@@ -130,6 +134,13 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
         menuButton.getItems().add(deleteButton);
 
+        MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
+        renameButton.setOnAction(actionEvent -> {
+            cmdFactory.renameCommand(moment).execute();
+        });
+        menuButton.getItems().add(renameButton);
+
+
         //DND
         setupDragAndDrop();
     }
@@ -142,7 +153,9 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void onMount() {
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
-                (EventHandler<ActionEvent>) event -> { paneCmdFactory.scrollToNode(momentContainer).execute(); }));
+            (EventHandler<ActionEvent>) event -> {
+                paneCmdFactory.scrollToNode(momentContainer).execute();
+        }));
         viewFocus.play();
     }
 

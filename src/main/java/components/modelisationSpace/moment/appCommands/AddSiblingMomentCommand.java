@@ -32,6 +32,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         else
             cmd = new AddSubMoment(parent, newMoment, index);
         HistoryManager.addCommand(cmd, true);
+        new RenameMomentCommand(newMoment).execute();
         return null;
     }
 }

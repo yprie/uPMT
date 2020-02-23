@@ -2,6 +2,7 @@ package components.modelisationSpace.moment.appCommands;
 
 import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
+import components.modelisationSpace.moment.modelCommands.RenameMoment;
 
 public class MomentCommandFactory {
 
@@ -17,6 +18,6 @@ public class MomentCommandFactory {
     public AddSiblingMomentCommand addSiblingCommand(Moment m) {
         return new AddSiblingMomentCommand(parent, m);
     }
-
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
+    public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
 }

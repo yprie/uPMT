@@ -81,7 +81,7 @@
                   <Insets right="15.0" />
                </padding>
                <center>
-                  <HBox fx:id="childrenBox" BorderPane.alignment="CENTER" />
+                  <HBox fx:id="childrenBox" alignment="CENTER" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </children>
