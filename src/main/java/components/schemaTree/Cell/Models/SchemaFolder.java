@@ -1,5 +1,6 @@
 package components.schemaTree.Cell.Models;
 
+import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
@@ -110,7 +111,16 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     }
 
     @Override
-    public BooleanProperty existsProperty() {
+    public void setExists(boolean b) {
+       exists.set(b);
+       for(SchemaFolder f: folders)
+           f.setExists(b);
+       for(SchemaCategory c: categories)
+           c.setExists(b);
+    }
+
+    @Override
+    public ObservableBooleanValue existsProperty() {
         return exists;
     }
 

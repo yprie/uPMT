@@ -17,7 +17,7 @@
         <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
          <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
          <BorderPane.margin>
-            <Insets right="10.0" />
+            <Insets />
          </BorderPane.margin>
         </HBox>
    </left>

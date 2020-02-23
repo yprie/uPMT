@@ -1,7 +1,8 @@
 package utils.removable;
 
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
 
 public interface IRemovable {
-    BooleanProperty existsProperty();
+    void setExists(boolean b);
+    ObservableBooleanValue existsProperty();
 }

@@ -55,12 +55,21 @@ public class Moment extends RootMoment {
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);
     }
+    public void addCategory(int index, ConcreteCategory cc) {
+        if(index == categories.size())
+            addCategory(cc);
+        else
+            categories.add(index, cc); }
     public void removeCategory(ConcreteCategory cc) {
         categories.remove(cc);
     }
     public ObservableList<ConcreteCategory> concreteCategoriesProperty() { return categories; }
     public int indexOfConcreteCategory(ConcreteCategory cc) {
-        return categories.indexOf(cc);
+        int index = -1;
+        for(int i = 0; i < categories.size(); i++)
+            if(categories.get(i) == cc)
+                return i;
+        return index;
     }
     public int indexOfSchemaCategory(SchemaCategory sc) {
         int index = -1;

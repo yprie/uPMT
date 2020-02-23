@@ -2,17 +2,35 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="container" styleClass="categoryCard" stylesheets="@../../../css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
-      <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
-   <top>
-      <Label fx:id="name" styleClass="categoryCard-header" stylesheets="@../../../css/application.css" text="Super catégorie !" BorderPane.alignment="CENTER" />
-   </top>
    <center>
-      <VBox prefHeight="100.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+      <VBox BorderPane.alignment="CENTER" />
    </center>
+   <top>
+      <HBox alignment="CENTER">
+         <children>
+            <MenuButton mnemonicParsing="false" style="visibility: hidden;" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </MenuButton>
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="name" alignment="CENTER" styleClass="categoryCard-header" stylesheets="@../../../css/application.css" text="Super catégorie !" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <MenuButton fx:id="menuButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

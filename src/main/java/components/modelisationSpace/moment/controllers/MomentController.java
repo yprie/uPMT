@@ -1,8 +1,8 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
+import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
@@ -11,8 +11,6 @@ import components.modelisationSpace.moment.model.Moment;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,8 +22,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -37,13 +33,13 @@ import utils.modelControllers.ListView.ListViewUpdate;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 
 public class MomentController extends ListViewController<Moment> implements Initializable {
 
     private Moment moment;
     private MomentCommandFactory cmdFactory;
+    private ConcreteCategoryCommandFactory categoryCmdFactory;
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
 
@@ -67,6 +63,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.cmdFactory = cmdFactory;
+        this.categoryCmdFactory = new ConcreteCategoryCommandFactory(moment);
         this.childCmdFactory = new MomentCommandFactory(moment);
         this.paneCmdFactory = paneCmdFactory;
 
@@ -112,7 +109,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         categories = new ListView<>(
                 moment.concreteCategoriesProperty(),
-                (cc -> new ConcreteCategoryController(cc, paneCmdFactory)),
+                (cc -> new ConcreteCategoryController(cc, categoryCmdFactory, paneCmdFactory)),
                 ConcreteCategoryController::create,
                 categoryContainer
         );
@@ -198,20 +195,35 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private void setupDragAndDrop() {
 
+
         categoryDropper.setOnDragOver(dragEvent -> {
-            if(
-                DragStore.getDraggable().isDraggable()
-                && DragStore.getDraggable().getDataFormat() == SchemaCategory.format
-                && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
-            ) {
-                dragEvent.acceptTransferModes(TransferMode.MOVE);
-                dragEvent.consume();
+            if(DragStore.getDraggable().isDraggable()) {
+                //Simple Schema Category
+                if(
+                    DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+                    && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
+                ) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    //dragEvent.consume();
+                }
+                //Existing concrete category
+                else if(
+                    DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
+                    && moment.indexOfConcreteCategory(DragStore.getDraggable()) == -1
+                ) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                }
             }
         });
 
         categoryDropper.setOnDragDropped(dragEvent -> {
             if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
-                moment.addCategory(new ConcreteCategory(DragStore.getDraggable()));
+                categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+            else if(DragStore.getDraggable().getDataFormat() == ConcreteCategory.format) {
+                categoryCmdFactory.addConcreteCategoryCommand(DragStore.getDraggable(), true).execute();
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
             }

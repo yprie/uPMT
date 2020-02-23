@@ -1,6 +1,7 @@
 package components.schemaTree.Cell.Models;
 
 
+import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
@@ -69,7 +70,12 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
     }
 
     @Override
-    public BooleanProperty existsProperty() {
+    public void setExists(boolean b) {
+        exists.set(b);
+    }
+
+    @Override
+    public ObservableBooleanValue existsProperty() {
         return exists;
     }
 

@@ -2,11 +2,14 @@ package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
+import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.justification.models.Justification;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,10 +17,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
@@ -28,22 +34,42 @@ import java.util.ResourceBundle;
 public class ConcreteCategoryController extends ListViewController<ConcreteCategory> implements Initializable {
 
     private ScrollPaneCommandFactory paneCommandFactory;
+    private ConcreteCategoryCommandFactory cmdFactory;
     private ConcreteCategory category;
     private JustificationController justificationController;
 
     @FXML private BorderPane container;
     @FXML private Label name;
+    @FXML private MenuButton menuButton;
 
-    public ConcreteCategoryController(ConcreteCategory c, ScrollPaneCommandFactory paneCommandFactory) {
+    //Listeners
+    private ChangeListener<Boolean> onSchemaTreeRemoving = (ChangeListener<Boolean>) (observableValue, aBoolean, t1) -> {
+        if(!t1) {
+            System.out.println("removing");
+            cmdFactory.removeConcreteCategoryCommand(category, false).execute();
+        }
+    };
+
+    public ConcreteCategoryController(ConcreteCategory c, ConcreteCategoryCommandFactory cmdFactory, ScrollPaneCommandFactory paneCommandFactory) {
         this.category = c;
+        this.cmdFactory = cmdFactory;
         this.paneCommandFactory = paneCommandFactory;
-        this.justificationController = new JustificationController(new Justification());
+        this.justificationController = new JustificationController(c.getJustification());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.textProperty().bind(category.nameProperty());
         container.setCenter(JustificationController.createJustificationArea(justificationController));
+
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        deleteButton.setOnAction(actionEvent -> {
+            cmdFactory.removeConcreteCategoryCommand(category, true).execute();
+        });
+        menuButton.getItems().add(deleteButton);
+
+
+        setupDragAndDrop();
     }
 
     public static Node create(ConcreteCategoryController controller) {
@@ -59,6 +85,24 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         }
     }
 
+    private void setupDragAndDrop() {
+
+        container.setOnDragDetected(mouseEvent -> {
+            Dragboard db = container.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(ConcreteCategory.format, 0);
+            DragStore.setDraggable(category);
+            db.setContent(content);
+            mouseEvent.consume();
+        });
+
+        container.setOnDragDone(dragEvent -> {
+            if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false).execute();
+            }
+        });
+    }
+
     @Override
     public ConcreteCategory getModel() {
         return category;
@@ -69,6 +113,8 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
                 (EventHandler<ActionEvent>) event -> { paneCommandFactory.scrollToNode(container).execute(); }));
         viewFocus.play();
+
+        category.existsProperty().addListener(onSchemaTreeRemoving);
     }
 
     @Override
@@ -78,7 +124,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void onUnmount() {
-
+        category.existsProperty().removeListener(onSchemaTreeRemoving);
     }
 
 

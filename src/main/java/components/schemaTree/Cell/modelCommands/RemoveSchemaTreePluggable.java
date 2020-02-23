@@ -19,14 +19,14 @@ public class RemoveSchemaTreePluggable<E extends SchemaTreePluggable&IRemovable>
     public Void execute() {
         element_index = parent.getChildIndex(element);
         parent.removeChild(element);
-        element.existsProperty().setValue(false);
+        element.setExists(false);
         return null;
     }
 
     @Override
     public Void undo() {
-        element.existsProperty().setValue(true);
         parent.addChildAt(element, element_index);
+        element.setExists(true);
         return null;
     }
 }
