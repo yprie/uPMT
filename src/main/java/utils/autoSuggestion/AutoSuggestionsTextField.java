@@ -1,4 +1,4 @@
-package components.modelisationSpace.UI;
+package utils.autoSuggestion;
 
 import components.schemaTree.Cell.SchemaTreePluggable;
 

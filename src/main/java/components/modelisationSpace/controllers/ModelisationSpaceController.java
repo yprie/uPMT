@@ -1,6 +1,6 @@
 package components.modelisationSpace.controllers;
 
-import components.modelisationSpace.UI.AutoSuggestionsTextField;
+import utils.autoSuggestion.AutoSuggestionsTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
