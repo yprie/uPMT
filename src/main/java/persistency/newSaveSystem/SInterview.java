@@ -17,6 +17,7 @@ public class SInterview extends Serializable<Interview> {
     public LocalDate date;
     public String comment;
     public SInterviewText interviewText;
+    public SRootMoment rootMoment;
 
     public SInterview(ObjectSerializer serializer) {
         super(serializer);
@@ -27,6 +28,7 @@ public class SInterview extends Serializable<Interview> {
         this.date = modelReference.getDate();
         this.comment = modelReference.getComment();
         this.interviewText = new SInterviewText(modelReference.getInterviewText());
+        this.rootMoment = new SRootMoment(modelReference.getRootMoment());
     }
 
     @Override
@@ -40,6 +42,7 @@ public class SInterview extends Serializable<Interview> {
         date = serializer.getLocalDate("date");
         comment = serializer.getFacultativeString("comment", null);
         interviewText = serializer.getObject(SInterviewText.modelName, SInterviewText::new);
+        rootMoment = serializer.getObject(SRootMoment.modelName, SRootMoment::new);
     }
 
     @Override
@@ -48,11 +51,12 @@ public class SInterview extends Serializable<Interview> {
         serializer.writeLocalDate("date", date);
         serializer.writeFacultativeString("comment", comment);
         serializer.writeObject(SInterviewText.modelName, interviewText);
+        serializer.writeObject(SRootMoment.modelName, rootMoment);
     }
 
     @Override
     protected Interview createModel() {
-        Interview i = new Interview(participantName, date, interviewText.convertToModel());
+        Interview i = new Interview(participantName, date, interviewText.convertToModel(), rootMoment.convertToModel());
         if(this.comment != null)
             i.setComment(comment);
         return i;

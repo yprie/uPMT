@@ -5,15 +5,16 @@ import application.configuration.Configuration;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -24,15 +25,12 @@ import java.util.ResourceBundle;
 
 public class InterviewPanelController implements Initializable {
 
-
-    static private BorderPane root;
-    @FXML private TextArea textInterview;
     @FXML private Text textInterviewTitle;
     @FXML private Label textInterviewComment;
     @FXML private ImageView buttonCollapseInterviewPanel;
     @FXML private BorderPane headerGrid;
-    @FXML private StackPane stackForDragDrop;
     @FXML private BorderPane topBarContainerTextInterview;
+    @FXML private StackPane stackPaneInterview;
 
     private boolean collapsed = false;
     private double panePosition;
@@ -53,8 +51,7 @@ public class InterviewPanelController implements Initializable {
             loader.setLocation(controller.getClass().getResource("/views/InterviewPanel/InterviewPanel.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
-            root = (BorderPane) loader.load();
-            return root;
+            return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -66,43 +63,55 @@ public class InterviewPanelController implements Initializable {
         refreshContent(interview.getValue());
         bind();
         panePosition = mainSplitPane.getDividers().get(1).getPosition();
-    }
 
-    // Events:
-    @FXML
-    private void buttonCollapseInterviewPanelOnMouseClicked(MouseEvent mouseEvent) {
-/*        if (!collapsed) {
-            // close
-            buttonCollapseInterviewPanel.setImage(new Image("/images/openMenuBlack.png"));
-            topBarContainerTextInterview.setCenter(null);
-            root.setCenter(null);
-            mainSplitPane.setDividerPosition(1,1.0);
-        } else {
-            // open
-            buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
-            topBarContainerTextInterview.setCenter(headerGrid);
-            root.setCenter(stackForDragDrop);
-            //root.setMaxWidth(root.USE_COMPUTED_SIZE);
-            mainSplitPane.setDividerPosition(1,panePosition);
-        }
-        collapsed = !collapsed;*/
+        buttonCollapseInterviewPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent arg0) {
+                if (!collapsed) {
+                    // close
+                    buttonCollapseInterviewPanel.setImage(new Image("/images/openMenuBlack.png"));
+                    topBarContainerTextInterview.setCenter(null);
+                    hideTextInterview();
+                    mainSplitPane.setDividerPosition(1,1.0);
+                } else {
+                    // open
+                    buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
+                    topBarContainerTextInterview.setCenter(headerGrid);
+                    if (interview.getValue() != null) {
+                        showTextInterview(interview.getValue());
+                    }
+                    mainSplitPane.setDividerPosition(1,panePosition);
+                }
+                collapsed = !collapsed;
+            }
+        });
     }
 
     private void bind() { interview.addListener(interviewChangeListener); }
     public void unbind() { interview.removeListener(interviewChangeListener); }
     
     private void refreshContent(Interview newInterview) {
-        if(newInterview != null) {
-            textInterviewTitle.setText(newInterview.getParticipantName());
-            textInterview.setText(newInterview.getInterviewText().getText());
-            textInterview.setVisible(true);
-            textInterviewComment.setText(newInterview.getComment());
-            textInterviewComment.setVisible(true);
+        if (!collapsed) {
+            if(newInterview != null) {
+                textInterviewTitle.setText(newInterview.getParticipantName());
+                textInterviewComment.setText(newInterview.getComment());
+                textInterviewComment.setVisible(true);
+                showTextInterview(newInterview);
+                stackPaneInterview.getChildren().add(TextAreaController.createTextAreaController(newInterview));
+            }
+            else {
+                textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
+                textInterviewComment.setVisible(false);
+                hideTextInterview();
+            }
         }
-        else {
-            textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
-            textInterview.setVisible(false);
-            textInterviewComment.setVisible(false);
-        }
+    }
+
+    private void showTextInterview(Interview newInterview) {
+        stackPaneInterview.getChildren().add(TextAreaController.createTextAreaController(newInterview));
+    }
+
+    private void hideTextInterview() {
+        stackPaneInterview.getChildren().clear();
     }
 }

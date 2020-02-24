@@ -21,11 +21,17 @@
 package components.mainView.controller;
 
 import application.project.models.Project;
+import components.interviewSelector.models.Interview;
+import components.modelisationSpace.controllers.ModelisationSpaceController;
+import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.model.RootMoment;
 import components.schemaTree.Controllers.SchemaTreeController;
 import components.interviewPanel.Controllers.InterviewPanelController;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,9 +49,19 @@ public class MainViewController implements Initializable {
 	private @FXML SplitPane mainSplitPane;
 	private @FXML SplitPane leftPane;
 	private @FXML SplitPane paneOfTextArea;
+	private @FXML ModelisationSpaceController modelisationSpaceController;
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
+
+	private ChangeListener<Interview> onSelectedInterviewChanges = (observableValue, o, t1) -> {
+		if(t1 != null){
+			modelisationSpaceController.setRootMoment(t1.getRootMoment());
+		}
+		else {
+			modelisationSpaceController.setRootMoment(null);
+		}
+	};
 
 	public static Node createMainView(MainViewController controller) {
 		try {
@@ -88,12 +104,14 @@ public class MainViewController implements Initializable {
 		interviewPanel = new InterviewPanelController(project.selectedInterviewProperty(), mainSplitPane);
 		paneOfTextArea.getItems().add(InterviewPanelController.createInterviewPanel(interviewPanel));
 
-		//Update the current interview
-		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview()).execute();
+		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview(), false).execute();
+		if(project.getSelectedInterview() != null)
+			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refreshContent();
+		project.selectedInterviewProperty().addListener(onSelectedInterviewChanges);
 	}
 }

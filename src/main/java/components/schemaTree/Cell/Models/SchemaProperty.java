@@ -1,6 +1,7 @@
 package components.schemaTree.Cell.Models;
 
 
+import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
@@ -29,17 +30,17 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
 
     @Override
     public void addChild(SchemaTreePluggable item) {
-        throw new IllegalArgumentException("Can't receive this kind of child !");
+        throw new IllegalArgumentException("(SchemaProperty::addChild) Can't receive this kind of child !");
     }
 
     @Override
     public void addChildAt(SchemaTreePluggable item, int index) {
-        throw new IllegalArgumentException("Can't receive this kind of child !");
+        throw new IllegalArgumentException("(SchemaProperty::addChildAt) Can't receive this kind of child !");
     }
 
     @Override
     public void removeChild(SchemaTreePluggable item) {
-        throw new IllegalArgumentException("Can't receive this kind of child !");
+        throw new IllegalArgumentException("(SchemaProperty::removeChild) Can't receive this kind of child !");
     }
 
     @Override
@@ -69,7 +70,12 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
     }
 
     @Override
-    public BooleanProperty existsProperty() {
+    public void setExists(boolean b) {
+        exists.set(b);
+    }
+
+    @Override
+    public ObservableBooleanValue existsProperty() {
         return exists;
     }
 

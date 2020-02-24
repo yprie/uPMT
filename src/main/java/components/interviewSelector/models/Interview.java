@@ -1,6 +1,7 @@
 package components.interviewSelector.models;
 
 import components.interviewPanel.Models.InterviewText;
+import components.modelisationSpace.moment.model.RootMoment;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,11 +12,13 @@ public class Interview implements Serializable {
     private LocalDate date;
     private String comment;
     private InterviewText interviewText;
+    private RootMoment rootMoment;
 
-    public Interview(String participantName, LocalDate date, InterviewText interviewText) {
+    public Interview(String participantName, LocalDate date, InterviewText interviewText, RootMoment rootMoment) {
         this.participantName = participantName;
         this.date = date;
         this.interviewText = interviewText;
+        this.rootMoment = rootMoment;
     }
 
     public String getParticipantName() { return this.participantName; }
@@ -29,4 +32,6 @@ public class Interview implements Serializable {
     public String getTitle(){
         return(this.participantName+" "+date.toString());
     }
+
+    public RootMoment getRootMoment() { return rootMoment; }
 }

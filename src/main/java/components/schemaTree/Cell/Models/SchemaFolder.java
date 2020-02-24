@@ -1,5 +1,6 @@
 package components.schemaTree.Cell.Models;
 
+import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
@@ -60,7 +61,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder) item, -1);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child ! ");
+            throw new IllegalArgumentException("(SchemaFolder::addChild) Can't receive this kind of child ! ");
     }
 
     @Override
@@ -70,7 +71,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             addFolder((SchemaFolder) item, index);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child ! ");
+            throw new IllegalArgumentException("(SchemaFolder::addChildAt) Can't receive this kind of child ! ");
     }
 
     @Override
@@ -80,7 +81,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         else if(Utils.IsSchemaTreeFolder(item))
             removeFolder((SchemaFolder) item);
         else
-            throw new IllegalArgumentException("Can't remove this kind of child !");
+            throw new IllegalArgumentException("(SchemaFolder::removeChild) Can't remove this kind of child !");
     }
 
     @Override
@@ -90,7 +91,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
             r = this.categories.indexOf(item);
         }
         if(r == -1)
-            throw new IllegalArgumentException("(SchemaFolder) The provided item is not a child of this element!");
+            throw new IllegalArgumentException("(SchemaFolder::getChildIndex) The provided item is not a child of this element!");
         return r;
     }
 
@@ -110,7 +111,17 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     }
 
     @Override
-    public BooleanProperty existsProperty() {
+    public void setExists(boolean b) {
+       exists.set(b);
+       for(SchemaFolder f: folders){
+           f.setExists(b);
+       }
+       for(SchemaCategory c: categories)
+           c.setExists(b);
+    }
+
+    @Override
+    public ObservableBooleanValue existsProperty() {
         return exists;
     }
 

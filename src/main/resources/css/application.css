@@ -131,6 +131,8 @@
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
   	-fx-background-image: url("/images/threedots.png");
+
+  	-fx-font-weight: normal;
 }
 .threedotsTreeview:hover{
 	-fx-background-color: #eee;
@@ -179,8 +181,30 @@
     -fx-border-radius:3;
 }
 
+.categoryCard {
+    -fx-background-color: #ffeaa7;
+	-fx-border-color: transparent;
+    -fx-background-insets: 3px;
+    -fx-background-radius: 3;
+    -fx-border-radius:3;
+}
 
+.categoryCard-header {
+    -fx-font-weight: bold;
+}
 
+.moment-header {
+    -fx-font-weight: bold;
+}
+
+.moment-dnd-zone {
+    -fx-background-radius: 50px;
+    -fx-background-color: red;
+}
+
+moment-no-left-padding {
+    -fx-padding-left: 0px;
+}
 
 /*BUTTON MOMENTVIEW */
 .buttonMomentViewDisabled, .buttonMomentView, .momentMenu{
@@ -281,8 +305,38 @@
 }
 
 
+.descripteme-button {
+    -fx-border-radius:100;
+    -fx-min-height:24px;
+    -fx-min-width:24px;
 
+	-fx-border-width: 0;
+    -fx-border-insets: 0px;
 
+    -fx-background-radius: 30px;
+    -fx-background-size: 15;
+    -fx-background-insets: 0px;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-image: url("/images/hasExtractIcon.png");
+}
+
+.descripteme-button:hover{
+	-fx-background-color: #eee;
+}
+
+.descripteme-button > .arrow-button{
+	-fx-padding: 0;
+}
+
+.descripteme-button > .arrow-button > .arrow{
+	-fx-padding: 0;
+}
+
+.concreteProperty:hover {
+    -fx-font-weight: bold;
+}
 
 
 

@@ -5,17 +5,21 @@
 
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 
+<?import javafx.scene.layout.AnchorPane?>
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
-         <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
-            <!-- schemaTree here -->
-            <!-- InterviewSelector here -->
-         </SplitPane>
-         <!-- components.modelisationSpace -->
-         <ModelisationSpaceController />
-         <!-- Interview are -->
-         <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+<center>
+   <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
+      <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
+         <!-- schemaTree here -->
+         <!-- InterviewSelector here -->
       </SplitPane>
-   </center>
+      <!-- components.modelisationSpace -->
+      <AnchorPane>
+         <ModelisationSpaceController fx:id="modelisationSpaceController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+      </AnchorPane>
+
+      <!-- Interview are -->
+      <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+   </SplitPane>
+</center>
 </BorderPane>

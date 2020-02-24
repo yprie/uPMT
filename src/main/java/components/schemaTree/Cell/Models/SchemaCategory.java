@@ -1,5 +1,6 @@
 package components.schemaTree.Cell.Models;
 
+import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
@@ -27,7 +28,10 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     public final ObservableList<SchemaProperty> propertiesProperty() { return properties; }
 
     @Override
-    public BooleanProperty existsProperty() { return exists; }
+    public void setExists(boolean b) { exists.set(b); }
+
+    @Override
+    public ObservableBooleanValue existsProperty() { return exists; }
 
     @Override
     public DataFormat getDataFormat() {
@@ -59,7 +63,7 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         if(Utils.IsSchemaTreeProperty(item))
             addProperty((SchemaProperty)item, -1);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child !");
+            throw new IllegalArgumentException("(SchemaCategory::addChild) Can't receive this kind of child !");
     }
 
     @Override
@@ -67,7 +71,7 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         if(Utils.IsSchemaTreeProperty(item))
             addProperty((SchemaProperty)item, index);
         else
-            throw new IllegalArgumentException("Can't receive this kind of child !");
+            throw new IllegalArgumentException("(SchemaCategory::addChildAt) Can't receive this kind of child !");
     }
 
     @Override
@@ -75,7 +79,7 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         if(Utils.IsSchemaTreeProperty(item))
             removeProperty((SchemaProperty)item);
         else
-            throw new IllegalArgumentException("Can't remove this kind of child !");
+            throw new IllegalArgumentException("(SchemaCategory::removeChild) Can't remove this kind of child !");
     }
 
     @Override

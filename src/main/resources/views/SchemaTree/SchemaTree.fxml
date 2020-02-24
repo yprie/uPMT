@@ -2,10 +2,16 @@
 
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.layout.Pane?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TreeView fx:id="schemaTree" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
    </center>
+   <top>
+      <Pane fx:id="topScroll" prefHeight="20.0" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <Pane fx:id="bottomScroll" prefHeight="20.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
