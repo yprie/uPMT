@@ -135,7 +135,8 @@ public class NewInterviewController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            interviewTextExtract.setText(res.substring(0, 100) + " ...");
+            if(res.length() > 0)
+                interviewTextExtract.setText(res.substring(0, Math.min(res.length(),100)) + " ...");
         }
         else {
             chosenFilename.setText("/");
