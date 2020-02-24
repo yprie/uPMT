@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="container" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <Label fx:id="text" maxWidth="-Infinity" minWidth="50.0" style="-fx-text-overrun: ellipsis; -fx-font-style: italic;" text="Salut les loosers ! de la vie de ouf" BorderPane.alignment="CENTER_LEFT">
+         <BorderPane.margin>
+            <Insets right="20.0" />
+         </BorderPane.margin></Label>
+    </center>
+   <left>
+        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+         <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="descripteme-button" stylesheets="@../../../css/application.css" />
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+        </HBox>
+   </left>
+</BorderPane>
