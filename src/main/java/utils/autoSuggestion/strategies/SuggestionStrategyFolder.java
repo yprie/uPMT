@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SuggestionStrategyFolder extends SuggestionStrategy<SchemaFolder> {
+    @Override
     public Map<String, SchemaFolder> fetchSuggestions() {
         // Create a list with all the possibilities: the list where we search the entered text for a match
         Map<String, SchemaFolder> result = new HashMap<>();

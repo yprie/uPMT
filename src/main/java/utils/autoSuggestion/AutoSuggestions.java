@@ -1,12 +1,18 @@
 package utils.autoSuggestion;
 
+import components.modelisationSpace.moment.model.RootMoment;
 import components.schemaTree.Cell.Models.SchemaTreeRoot;
 
 public class AutoSuggestions {
+    /*
+    A class used by the suggestion strategies.
+    This is a singleton.
+     */
 
     private static final AutoSuggestions autoSuggestions = new AutoSuggestions();
 
     private static SchemaTreeRoot root;
+    private static RootMoment rootMoment;
 
     private AutoSuggestions() {} // private constructor
 
@@ -19,5 +25,12 @@ public class AutoSuggestions {
     }
     public static SchemaTreeRoot getSchemaTreeRoot() {
         return root;
+    }
+
+    public void setRootMoment(RootMoment rootMment) {
+        this.rootMoment = rootMment;
+    }
+    public static RootMoment getRootMoment() {
+        return rootMoment;
     }
 }

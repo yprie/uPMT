@@ -33,6 +33,13 @@ public class AutoSuggestionsTextField extends TextField {
         setListener();
     }
 
+    public AutoSuggestionsTextField() {
+        super();
+        this.entriesPopup = new ContextMenu();
+        this.suggestionStrategy = null;
+        setListener();
+    }
+
     public void setStrategy(SuggestionStrategy newSuggestionStrategy) {
         suggestionStrategy = newSuggestionStrategy;
     }
@@ -63,7 +70,7 @@ public class AutoSuggestionsTextField extends TextField {
     }
 
     private void showSuggestions() {
-        suggestions = this.suggestionStrategy.getSuggestions(getText());
+        suggestions = suggestionStrategy.getSuggestions(getText());
         populatePopup(suggestions);
         show();
     }

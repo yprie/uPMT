@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import utils.DialogState;
+import utils.autoSuggestion.strategies.SuggestionStrategyProperty;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
@@ -66,7 +67,13 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         container.setCenter(justif);
 
         container.setOnMouseClicked(mouseEvent -> {
-            TextEntryController c = TextEntryController.enterText(property.getName(), property.getValue(), 20);
+            TextEntryController c = TextEntryController.enterText(
+                    property.getName(),
+                    property.getValue(),
+                    20,
+                    new SuggestionStrategyProperty()
+            );
+            //c.setStrategy();
             if(c.getState() == DialogState.SUCCESS){
                 HistoryManager.addCommand(new EditConcretePropertyValue(property, c.getValue()), true);
             }
