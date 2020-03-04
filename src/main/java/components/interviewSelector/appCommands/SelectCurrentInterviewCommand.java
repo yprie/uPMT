@@ -3,6 +3,7 @@ package components.interviewSelector.appCommands;
 import application.history.HistoryManager;
 import application.project.models.Project;
 import components.interviewSelector.models.Interview;
+import utils.autoSuggestion.AutoSuggestions;
 
 public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void> {
 
@@ -18,6 +19,7 @@ public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void
     @Override
     public Void execute() {
         HistoryManager.addCommand(new components.interviewSelector.modelCommands.SelectCurrentInterviewCommand(project, interview), addToCommandHistory);
+        AutoSuggestions.getAutoSuggestions().setRootMoment(interview.getRootMoment());
         return null;
     }
 }

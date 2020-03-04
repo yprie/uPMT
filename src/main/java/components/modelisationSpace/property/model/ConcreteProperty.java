@@ -1,6 +1,5 @@
 package components.modelisationSpace.property.model;
 
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.justification.models.Justification;
 import components.schemaTree.Cell.Models.SchemaProperty;
 import javafx.beans.property.SimpleStringProperty;

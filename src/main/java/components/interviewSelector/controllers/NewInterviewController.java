@@ -94,7 +94,6 @@ public class NewInterviewController implements Initializable {
             }
 
             RootMoment rm = new RootMoment();
-            AutoSuggestions.getAutoSuggestions().setRootMoment(rm);
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
             resultInterview = new Interview(

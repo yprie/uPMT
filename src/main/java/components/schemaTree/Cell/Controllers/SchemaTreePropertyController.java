@@ -4,6 +4,8 @@ import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.Models.SchemaProperty;
 import javafx.scene.control.MenuItem;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.autoSuggestion.strategies.SuggestionStrategyProperty;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +20,11 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
         super(property);
         this.property = property;
         this.cmdFactory = cmdFactory;
+    }
+
+    @Override
+    protected SuggestionStrategy getSuggestionStrategy() {
+        return new SuggestionStrategyProperty();
     }
 
     @Override

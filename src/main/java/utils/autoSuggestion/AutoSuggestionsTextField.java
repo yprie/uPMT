@@ -2,6 +2,7 @@ package utils.autoSuggestion;
 
 import components.schemaTree.Cell.SchemaTreePluggable;
 
+import javafx.application.Platform;
 import javafx.geometry.Side;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
@@ -26,6 +27,13 @@ public class AutoSuggestionsTextField extends TextField {
     // Suggestion Strategy
     private SuggestionStrategy suggestionStrategy;
 
+    public AutoSuggestionsTextField() {
+        super();
+        this.entriesPopup = new ContextMenu();
+        this.suggestionStrategy = null;
+        setListener();
+    }
+
     public AutoSuggestionsTextField(SuggestionStrategy suggestionStrategy) {
         super();
         this.entriesPopup = new ContextMenu();
@@ -33,12 +41,23 @@ public class AutoSuggestionsTextField extends TextField {
         setListener();
     }
 
-    public AutoSuggestionsTextField() {
+    public AutoSuggestionsTextField(String text) {
         super();
         this.entriesPopup = new ContextMenu();
         this.suggestionStrategy = null;
+        this.setText(text);
         setListener();
     }
+
+    public AutoSuggestionsTextField(String text, SuggestionStrategy autoSuggestionStrategy) {
+        super();
+        this.entriesPopup = new ContextMenu();
+        this.suggestionStrategy = autoSuggestionStrategy;
+        this.setText(text);
+        setListener();
+    }
+
+
 
     public void setStrategy(SuggestionStrategy newSuggestionStrategy) {
         suggestionStrategy = newSuggestionStrategy;
@@ -62,7 +81,9 @@ public class AutoSuggestionsTextField extends TextField {
     }
 
     private void show() {
-        entriesPopup.show(AutoSuggestionsTextField.this, Side.BOTTOM, 0, 0); //position of popup
+        Platform.runLater(()-> {
+            entriesPopup.show(AutoSuggestionsTextField.this, Side.BOTTOM, 0, 0); //position of popup
+        });
     }
 
     private void hide() {

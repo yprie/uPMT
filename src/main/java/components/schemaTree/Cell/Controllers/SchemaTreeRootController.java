@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import utils.ResourceLoader;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,6 +27,11 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
         super(root);
         this.root = root;
         this.cmdFactory = cmdFactory;
+    }
+
+    @Override
+    protected SuggestionStrategy getSuggestionStrategy() {
+        return null;
     }
 
     @Override
