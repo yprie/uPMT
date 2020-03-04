@@ -4,7 +4,6 @@ import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
-import utils.autoSuggestion.AutoSuggestions;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,6 @@ public class SRootMoment extends Serializable<RootMoment> {
     @Override
     protected RootMoment createModel() {
         RootMoment rm = new RootMoment();
-        AutoSuggestions.getAutoSuggestions().setRootMoment(rm);
 
         for(SMoment sm: submoments)
             rm.addMoment(sm.convertToModel());

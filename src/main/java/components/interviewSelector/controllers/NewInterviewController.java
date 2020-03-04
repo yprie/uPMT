@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
+import utils.autoSuggestion.AutoSuggestions;
 
 import java.io.FileInputStream;
 import java.net.URL;
@@ -93,6 +94,7 @@ public class NewInterviewController implements Initializable {
             }
 
             RootMoment rm = new RootMoment();
+            AutoSuggestions.getAutoSuggestions().setRootMoment(rm);
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
             resultInterview = new Interview(
