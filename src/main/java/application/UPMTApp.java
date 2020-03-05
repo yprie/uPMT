@@ -68,6 +68,7 @@ public class UPMTApp {
         return currentProject;
     }
     public String getCurrentProjectPath() { return currentProjectPath; }
+    public void setCurrentProjectPath(String currentProjectPath) { this.currentProjectPath = currentProjectPath; }
 
     public void setLastSavedCommandId(UUID lastCommandId) { this.lastSavedCommandId = lastCommandId; }
     public UUID getLastSavedCommandId() { return lastSavedCommandId; }
