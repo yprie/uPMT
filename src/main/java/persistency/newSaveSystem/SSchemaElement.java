@@ -1,6 +1,6 @@
 package persistency.newSaveSystem;
 
-import components.schemaTree.Cell.Models.SchemaElement;
+import models.SchemaElement;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

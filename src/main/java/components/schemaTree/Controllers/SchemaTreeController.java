@@ -1,7 +1,7 @@
 package components.schemaTree.Controllers;
 
 import components.schemaTree.Cell.SchemaTreePluggable;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.SchemaTreeRoot;
 import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import components.schemaTree.Cell.SchemaTreeCell;
 import application.configuration.Configuration;
@@ -12,8 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
 import utils.autoSuggestion.AutoSuggestions;
-import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
-import utils.autoSuggestion.strategies.SuggestionStrategyFolder;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;

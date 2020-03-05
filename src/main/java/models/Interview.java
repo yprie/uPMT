@@ -1,7 +1,4 @@
-package components.interviewSelector.models;
-
-import components.interviewPanel.Models.InterviewText;
-import components.modelisationSpace.moment.model.RootMoment;
+package models;
 
 import java.io.Serializable;
 import java.time.LocalDate;

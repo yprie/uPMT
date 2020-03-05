@@ -1,8 +1,8 @@
 package components.modelisationSpace.moment.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.Moment;
+import models.RootMoment;
 
 public class RemoveSubMoment extends ModelUserActionCommand {
 

@@ -1,9 +1,8 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
-import components.interviewPanel.Models.InterviewText;
-import components.interviewSelector.models.Interview;
+import models.Descripteme;
+import models.Interview;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.Moment;
+import models.RootMoment;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

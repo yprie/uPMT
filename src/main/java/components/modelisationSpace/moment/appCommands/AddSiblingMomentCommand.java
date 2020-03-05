@@ -2,8 +2,8 @@ package components.modelisationSpace.moment.appCommands;
 
 
 import application.history.HistoryManager;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.Moment;
+import models.RootMoment;
 import components.modelisationSpace.moment.modelCommands.AddSubMoment;
 import utils.command.Executable;
 

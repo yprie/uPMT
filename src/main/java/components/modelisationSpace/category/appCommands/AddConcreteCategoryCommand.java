@@ -1,9 +1,9 @@
 package components.modelisationSpace.category.appCommands;
 
 import application.history.HistoryManager;
-import components.modelisationSpace.category.model.ConcreteCategory;
+import models.ConcreteCategory;
 import components.modelisationSpace.category.modelCommands.AddConcreteCategory;
-import components.modelisationSpace.moment.model.Moment;
+import models.Moment;
 import utils.command.Executable;
 
 public class AddConcreteCategoryCommand implements Executable<Void> {

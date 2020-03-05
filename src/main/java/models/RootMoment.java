@@ -1,4 +1,4 @@
-package components.modelisationSpace.moment.model;
+package models;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;

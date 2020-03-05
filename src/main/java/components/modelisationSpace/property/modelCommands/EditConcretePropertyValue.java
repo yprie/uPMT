@@ -1,7 +1,7 @@
 package components.modelisationSpace.property.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteProperty;
 
 public class EditConcretePropertyValue extends ModelUserActionCommand<Void, Void> {
 

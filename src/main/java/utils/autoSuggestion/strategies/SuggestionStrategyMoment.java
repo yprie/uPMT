@@ -1,6 +1,6 @@
 package utils.autoSuggestion.strategies;
 
-import components.modelisationSpace.moment.model.Moment;
+import models.Moment;
 import utils.autoSuggestion.AutoSuggestions;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package components.interviewSelector.appCommands;
 
-import application.project.models.Project;
+import models.Project;
 import utils.command.Executable;
 
 public abstract class InterviewSelectorCommand<ExecuteResult> implements Executable<ExecuteResult> {

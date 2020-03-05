@@ -1,7 +1,7 @@
 package utils.autoSuggestion;
 
-import components.modelisationSpace.moment.model.RootMoment;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.RootMoment;
+import models.SchemaTreeRoot;
 
 public class AutoSuggestions {
     /*

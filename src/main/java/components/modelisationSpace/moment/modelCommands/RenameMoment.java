@@ -1,7 +1,7 @@
 package components.modelisationSpace.moment.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.modelisationSpace.moment.model.Moment;
+import models.Moment;
 
 public class RenameMoment extends ModelUserActionCommand {
 

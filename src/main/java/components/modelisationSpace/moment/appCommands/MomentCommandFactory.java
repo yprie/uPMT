@@ -1,8 +1,7 @@
 package components.modelisationSpace.moment.appCommands;
 
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
-import components.modelisationSpace.moment.modelCommands.RenameMoment;
+import models.Moment;
+import models.RootMoment;
 
 public class MomentCommandFactory {
 

@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

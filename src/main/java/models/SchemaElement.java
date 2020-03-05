@@ -1,4 +1,4 @@
-package components.schemaTree.Cell.Models;
+package models;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
 import javafx.beans.property.*;

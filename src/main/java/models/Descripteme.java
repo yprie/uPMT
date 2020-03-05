@@ -1,4 +1,4 @@
-package components.interviewPanel.Models;
+package models;
 
 import javafx.scene.input.DataFormat;
 import utils.dragAndDrop.IDraggable;

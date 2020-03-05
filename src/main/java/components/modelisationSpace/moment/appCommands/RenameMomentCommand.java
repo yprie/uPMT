@@ -2,7 +2,7 @@ package components.modelisationSpace.moment.appCommands;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.modelisationSpace.moment.model.Moment;
+import models.Moment;
 import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import utils.DialogState;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;

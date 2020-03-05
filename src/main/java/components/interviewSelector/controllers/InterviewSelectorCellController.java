@@ -1,6 +1,6 @@
 package components.interviewSelector.controllers;
 
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.fxml.FXML;

@@ -1,10 +1,10 @@
 package components.interviewSelector.controllers;
 
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import application.configuration.Configuration;
-import components.interviewPanel.Models.InterviewText;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.InterviewText;
+import models.Moment;
+import models.RootMoment;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
-import utils.autoSuggestion.AutoSuggestions;
 
 import java.io.FileInputStream;
 import java.net.URL;

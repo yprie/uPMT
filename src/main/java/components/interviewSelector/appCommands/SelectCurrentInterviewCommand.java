@@ -1,8 +1,8 @@
 package components.interviewSelector.appCommands;
 
 import application.history.HistoryManager;
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
+import models.Project;
+import models.Interview;
 import utils.autoSuggestion.AutoSuggestions;
 
 public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void> {

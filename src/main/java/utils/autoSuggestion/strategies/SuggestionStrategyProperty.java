@@ -1,8 +1,8 @@
 package utils.autoSuggestion.strategies;
 
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
-import components.schemaTree.Cell.Models.SchemaProperty;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
 import utils.autoSuggestion.AutoSuggestions;
 
 import java.util.HashMap;

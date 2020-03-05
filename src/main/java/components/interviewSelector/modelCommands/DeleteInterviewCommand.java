@@ -1,8 +1,8 @@
 package components.interviewSelector.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
+import models.Project;
+import models.Interview;
 
 
 public class DeleteInterviewCommand extends ModelUserActionCommand<Void, Void> {

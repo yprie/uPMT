@@ -1,17 +1,13 @@
 package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
-import components.modelisationSpace.justification.models.Justification;
+import models.Justification;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;

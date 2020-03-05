@@ -1,6 +1,6 @@
 package utils.autoSuggestion.strategies;
 
-import components.schemaTree.Cell.Models.SchemaFolder;
+import models.SchemaFolder;
 import utils.autoSuggestion.AutoSuggestions;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package components.modelisationSpace.moment.controllers;
 
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import utils.dragAndDrop.DragStore;

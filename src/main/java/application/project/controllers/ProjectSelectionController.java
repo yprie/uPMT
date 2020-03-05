@@ -20,7 +20,7 @@
 
 package application.project.controllers;
 
-import application.project.models.Project;
+import models.Project;
 import persistency.ProjectLoader;
 import application.configuration.Configuration;
 import javafx.collections.FXCollections;

@@ -1,10 +1,6 @@
-package components.modelisationSpace.moment.model;
+package models;
 
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.justification.models.Justification;
-import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;

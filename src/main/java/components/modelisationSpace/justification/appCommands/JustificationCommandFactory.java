@@ -1,8 +1,8 @@
 package components.modelisationSpace.justification.appCommands;
 
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.Section;
-import components.modelisationSpace.justification.models.Justification;
+import models.Justification;
 
 public class JustificationCommandFactory {
 

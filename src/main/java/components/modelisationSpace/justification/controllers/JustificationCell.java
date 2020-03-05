@@ -1,7 +1,7 @@
 package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.appCommands.RemoveDescriptemeCommand;
 import javafx.fxml.FXML;
@@ -16,7 +16,6 @@ import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
-import javax.tools.Tool;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
