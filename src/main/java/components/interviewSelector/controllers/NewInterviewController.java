@@ -20,11 +20,9 @@ import javafx.stage.StageStyle;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
-import java.io.FileInputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.io.IOException;
-import java.io.File;
 
 public class NewInterviewController implements Initializable {
     private DialogState state;
@@ -82,12 +80,7 @@ public class NewInterviewController implements Initializable {
             String res = "error during text loading !";
             byte[] data = new byte[(int) chosenFile.length()];
             try {
-                FileInputStream fis = new FileInputStream(chosenFile);
-                //fis.read(data);
-                res = new String(fis.readAllBytes());
-                System.out.println(res);
-                fis.close();
-/*                res = new String(data, StandardCharsets.UTF_16);*/
+                res = readFile(chosenFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -129,9 +122,7 @@ public class NewInterviewController implements Initializable {
 
             String res = "error during text loading !";
             try {
-                FileInputStream fis = new FileInputStream(chosenFile);
-                res = new String(fis.readAllBytes());
-                fis.close();
+                res = readFile(chosenFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -184,5 +175,54 @@ public class NewInterviewController implements Initializable {
     private void interviewDateOnAction(ActionEvent actionEvent) {
         setTitle();
         validateForm();
+    }
+
+    public String readFile(File file) throws IOException  {
+        String content = "";
+
+        // Ok for utf-8 encoded files, but problems with line ending
+        FileInputStream fis = new FileInputStream(chosenFile);
+        //fis.read(data);
+        byte[] bytes = fis.readAllBytes();
+        content = new String(bytes, "UTF-8");
+        fis.close();
+
+        // ok for ansi, but problems with line ending
+        /*
+        Scanner myReader = new Scanner(file);
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            content += data;
+        }
+        myReader.close();
+        */
+
+
+        // best encoding is ansi, but problems with line ending
+        /*
+        FileInputStream fis = new FileInputStream(chosenFile);
+        //fis.read(data);
+        content = new String(fis.readAllBytes());
+        fis.close();
+        //res = new String(data, StandardCharsets.UTF_16);
+
+         */
+
+        // very bad:
+        /*
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader buffReader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+        String line = null;
+
+        while ((line = buffReader.readLine()) != null) {
+            byte[] myFinalBytes = new String(line.getBytes()).getBytes("UTF-8");
+            content += new String(myFinalBytes);
+        }
+        buffReader.close();
+        fis.close();
+        */
+
+        //
+        return content;
     }
 }
