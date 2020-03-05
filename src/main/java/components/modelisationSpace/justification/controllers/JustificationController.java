@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class JustificationController implements Initializable{
+public class JustificationController implements Initializable {
 
     //Controller logical elements
     private Justification justification;

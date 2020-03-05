@@ -1,6 +1,7 @@
 package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
+import javafx.scene.layout.HBox;
 import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.appCommands.RemoveDescriptemeCommand;
@@ -22,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
 
+    @FXML private HBox moveLeft;
+    @FXML private HBox moveRight;
     @FXML private Label text;
     @FXML private MenuButton menuButton;
     @FXML BorderPane container;
@@ -53,6 +56,12 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Text init
         text.setText(descripteme.getSelection());
 
+        ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
+        moveLeft.getChildren().add(ShiftController.createShiftController(leftShiftController));
+
+        ShiftController rightShiftController = new ShiftController(descripteme, factory, "right");
+        moveRight.getChildren().add(ShiftController.createShiftController(rightShiftController));
+
 
         //Actions
         MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
@@ -60,6 +69,13 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             factory.duplicateDescripteme(descripteme).execute();
         });
         menuButton.getItems().add(duplicateButton);
+
+        /*MenuItem modifyButton = new MenuItem(Configuration.langBundle.getString("modify"));
+        modifyButton.setOnAction(actionEvent -> {
+            this.modifyDescripteme();
+        });
+        menuButton.getItems().add(modifyButton);
+        */
 
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
         removeButton.setOnAction(actionEvent -> {
@@ -116,4 +132,10 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     public void onUnmount() {
 
     }
+
+    /*
+    private void modifyDescripteme() {
+
+    }
+    */
 }

@@ -17,6 +17,7 @@ public class Descripteme implements IDraggable {
 
     public int getStartIndex() { return startIndex; }
     public int getEndIndex() { return endIndex; }
+
     public InterviewText getInterviewText() { return interviewText; }
 
     public final String getSelection() {
@@ -25,6 +26,11 @@ public class Descripteme implements IDraggable {
 
     public Descripteme duplicate() {
         return new Descripteme(interviewText, startIndex, endIndex);
+    }
+
+    public void modifyIndex(int start, int end) {
+        startIndex = start;
+        endIndex = end;
     }
 
     @Override
@@ -41,7 +47,8 @@ public class Descripteme implements IDraggable {
     public String toString() {
         String result = super.toString();
         result += " - ";
-        result += interviewText.getText();
+        //result += interviewText.getText();
+        result += getSelection();
         return result;
     }
 }
