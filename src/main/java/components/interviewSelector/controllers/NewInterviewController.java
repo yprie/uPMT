@@ -22,6 +22,8 @@ import javafx.stage.FileChooser;
 
 import java.io.FileInputStream;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.io.IOException;
 import java.io.File;
@@ -95,9 +97,14 @@ public class NewInterviewController implements Initializable {
             RootMoment rm = new RootMoment();
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
+
+            LocalDate date = interviewDate.getValue();
+            if (interviewDate.getValue() == null) {
+                date = LocalDateTime.now().toLocalDate();
+            }
             resultInterview = new Interview(
                     participantName.getText(),
-                    interviewDate.getValue(),
+                    date,
                     new InterviewText(res),
                     rm
             );
@@ -147,24 +154,13 @@ public class NewInterviewController implements Initializable {
 
     // Helpers:
     private boolean validateForm() {
-        boolean formIsValide = (!participantName.getText().equals("") &&
-                interviewDate.getValue() != null &&
-                chosenFile != null
-        );
+        boolean formIsValide = (!participantName.getText().equals("") && chosenFile != null);
         validateButton.setDisable(!formIsValide);
         return formIsValide;
     }
 
     private void setTitle() {
-        if (interviewDate.getValue() != null) {
-            String date = interviewDate.getValue().toString();
-            if(!date.equals("")) {
-                interviewTitle.setText(participantName.getText() + "_" + date);
-            }
-            if(participantName.getText().equals("")) {
-                interviewTitle.setText("");
-            }
-        }
+        interviewTitle.setText(Interview.getTitle(participantName.getText(), interviewDate.getValue()));
     }
 
     // Events:
