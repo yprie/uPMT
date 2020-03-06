@@ -54,7 +54,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Text init
-        text.setText(descripteme.getSelection());
+        //text.setText(descripteme.getSelection());
+        text.textProperty().bind(descripteme.getSelectionProperty());
 
         ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
         moveLeft.getChildren().add(ShiftController.createShiftController(leftShiftController));
