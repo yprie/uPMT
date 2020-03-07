@@ -117,7 +117,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
-        separatorBottom.setOnDragDone(descripteme -> {
+        separatorBottom.setOnDragDoneDescripteme(descripteme -> {
                 childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
@@ -166,6 +166,9 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void updateBorders(int index, int siblingsCount) {
+        System.out.println("updateBorders" + " " + moment.getName() + " " + index + " " + siblingsCount);
+        separatorLeft.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); });
+        separatorRight.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, index+1).execute(); });
         if(index == 0) {
             //Hide an show the separators
             if(grid.getChildren().indexOf(separatorLeft.getNode()) == -1)
@@ -174,8 +177,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //set operation on descripteme DND over borders
-            separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
-            separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+            separatorLeft.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
+            separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+
 
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
@@ -189,12 +193,12 @@ public class MomentController extends ListViewController<Moment> implements Init
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //Do nothing with the left separator
-            separatorLeft.setOnDragDone(descripteme -> {});
+            separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
             if(index == siblingsCount - 1) {
-                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
             }
             else {
-                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
             }
 
             //Make moment aligned, no need to understand that !

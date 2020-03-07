@@ -1,5 +1,6 @@
 package components.modelisationSpace.moment.controllers;
 
+import models.ConcreteCategory;
 import models.Descripteme;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -14,7 +15,8 @@ public class MomentSeparatorController {
     private Pane p;
     private boolean active = true;
 
-    private Consumer<Descripteme> onDragDone = descripteme -> {};
+    private Consumer<Descripteme> onDragDoneDescripteme = descripteme -> {};
+    private Consumer<ConcreteCategory> onDragDoneCategory = descripteme -> {};
 
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
@@ -28,8 +30,7 @@ public class MomentSeparatorController {
 
         p.setOnDragEntered(dragEvent -> {
             if(
-                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && active
+                DragStore.getDraggable().isDraggable() && acceptDnDElementFormat() && active
             ) {
                 /*p.setStyle(this.style + "-fx-background-color: #80e2ff;");*/
                 p.setStyle(this.style + "-fx-background-color: #bdc3c7;");
@@ -39,8 +40,7 @@ public class MomentSeparatorController {
 
         p.setOnDragOver(dragEvent -> {
             if(
-                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && active
+                DragStore.getDraggable().isDraggable() && acceptDnDElementFormat() && active
             ) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
                 dragEvent.consume();
@@ -48,11 +48,12 @@ public class MomentSeparatorController {
         });
 
         p.setOnDragDropped(dragEvent -> {
-            if(
-                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && active
-            ){
-                onDragDone.accept(DragStore.getDraggable());
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format && active){
+                onDragDoneDescripteme.accept(DragStore.getDraggable());
+            }
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == ConcreteCategory.format && active){
+                System.out.println("dropped category");
+                onDragDoneCategory.accept(DragStore.getDraggable());
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
@@ -60,7 +61,7 @@ public class MomentSeparatorController {
 
         p.setOnDragExited(dragEvent -> {
             if(
-                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                DragStore.getDraggable().isDraggable() && acceptDnDElementFormat()
             ) {
                 p.setStyle(this.style);
                 dragEvent.consume();
@@ -69,10 +70,20 @@ public class MomentSeparatorController {
     }
 
     public void setActive(boolean b) { active = b; }
-    public void setOnDragDone(Consumer<Descripteme> consumer) {
-        this.onDragDone = consumer;
+    public void setOnDragDoneDescripteme(Consumer<Descripteme> consumer) {
+        this.onDragDoneDescripteme = consumer;
+    }
+    public void setOnDragDoneCategory(Consumer<ConcreteCategory> consumer) {
+        this.onDragDoneCategory = consumer;
     }
     public Pane getNode() {
         return p;
+    }
+
+    private boolean acceptDnDElementFormat() {
+        return (DragStore.getDraggable().getDataFormat() == Descripteme.format
+                || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
+                // || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+        );
     }
 }

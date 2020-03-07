@@ -25,6 +25,7 @@ public class HistoryState {
     }
 
     void addCommand(ModelUserActionCommand command, boolean startNewUserAction) {
+        System.out.println("history state addCommand " + command + " " + startNewUserAction);
         if(startNewUserAction) {
             userMadeAnAction = true;
             currentUserActionId = UUID.randomUUID();
@@ -91,6 +92,7 @@ public class HistoryState {
 
     private void unexecuteSingleAction() {
         ModelUserActionCommand c = previous.pop();
+        System.out.println("unexecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
         c.undo();
         next.push(c);
         canGoForward.set(true);
