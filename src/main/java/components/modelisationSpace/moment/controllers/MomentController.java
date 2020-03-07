@@ -118,8 +118,12 @@ public class MomentController extends ListViewController<Moment> implements Init
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
         separatorBottom.setOnDragDoneDescripteme(descripteme -> {
-                childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
+            childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
+        separatorBottom.setOnDragDoneCategory(category -> {
+            childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute();
+        });
+        // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
