@@ -95,4 +95,14 @@ public class Moment extends RootMoment {
             }
         });
     }
+
+    public boolean hadThisCategory(ConcreteCategory category) {
+        boolean had = false;
+        for(int i = 0; i < categories.size(); i++) {
+            if (category.getSchemaCategory() == categories.get(i).getSchemaCategory()) {
+                had = true;
+            }
+        }
+        return had;
+    }
 }

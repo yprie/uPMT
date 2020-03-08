@@ -25,7 +25,6 @@ public class HistoryState {
     }
 
     void addCommand(ModelUserActionCommand command, boolean startNewUserAction) {
-        System.out.println("history state addCommand " + command + " " + startNewUserAction);
         if(startNewUserAction) {
             userMadeAnAction = true;
             currentUserActionId = UUID.randomUUID();

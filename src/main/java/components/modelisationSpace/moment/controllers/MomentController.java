@@ -246,7 +246,7 @@ public class MomentController extends ListViewController<Moment> implements Init
                 //Existing concrete category
                 else if (
                     DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
-                    && moment.indexOfConcreteCategory(DragStore.getDraggable()) == -1
+                    && !moment.hadThisCategory(DragStore.getDraggable())
                 ) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
@@ -275,7 +275,6 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
 
         categoryDropper.setOnDragExited(dragEvent -> {
-            System.out.println("exited !");
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
