@@ -4,6 +4,7 @@ import models.ConcreteCategory;
 import models.Descripteme;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import models.SchemaCategory;
 import utils.dragAndDrop.DragStore;
 
 import java.util.function.Consumer;
@@ -16,7 +17,8 @@ public class MomentSeparatorController {
     private boolean active = true;
 
     private Consumer<Descripteme> onDragDoneDescripteme = descripteme -> {};
-    private Consumer<ConcreteCategory> onDragDoneCategory = descripteme -> {};
+    private Consumer<ConcreteCategory> onDragDoneCategory = category -> {};
+    private Consumer<SchemaCategory> onDragDoneShemaCategory = category -> {};
 
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
@@ -52,8 +54,10 @@ public class MomentSeparatorController {
                 onDragDoneDescripteme.accept(DragStore.getDraggable());
             }
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == ConcreteCategory.format && active){
-                System.out.println("dropped category");
                 onDragDoneCategory.accept(DragStore.getDraggable());
+            }
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == SchemaCategory.format && active){
+                onDragDoneShemaCategory.accept(DragStore.getDraggable());
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
@@ -76,6 +80,9 @@ public class MomentSeparatorController {
     public void setOnDragDoneCategory(Consumer<ConcreteCategory> consumer) {
         this.onDragDoneCategory = consumer;
     }
+    public void setOnDragDoneShemaCategory(Consumer<SchemaCategory> consumer) {
+        this.onDragDoneShemaCategory = consumer;
+    }
     public Pane getNode() {
         return p;
     }
@@ -83,7 +90,7 @@ public class MomentSeparatorController {
     private boolean acceptDnDElementFormat() {
         return (DragStore.getDraggable().getDataFormat() == Descripteme.format
                 || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
-                // || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+                || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
         );
     }
 }
