@@ -12,9 +12,16 @@ import utils.popups.TextEntryController;
 public class RenameMomentCommand implements Executable {
 
     private Moment moment;
+    private boolean userCommand;
 
     public RenameMomentCommand(Moment m) {
         this.moment = m;
+        this.userCommand = true;
+    }
+
+    public RenameMomentCommand(Moment m, boolean userCommand) {
+        this.moment = m;
+        this.userCommand = userCommand;
     }
 
     @Override
@@ -27,7 +34,7 @@ public class RenameMomentCommand implements Executable {
         );
         //c.setStrategy(new SuggestionStrategyMoment());
         if(c.getState() == DialogState.SUCCESS){
-            HistoryManager.addCommand(new RenameMoment(moment, c.getValue()), true);
+            HistoryManager.addCommand(new RenameMoment(moment, c.getValue()), userCommand);
         }
         return null;
     }

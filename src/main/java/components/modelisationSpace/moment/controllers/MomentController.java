@@ -117,9 +117,16 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
-        separatorBottom.setOnDragDone(descripteme -> {
-                childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
+        separatorBottom.setOnDragDoneDescripteme(descripteme -> {
+            childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
+        separatorBottom.setOnDragDoneCategory(category -> {
+            childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute();
+        });
+        separatorBottom.setOnDragDoneShemaCategory(category -> {
+            childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute();
+        });
+        // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
@@ -166,6 +173,16 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void updateBorders(int index, int siblingsCount) {
+        separatorLeft.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); });
+        separatorRight.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, index+1).execute(); });
+
+        separatorLeft.setOnDragDoneShemaCategory(category -> {
+            cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute();
+        });
+        separatorRight.setOnDragDoneShemaCategory(category -> {
+            cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute();
+        });
+
         if(index == 0) {
             //Hide an show the separators
             if(grid.getChildren().indexOf(separatorLeft.getNode()) == -1)
@@ -174,8 +191,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //set operation on descripteme DND over borders
-            separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
-            separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+            separatorLeft.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
+            separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+
 
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
@@ -189,12 +207,12 @@ public class MomentController extends ListViewController<Moment> implements Init
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //Do nothing with the left separator
-            separatorLeft.setOnDragDone(descripteme -> {});
+            separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
             if(index == siblingsCount - 1) {
-                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
             }
             else {
-                separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
             }
 
             //Make moment aligned, no need to understand that !
@@ -209,16 +227,16 @@ public class MomentController extends ListViewController<Moment> implements Init
             categoryDropper.setStyle("-fx-opacity: 1;");
             if(DragStore.getDraggable().isDraggable()) {
                 //Descripteme
-                if(
+                if (
                     !dragEvent.isAccepted()
                     && DragStore.getDraggable().getDataFormat() == Descripteme.format
                     && justificationController.acceptDescripteme(DragStore.getDraggable())
-                ){
+                ) {
                     categoryDropper.setStyle("-fx-opacity: 0.5;");
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
                 //Simple Schema Category
-                else if(
+                else if (
                     DragStore.getDraggable().getDataFormat() == SchemaCategory.format
                     && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
                 ) {
@@ -226,9 +244,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                     //dragEvent.consume();
                 }
                 //Existing concrete category
-                else if(
+                else if (
                     DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
-                    && moment.indexOfConcreteCategory(DragStore.getDraggable()) == -1
+                    && !moment.hadThisCategory(DragStore.getDraggable())
                 ) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
@@ -257,7 +275,6 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
 
         categoryDropper.setOnDragExited(dragEvent -> {
-            System.out.println("exited !");
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
