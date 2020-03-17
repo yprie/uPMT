@@ -186,6 +186,8 @@ public class NewInterviewController implements Initializable {
         byte[] bytes = fis.readAllBytes();
         content = new String(bytes, "UTF-8");
         fis.close();
+        content = content.replaceAll("\\r\\n", "\n");
+        content = content.replaceAll("\\r", "\n");
 
         // ok for ansi, but problems with line ending
         /*
