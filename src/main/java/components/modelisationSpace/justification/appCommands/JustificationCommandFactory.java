@@ -24,4 +24,6 @@ public class JustificationCommandFactory {
         return justification;
     }
 
+    public ModifyDescriptemeCommand modifyDescripteme(Descripteme d, int start, int end) { return new ModifyDescriptemeCommand(d, start, end); }
+
 }
