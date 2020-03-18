@@ -10,9 +10,12 @@ import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
+import components.modelisationSpace.moment.appCommands.RenameMomentCommand;
 import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import components.modelisationSpace.property.modelCommands.EditConcretePropertyValue;
 import components.schemaTree.Cell.Models.SchemaCategory;
+import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -21,11 +24,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -58,13 +62,18 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
 
+    @FXML HBox nameBox;
+
     //Importants elements of a moment
     private JustificationController justificationController;
     private ListView<Moment, MomentController> momentsHBox;
     private ListView<ConcreteCategory, ConcreteCategoryController> categories;
+    private boolean renamingMode = false;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
+
+    private TextField renamingField;
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -143,8 +152,50 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //DND
         setupDragAndDrop();
-    }
 
+        momentName.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    System.out.println("Double clicked");
+                    passInRenamingMode(true);
+                }
+            }
+        });
+    }
+    public void passInRenamingMode(boolean YoN) {
+        if(YoN != renamingMode) {
+            if(YoN){
+                renamingField = new TextField(momentName.getText());
+                renamingField.setAlignment(Pos.CENTER);
+                renamingField.end();
+                renamingField.selectAll();
+
+                renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal)
+                        passInRenamingMode(false);
+                });
+
+                renamingField.setOnKeyPressed(keyEvent -> {
+                    if(keyEvent.getCode() == KeyCode.ENTER) {
+                        if(renamingField.getLength() > 0)
+                        HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                        passInRenamingMode(false);
+                    }
+                });
+                this.nameBox.getChildren().clear();
+                this.nameBox.getChildren().add(renamingField);
+                renamingField.requestFocus();
+                renamingMode = true;
+            }
+            else {
+                if(renamingField.getLength() > 0)
+                    HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                this.nameBox.getChildren().clear();
+                this.nameBox.getChildren().add(momentName);
+                renamingMode = false;
+            }
+        }
+    }
     @Override
     public Moment getModel() {
         return moment;
