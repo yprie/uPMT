@@ -87,7 +87,6 @@ public class NewInterviewController implements Initializable {
                 FileInputStream fis = new FileInputStream(chosenFile);
                 //fis.read(data);
                 res = new String(fis.readAllBytes());
-                System.out.println(res);
                 fis.close();
 /*                res = new String(data, StandardCharsets.UTF_16);*/
             } catch (IOException e) {

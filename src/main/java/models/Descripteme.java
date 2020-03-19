@@ -2,25 +2,18 @@ package models;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.input.DataFormat;
-import utils.dragAndDrop.IDraggable;
 
-public class Descripteme implements IDraggable {
+public class Descripteme extends Fragment {
 
     public static final DataFormat format = new DataFormat("Descripteme");
-    private InterviewText interviewText;
-    private int startIndex, endIndex;
+
     private SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
 
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
-        this.interviewText = interviewText;
+        super(interviewText, startIndex, endIndex);
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
     }
-
-    public int getStartIndex() { return startIndex; }
-    public int getEndIndex() { return endIndex; }
 
     public InterviewText getInterviewText() { return interviewText; }
 
@@ -45,11 +38,6 @@ public class Descripteme implements IDraggable {
     @Override
     public DataFormat getDataFormat() {
         return format;
-    }
-
-    @Override
-    public boolean isDraggable() {
-        return true;
     }
 
     @Override

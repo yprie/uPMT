@@ -3,6 +3,9 @@ package components.interviewPanel.Controllers;
 import models.Interview;
 import application.configuration.Configuration;
 
+import org.fxmisc.richtext.event.MouseOverTextEvent;
+import org.fxmisc.richtext.StyleClassedTextArea;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -97,7 +100,6 @@ public class InterviewPanelController implements Initializable {
                 textInterviewComment.setText(newInterview.getComment());
                 textInterviewComment.setVisible(true);
                 showTextInterview(newInterview);
-                stackPaneInterview.getChildren().add(TextAreaController.createTextAreaController(newInterview));
             }
             else {
                 textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
@@ -108,10 +110,11 @@ public class InterviewPanelController implements Initializable {
     }
 
     private void showTextInterview(Interview newInterview) {
-        stackPaneInterview.getChildren().add(TextAreaController.createTextAreaController(newInterview));
+        stackPaneInterview.getChildren().add(RichTextAreaController.createRichTextAreaController(newInterview));
     }
 
     private void hideTextInterview() {
         stackPaneInterview.getChildren().clear();
     }
+
 }
