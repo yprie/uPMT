@@ -18,6 +18,12 @@ public class MomentCommandFactory {
     public AddSiblingMomentCommand addSiblingCommand(Moment m) {
         return new AddSiblingMomentCommand(parent, m);
     }
+    public MoveMomentCommand moveMomentCommand(Moment m, int index){
+        return new MoveMomentCommand(parent, m, index);
+    }
+    public MoveMomentCommand moveMomentCommand(Moment m){
+        return new MoveMomentCommand(parent, m);
+    }
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
 }

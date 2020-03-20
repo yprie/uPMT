@@ -27,10 +27,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import utils.DialogState;
@@ -61,6 +58,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private MenuButton menuButton;
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
+    @FXML private AnchorPane momentBoundingBox;
 
     @FXML HBox nameBox;
 
@@ -133,6 +131,9 @@ public class MomentController extends ListViewController<Moment> implements Init
         //bottom separator works only when there is no child yet !
         separatorBottom.setOnDragDone(descripteme -> {
                 childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
+        });
+        separatorBottom.setOnDragMomentDone(moment -> {
+            childCmdFactory.moveMomentCommand(moment).execute();
         });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
@@ -232,7 +233,13 @@ public class MomentController extends ListViewController<Moment> implements Init
             //set operation on descripteme DND over borders
             separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
             separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
-
+            //set operation on moment DND over borders
+            separatorLeft.setOnDragMomentDone(moment1 -> {
+                cmdFactory.moveMomentCommand(moment1,0).execute();
+            });
+            separatorRight.setOnDragMomentDone(moment1 -> {
+                cmdFactory.moveMomentCommand(moment1,index + 1).execute();
+            });
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
             momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
@@ -246,11 +253,14 @@ public class MomentController extends ListViewController<Moment> implements Init
 
             //Do nothing with the left separator
             separatorLeft.setOnDragDone(descripteme -> {});
+            separatorLeft.setOnDragMomentDone(moment1 -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
+                separatorRight.setOnDragMomentDone(moment1 -> {cmdFactory.moveMomentCommand(moment1).execute();});
             }
             else {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+                separatorRight.setOnDragMomentDone(moment1 -> {cmdFactory.moveMomentCommand(moment1, index + 1).execute();});
             }
 
             //Make moment aligned, no need to understand that !
@@ -316,6 +326,32 @@ public class MomentController extends ListViewController<Moment> implements Init
             System.out.println("exited !");
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
+
+        momentBody.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(" moment drag detected");
+                Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.put(moment.getDataFormat(), 0);
+                DragStore.setDraggable(moment);
+                db.setContent(content);
+                momentBody.setOpacity(0.5);
+            }
+        });
+        // drag = add one and delete the original one
+        momentBody.setOnDragDone(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                if (event.getTransferMode() == TransferMode.MOVE) {
+                    cmdFactory.deleteCommand(moment).execute();
+                }
+                event.consume();
+                momentBody.setOpacity(1);
+            }
+        });
+
+
 
     }
 

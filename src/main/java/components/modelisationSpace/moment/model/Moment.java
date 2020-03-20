@@ -12,10 +12,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.input.DataFormat;
+import utils.dragAndDrop.IDraggable;
 
 import java.util.LinkedList;
 
-public class Moment extends RootMoment {
+public class Moment extends RootMoment implements IDraggable, Cloneable {
+    public static final DataFormat format = new DataFormat("Moment");
 
     private SimpleStringProperty name;
     private Justification justification;
@@ -98,5 +101,23 @@ public class Moment extends RootMoment {
                 }
             }
         });
+    }
+    @Override
+    public DataFormat getDataFormat() {
+        return format;
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return true;
+    }
+
+    public Moment clone() {
+        try {
+            return (Moment)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

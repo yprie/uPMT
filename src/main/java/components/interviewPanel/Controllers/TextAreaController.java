@@ -86,6 +86,9 @@ public class TextAreaController implements Initializable {
             }
         });
 
+        /**
+         * start dragging from the text area :
+         */
         // On dragging the pane
         paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override

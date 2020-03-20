@@ -1,10 +1,7 @@
 package components.modelisationSpace.controllers;
 
-import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.moment.controllers.RootMomentController;
-import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 import java.util.ResourceBundle;
 
