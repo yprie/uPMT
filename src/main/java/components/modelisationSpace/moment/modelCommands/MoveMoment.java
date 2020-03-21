@@ -7,36 +7,41 @@ import components.modelisationSpace.moment.model.RootMoment;
 
 public class MoveMoment extends ModelUserActionCommand {
     private RootMoment parent;
+    private RootMoment originParent;
     private Moment moment;
     private int addIndex = -1;
+    private int originIndex;
 
-    public MoveMoment(RootMoment parent, Moment moment) {
+    public MoveMoment(RootMoment parent, RootMoment originParent, Moment moment) {
         this.parent = parent;
+        this.originParent = originParent;
         this.moment = moment;
     }
-    public MoveMoment(RootMoment parent, Moment moment, int index) {
+    public MoveMoment(RootMoment parent, RootMoment originParent, Moment moment, int index) {
         this.parent = parent;
+        this.originParent = originParent;
         this.moment = moment;
         this.addIndex = index;
     }
 
     @Override
     public Void execute() {
-        Moment clone = moment.clone();
+        originIndex = originParent.indexOf(moment);
+        originParent.removeMoment(moment);
+
         if(addIndex == -1) {
-            parent.addMoment(clone);
+            parent.addMoment(moment);
         }
         else {
-            parent.addMoment(addIndex, clone);
+            parent.addMoment(addIndex, moment);
         }
-        moment = clone;
         return null;
     }
 
     @Override
     public Void undo() {
-        HistoryManager.goBack();
         parent.removeMoment(moment);
+        originParent.addMoment(originIndex, moment);
        return null;
     }
 }

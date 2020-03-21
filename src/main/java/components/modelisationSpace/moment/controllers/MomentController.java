@@ -12,6 +12,7 @@ import components.modelisationSpace.justification.controllers.JustificationContr
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.appCommands.RenameMomentCommand;
 import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.model.RootMoment;
 import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import components.modelisationSpace.property.modelCommands.EditConcretePropertyValue;
 import components.schemaTree.Cell.Models.SchemaCategory;
@@ -132,8 +133,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setOnDragDone(descripteme -> {
                 childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
         });
-        separatorBottom.setOnDragMomentDone(moment -> {
-            childCmdFactory.moveMomentCommand(moment).execute();
+        separatorBottom.setOnDragMomentDone((moment, originParent) -> {
+            childCmdFactory.moveMomentCommand(moment, originParent).execute();
         });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
@@ -234,11 +235,11 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
             separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
             //set operation on moment DND over borders
-            separatorLeft.setOnDragMomentDone(moment1 -> {
-                cmdFactory.moveMomentCommand(moment1,0).execute();
+            separatorLeft.setOnDragMomentDone((moment1, originParent) -> {
+                cmdFactory.moveMomentCommand(moment1, originParent, 0).execute();
             });
-            separatorRight.setOnDragMomentDone(moment1 -> {
-                cmdFactory.moveMomentCommand(moment1,index + 1).execute();
+            separatorRight.setOnDragMomentDone((moment1, originParent) -> {
+                cmdFactory.moveMomentCommand(moment1, originParent,index + 1).execute();
             });
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
@@ -253,14 +254,14 @@ public class MomentController extends ListViewController<Moment> implements Init
 
             //Do nothing with the left separator
             separatorLeft.setOnDragDone(descripteme -> {});
-            separatorLeft.setOnDragMomentDone(moment1 -> {});
+            separatorLeft.setOnDragMomentDone((moment1, factory) -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
-                separatorRight.setOnDragMomentDone(moment1 -> {cmdFactory.moveMomentCommand(moment1).execute();});
+                separatorRight.setOnDragMomentDone((moment1, originParent) -> {cmdFactory.moveMomentCommand(moment1, originParent).execute();});
             }
             else {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
-                separatorRight.setOnDragMomentDone(moment1 -> {cmdFactory.moveMomentCommand(moment1, index + 1).execute();});
+                separatorRight.setOnDragMomentDone((moment1,originParent) -> {cmdFactory.moveMomentCommand(moment1, originParent, index + 1).execute();});
             }
 
             //Make moment aligned, no need to understand that !
@@ -327,28 +328,20 @@ public class MomentController extends ListViewController<Moment> implements Init
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
-        momentBody.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println(" moment drag detected");
-                Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.put(moment.getDataFormat(), 0);
-                DragStore.setDraggable(moment);
-                db.setContent(content);
-                momentBody.setOpacity(0.5);
-            }
+        momentBody.setOnDragDetected(event -> {
+            System.out.println(" moment drag detected");
+            Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(moment.getDataFormat(), 0);
+            DragStore.setDraggable(moment);
+            DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows to delete the original one once drag is finished
+            db.setContent(content);
+            momentBody.setOpacity(0.5);
         });
-        // drag = add one and delete the original one
-        momentBody.setOnDragDone(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                if (event.getTransferMode() == TransferMode.MOVE) {
-                    cmdFactory.deleteMoveCommand(moment).execute();
-                }
-                event.consume();
-                momentBody.setOpacity(1);
-            }
+
+        momentBody.setOnDragDone(event -> {
+            event.consume();
+            momentBody.setOpacity(1);
         });
 
 

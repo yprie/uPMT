@@ -1,11 +1,15 @@
 package components.modelisationSpace.moment.controllers;
 
 import components.interviewPanel.Models.Descripteme;
+import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.model.Moment;
+import components.modelisationSpace.moment.model.RootMoment;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import utils.dragAndDrop.DragStore;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class MomentSeparatorController {
@@ -16,7 +20,7 @@ public class MomentSeparatorController {
     private boolean active = true;
 
     private Consumer<Descripteme> onDragDone = descripteme -> {};
-    private Consumer<Moment> onDragMomentDone = moment -> {};
+    private BiConsumer<Moment, RootMoment> onDragMomentDone = (moment, originParentMoment) -> { };
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
         p.getStyleClass().add("moment-dnd-zone");
@@ -63,7 +67,7 @@ public class MomentSeparatorController {
             else if( DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Moment.format
                     && active
             ){
-                onDragMomentDone.accept(DragStore.getDraggable());
+                onDragMomentDone.accept(DragStore.getDraggable(), DragStore.getDoubleObject());
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
@@ -75,7 +79,6 @@ public class MomentSeparatorController {
                             && (DragStore.getDraggable().getDataFormat() == Descripteme.format
                             || DragStore.getDraggable().getDataFormat() == Moment.format)
 
-//                DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format
             ) {
                 p.setStyle(this.style);
                 dragEvent.consume();
@@ -87,7 +90,7 @@ public class MomentSeparatorController {
     public void setOnDragDone(Consumer<Descripteme> consumer) {
         this.onDragDone = consumer;
     }
-    public void setOnDragMomentDone(Consumer<Moment>consumer){this.onDragMomentDone = consumer;}
+    public void setOnDragMomentDone(BiConsumer<Moment, RootMoment>consumer){this.onDragMomentDone = consumer;}
     public Pane getNode() {
         return p;
     }

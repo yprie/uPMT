@@ -18,7 +18,7 @@ import utils.dragAndDrop.IDraggable;
 
 import java.util.LinkedList;
 
-public class Moment extends RootMoment implements IDraggable, Cloneable {
+public class Moment extends RootMoment implements IDraggable {
     public static final DataFormat format = new DataFormat("Moment");
 
     private SimpleStringProperty name;
@@ -113,13 +113,4 @@ public class Moment extends RootMoment implements IDraggable, Cloneable {
         return true;
     }
 
-    @Override
-    public Moment clone()  {
-        try {
-            return (Moment)super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
