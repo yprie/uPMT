@@ -20,7 +20,6 @@ public class ModifyDescriptemeCommand implements Executable<Void> {
     @Override
     public Void execute() {
         HistoryManager.addCommand(new ModifyDescripteme(descripteme, start, end), true);
-        System.out.println(descripteme);
         return null;
     }
 }
