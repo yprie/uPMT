@@ -1,5 +1,6 @@
 package components.modelisationSpace.moment.modelCommands;
 
+import application.history.HistoryManager;
 import application.history.ModelUserActionCommand;
 import components.modelisationSpace.moment.model.Moment;
 import components.modelisationSpace.moment.model.RootMoment;
@@ -28,12 +29,14 @@ public class MoveMoment extends ModelUserActionCommand {
         else {
             parent.addMoment(addIndex, clone);
         }
+        moment = clone;
         return null;
     }
 
     @Override
     public Void undo() {
+        HistoryManager.goBack();
         parent.removeMoment(moment);
-        return null;
+       return null;
     }
 }

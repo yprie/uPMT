@@ -4,6 +4,7 @@ import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
 import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.models.Justification;
+import components.modelisationSpace.property.model.ConcreteProperty;
 import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -112,7 +113,8 @@ public class Moment extends RootMoment implements IDraggable, Cloneable {
         return true;
     }
 
-    public Moment clone() {
+    @Override
+    public Moment clone()  {
         try {
             return (Moment)super.clone();
         } catch (CloneNotSupportedException e) {

@@ -25,5 +25,6 @@ public class MomentCommandFactory {
         return new MoveMomentCommand(parent, m);
     }
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
+    public DeleteMoveMomentCommand deleteMoveCommand(Moment m) { return new DeleteMoveMomentCommand(parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
 }
