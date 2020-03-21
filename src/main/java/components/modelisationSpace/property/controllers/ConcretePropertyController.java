@@ -36,6 +36,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
     @FXML private Label name;
     @FXML private Label value;
     @FXML private HBox justificationZone;
+    @FXML private HBox head;
 
     public ConcretePropertyController(ConcreteProperty p) {
         property = p;
@@ -63,7 +64,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         justif.setPadding(new Insets(0, 0, 0, 20));
         container.setCenter(justif);
 
-        container.setOnMouseClicked(mouseEvent -> {
+        head.setOnMouseClicked(mouseEvent -> {
             TextEntryController c = TextEntryController.enterText(
                     property.getName(),
                     property.getValue(),

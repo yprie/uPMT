@@ -87,6 +87,16 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Descripteme tooltip
         Tooltip.install(text, new Tooltip(descripteme.getSelection()));
 
+        //Duplicate shortcut
+        text.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.isShiftDown()) {
+                if(mouseEvent.getButton() == MouseButton.PRIMARY)
+                    factory.duplicateDescripteme(descripteme).execute();
+                else if(mouseEvent.getButton() == MouseButton.SECONDARY)
+                    factory.removeDescripteme(descripteme).execute();
+            }
+        });
+
         setupDnd();
     }
 
