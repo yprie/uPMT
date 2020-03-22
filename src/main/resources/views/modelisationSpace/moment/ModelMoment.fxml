@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="momentBoundingBox" prefHeight="59.0" maxWidth="100.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="momentBoundingBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -21,9 +21,9 @@
                <children>
                   <AnchorPane fx:id="categoryDropper" GridPane.columnIndex="1">
                      <children>
-                        <BorderPane fx:id="momentBody" layoutX="-1.0" prefWidth="70" maxWidth="100" styleClass="momentCard" stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BorderPane fx:id="momentBody" prefWidth="120.0" prefHeight="50" styleClass="modelMomentCard" stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <center>
-                              <BorderPane maxWidth="100.0" BorderPane.alignment="CENTER">
+                              <BorderPane BorderPane.alignment="CENTER">
                                  <BorderPane.margin>
                                     <Insets />
                                  </BorderPane.margin>
@@ -33,24 +33,15 @@
                               </BorderPane>
                            </center>
                            <top>
-                              <HBox alignment="CENTER_RIGHT" minWidth="70.0" styleClass="moment-header" BorderPane.alignment="CENTER">
+                              <HBox alignment="CENTER_RIGHT" prefWidth="120.0" styleClass="moment-header" BorderPane.alignment="CENTER">
                                  <children>
-                                    <MenuButton layoutX="128.0" layoutY="13.0" mnemonicParsing="false" style="visibility: hidden;">
-                                       <items>
-                                          <MenuItem mnemonicParsing="false" text="Action 1" />
-                                          <MenuItem mnemonicParsing="false" text="Action 2" />
-                                       </items>
-                                    </MenuButton>
                                     <HBox fx:id="nameBox" alignment="CENTER" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="momentName" text="Nom moment" HBox.hgrow="ALWAYS">
-                                             <padding>
-                                                <Insets left="20.0" right="20.0" />
-                                             </padding>
+                                          <Label fx:id="momentName" text="New Moment" HBox.hgrow="ALWAYS">
+
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
                                  </children>
                                  <padding>
                                     <Insets bottom="3.0" top="3.0" />
@@ -60,9 +51,7 @@
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" />
                            </padding>
-                           <bottom>
-                              <VBox fx:id="categoryContainer" BorderPane.alignment="CENTER" />
-                           </bottom>
+
                         </BorderPane>
                      </children>
                   </AnchorPane>

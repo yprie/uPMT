@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -78,7 +79,7 @@ public class ModelMomentController extends ListViewController<Moment> implements
     public static Node createMoment(ModelMomentController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/moment/Moment.fxml"));
+            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/moment/ModelMoment.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             return loader.load();
@@ -108,8 +109,9 @@ public class ModelMomentController extends ListViewController<Moment> implements
                 categoryContainer
         );
 
-        moment.setName("New Moment");
+        moment.setName("new Moment");
 
+        momentBody.setOnMouseEntered(event -> momentBody.setStyle("-fx-cursor: move;"));
 
         //DND
         setupDragAndDrop();
@@ -141,82 +143,21 @@ public class ModelMomentController extends ListViewController<Moment> implements
 
     private void setupDragAndDrop() {
 
-        categoryDropper.setOnDragOver(dragEvent -> {
-            categoryDropper.setStyle("-fx-opacity: 1;");
-            if(DragStore.getDraggable().isDraggable()) {
-                //Descripteme
-                if(
-                    !dragEvent.isAccepted()
-                    && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                    && justificationController.acceptDescripteme(DragStore.getDraggable())
-                ){
-                    categoryDropper.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
-                }
-                //Simple Schema Category
-                else if(
-                    DragStore.getDraggable().getDataFormat() == SchemaCategory.format
-                    && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
-                ) {
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
-                    //dragEvent.consume();
-                }
-                //Existing concrete category
-                else if(
-                    DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
-                    && moment.indexOfConcreteCategory(DragStore.getDraggable()) == -1
-                ) {
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
-                }
-            }
+        momentBody.setOnDragDetected(event -> {
+            System.out.println("model moment drag detected");
+            Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(moment.getDataFormat(), 0);
+            Moment newMoment = new Moment("new Moment");
+            DragStore.setDraggable(newMoment);
+            DragStore.setDoubleObject(cmdFactory.getParentMoment());
+            db.setContent(content);
+            momentBody.setOpacity(0.5);
         });
-
-        categoryDropper.setOnDragDropped(dragEvent -> {
-            if(
-                DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && dragEvent.isAccepted()
-            ) {
-                justificationController.addDescripteme(DragStore.getDraggable());
-                dragEvent.setDropCompleted(true);
-                dragEvent.consume();
-            }
-            else if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
-                categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
-                dragEvent.setDropCompleted(true);
-                dragEvent.consume();
-            }
-            else if(DragStore.getDraggable().getDataFormat() == ConcreteCategory.format) {
-                categoryCmdFactory.addConcreteCategoryCommand(DragStore.getDraggable(), true).execute();
-                dragEvent.setDropCompleted(true);
-                dragEvent.consume();
-            }
-        });
-
-        categoryDropper.setOnDragExited(dragEvent -> {
-            System.out.println("exited !");
-            categoryDropper.setStyle("-fx-opacity: 1;");
-        });
-
-        momentBody.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("model moment drag detected");
-                Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.put(moment.getDataFormat(), 0);
-                Moment newMoment = new Moment("new Moment");
-                DragStore.setDraggable(newMoment);
-                db.setContent(content);
-                momentBody.setOpacity(0.5);
-            }
-        });
-        momentBody.setOnDragDone(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                event.consume();
-                momentBody.setOpacity(1);
-                moment = new Moment("new Moment");
-            }
+        momentBody.setOnDragDone(event -> {
+            event.consume();
+            momentBody.setOpacity(1);
+            moment = new Moment("new Moment");
         });
     }
 
