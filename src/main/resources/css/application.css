@@ -171,6 +171,16 @@
    -fx-background-color: transparent;
 }
 
+.modelMomentCard{
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);
+	-fx-background-color: #e0ebeb;
+	-fx-border-color: transparent;
+	-fx-border-insets: 3px;
+    -fx-background-insets: 3px;
+    -fx-background-radius: 3;
+    -fx-border-radius:3;
+}
+
 .momentCard{
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);
 	-fx-background-color: white;

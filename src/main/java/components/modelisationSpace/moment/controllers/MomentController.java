@@ -235,11 +235,11 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorLeft.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
             separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
             //set operation on moment DND over borders
-            separatorLeft.setOnDragMomentDone((moment1, originParent) -> {
-                cmdFactory.moveMomentCommand(moment1, originParent, 0).execute();
+            separatorLeft.setOnDragMomentDone((m, originParent) -> {
+                cmdFactory.moveMomentCommand(m, originParent, 0).execute();
             });
-            separatorRight.setOnDragMomentDone((moment1, originParent) -> {
-                cmdFactory.moveMomentCommand(moment1, originParent,index + 1).execute();
+            separatorRight.setOnDragMomentDone((m, originParent) -> {
+                cmdFactory.moveMomentCommand(m, originParent,index + 1).execute();
             });
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
@@ -254,14 +254,14 @@ public class MomentController extends ListViewController<Moment> implements Init
 
             //Do nothing with the left separator
             separatorLeft.setOnDragDone(descripteme -> {});
-            separatorLeft.setOnDragMomentDone((moment1, factory) -> {});
+            separatorLeft.setOnDragMomentDone((m, factory) -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
-                separatorRight.setOnDragMomentDone((moment1, originParent) -> {cmdFactory.moveMomentCommand(moment1, originParent).execute();});
+                separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
             }
             else {
                 separatorRight.setOnDragDone(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
-                separatorRight.setOnDragMomentDone((moment1,originParent) -> {cmdFactory.moveMomentCommand(moment1, originParent, index + 1).execute();});
+                separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
             }
 
             //Make moment aligned, no need to understand that !
