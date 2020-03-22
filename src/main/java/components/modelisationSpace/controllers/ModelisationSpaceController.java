@@ -2,13 +2,14 @@ package components.modelisationSpace.controllers;
 
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.moment.controllers.RootMomentController;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.RootMoment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import java.io.IOException;
 import java.net.URL;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import utils.scrollOnDragPane.ScrollOnDragPane;
@@ -16,6 +17,8 @@ import java.util.ResourceBundle;
 
 public class ModelisationSpaceController extends ScrollOnDragPane implements Initializable {
 
+    private  @FXML ImageView fake_view;
+    private @FXML AnchorPane mainAnchorPane;
     private ScrollPaneCommandFactory paneCmdFactory;
     private RootMomentController rmController;
 
@@ -55,4 +58,3 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         superPane.setContent(null);
     }
 }
-

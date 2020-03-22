@@ -1,7 +1,7 @@
 package application;
 
 import application.history.HistoryManager;
-import application.project.models.Project;
+import models.Project;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
 
@@ -9,17 +9,8 @@ import components.rootLayout.Controllers.RootLayoutController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import persistency.newSaveSystem.*;
-import persistency.newSaveSystem.serialization.json.JSONReadPool;
-import persistency.newSaveSystem.serialization.json.JSONSerializer;
-import persistency.newSaveSystem.serialization.json.JSONWritePool;
 
 import java.io.IOException;
-import java.io.ObjectInputFilter;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -77,6 +68,7 @@ public class UPMTApp {
         return currentProject;
     }
     public String getCurrentProjectPath() { return currentProjectPath; }
+    public void setCurrentProjectPath(String currentProjectPath) { this.currentProjectPath = currentProjectPath; }
 
     public void setLastSavedCommandId(UUID lastCommandId) { this.lastSavedCommandId = lastCommandId; }
     public UUID getLastSavedCommandId() { return lastSavedCommandId; }

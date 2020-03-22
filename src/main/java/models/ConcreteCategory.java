@@ -1,18 +1,11 @@
-package components.modelisationSpace.category.model;
+package models;
 
-import components.modelisationSpace.justification.models.Justification;
 import components.modelisationSpace.property.appCommands.AddConcretePropertyCommand;
 import components.modelisationSpace.property.appCommands.RemoveConcretePropertyCommand;
-import components.modelisationSpace.property.model.ConcreteProperty;
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaProperty;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -21,7 +14,6 @@ import utils.dragAndDrop.IDraggable;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.function.Supplier;
 
 public class ConcreteCategory implements IDraggable {
 

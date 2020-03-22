@@ -1,6 +1,6 @@
 package persistency;
 
-import application.project.models.Project;
+import models.Project;
 import org.json.JSONObject;
 import persistency.newSaveSystem.SProject;
 import persistency.newSaveSystem.serialization.SerializationPool;

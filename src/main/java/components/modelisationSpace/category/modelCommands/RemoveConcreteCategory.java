@@ -1,8 +1,8 @@
 package components.modelisationSpace.category.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.moment.model.Moment;
+import models.ConcreteCategory;
+import models.Moment;
 
 public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
 

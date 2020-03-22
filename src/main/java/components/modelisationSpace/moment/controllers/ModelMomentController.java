@@ -1,17 +1,12 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
-import components.modelisationSpace.category.model.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.modelCommands.RenameMoment;
-import components.schemaTree.Cell.Models.SchemaCategory;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -19,16 +14,19 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import models.ConcreteCategory;
+import models.Descripteme;
+import models.Moment;
+import models.SchemaCategory;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
+
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 

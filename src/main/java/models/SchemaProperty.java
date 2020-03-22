@@ -1,4 +1,4 @@
-package components.schemaTree.Cell.Models;
+package models;
 
 
 import javafx.beans.value.ObservableBooleanValue;

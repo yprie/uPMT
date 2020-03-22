@@ -1,9 +1,9 @@
 package components.modelisationSpace.moment.appCommands;
 
 import application.history.HistoryManager;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
 import components.modelisationSpace.moment.modelCommands.MoveMoment;
+import models.Moment;
+import models.RootMoment;
 import utils.command.Executable;
 
 public class MoveMomentCommand implements Executable<Void> {

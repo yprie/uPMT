@@ -1,8 +1,8 @@
 package components.modelisationSpace.justification.appCommands;
 
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.Section;
-import components.modelisationSpace.justification.models.Justification;
+import models.Justification;
 
 public class JustificationCommandFactory {
 
@@ -23,5 +23,7 @@ public class JustificationCommandFactory {
     private Justification getJustification() {
         return justification;
     }
+
+    public ModifyDescriptemeCommand modifyDescripteme(Descripteme d, int start, int end) { return new ModifyDescriptemeCommand(d, start, end); }
 
 }

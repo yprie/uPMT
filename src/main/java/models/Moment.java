@@ -1,11 +1,6 @@
-package components.modelisationSpace.moment.model;
+package models;
 
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.justification.models.Justification;
-import components.modelisationSpace.property.model.ConcreteProperty;
-import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -102,6 +97,16 @@ public class Moment extends RootMoment implements IDraggable {
                 }
             }
         });
+    }
+
+    public boolean hadThisCategory(ConcreteCategory category) {
+        boolean had = false;
+        for(int i = 0; i < categories.size(); i++) {
+            if (category.getSchemaCategory() == categories.get(i).getSchemaCategory()) {
+                had = true;
+            }
+        }
+        return had;
     }
     @Override
     public DataFormat getDataFormat() {

@@ -2,7 +2,7 @@ package components.interviewSelector.controllers;
 
 import application.configuration.Configuration;
 import components.interviewSelector.InterviewSelectorCell;
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

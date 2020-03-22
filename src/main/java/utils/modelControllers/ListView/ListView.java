@@ -1,6 +1,5 @@
 package utils.modelControllers.ListView;
 
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

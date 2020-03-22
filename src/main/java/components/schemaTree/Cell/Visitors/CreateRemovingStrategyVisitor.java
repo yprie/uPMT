@@ -1,9 +1,9 @@
 package components.schemaTree.Cell.Visitors;
 
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
-import components.schemaTree.Cell.Models.SchemaProperty;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.appCommands.RemovingStrategy;
 import components.schemaTree.Cell.appCommands.strategies.RemovableRemovingStrategy;
