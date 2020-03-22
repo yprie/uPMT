@@ -72,6 +72,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         Tooltip.install(text, new Tooltip(descripteme.getSelection()));
 
         setupDnd();
+
+        text.setOnMouseEntered(event -> text.setStyle("-fx-cursor: move;"));
     }
 
     private void setupDnd() {

@@ -334,7 +334,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             ClipboardContent content = new ClipboardContent();
             content.put(moment.getDataFormat(), 0);
             DragStore.setDraggable(moment);
-            DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows to delete the original one once drag is finished
+            DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows deleting the original one once drag is finished
             db.setContent(content);
             momentBody.setOpacity(0.5);
         });

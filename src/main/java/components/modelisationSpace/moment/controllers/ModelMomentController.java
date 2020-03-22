@@ -58,7 +58,6 @@ public class ModelMomentController extends ListViewController<Moment> implements
 
     //Importants elements of a moment
     private JustificationController justificationController;
-    private ListView<Moment, ModelMomentController> momentsHBox;
     private ListView<ConcreteCategory, ConcreteCategoryController> categories;
     private boolean renamingMode = false;
 
@@ -95,12 +94,6 @@ public class ModelMomentController extends ListViewController<Moment> implements
 
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
-        //Setup de la HBox pour les enfants
-        momentsHBox = new ListView<>(
-                moment.momentsProperty(),
-                (m -> new ModelMomentController(m, childCmdFactory, paneCmdFactory)),
-                ModelMomentController::createMoment,
-                childrenBox);
 
         categories = new ListView<>(
                 moment.concreteCategoriesProperty(),
@@ -108,8 +101,6 @@ public class ModelMomentController extends ListViewController<Moment> implements
                 ConcreteCategoryController::create,
                 categoryContainer
         );
-
-        moment.setName("new Moment");
 
         momentBody.setOnMouseEntered(event -> momentBody.setStyle("-fx-cursor: move;"));
 
@@ -136,19 +127,17 @@ public class ModelMomentController extends ListViewController<Moment> implements
 
     @Override
     public void onUnmount() {
-        momentsHBox.onUnmount();
         categories.onUnmount();
     }
 
 
     private void setupDragAndDrop() {
-
         momentBody.setOnDragDetected(event -> {
             System.out.println("model moment drag detected");
             Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             content.put(moment.getDataFormat(), 0);
-            Moment newMoment = new Moment("new Moment");
+            Moment newMoment = new Moment(Configuration.langBundle.getString("new_moment"));
             DragStore.setDraggable(newMoment);
             DragStore.setDoubleObject(cmdFactory.getParentMoment());
             db.setContent(content);
@@ -157,7 +146,63 @@ public class ModelMomentController extends ListViewController<Moment> implements
         momentBody.setOnDragDone(event -> {
             event.consume();
             momentBody.setOpacity(1);
-            moment = new Moment("new Moment");
+        });
+
+        //TODO: garde la possibilité d'ajouter des catégories pour un templete, mais il sert pas comme un templete pour le moment
+        categoryDropper.setOnDragOver(dragEvent -> {
+            categoryDropper.setStyle("-fx-opacity: 1;");
+            if(DragStore.getDraggable().isDraggable()) {
+                //Descripteme
+                if(
+                        !dragEvent.isAccepted()
+                                && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                                && justificationController.acceptDescripteme(DragStore.getDraggable())
+                ){
+                    categoryDropper.setStyle("-fx-opacity: 0.5;");
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                }
+                //Simple Schema Category
+                else if(
+                        DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+                                && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
+                ) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    //dragEvent.consume();
+                }
+                //Existing concrete category
+                else if(
+                        DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
+                                && moment.indexOfConcreteCategory(DragStore.getDraggable()) == -1
+                ) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                }
+            }
+        });
+
+        categoryDropper.setOnDragDropped(dragEvent -> {
+            if(
+                    DragStore.getDraggable().getDataFormat() == Descripteme.format
+                            && dragEvent.isAccepted()
+            ) {
+                justificationController.addDescripteme(DragStore.getDraggable());
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+            else if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
+                categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+            else if(DragStore.getDraggable().getDataFormat() == ConcreteCategory.format) {
+                categoryCmdFactory.addConcreteCategoryCommand(DragStore.getDraggable(), true).execute();
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+        });
+
+        categoryDropper.setOnDragExited(dragEvent -> {
+            System.out.println("exited !");
+            categoryDropper.setStyle("-fx-opacity: 1;");
         });
     }
 

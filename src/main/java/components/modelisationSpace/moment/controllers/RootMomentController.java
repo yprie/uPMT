@@ -45,7 +45,7 @@ public class RootMomentController implements Initializable {
                 MomentController::createMoment,
                 childrenBox);
 
-        Moment modelMoment = new Moment("New Moment");
+        Moment modelMoment = new Moment(Configuration.langBundle.getString("new_moment"));
         modelMomentBox.getChildren().add(ModelMomentController.createMoment(new ModelMomentController(modelMoment, childCmdFactory, paneCmdFactory)));
     }
 

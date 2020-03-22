@@ -14,9 +14,9 @@
 <!--   </padding>-->
    <top>
       <VBox>
-         <HBox fx:id="modelMomentBox" minHeight="100"  style="-fx-background-color: white;" >
+         <HBox fx:id="modelMomentBox" minHeight="80"  style="-fx-background-color: white;" >
             <padding>
-               <Insets bottom="15" left="15" right="15" top="15" />
+               <Insets bottom="15" left="15" right="15" top="10" />
             </padding>
          </HBox>
          <Pane prefHeight="20" />
