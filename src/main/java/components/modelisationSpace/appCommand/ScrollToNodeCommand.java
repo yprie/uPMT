@@ -25,7 +25,7 @@ public class ScrollToNodeCommand implements Executable<Void> {
             pane.setVvalue(genVValue());
         }
         else {
-            System.out.println("EMPTY CONTENT !");
+            //System.out.println("EMPTY CONTENT !");
         }
         return null;
     }
