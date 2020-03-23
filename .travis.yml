@@ -23,7 +23,7 @@ before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
- after_success:
+after_success:
   - curl -T build/uPMT-osx-x64.zip ftp://$FTP_USER:$FTP_PASSWORD@$FTP_HOST/build
   - curl -T build/uPMT-win-x64.zip ftp://$FTP_USER:$FTP_PASSWORD@$FTP_HOST/build
   - curl -T build/libs/uPMT.jar ftp://$FTP_USER:$FTP_PASSWORD@$FTP_HOST/build
