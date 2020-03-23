@@ -89,7 +89,12 @@ public class TextAreaController implements Initializable {
         paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Descripteme descripteme = new Descripteme(interview.getInterviewText(), textInterview.getSelection().getStart(), textInterview.getSelection().getEnd());
+                String text = interview.getInterviewText().getText();
+                String selectedText = textInterview.getSelectedText();
+                int start = text.indexOf(selectedText);
+                int end = start + selectedText.length();
+
+                Descripteme descripteme = new Descripteme(interview.getInterviewText(), start, end);
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);
