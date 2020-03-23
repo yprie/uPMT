@@ -4,6 +4,6 @@
 <?import javafx.scene.layout.*?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-    <Button fx:id="leftButton" minWidth="26" />
-    <Button fx:id="rightButton" minWidth="26" />
+    <Button fx:id="leftButton" styleClass="shift-descripteme" stylesheets="@../../../css/application.css" />
+    <Button fx:id="rightButton" styleClass="shift-descripteme" stylesheets="@../../../css/application.css" />
 </HBox>

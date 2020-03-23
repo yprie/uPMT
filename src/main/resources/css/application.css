@@ -348,6 +348,20 @@ moment-no-left-padding {
     -fx-font-weight: bold;
 }
 
+.shift-descripteme {
+    -fx-border-radius:100;
+    -fx-min-height:26px;
+    -fx-min-width:26px;
 
+    -fx-border-width: 0;
+    -fx-border-insets: 0px;
+
+    -fx-background-radius: 30px;
+    -fx-background-size: 15;
+    -fx-background-insets: 0px;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
 
 
