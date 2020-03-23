@@ -99,6 +99,7 @@ public class MomentSeparatorController {
                 || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
                 || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
                 || DragStore.getDraggable().getDataFormat() == Moment.format
+
         );
     }
 }

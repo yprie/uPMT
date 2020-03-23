@@ -351,15 +351,18 @@ public class MomentController extends ListViewController<Moment> implements Init
             DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows deleting the original one once drag is finished
             db.setContent(content);
             momentBody.setOpacity(0.5);
+            separatorLeft.setActive(false);
+            separatorRight.setActive(false);
+            separatorBottom.setActive(false);
         });
 
         momentBody.setOnDragDone(event -> {
             event.consume();
             momentBody.setOpacity(1);
+            separatorLeft.setActive(true);
+            separatorRight.setActive(true);
+            separatorBottom.setActive(true);
         });
-
-
-
     }
 
 }

@@ -63,12 +63,10 @@ public class ModelMomentController extends ListViewController<Moment> implements
 
     private TextField renamingField;
 
-    public ModelMomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
+    public ModelMomentController(Moment m) {
         this.moment = m;
-        this.cmdFactory = cmdFactory;
         this.categoryCmdFactory = new ConcreteCategoryCommandFactory(moment);
         this.childCmdFactory = new MomentCommandFactory(moment);
-        this.paneCmdFactory = paneCmdFactory;
         this.justificationController = new JustificationController(m.getJustification());
 
     }
@@ -101,6 +99,7 @@ public class ModelMomentController extends ListViewController<Moment> implements
         );
 
         momentBody.setOnMouseEntered(event -> momentBody.setStyle("-fx-cursor: move;"));
+
 
         //DND
         setupDragAndDrop();
@@ -137,7 +136,7 @@ public class ModelMomentController extends ListViewController<Moment> implements
             content.put(moment.getDataFormat(), 0);
             Moment newMoment = new Moment(Configuration.langBundle.getString("new_moment"));
             DragStore.setDraggable(newMoment);
-            DragStore.setDoubleObject(cmdFactory.getParentMoment());
+            DragStore.setDoubleObject(newMoment);
             db.setContent(content);
             momentBody.setOpacity(0.5);
         });
@@ -146,7 +145,7 @@ public class ModelMomentController extends ListViewController<Moment> implements
             momentBody.setOpacity(1);
         });
 
-        //TODO: garde la possibilité d'ajouter des catégories pour un templete, mais il sert pas comme un templete pour le moment
+        /*//TODO: garde la possibilité d'ajouter des catégories pour un templete, mais il sert pas comme un templete pour le moment
         categoryDropper.setOnDragOver(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
             if(DragStore.getDraggable().isDraggable()) {
@@ -201,7 +200,7 @@ public class ModelMomentController extends ListViewController<Moment> implements
         categoryDropper.setOnDragExited(dragEvent -> {
             System.out.println("exited !");
             categoryDropper.setStyle("-fx-opacity: 1;");
-        });
+        });*/
     }
 
 }
