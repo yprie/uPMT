@@ -1,6 +1,7 @@
 package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.layout.HBox;
 import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
@@ -25,13 +27,17 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     @FXML private HBox moveLeft;
     @FXML private HBox moveRight;
-    @FXML private Label text;
+    @FXML private Text text;
     @FXML private MenuButton menuButton;
     @FXML BorderPane container;
     @FXML ImageView descriptemeDndLogo;
 
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
+
+    private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> {
+        updateToolTip();
+    };
 
     public JustificationCell(Descripteme d, JustificationCommandFactory factory) {
         this.descripteme = d;
@@ -55,6 +61,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Text init
         //text.setText(descripteme.getSelection());
+        text.wrappingWidthProperty().set(200);
+        /*text.setWrapText(false);*/
         text.textProperty().bind(descripteme.getSelectionProperty());
 
         ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
@@ -85,7 +93,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         menuButton.getItems().add(removeButton);
 
         //Descripteme tooltip
-        Tooltip.install(text, new Tooltip(descripteme.getSelection()));
+        updateToolTip();
 
         //Duplicate shortcut
         text.setOnMouseClicked(mouseEvent -> {
@@ -132,7 +140,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     @Override
     public void onMount() {
-
+        descripteme.getSelectionProperty().addListener(onDescriptemeChange);
     }
 
     @Override
@@ -142,7 +150,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     @Override
     public void onUnmount() {
-
+        descripteme.getSelectionProperty().removeListener(onDescriptemeChange);
     }
 
     /*
@@ -150,4 +158,10 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     }
     */
+
+    public void updateToolTip() {
+        Tooltip.install(text, new Tooltip(descripteme.getSelection()));
+    }
+
+
 }

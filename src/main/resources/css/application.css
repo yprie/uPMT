@@ -359,7 +359,6 @@ moment-no-left-padding {
     -fx-background-radius: 30px;
     -fx-background-size: 15;
     -fx-background-insets: 0px;
-    -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
