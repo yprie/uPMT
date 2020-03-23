@@ -1,7 +1,7 @@
 package components.interviewSelector.appCommands;
 
 import application.history.HistoryManager;
-import application.project.models.Project;
+import models.Project;
 import components.interviewSelector.modelCommands.AddInterviewCommand;
 import components.interviewSelector.controllers.NewInterviewController;
 import utils.DialogState;

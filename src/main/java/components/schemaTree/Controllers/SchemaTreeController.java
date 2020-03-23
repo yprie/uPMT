@@ -1,7 +1,7 @@
 package components.schemaTree.Controllers;
 
 import components.schemaTree.Cell.SchemaTreePluggable;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.SchemaTreeRoot;
 import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import components.schemaTree.Cell.SchemaTreeCell;
 import application.configuration.Configuration;
@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
+import utils.autoSuggestion.AutoSuggestions;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ public class SchemaTreeController implements Initializable {
     private long milliSecondsBetweenScrolls = 200;
     private SchemaTreeRoot root;
 
+    private AutoSuggestions autoSuggestions = AutoSuggestions.getAutoSuggestions();
+
     public SchemaTreeController(SchemaTreeRoot root) { this.root = root; }
 
     public static Node createSchemaTree(SchemaTreeRoot root) {
@@ -50,10 +53,9 @@ public class SchemaTreeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         schemaTree.setEditable(true);
-        schemaTree.setCellFactory(modelTreeElementTreeView -> {
-            return new SchemaTreeCell();
-        });
+        schemaTree.setCellFactory(modelTreeElementTreeView -> new SchemaTreeCell());
         setTreeRoot(root);
+        autoSuggestions.setSchemaTreeRoot(root);
 
         //Scrolling system
         bottomScroll.setOnDragEntered(event -> {

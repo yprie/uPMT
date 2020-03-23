@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.schemaTree.Cell.Models.SchemaFolder;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.SchemaFolder;
+import models.SchemaTreeRoot;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 
 import java.util.ArrayList;

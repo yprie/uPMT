@@ -2,7 +2,7 @@ package components.interviewSelector;
 
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;

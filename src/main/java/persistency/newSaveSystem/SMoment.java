@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.moment.model.Moment;
+import models.ConcreteCategory;
+import models.Moment;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

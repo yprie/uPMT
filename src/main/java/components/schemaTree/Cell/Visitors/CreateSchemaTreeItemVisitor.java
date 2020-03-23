@@ -1,9 +1,12 @@
 package components.schemaTree.Cell.Visitors;
 
-import components.schemaTree.Cell.Models.*;
 import components.schemaTree.Cell.SchemaTreeContainer;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Section;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 import utils.reactiveTree.ReactiveTreeElement;
 
 public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {

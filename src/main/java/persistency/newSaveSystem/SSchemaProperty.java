@@ -1,6 +1,6 @@
 package persistency.newSaveSystem;
 
-import components.schemaTree.Cell.Models.SchemaProperty;
+import models.SchemaProperty;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 
 public class SSchemaProperty extends SSchemaElement<SchemaProperty> {

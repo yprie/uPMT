@@ -1,10 +1,6 @@
-package components.modelisationSpace.moment.model;
+package models;
 
-import components.interviewPanel.Models.Descripteme;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.justification.models.Justification;
-import components.schemaTree.Cell.Models.SchemaCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,10 +8,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.input.DataFormat;
+import utils.dragAndDrop.IDraggable;
 
 import java.util.LinkedList;
 
-public class Moment extends RootMoment {
+public class Moment extends RootMoment implements IDraggable {
+    public static final DataFormat format = new DataFormat("Moment");
 
     private SimpleStringProperty name;
     private Justification justification;
@@ -99,4 +98,24 @@ public class Moment extends RootMoment {
             }
         });
     }
+
+    public boolean hadThisCategory(ConcreteCategory category) {
+        boolean had = false;
+        for(int i = 0; i < categories.size(); i++) {
+            if (category.getSchemaCategory() == categories.get(i).getSchemaCategory()) {
+                had = true;
+            }
+        }
+        return had;
+    }
+    @Override
+    public DataFormat getDataFormat() {
+        return format;
+    }
+
+    @Override
+    public boolean isDraggable() {
+        return true;
+    }
+
 }

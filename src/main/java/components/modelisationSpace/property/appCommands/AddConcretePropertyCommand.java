@@ -1,8 +1,8 @@
 package components.modelisationSpace.property.appCommands;
 
 import application.history.HistoryManager;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 import components.modelisationSpace.property.modelCommands.AddConcreteProperty;
 import utils.command.Executable;
 

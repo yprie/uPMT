@@ -19,10 +19,12 @@ public class SaveProjectAsCommand extends ApplicationCommand<Void> {
         SaveAsProjectController controller = SaveAsProjectController.createSaveAsProjectController(upmtApp.getPrimaryStage(), upmtApp.getCurrentProject());
         if(controller.getState() == SaveAsProjectController.State.SUCCESS) {
             try {
-                ProjectSaver.save(upmtApp.getCurrentProject(), controller.getSavePath());
+                String path = controller.getSavePath();
+                ProjectSaver.save(upmtApp.getCurrentProject(), path);
                 upmtApp.setLastSavedCommandId(HistoryManager.getCurrentCommandId());
+                upmtApp.setCurrentProjectPath(path);
                 new ProjectSavingStatusChangedCommand(upmtApp).execute();
-                Configuration.addToProjects(controller.getSavePath());
+                Configuration.addToProjects(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,7 +1,4 @@
-package components.interviewSelector.models;
-
-import components.interviewPanel.Models.InterviewText;
-import components.modelisationSpace.moment.model.RootMoment;
+package models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,7 +27,23 @@ public class Interview implements Serializable {
 
     //display interview in trees
     public String getTitle(){
-        return(this.participantName+" "+date.toString());
+        return getTitle(participantName, date);
+    }
+
+    public static String getTitle(String participantName, LocalDate date) {
+        String dateStr;
+        if (date == null) {
+            dateStr = "";
+        }
+        else {
+            dateStr = date.toString();
+        }
+        if(!dateStr.equals("")) {
+            return participantName + "_" + dateStr;
+        }
+        else {
+            return participantName;
+        }
     }
 
     public RootMoment getRootMoment() { return rootMoment; }

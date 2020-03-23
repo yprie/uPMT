@@ -1,10 +1,10 @@
 package components.interviewSelector.controllers;
 
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import application.configuration.Configuration;
-import components.interviewPanel.Models.InterviewText;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.InterviewText;
+import models.Moment;
+import models.RootMoment;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -20,11 +20,11 @@ import javafx.stage.StageStyle;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
-import java.io.FileInputStream;
+import java.io.*;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.io.IOException;
-import java.io.File;
 
 public class NewInterviewController implements Initializable {
     private DialogState state;
@@ -82,12 +82,7 @@ public class NewInterviewController implements Initializable {
             String res = "error during text loading !";
             byte[] data = new byte[(int) chosenFile.length()];
             try {
-                FileInputStream fis = new FileInputStream(chosenFile);
-                //fis.read(data);
-                res = new String(fis.readAllBytes());
-                System.out.println(res);
-                fis.close();
-/*                res = new String(data, StandardCharsets.UTF_16);*/
+                res = readFile(chosenFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,9 +90,14 @@ public class NewInterviewController implements Initializable {
             RootMoment rm = new RootMoment();
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
             rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
+
+            LocalDate date = interviewDate.getValue();
+            if (interviewDate.getValue() == null) {
+                date = LocalDateTime.now().toLocalDate();
+            }
             resultInterview = new Interview(
                     participantName.getText(),
-                    interviewDate.getValue(),
+                    date,
                     new InterviewText(res),
                     rm
             );
@@ -129,9 +129,7 @@ public class NewInterviewController implements Initializable {
 
             String res = "error during text loading !";
             try {
-                FileInputStream fis = new FileInputStream(chosenFile);
-                res = new String(fis.readAllBytes());
-                fis.close();
+                res = readFile(chosenFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -147,24 +145,13 @@ public class NewInterviewController implements Initializable {
 
     // Helpers:
     private boolean validateForm() {
-        boolean formIsValide = (!participantName.getText().equals("") &&
-                interviewDate.getValue() != null &&
-                chosenFile != null
-        );
+        boolean formIsValide = (!participantName.getText().equals("") && chosenFile != null);
         validateButton.setDisable(!formIsValide);
         return formIsValide;
     }
 
     private void setTitle() {
-        if (interviewDate.getValue() != null) {
-            String date = interviewDate.getValue().toString();
-            if(!date.equals("")) {
-                interviewTitle.setText(participantName.getText() + "_" + date);
-            }
-            if(participantName.getText().equals("")) {
-                interviewTitle.setText("");
-            }
-        }
+        interviewTitle.setText(Interview.getTitle(participantName.getText(), interviewDate.getValue()));
     }
 
     // Events:
@@ -184,5 +171,56 @@ public class NewInterviewController implements Initializable {
     private void interviewDateOnAction(ActionEvent actionEvent) {
         setTitle();
         validateForm();
+    }
+
+    public String readFile(File file) throws IOException  {
+        String content = "";
+
+        // Ok for utf-8 encoded files, but problems with line ending
+        FileInputStream fis = new FileInputStream(chosenFile);
+        //fis.read(data);
+        byte[] bytes = fis.readAllBytes();
+        content = new String(bytes, "UTF-8");
+        fis.close();
+        content = content.replaceAll("\\r\\n", "\n");
+        content = content.replaceAll("\\r", "\n");
+
+        // ok for ansi, but problems with line ending
+        /*
+        Scanner myReader = new Scanner(file);
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            content += data;
+        }
+        myReader.close();
+        */
+
+
+        // best encoding is ansi, but problems with line ending
+        /*
+        FileInputStream fis = new FileInputStream(chosenFile);
+        //fis.read(data);
+        content = new String(fis.readAllBytes());
+        fis.close();
+        //res = new String(data, StandardCharsets.UTF_16);
+
+         */
+
+        // very bad:
+        /*
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader buffReader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+        String line = null;
+
+        while ((line = buffReader.readLine()) != null) {
+            byte[] myFinalBytes = new String(line.getBytes()).getBytes("UTF-8");
+            content += new String(myFinalBytes);
+        }
+        buffReader.close();
+        fis.close();
+        */
+
+        //
+        return content;
     }
 }

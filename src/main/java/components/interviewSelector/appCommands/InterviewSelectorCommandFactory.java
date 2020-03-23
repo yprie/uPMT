@@ -1,7 +1,7 @@
 package components.interviewSelector.appCommands;
 
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
+import models.Project;
+import models.Interview;
 
 public class InterviewSelectorCommandFactory {
 

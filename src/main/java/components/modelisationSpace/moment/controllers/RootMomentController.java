@@ -3,8 +3,8 @@ package components.modelisationSpace.moment.controllers;
 import application.configuration.Configuration;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
+import models.Moment;
+import models.RootMoment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,6 +43,7 @@ public class RootMomentController implements Initializable {
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment,
                 childrenBox);
+
     }
 
     public static Node createRootMoment(RootMomentController controller) {

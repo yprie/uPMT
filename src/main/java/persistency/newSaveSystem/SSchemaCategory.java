@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaProperty;
+import models.SchemaCategory;
+import models.SchemaProperty;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 
 import java.util.ArrayList;

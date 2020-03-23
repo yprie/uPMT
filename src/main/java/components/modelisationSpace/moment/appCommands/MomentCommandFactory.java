@@ -1,8 +1,9 @@
 package components.modelisationSpace.moment.appCommands;
 
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
-import components.modelisationSpace.moment.modelCommands.RenameMoment;
+import models.ConcreteCategory;
+import models.Moment;
+import models.RootMoment;
+import models.SchemaCategory;
 
 public class MomentCommandFactory {
 
@@ -18,6 +19,32 @@ public class MomentCommandFactory {
     public AddSiblingMomentCommand addSiblingCommand(Moment m) {
         return new AddSiblingMomentCommand(parent, m);
     }
+
+
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, ConcreteCategory category) {
+        return new AddSiblingMomentCommand(parent, m, category);
+    }
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, ConcreteCategory category, int index) {
+        return new AddSiblingMomentCommand(parent, m, category, index);
+    }
+
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, SchemaCategory category, Moment parent) {
+        return new AddSiblingMomentCommand(this.parent, m, category, parent);
+    }
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, SchemaCategory category, Moment parent, int index) {
+        return new AddSiblingMomentCommand(this.parent, m, category, parent, index);
+    }
+
+    public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent, int index){
+        return new MoveMomentCommand(parent, originParent, m, index);
+    }
+    public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent){
+        return new MoveMomentCommand(parent, originParent, m);
+    }
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
+
+    public RootMoment getParentMoment(){
+        return parent;
+    }
 }

@@ -1,6 +1,6 @@
 package persistency.newSaveSystem;
 
-import components.interviewPanel.Models.InterviewText;
+import models.InterviewText;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

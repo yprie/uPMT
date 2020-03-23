@@ -49,7 +49,7 @@
                                           <MenuItem mnemonicParsing="false" text="Action 2" />
                                        </items>
                                     </MenuButton>
-                                    <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                                    <HBox fx:id="nameBox" alignment="CENTER" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="momentName" text="Nom moment" HBox.hgrow="ALWAYS">
                                              <padding>

@@ -1,9 +1,10 @@
 package components.schemaTree.Cell;
 
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
-import utils.removable.IRemovable;
-import components.schemaTree.Cell.Models.*;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 
 public class Utils {
 

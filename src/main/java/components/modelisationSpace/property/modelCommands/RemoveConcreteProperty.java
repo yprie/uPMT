@@ -1,8 +1,8 @@
 package components.modelisationSpace.property.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 
 public class RemoveConcreteProperty extends ModelUserActionCommand<Void, Void> {
 

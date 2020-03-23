@@ -1,6 +1,6 @@
 package persistency.newSaveSystem;
 
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteProperty;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

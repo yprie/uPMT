@@ -1,10 +1,10 @@
 package components.modelisationSpace.justification.appCommands;
 
 import application.history.HistoryManager;
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.Section;
 import components.modelisationSpace.justification.modelCommands.MoveDescripteme;
-import components.modelisationSpace.justification.models.Justification;
+import models.Justification;
 import utils.command.Executable;
 
 public class MoveDescriptemeCommand implements Executable<Void> {

@@ -1,9 +1,8 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.Models.Descripteme;
-import components.interviewPanel.Models.InterviewText;
-import components.interviewSelector.models.Interview;
+import models.Descripteme;
+import models.Interview;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,11 +85,19 @@ public class TextAreaController implements Initializable {
             }
         });
 
+        /**
+         * start dragging from the text area :
+         */
         // On dragging the pane
         paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Descripteme descripteme = new Descripteme(interview.getInterviewText(), textInterview.getSelection().getStart(), textInterview.getSelection().getEnd());
+                String text = interview.getInterviewText().getText();
+                String selectedText = textInterview.getSelectedText();
+                int start = text.indexOf(selectedText);
+                int end = start + selectedText.length();
+
+                Descripteme descripteme = new Descripteme(interview.getInterviewText(), start, end);
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);

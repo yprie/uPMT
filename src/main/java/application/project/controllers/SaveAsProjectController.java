@@ -1,7 +1,7 @@
 package application.project.controllers;
 
 import application.configuration.Configuration;
-import application.project.models.Project;
+import models.Project;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 

@@ -1,6 +1,6 @@
 package persistency.newSaveSystem;
 
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
