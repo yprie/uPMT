@@ -30,6 +30,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import utils.autoSuggestion.AutoSuggestionsTextField;
+import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
@@ -170,7 +172,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     public void passInRenamingMode(boolean YoN) {
         if(YoN != renamingMode) {
             if(YoN){
-                renamingField = new TextField(momentName.getText());
+                renamingField = new AutoSuggestionsTextField(momentName.getText(), new SuggestionStrategyMoment());
+
                 renamingField.setAlignment(Pos.CENTER);
                 renamingField.end();
                 renamingField.selectAll();
