@@ -20,6 +20,9 @@
 
 package components.mainView.controller;
 
+import components.modelisationSpace.moment.controllers.ModelMomentController;
+import javafx.scene.layout.HBox;
+import models.Moment;
 import models.Project;
 import models.Interview;
 import components.modelisationSpace.controllers.ModelisationSpaceController;
@@ -47,6 +50,7 @@ public class MainViewController implements Initializable {
 	private @FXML SplitPane leftPane;
 	private @FXML SplitPane paneOfTextArea;
 	private @FXML ModelisationSpaceController modelisationSpaceController;
+	private @FXML HBox modelMomentBox;
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
@@ -110,5 +114,8 @@ public class MainViewController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refreshContent();
 		project.selectedInterviewProperty().addListener(onSelectedInterviewChanges);
+		Moment modelMoment = new Moment(Configuration.langBundle.getString("new_moment"));
+		modelMomentBox.getChildren().add(ModelMomentController.createMoment(new ModelMomentController(modelMoment)));
+
 	}
 }

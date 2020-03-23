@@ -26,7 +26,6 @@ public class RootMomentController implements Initializable {
 
     private @FXML BorderPane momentsSpace;
     private @FXML HBox childrenBox;
-    private @FXML HBox modelMomentBox;
     private ListView<Moment, MomentController> momentsHBox;
 
 
@@ -45,8 +44,6 @@ public class RootMomentController implements Initializable {
                 MomentController::createMoment,
                 childrenBox);
 
-        Moment modelMoment = new Moment(Configuration.langBundle.getString("new_moment"));
-        modelMomentBox.getChildren().add(ModelMomentController.createMoment(new ModelMomentController(modelMoment, childCmdFactory, paneCmdFactory)));
     }
 
     public static Node createRootMoment(RootMomentController controller) {
