@@ -1,6 +1,8 @@
 package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
+import application.history.HistoryManager;
+import javafx.scene.input.*;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -10,6 +12,7 @@ import components.modelisationSpace.justification.controllers.JustificationContr
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import models.Moment;
 import models.SchemaCategory;
+import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -18,12 +21,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import utils.dragAndDrop.DragStore;
@@ -52,14 +56,19 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private MenuButton menuButton;
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
+    @FXML private AnchorPane momentBoundingBox;
+    @FXML HBox nameBox;
 
     //Importants elements of a moment
     private JustificationController justificationController;
     private ListView<Moment, MomentController> momentsHBox;
     private ListView<ConcreteCategory, ConcreteCategoryController> categories;
+    private boolean renamingMode = false;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
+
+    private TextField renamingField;
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -127,6 +136,9 @@ public class MomentController extends ListViewController<Moment> implements Init
             childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute();
         });
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
+        separatorBottom.setOnDragMomentDone((moment, originParent) -> {
+            childCmdFactory.moveMomentCommand(moment, originParent).execute();
+        });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
@@ -145,8 +157,50 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //DND
         setupDragAndDrop();
-    }
 
+        momentName.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    System.out.println("Double clicked");
+                    passInRenamingMode(true);
+                }
+            }
+        });
+    }
+    public void passInRenamingMode(boolean YoN) {
+        if(YoN != renamingMode) {
+            if(YoN){
+                renamingField = new TextField(momentName.getText());
+                renamingField.setAlignment(Pos.CENTER);
+                renamingField.end();
+                renamingField.selectAll();
+
+                renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal)
+                        passInRenamingMode(false);
+                });
+
+                renamingField.setOnKeyPressed(keyEvent -> {
+                    if(keyEvent.getCode() == KeyCode.ENTER) {
+                        if(renamingField.getLength() > 0)
+                        HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                        passInRenamingMode(false);
+                    }
+                });
+                this.nameBox.getChildren().clear();
+                this.nameBox.getChildren().add(renamingField);
+                renamingField.requestFocus();
+                renamingMode = true;
+            }
+            else {
+                if(renamingField.getLength() > 0)
+                    HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                this.nameBox.getChildren().clear();
+                this.nameBox.getChildren().add(momentName);
+                renamingMode = false;
+            }
+        }
+    }
     @Override
     public Moment getModel() {
         return moment;
@@ -194,6 +248,13 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorLeft.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
             separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
 
+            //set operation on moment DND over borders
+            separatorLeft.setOnDragMomentDone((m, originParent) -> {
+                cmdFactory.moveMomentCommand(m, originParent, 0).execute();
+            });
+            separatorRight.setOnDragMomentDone((m, originParent) -> {
+                cmdFactory.moveMomentCommand(m, originParent,index + 1).execute();
+            });
 
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
@@ -208,11 +269,14 @@ public class MomentController extends ListViewController<Moment> implements Init
 
             //Do nothing with the left separator
             separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
+            separatorLeft.setOnDragMomentDone((m, factory) -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
+                separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
             }
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+                separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
             }
 
             //Make moment aligned, no need to understand that !
@@ -277,6 +341,24 @@ public class MomentController extends ListViewController<Moment> implements Init
         categoryDropper.setOnDragExited(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
+
+        momentBody.setOnDragDetected(event -> {
+            System.out.println(" moment drag detected");
+            Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(moment.getDataFormat(), 0);
+            DragStore.setDraggable(moment);
+            DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows deleting the original one once drag is finished
+            db.setContent(content);
+            momentBody.setOpacity(0.5);
+        });
+
+        momentBody.setOnDragDone(event -> {
+            event.consume();
+            momentBody.setOpacity(1);
+        });
+
+
 
     }
 

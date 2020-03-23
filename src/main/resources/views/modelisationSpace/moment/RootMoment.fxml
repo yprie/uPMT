@@ -5,10 +5,26 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane fx:id="momentsSpace" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <padding>
-      <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
-   </padding>
+<!--   <padding>-->
+<!--      <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />-->
+<!--   </padding>-->
+   <top>
+      <VBox>
+         <HBox fx:id="modelMomentBox" minHeight="80"  style="-fx-background-color: white;" >
+            <padding>
+               <Insets bottom="15" left="15" right="15" top="10" />
+            </padding>
+         </HBox>
+         <Pane prefHeight="20" />
+      </VBox>
+
+
+   </top>
+
    <center>
       <HBox fx:id="childrenBox" BorderPane.alignment="CENTER" />
    </center>

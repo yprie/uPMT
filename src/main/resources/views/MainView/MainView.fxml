@@ -19,7 +19,7 @@
       </AnchorPane>
 
       <!-- Interview are -->
-      <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+      <SplitPane fx:id="paneOfTextArea" maxWidth="600"/>
    </SplitPane>
 </center>
 </BorderPane>

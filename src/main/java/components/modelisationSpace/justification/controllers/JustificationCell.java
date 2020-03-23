@@ -98,6 +98,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         });
 
         setupDnd();
+
+        text.setOnMouseEntered(event -> text.setStyle("-fx-cursor: move;"));
     }
 
     private void setupDnd() {

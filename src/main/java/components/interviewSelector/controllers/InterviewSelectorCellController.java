@@ -39,6 +39,9 @@ public class InterviewSelectorCellController implements Initializable {
         deleteButton.setOnAction(actionEvent -> { commandFactory.deleteInterview(interview).execute(); });
         optionsMenu.getItems().add(deleteButton);
 
+        //TODO: show/modify an interview
+        //MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
+
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
             if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}

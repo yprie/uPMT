@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 import java.util.ResourceBundle;
 

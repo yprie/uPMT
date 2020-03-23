@@ -1,12 +1,13 @@
 package components.modelisationSpace.moment.controllers;
 
-import models.ConcreteCategory;
-import models.Descripteme;
+import models.*;
+import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
-import models.SchemaCategory;
 import utils.dragAndDrop.DragStore;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class MomentSeparatorController {
@@ -19,7 +20,7 @@ public class MomentSeparatorController {
     private Consumer<Descripteme> onDragDoneDescripteme = descripteme -> {};
     private Consumer<ConcreteCategory> onDragDoneCategory = category -> {};
     private Consumer<SchemaCategory> onDragDoneShemaCategory = category -> {};
-
+    private BiConsumer<Moment, RootMoment> onDragMomentDone = (moment, originParentMoment) -> { };
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
         p.getStyleClass().add("moment-dnd-zone");
@@ -59,6 +60,9 @@ public class MomentSeparatorController {
             if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == SchemaCategory.format && active){
                 onDragDoneShemaCategory.accept(DragStore.getDraggable());
             }
+            if( DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Moment.format && active){
+                onDragMomentDone.accept(DragStore.getDraggable(), DragStore.getDoubleObject());
+            }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
         });
@@ -83,6 +87,9 @@ public class MomentSeparatorController {
     public void setOnDragDoneShemaCategory(Consumer<SchemaCategory> consumer) {
         this.onDragDoneShemaCategory = consumer;
     }
+    public void setOnDragMomentDone(BiConsumer<Moment, RootMoment>consumer){
+        this.onDragMomentDone = consumer;
+    }
     public Pane getNode() {
         return p;
     }
@@ -91,6 +98,7 @@ public class MomentSeparatorController {
         return (DragStore.getDraggable().getDataFormat() == Descripteme.format
                 || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
                 || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
+                || DragStore.getDraggable().getDataFormat() == Moment.format
         );
     }
 }
