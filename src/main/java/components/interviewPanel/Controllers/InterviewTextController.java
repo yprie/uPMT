@@ -32,9 +32,13 @@ public class InterviewTextController implements Initializable {
 
     private RichTextAreaController richTextAreaController;
     private Interview interview;
+    Pane paneDragText;
+    private boolean selectionActive;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
+        selectionActive = false;
+        paneDragText = new Pane();
     }
 
     public static Node createInterviewTextController(Interview interview) {
@@ -61,6 +65,7 @@ public class InterviewTextController implements Initializable {
             public void handle(MouseEvent event) {
                 Annotation a = richTextAreaController.annotate();
                 System.out.println(a);
+                hideDnDPane();
             }
         });
 
@@ -68,18 +73,19 @@ public class InterviewTextController implements Initializable {
     }
 
     private void setupDragAndDrop() {
-        Pane paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
         paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
 
         // On click release on text area: add a pane over the text area
-        stackPaneInterview.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        richTextAreaController.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("stackPaneInterview.setOnMouseReleased");
-                if(!richTextAreaController.getSelectedText().isEmpty())
+                if(!richTextAreaController.getSelectedText().isEmpty()) {
                     stackPaneInterview.getChildren().add(paneDragText);
+                    selectionActive = true;
+                }
             }
         });
 
@@ -87,15 +93,11 @@ public class InterviewTextController implements Initializable {
         paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent arg0) {
-                richTextAreaController.deselect();
-                stackPaneInterview.getChildren().remove(paneDragText);
+                hideDnDPane();
             }
         });
 
-        /**
-         * start dragging from the text area :
-         */
-        // On dragging the pane
+        // On dragging the pane: start dragging from the text area
         paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -112,5 +114,11 @@ public class InterviewTextController implements Initializable {
                 db.setContent(content);
             }
         });
+    }
+
+    private void hideDnDPane() {
+        richTextAreaController.deselect();
+        stackPaneInterview.getChildren().remove(paneDragText);
+        selectionActive = false;
     }
 }

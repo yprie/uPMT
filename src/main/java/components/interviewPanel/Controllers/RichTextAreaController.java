@@ -1,8 +1,11 @@
 package components.interviewPanel.Controllers;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
@@ -35,6 +38,7 @@ public class RichTextAreaController {
         setupRTFXSpecificCSSShapes();
 
         setUpPopUp();
+        setUpDragAndDrop();
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
@@ -62,6 +66,17 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
             popup.hide();
         });
+    }
+
+    private void setUpDragAndDrop() {
+        Pane paneDragText = new Pane();
+        paneDragText.setStyle("-fx-background-color:#f4f4f4;");
+        paneDragText.setCursor(Cursor.MOVE);
+        paneDragText.setOpacity(0.2);
+    }
+
+    public void setOnMouseReleased(EventHandler eventHandler) {
+        area.setOnMouseReleased(eventHandler);
     }
 
     private void highlightAnnotationBySelection(Annotation a) {
