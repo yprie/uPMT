@@ -18,6 +18,10 @@ public class Fragment implements IDraggable {
     public int getStartIndex() { return startIndex; }
     public int getEndIndex() { return endIndex; }
 
+    public String getFragmentText() {
+        return interviewText.getText().substring(startIndex, endIndex);
+    }
+
     @Override
     public DataFormat getDataFormat() {
         return format;
@@ -26,5 +30,10 @@ public class Fragment implements IDraggable {
     @Override
     public boolean isDraggable() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Fragment " + getFragmentText();
     }
 }

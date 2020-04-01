@@ -7,13 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import models.Annotation;
 import models.Descripteme;
 import models.Interview;
 import utils.dragAndDrop.DragStore;
@@ -22,23 +24,24 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+public class InterviewTextController implements Initializable {
 
-public class TextAreaController implements Initializable {
+    @FXML private HBox toolBarAnnotation;
+    @FXML private Button buttonAnnotate;
+    @FXML private StackPane stackPaneInterview;
 
+    private RichTextAreaController richTextAreaController;
     private Interview interview;
-    private String selectedText = "";
 
-    @FXML
-    private StackPane stackForDragDrop;
+    private InterviewTextController(Interview interview) {
+        this.interview = interview;
+    }
 
-    @FXML
-    private TextArea textInterview;
-
-    public static Node createTextAreaController(Interview interview) {
-        TextAreaController controller = new TextAreaController(interview);
+    public static Node createInterviewTextController(Interview interview) {
+        InterviewTextController controller = new InterviewTextController(interview);
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/InterviewPanel/InterviewTextArea.fxml"));
+            loader.setLocation(controller.getClass().getResource("/views/InterviewPanel/InterviewText.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             return loader.load();
@@ -48,30 +51,35 @@ public class TextAreaController implements Initializable {
         }
     }
 
-    public TextAreaController(Interview interview) {
-        this.interview = interview;
-    }
-
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        textInterview.setText(interview.getInterviewText().getText());
+    public void initialize(URL location, ResourceBundle resources) {
+        richTextAreaController = new RichTextAreaController(interview);
+        stackPaneInterview.getChildren().add(richTextAreaController.getNode());
+
+        buttonAnnotate.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Annotation a = richTextAreaController.annotate();
+                System.out.println(a);
+            }
+        });
+
         setupDragAndDrop();
     }
 
     private void setupDragAndDrop() {
-
         Pane paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
         paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
 
         // On click release on text area: add a pane over the text area
-        textInterview.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+        stackPaneInterview.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                selectedText = textInterview.getSelectedText();
-                if(!selectedText.equals(""))
-                    stackForDragDrop.getChildren().add(paneDragText);
+                System.out.println("stackPaneInterview.setOnMouseReleased");
+                if(!richTextAreaController.getSelectedText().isEmpty())
+                    stackPaneInterview.getChildren().add(paneDragText);
             }
         });
 
@@ -79,9 +87,8 @@ public class TextAreaController implements Initializable {
         paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent arg0) {
-                textInterview.deselect();
-                stackForDragDrop.getChildren().clear();
-                stackForDragDrop.getChildren().add(textInterview);
+                richTextAreaController.deselect();
+                stackPaneInterview.getChildren().remove(paneDragText);
             }
         });
 
@@ -93,7 +100,7 @@ public class TextAreaController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 String text = interview.getInterviewText().getText();
-                String selectedText = textInterview.getSelectedText();
+                String selectedText = richTextAreaController.getSelectedText();
                 int start = text.indexOf(selectedText);
                 int end = start + selectedText.length();
 

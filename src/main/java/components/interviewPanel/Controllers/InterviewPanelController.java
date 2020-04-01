@@ -1,11 +1,6 @@
 package components.interviewPanel.Controllers;
 
-import models.Interview;
 import application.configuration.Configuration;
-
-import org.fxmisc.richtext.event.MouseOverTextEvent;
-import org.fxmisc.richtext.StyleClassedTextArea;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -17,10 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import models.Interview;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +34,8 @@ public class InterviewPanelController implements Initializable {
     private boolean collapsed = false;
     private double panePosition;
     private SplitPane mainSplitPane;
+    private InterviewTextController interviewTextController;
+
 
     private ObservableValue<Interview> interview;
     private ChangeListener<Interview> interviewChangeListener;
@@ -110,11 +108,10 @@ public class InterviewPanelController implements Initializable {
     }
 
     private void showTextInterview(Interview newInterview) {
-        stackPaneInterview.getChildren().add(RichTextAreaController.createRichTextAreaController(newInterview));
+        stackPaneInterview.getChildren().add(InterviewTextController.createInterviewTextController(newInterview));
     }
 
     private void hideTextInterview() {
         stackPaneInterview.getChildren().clear();
     }
-
 }

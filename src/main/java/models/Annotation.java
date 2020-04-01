@@ -24,4 +24,9 @@ public class Annotation extends Fragment {
     public String getCSSColor() {
         return color.toString().replace("0x", "#");
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

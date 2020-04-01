@@ -1,10 +1,8 @@
 package components.interviewPanel.Controllers;
 
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
@@ -21,44 +19,31 @@ import java.time.Duration;
 public class RichTextAreaController {
     private InlineCssTextArea area;
     private Interview interview;
+    private VirtualizedScrollPane<InlineCssTextArea> vsPane;
 
-    private RichTextAreaController(Interview interview) {
+    public RichTextAreaController(Interview interview) {
         this.interview = interview;
 
         area = new InlineCssTextArea();
         area.setWrapText(true);
         area.setEditable(false);
+        area.setParagraphGraphicFactory(LineNumberFactory.get(area));
+        area.appendText(interview.getInterviewText().getText());
+        //area.requestFocus();
 
-        String alphabet = "abcdefghijklmnopqrstuvwxyz";
-        StringBuilder sb = new StringBuilder();
-        sb.append(interview.getInterviewText().getText());
-        for (int i = 0; i < 10; i++) {
-            sb.append(i).append(" :").append(alphabet).append("\n");
-        }
-        area.appendText(sb.toString());
-
+        // example:
         setupRTFXSpecificCSSShapes();
 
-        // select some other range with the regular caret/selection before showing area
-        //area.selectRange(5, 0, 2, 4);
-
-        area.setParagraphGraphicFactory(LineNumberFactory.get(area));
-
-        setUpPupUp();
-
-        area.setOnMouseClicked(e -> doMouseClicked(e));
-        area.setOnMouseReleased(e -> doOnMouseReleased(e));
-
-        //area.requestFocus();
+        setUpPopUp();
     }
 
-    public static Node createRichTextAreaController(Interview interview) {
-        RichTextAreaController controller = new RichTextAreaController(interview);
-        VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(controller.area);
+    public VirtualizedScrollPane<InlineCssTextArea> getNode() {
+        VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(area);
+        this.vsPane = vsPane;
         return vsPane;
     }
 
-    private void setUpPupUp() {
+    private void setUpPopUp() {
         Popup popup = new Popup();
         Label popupMsg = new Label();
         popupMsg.setStyle(
@@ -126,25 +111,32 @@ public class RichTextAreaController {
         area.setStyle(a.getStartIndex(), a.getEndIndex(), css);
     }
 
-    private void doMouseClicked(MouseEvent e) {
-        System.out.println("OnMouseClicked");
-    }
-
-    private void doOnMouseReleased(MouseEvent e) {
-        System.out.println("dOnMouseReleased");
+    public Annotation annotate() {
+        System.out.println("annotate");
         String selection = area.getSelectedText();
         System.out.println(selection);
 
         // DEBUG: encoding and line ending issue:
+        System.out.println("DEBUG");
         int start = area.getSelection().getStart();
         int end = area.getSelection().getEnd();
         System.out.println(interview.getInterviewText().getText().substring(start, end));
+        // END DEBUG
 
         // Highlight selected text
         Annotation a = createAnnotation(area.getSelection());
-        //highlightAnnotation(a); // Style way
-        highlightAnnotationBySelection(a); // selection way
+        highlightAnnotation(a); // Style way
+        //highlightAnnotationBySelection(a); // selection way
 
+        area.deselect();
+        return a;
+    }
+
+    public String getSelectedText() {
+        return area.getSelectedText();
+    }
+
+    public void deselect() {
         area.deselect();
     }
 }
