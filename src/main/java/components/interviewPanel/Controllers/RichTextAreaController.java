@@ -1,23 +1,20 @@
 package components.interviewPanel.Controllers;
 
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import models.Annotation;
+import models.Interview;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.InlineCssTextArea;
+import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.Selection;
 import org.fxmisc.richtext.SelectionImpl;
-import org.fxmisc.richtext.LineNumberFactory;
-
-import models.Interview;
-
 import org.fxmisc.richtext.event.MouseOverTextEvent;
-
-import javafx.geometry.Point2D;
-import javafx.scene.control.Label;
-import javafx.stage.Popup;
-import javafx.scene.Node;
 
 import java.time.Duration;
 
