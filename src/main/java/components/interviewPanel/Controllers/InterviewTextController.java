@@ -15,7 +15,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import models.Annotation;
 import models.Descripteme;
 import models.Interview;
 import utils.dragAndDrop.DragStore;
@@ -28,6 +27,7 @@ public class InterviewTextController implements Initializable {
 
     @FXML private HBox toolBarAnnotation;
     @FXML private Button buttonAnnotate;
+    @FXML private Button buttonDeleteAnnotate;
     @FXML private StackPane stackPaneInterview;
 
     private RichTextAreaController richTextAreaController;
@@ -57,16 +57,16 @@ public class InterviewTextController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        richTextAreaController = new RichTextAreaController(interview);
+        richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
-        buttonAnnotate.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Annotation a = richTextAreaController.annotate();
-                System.out.println(a);
-                hideDnDPane();
-            }
+        buttonAnnotate.setOnMouseClicked(event -> {
+            richTextAreaController.annotate();
+            hideDnDPane();
+        });
+        buttonDeleteAnnotate.setOnMouseClicked(event -> {
+            richTextAreaController.deleteAnnotation();
+            hideDnDPane();
         });
 
         setupDragAndDrop();
@@ -81,7 +81,6 @@ public class InterviewTextController implements Initializable {
         richTextAreaController.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("stackPaneInterview.setOnMouseReleased");
                 if(!richTextAreaController.getSelectedText().isEmpty()) {
                     stackPaneInterview.getChildren().add(paneDragText);
                     selectionActive = true;

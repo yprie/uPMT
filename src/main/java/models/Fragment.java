@@ -34,6 +34,6 @@ public class Fragment implements IDraggable {
 
     @Override
     public String toString() {
-        return "Fragment " + getFragmentText();
+        return "Fragment [" + startIndex + ", " + endIndex + "] " + getFragmentText();
     }
 }

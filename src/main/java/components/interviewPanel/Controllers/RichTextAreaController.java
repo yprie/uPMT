@@ -1,44 +1,39 @@
 package components.interviewPanel.Controllers;
 
+import components.interviewPanel.ModelCommands.addAnnotationCommand;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
-import models.Interview;
+import models.InterviewText;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
-import org.fxmisc.richtext.Selection;
-import org.fxmisc.richtext.SelectionImpl;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
 
 public class RichTextAreaController {
     private InlineCssTextArea area;
-    private Interview interview;
+    private InterviewText interviewText;
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
+    private int userCaretPosition;
 
-    public RichTextAreaController(Interview interview) {
-        this.interview = interview;
+    public RichTextAreaController(InterviewText interviewText) {
+        this.interviewText = interviewText;
 
         area = new InlineCssTextArea();
         area.setWrapText(true);
         area.setEditable(false);
         area.setParagraphGraphicFactory(LineNumberFactory.get(area));
-        area.appendText(interview.getInterviewText().getText());
+        area.appendText(interviewText.getText());
         //area.requestFocus();
 
-        // example:
-        setupRTFXSpecificCSSShapes();
-
         setUpPopUp();
-        setUpDragAndDrop();
+        setUpMouseEvent();
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
@@ -68,56 +63,24 @@ public class RichTextAreaController {
         });
     }
 
-    private void setUpDragAndDrop() {
-        Pane paneDragText = new Pane();
-        paneDragText.setStyle("-fx-background-color:#f4f4f4;");
-        paneDragText.setCursor(Cursor.MOVE);
-        paneDragText.setOpacity(0.2);
+    private void setUpMouseEvent() {
+        area.setOnMousePressed(event -> {
+            userCaretPosition = area.getCaretPosition();
+            System.out.println("area pressed " + userCaretPosition);
+        });
     }
 
     public void setOnMouseReleased(EventHandler eventHandler) {
         area.setOnMouseReleased(eventHandler);
     }
 
-    private void highlightAnnotationBySelection(Annotation a) {
-        Selection<String, String, String> extraSelection = new SelectionImpl<>("another selection" +
-                a.getStartIndex() + a.getEndIndex(), area,
-                path -> {
-                    // make rendered selection path look like a yellow highlighter
-                    path.setStrokeWidth(0);
-                    path.setFill(a.getColor());
-                }
-        );
-        if (!area.addSelection(extraSelection)) {
-            throw new IllegalStateException("selection was not added to area");
-        }
-        // select something so it is visible
-        extraSelection.selectRange(a.getStartIndex(), a.getEndIndex());
-    }
 
-    /**
-     * Shows that RTFX-specific-CSS shapes are laid out in correct order, so that
-     * selection and text and caret appears on top of them when made/moved
-     */
-    private void setupRTFXSpecificCSSShapes() {
-        String background = "-rtfx-background-color: red; ";
-        String underline = "-rtfx-underline-color: blue; " +
-                "-rtfx-underline-width: 2.0;";
-        String border = "-rtfx-border-stroke-color: green; " +
-                "-rtfx-border-stroke-width: 3.0;";
 
-        // set all of them at once on a give line to insure they display properly
-        //area.setStyle(0, background + underline + border);
-
-        // set each one over a given segment
-        area.setStyle(3, 0, 5, underline);
-        area.setStyle(5 , 0, 9, border);
-    }
 
     private Annotation createAnnotation(IndexRange selection) {
         int start = selection.getStart();
         int end = selection.getEnd();
-        Annotation a = new Annotation(interview.getInterviewText(), start, end, Color.YELLOW);
+        Annotation a = new Annotation(interviewText, start, end, Color.YELLOW);
         return a;
     }
 
@@ -125,26 +88,32 @@ public class RichTextAreaController {
         String css = "-rtfx-background-color: " + a.getCSSColor();
         area.setStyle(a.getStartIndex(), a.getEndIndex(), css);
     }
+    private void hideHighlightAnnotation(Annotation a) {
+        area.clearStyle(a.getStartIndex(), a.getEndIndex());
+    }
 
-    public Annotation annotate() {
-        System.out.println("annotate");
-        String selection = area.getSelectedText();
-        System.out.println(selection);
+    public void annotate() {
+        IndexRange selection = area.getSelection();
+        if (selection.getStart() != selection.getEnd()) {
+            Annotation a = createAnnotation(selection);
+            highlightAnnotation(a);
+            area.deselect();
 
-        // DEBUG: encoding and line ending issue:
-        System.out.println("DEBUG");
-        int start = area.getSelection().getStart();
-        int end = area.getSelection().getEnd();
-        System.out.println(interview.getInterviewText().getText().substring(start, end));
-        // END DEBUG
+            addAnnotationCommand cmd = new addAnnotationCommand(a, interviewText);
+            cmd.execute();
+            System.out.println(a);
 
-        // Highlight selected text
-        Annotation a = createAnnotation(area.getSelection());
-        highlightAnnotation(a); // Style way
-        //highlightAnnotationBySelection(a); // selection way
+        }
+    }
 
-        area.deselect();
-        return a;
+    public void deleteAnnotation() {
+        int i = area.getCaretPosition();
+        Annotation a = interviewText.getFirstAnnotationByIndex(i);
+        if (a != null) {
+            System.out.println("deleteAnnotation " + i);
+            System.out.println(a);
+            hideHighlightAnnotation(a);
+        }
     }
 
     public String getSelectedText() {
