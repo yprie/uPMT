@@ -8,8 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
+import models.Descripteme;
 import models.InterviewText;
 import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
@@ -30,6 +32,7 @@ public class RichTextAreaController {
         area.setEditable(false);
         area.setParagraphGraphicFactory(LineNumberFactory.get(area));
         area.appendText(interviewText.getText());
+        area.setShowCaret(Caret.CaretVisibility.ON);
         //area.requestFocus();
 
         setUpPopUp();
@@ -66,7 +69,7 @@ public class RichTextAreaController {
     private void setUpMouseEvent() {
         area.setOnMousePressed(event -> {
             userCaretPosition = area.getCaretPosition();
-            System.out.println("area pressed " + userCaretPosition);
+            System.out.println("area pressed " + userCaretPosition + " word: " + interviewText.getWordByIndex(userCaretPosition));
         });
     }
 
@@ -91,6 +94,11 @@ public class RichTextAreaController {
     private void hideHighlightAnnotation(Annotation a) {
         area.clearStyle(a.getStartIndex(), a.getEndIndex());
     }
+    private void underlineDescripteme(Descripteme d) {
+        String css = "-rtfx-underline-color: black; " +
+                "-rtfx-underline-width: 1.5;";
+        area.setStyle(d.getStartIndex(), d.getEndIndex(), css);
+    }
 
     public void annotate() {
         IndexRange selection = area.getSelection();
@@ -109,6 +117,7 @@ public class RichTextAreaController {
     public void deleteAnnotation() {
         int i = area.getCaretPosition();
         Annotation a = interviewText.getFirstAnnotationByIndex(i);
+        interviewText.removeAnnotation(a);
         if (a != null) {
             System.out.println("deleteAnnotation " + i);
             System.out.println(a);
@@ -122,5 +131,18 @@ public class RichTextAreaController {
 
     public void deselect() {
         area.deselect();
+    }
+
+    public void addDescripteme(Descripteme descripteme) {
+        underlineDescripteme(descripteme);
+    }
+
+    public void switchToAnalysisMode() {
+        area.clearStyle(0, interviewText.getText().length() - 1);
+    }
+    public void switchToAnnotationMode() {
+        /*
+        for each annotation and descripteme, underline and highligth
+         */
     }
 }

@@ -15,6 +15,12 @@ public class Descripteme extends Fragment {
         descripteme.set(getSelection());
     }
 
+    public Descripteme(Annotation a) {
+        super(a.getInterviewText(), a.getStartIndex(),a.getEndIndex());
+        descripteme = new SimpleStringProperty();
+        descripteme.set(getSelection());
+    }
+
     public InterviewText getInterviewText() { return interviewText; }
 
     public final SimpleStringProperty getSelectionProperty() {

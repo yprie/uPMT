@@ -17,6 +17,7 @@ public class Fragment implements IDraggable {
 
     public int getStartIndex() { return startIndex; }
     public int getEndIndex() { return endIndex; }
+    public InterviewText getInterviewText() { return interviewText; }
 
     public String getFragmentText() {
         return interviewText.getText().substring(startIndex, endIndex);

@@ -41,4 +41,16 @@ public class InterviewText implements Serializable {
             return null;
         }
     }
+
+    public String getWordByIndex(int index) {
+        int end = text.indexOf(" ", index);
+        int start = text.lastIndexOf(" ", index);
+        if (start == -1) {
+            start = 0;
+        }
+        if (end == -1) {
+            end = text.length() - 1;
+        }
+        return text.substring(start, end);
+    }
 }

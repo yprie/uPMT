@@ -8,6 +8,7 @@
         <HBox fx:id="toolBarAnnotation">
             <Button fx:id="buttonAnnotate" text="New Annotation"></Button>
             <Button fx:id="buttonDeleteAnnotate" text="Delete annotation"></Button>
+            <ToggleButton fx:id="toggleButtonMode" text="Analysis mode"></ToggleButton>
         </HBox>
     </top>
     <center>

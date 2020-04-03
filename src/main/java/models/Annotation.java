@@ -29,4 +29,8 @@ public class Annotation extends Fragment {
     public String toString() {
         return super.toString();
     }
+
+    public Descripteme toDescripteme() {
+        return new Descripteme(interviewText, startIndex, endIndex);
+    }
 }

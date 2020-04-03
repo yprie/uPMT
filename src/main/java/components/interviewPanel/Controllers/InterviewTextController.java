@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -29,16 +30,19 @@ public class InterviewTextController implements Initializable {
     @FXML private Button buttonAnnotate;
     @FXML private Button buttonDeleteAnnotate;
     @FXML private StackPane stackPaneInterview;
+    @FXML private ToggleButton toggleButtonMode;
 
     private RichTextAreaController richTextAreaController;
     private Interview interview;
     Pane paneDragText;
     private boolean selectionActive;
+    private boolean analysisMode;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
         selectionActive = false;
         paneDragText = new Pane();
+        analysisMode = false;
     }
 
     public static Node createInterviewTextController(Interview interview) {
@@ -60,6 +64,8 @@ public class InterviewTextController implements Initializable {
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
+        toggleButtonMode.setSelected(false);
+
         buttonAnnotate.setOnMouseClicked(event -> {
             richTextAreaController.annotate();
             hideDnDPane();
@@ -67,6 +73,16 @@ public class InterviewTextController implements Initializable {
         buttonDeleteAnnotate.setOnMouseClicked(event -> {
             richTextAreaController.deleteAnnotation();
             hideDnDPane();
+        });
+
+        toggleButtonMode.setOnAction(event -> {
+            analysisMode = toggleButtonMode.isSelected();
+            if (analysisMode) {
+                richTextAreaController.switchToAnalysisMode();
+            }
+            else {
+                richTextAreaController.switchToAnnotationMode();
+            }
         });
 
         setupDragAndDrop();
@@ -81,7 +97,7 @@ public class InterviewTextController implements Initializable {
         richTextAreaController.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(!richTextAreaController.getSelectedText().isEmpty()) {
+                if(!analysisMode && !richTextAreaController.getSelectedText().isEmpty()) {
                     stackPaneInterview.getChildren().add(paneDragText);
                     selectionActive = true;
                 }
@@ -106,6 +122,7 @@ public class InterviewTextController implements Initializable {
                 int end = start + selectedText.length();
 
                 Descripteme descripteme = new Descripteme(interview.getInterviewText(), start, end);
+                richTextAreaController.addDescripteme(descripteme); // not here, but on dropping
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);
