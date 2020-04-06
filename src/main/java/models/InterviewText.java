@@ -18,6 +18,7 @@ public class InterviewText implements Serializable {
     }
 
     public String getText() { return text; }
+    public SimpleListProperty<Annotation> getAnnotationsProperty() { return annotations; }
 
     public void removeAnnotation(Annotation annotation) {
         annotations.remove(annotation);

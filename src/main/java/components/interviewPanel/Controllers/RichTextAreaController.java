@@ -1,6 +1,8 @@
 package components.interviewPanel.Controllers;
 
-import components.interviewPanel.ModelCommands.addAnnotationCommand;
+import components.interviewPanel.appCommands.AddAnnotationCommand;
+import javafx.collections.ListChangeListener;
+import javafx.collections.WeakListChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
@@ -24,6 +26,18 @@ public class RichTextAreaController {
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private int userCaretPosition;
 
+    private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
+        System.out.println(change);
+        while (change.next()) {
+            for (Annotation removed : change.getRemoved()) {
+                hideHighlightAnnotation(removed);
+            }
+            for (Annotation added : change.getAddedSubList()) {
+                highlightAnnotation(added);
+            }
+        }
+    };
+
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
 
@@ -37,6 +51,8 @@ public class RichTextAreaController {
 
         setUpPopUp();
         setUpMouseEvent();
+
+        this.interviewText.getAnnotationsProperty().addListener(new WeakListChangeListener<>(onAnnotationsChangeListener));
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
@@ -104,13 +120,10 @@ public class RichTextAreaController {
         IndexRange selection = area.getSelection();
         if (selection.getStart() != selection.getEnd()) {
             Annotation a = createAnnotation(selection);
-            highlightAnnotation(a);
             area.deselect();
 
-            addAnnotationCommand cmd = new addAnnotationCommand(a, interviewText);
-            cmd.execute();
+            new AddAnnotationCommand(interviewText, a).execute();
             System.out.println(a);
-
         }
     }
 
@@ -118,11 +131,6 @@ public class RichTextAreaController {
         int i = area.getCaretPosition();
         Annotation a = interviewText.getFirstAnnotationByIndex(i);
         interviewText.removeAnnotation(a);
-        if (a != null) {
-            System.out.println("deleteAnnotation " + i);
-            System.out.println(a);
-            hideHighlightAnnotation(a);
-        }
     }
 
     public String getSelectedText() {
