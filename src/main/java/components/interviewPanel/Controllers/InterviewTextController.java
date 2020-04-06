@@ -122,12 +122,17 @@ public class InterviewTextController implements Initializable {
                 int end = start + selectedText.length();
 
                 Descripteme descripteme = new Descripteme(interview.getInterviewText(), start, end);
-                richTextAreaController.addDescripteme(descripteme); // not here, but on dropping
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);
                 DragStore.setDraggable(descripteme);
                 db.setContent(content);
+            }
+        });
+
+        paneDragText.setOnDragDone(event -> {
+            if (event.isAccepted()) {
+                richTextAreaController.addDescripteme(DragStore.getDraggable());
             }
         });
     }
