@@ -21,6 +21,8 @@ public class MomentSeparatorController {
     private Consumer<ConcreteCategory> onDragDoneCategory = category -> {};
     private Consumer<SchemaCategory> onDragDoneShemaCategory = category -> {};
     private BiConsumer<Moment, RootMoment> onDragMomentDone = (moment, originParentMoment) -> { };
+    private Consumer<TemplateMoment> onDragTemplateMoment = templateMoment -> {};
+
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
         p.getStyleClass().add("moment-dnd-zone");
@@ -63,6 +65,9 @@ public class MomentSeparatorController {
             if( DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Moment.format && active){
                 onDragMomentDone.accept(DragStore.getDraggable(), DragStore.getDoubleObject());
             }
+            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == TemplateMoment.format && active) {
+                onDragTemplateMoment.accept(DragStore.getDraggable());
+            }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
         });
@@ -90,6 +95,11 @@ public class MomentSeparatorController {
     public void setOnDragMomentDone(BiConsumer<Moment, RootMoment>consumer){
         this.onDragMomentDone = consumer;
     }
+
+    public void setOnDragTemplateMomentDone(Consumer<TemplateMoment> consumer) {
+        this.onDragTemplateMoment = consumer;
+    }
+
     public Pane getNode() {
         return p;
     }
@@ -99,6 +109,7 @@ public class MomentSeparatorController {
                 || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
                 || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
                 || DragStore.getDraggable().getDataFormat() == Moment.format
+                || DragStore.getDraggable().getDataFormat() == TemplateMoment.format
 
         );
     }

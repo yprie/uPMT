@@ -141,6 +141,9 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setOnDragMomentDone((moment, originParent) -> {
             childCmdFactory.moveMomentCommand(moment, originParent).execute();
         });
+        separatorBottom.setOnDragTemplateMomentDone(templateMoment -> {
+            childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute();
+        });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
@@ -259,6 +262,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 cmdFactory.moveMomentCommand(m, originParent,index + 1).execute();
             });
 
+            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), 0).execute(); });
+            separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
+
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
             momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
@@ -273,13 +279,16 @@ public class MomentController extends ListViewController<Moment> implements Init
             //Do nothing with the left separator
             separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
             separatorLeft.setOnDragMomentDone((m, factory) -> {});
+            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
                 separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()); });
             }
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
                 separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1); });
             }
 
             //Make moment aligned, no need to understand that !
