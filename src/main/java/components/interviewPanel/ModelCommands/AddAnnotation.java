@@ -16,13 +16,12 @@ public class AddAnnotation extends ModelUserActionCommand<Void, Void> {
     @Override
     public Void execute() {
         interviewText.addAnnotation(annotation);
-        System.out.println("new annotation in interview text");
+        System.out.println(annotation);
         return null;
     }
 
     @Override
     public Void undo() {
-        System.out.println("anotation deletd");
         interviewText.removeAnnotation(annotation);
         return null;
     }

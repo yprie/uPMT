@@ -17,6 +17,8 @@ public class AddAnnotationCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
+        System.out.println("(App) new annotation");
+        System.out.println(annotation);
         AddAnnotation cmd = new AddAnnotation(interviewText, annotation);
         HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
         return null;

@@ -1,5 +1,6 @@
 package models;
 
+import components.interviewPanel.utils.WordStyle;
 import javafx.scene.input.DataFormat;
 import javafx.scene.paint.Color;
 
@@ -21,10 +22,6 @@ public class Annotation extends Fragment {
         return color;
     }
 
-    public String getCSSColor() {
-        return color.toString().replace("0x", "#");
-    }
-
     @Override
     public String toString() {
         return super.toString();
@@ -32,5 +29,9 @@ public class Annotation extends Fragment {
 
     public Descripteme toDescripteme() {
         return new Descripteme(interviewText, startIndex, endIndex);
+    }
+
+    public WordStyle getStyle() {
+        return new WordStyle(false, true, color);
     }
 }

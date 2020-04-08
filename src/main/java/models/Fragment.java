@@ -3,6 +3,8 @@ package models;
 import javafx.scene.input.DataFormat;
 import utils.dragAndDrop.IDraggable;
 
+import java.util.ArrayList;
+
 public class Fragment implements IDraggable {
     public static final DataFormat format = new DataFormat("Fragment");
 
@@ -36,5 +38,16 @@ public class Fragment implements IDraggable {
     @Override
     public String toString() {
         return "Fragment [" + startIndex + ", " + endIndex + "] " + getFragmentText();
+    }
+
+    public ArrayList getWordsIndex() {
+        ArrayList<String> results = new ArrayList<>();
+        for (int i = startIndex; i < endIndex; i++) {
+            String word = interviewText.getWordByIndex(i);
+            if (!results.contains(word)) {
+                results.add(word);
+            }
+        }
+        return results;
     }
 }

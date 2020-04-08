@@ -22,6 +22,7 @@ public class InterviewText implements Serializable {
 
     public void removeAnnotation(Annotation annotation) {
         annotations.remove(annotation);
+        // there is a listener that remove the highlight
     }
 
     public void addAnnotation(Annotation annotation) {
