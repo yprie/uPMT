@@ -1,7 +1,9 @@
 package components.interviewPanel.Controllers;
 
 import components.interviewPanel.appCommands.AddAnnotationCommand;
-import components.interviewPanel.utils.WordStyle;
+import components.interviewPanel.appCommands.RemoveAnnotationCommand;
+import components.interviewPanel.utils.LetterMap;
+import components.interviewPanel.utils.TextStyle;
 import javafx.collections.ListChangeListener;
 import javafx.collections.WeakListChangeListener;
 import javafx.event.EventHandler;
@@ -10,7 +12,6 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
-import javafx.util.Pair;
 import models.Annotation;
 import models.Descripteme;
 import models.Fragment;
@@ -22,35 +23,31 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
-import java.util.HashMap;
 
 public class RichTextAreaController {
     private InlineCssTextArea area;
     private InterviewText interviewText;
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private int userCaretPosition;
-    private HashMap<Pair<Integer, Integer>, WordStyle> wordMap;
+    private LetterMap letterMap;
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
         System.out.println(change);
         while (change.next()) {
             for (Annotation removed : change.getRemoved()) {
-                WordStyle style = wordMap.get(new Pair(removed.getStartIndex(), removed.getEndIndex()));
-                System.out.println("on delete annotation, style : " + style);
-                style.removeAnnotation();
-
-                applyStyle(removed.getStartIndex(), removed.getEndIndex(), style);
+                letterMap.removeAnnotation(removed);
+                applyStyle(removed);
             }
             for (Annotation added : change.getAddedSubList()) {
-                WordStyle annotationStyle = added.getStyle();
-                updateStyleFragment(added, annotationStyle);
+                letterMap.becomeAnnotation(added, added.getColor());
+                applyStyle(added);
             }
         }
     };
 
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
-        this.wordMap = new HashMap();
+        this.letterMap = new LetterMap();
 
         area = new InlineCssTextArea();
         area.setWrapText(true);
@@ -104,63 +101,40 @@ public class RichTextAreaController {
         area.setOnMouseReleased(eventHandler);
     }
 
-    private void updateStyleFragment(Fragment fragment, WordStyle previousStyle) {
-        WordStyle style = previousStyle;
-        WordStyle currentStyle = wordMap.get(new Pair(fragment.getStartIndex(), fragment.getEndIndex()));
-        System.out.println("currentStyle:" + currentStyle);
-        if (currentStyle != null) {
-            style = currentStyle.mergeStyles(previousStyle);
+    private void applyStyle(Fragment fragment) {
+        for (int i = fragment.getStartIndex() ; i < fragment.getEndIndex() ; i++) {
+            TextStyle style = letterMap.getStyleByIndex(i);
+            String css = "";
+            if (style.getIsAnnotation()) {
+                css += "-rtfx-background-color: " + style.getCSSColor() + ";";
+            }
+            if (style.getIsDescripteme()) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1.5;";
+            }
+            area.setStyle(i, i+1, css);
         }
-        System.out.println("finale style " + style);
-        wordMap.put(new Pair(fragment.getStartIndex(), fragment.getEndIndex()), style);
-        applyStyle(fragment.getStartIndex(), fragment.getEndIndex(), style);
-    }
-
-    private void applyStyle(int start, int end, WordStyle style) {
-        String css = "";
-        if (style.getIsAnnotation()) {
-            css += "-rtfx-background-color: " + style.getCSSColor() + ";";
-        }
-        if (style.getIsDescripteme()) {
-            css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1.5;";
-        }
-        area.setStyle(start, end, css);
-    }
-
-    private Annotation createAnnotation(IndexRange selection) {
-        int start = selection.getStart();
-        int end = selection.getEnd();
-        Annotation a = new Annotation(interviewText, start, end, Color.YELLOW);
-        return a;
-    }
-
-    private void hideHighlightAnnotation(Annotation a) {
-        WordStyle style = wordMap.get(new Pair(a.getStartIndex(), a.getEndIndex()));
-        style.removeAnnotation();
-        applyStyle(a.getStartIndex(), a.getEndIndex(), style);
     }
 
     public void annotate() {
         IndexRange selection = area.getSelection();
         if (selection.getStart() != selection.getEnd()) {
-            Annotation a = createAnnotation(selection);
-            area.deselect();
-            System.out.println(a);
+            Annotation annotation = new Annotation(interviewText,
+                    selection.getStart(),
+                    selection.getEnd(),
+                    Color.YELLOW);
+            new AddAnnotationCommand(interviewText, annotation).execute();
+            // there is a listener that apply the style
+            System.out.println(annotation);
 
-            new AddAnnotationCommand(interviewText, a).execute();
-            System.out.println(a);
-            wordMap.put(
-                    new Pair<>(
-                            a.getStartIndex(),
-                            a.getEndIndex()),
-                    new WordStyle(false, true, a.getColor())
-            );
+            area.deselect();
         }
     }
 
     public void deleteAnnotation() {
-        Annotation a = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
-        interviewText.removeAnnotation(a);
+        Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
+        new RemoveAnnotationCommand(interviewText, annotation).execute();
+        // there is a listener that apply the style
+
     }
 
     public String getSelectedText() {
@@ -172,15 +146,8 @@ public class RichTextAreaController {
     }
 
     public void addDescripteme(Descripteme descripteme) {
-        WordStyle style = new WordStyle(true);
-        wordMap.put(
-                new Pair<>(
-                    descripteme.getStartIndex(),
-                    descripteme.getEndIndex()),
-                style
-        );
-        System.out.println("new descripteme at " + descripteme.getStartIndex() + " and " + descripteme.getEndIndex());
-        updateStyleFragment(descripteme, style);
+        letterMap.becomeDescripteme(descripteme);
+        applyStyle(descripteme);
     }
 
     public void switchToAnalysisMode() {

@@ -1,6 +1,6 @@
 package models;
 
-import components.interviewPanel.utils.WordStyle;
+import components.interviewPanel.utils.TextStyle;
 import javafx.scene.input.DataFormat;
 import javafx.scene.paint.Color;
 
@@ -31,7 +31,7 @@ public class Annotation extends Fragment {
         return new Descripteme(interviewText, startIndex, endIndex);
     }
 
-    public WordStyle getStyle() {
-        return new WordStyle(false, true, color);
+    public TextStyle getStyle() {
+        return new TextStyle(false, true, color);
     }
 }

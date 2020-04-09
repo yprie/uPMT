@@ -3,19 +3,25 @@ package components.interviewPanel.utils;
 
 import javafx.scene.paint.Color;
 
-public class WordStyle {
+public class TextStyle {
     private boolean isDescripteme;
     private boolean isAnnotation;
     private Color color;
 
-    public WordStyle(boolean isDescripteme, boolean isAnnotation, Color color) {
+    public TextStyle(boolean isDescripteme, boolean isAnnotation, Color color) {
         this.isDescripteme = isDescripteme;
         this.isAnnotation = isAnnotation;
         this.color = color;
     }
 
-    public WordStyle(boolean isDescripteme) {
+    public TextStyle(boolean isDescripteme) {
         this.isDescripteme = isDescripteme;
+        this.isAnnotation = false;
+        this.color = null;
+    }
+
+    public TextStyle() {
+        this.isDescripteme = false;
         this.isAnnotation = false;
         this.color = null;
     }
@@ -59,9 +65,9 @@ public class WordStyle {
         return color.toString().replace("0x", "#");
     }
 
-    public WordStyle mergeStyles(WordStyle style) {
+    public TextStyle mergeStyles(TextStyle style) {
         // given style is prioritise
-        WordStyle merged = new WordStyle(isDescripteme, isAnnotation, color);
+        TextStyle merged = new TextStyle(isDescripteme, isAnnotation, color);
         if (style.color != null) {
             merged.color = style.color;
         }
