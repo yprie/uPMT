@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import models.Descripteme;
 import models.Interview;
 import utils.dragAndDrop.DragStore;
@@ -27,7 +28,8 @@ import java.util.ResourceBundle;
 public class InterviewTextController implements Initializable {
 
     @FXML private HBox toolBarAnnotation;
-    @FXML private Button buttonAnnotate;
+    @FXML private Button buttonAnnotateYellow;
+    @FXML private Button buttonAnnotateRed;
     @FXML private Button buttonDeleteAnnotate;
     @FXML private StackPane stackPaneInterview;
     @FXML private ToggleButton toggleButtonMode;
@@ -66,8 +68,12 @@ public class InterviewTextController implements Initializable {
 
         toggleButtonMode.setSelected(false);
 
-        buttonAnnotate.setOnMouseClicked(event -> {
-            richTextAreaController.annotate();
+        buttonAnnotateRed.setOnMouseClicked(event -> {
+            richTextAreaController.annotate(Color.RED);
+            hideDnDPane();
+        });
+        buttonAnnotateYellow.setOnMouseClicked(event -> {
+            richTextAreaController.annotate(Color.YELLOW);
             hideDnDPane();
         });
         buttonDeleteAnnotate.setOnMouseClicked(event -> {

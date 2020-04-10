@@ -115,13 +115,13 @@ public class RichTextAreaController {
         }
     }
 
-    public void annotate() {
+    public void annotate(Color color) {
         IndexRange selection = area.getSelection();
         if (selection.getStart() != selection.getEnd()) {
             Annotation annotation = new Annotation(interviewText,
                     selection.getStart(),
                     selection.getEnd(),
-                    Color.YELLOW);
+                    color);
             new AddAnnotationCommand(interviewText, annotation).execute();
             // there is a listener that apply the style
             System.out.println(annotation);
