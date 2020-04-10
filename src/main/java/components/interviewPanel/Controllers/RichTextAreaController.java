@@ -32,7 +32,6 @@ public class RichTextAreaController {
     private LetterMap letterMap;
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
-        System.out.println(change);
         while (change.next()) {
             for (Annotation removed : change.getRemoved()) {
                 letterMap.removeAnnotation(removed);
@@ -82,7 +81,7 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, e -> {
             int chIdx = e.getCharacterIndex();
             Point2D pos = e.getScreenPosition();
-            popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + pos);
+            popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + chIdx);
             popup.show(area, pos.getX(), pos.getY() + 5);
         });
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
@@ -139,6 +138,10 @@ public class RichTextAreaController {
 
     public String getSelectedText() {
         return area.getSelectedText();
+    }
+
+    public IndexRange getSelection() {
+        return area.getSelection();
     }
 
     public void deselect() {

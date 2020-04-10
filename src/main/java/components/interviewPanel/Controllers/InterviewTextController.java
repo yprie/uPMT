@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -123,11 +124,12 @@ public class InterviewTextController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 String text = interview.getInterviewText().getText();
-                String selectedText = richTextAreaController.getSelectedText();
-                int start = text.indexOf(selectedText);
-                int end = start + selectedText.length();
+                IndexRange selectedText = richTextAreaController.getSelection();
 
-                Descripteme descripteme = new Descripteme(interview.getInterviewText(), start, end);
+                Descripteme descripteme = new Descripteme(
+                        interview.getInterviewText(),
+                        selectedText.getStart(),
+                        selectedText.getEnd());
                 Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
                 ClipboardContent content = new ClipboardContent();
                 content.put(descripteme.getDataFormat(), 0);
