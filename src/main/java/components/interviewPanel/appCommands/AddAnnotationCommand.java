@@ -1,6 +1,5 @@
 package components.interviewPanel.appCommands;
 
-import application.history.HistoryManager;
 import components.interviewPanel.ModelCommands.AddAnnotation;
 import models.Annotation;
 import models.InterviewText;
@@ -18,7 +17,10 @@ public class AddAnnotationCommand implements Executable<Void> {
     @Override
     public Void execute() {
         AddAnnotation cmd = new AddAnnotation(interviewText, annotation);
-        HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
+
+        //HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
+        cmd.execute();
+
         return null;
     }
 }
