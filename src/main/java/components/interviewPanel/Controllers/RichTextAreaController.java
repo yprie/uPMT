@@ -28,7 +28,6 @@ public class RichTextAreaController {
     private InlineCssTextArea area;
     private InterviewText interviewText;
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
-    private int userCaretPosition;
     private LetterMap letterMap;
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
@@ -56,7 +55,6 @@ public class RichTextAreaController {
         area.setShowCaret(Caret.CaretVisibility.ON);
 
         setUpPopUp();
-        setUpMouseEvent();
 
         this.interviewText.getAnnotationsProperty().addListener(
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
@@ -78,21 +76,24 @@ public class RichTextAreaController {
         popup.getContent().add(popupMsg);
 
         area.setMouseOverTextDelay(Duration.ofMillis(500));
-        area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, e -> {
-            int chIdx = e.getCharacterIndex();
-            Point2D pos = e.getScreenPosition();
+        area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
+            int chIdx = event.getCharacterIndex();
+            Point2D pos = event.getScreenPosition();
             popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + chIdx);
             popup.show(area, pos.getX(), pos.getY() + 5);
+
+            int userCaretPosition = area.getCaretPosition();
+            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
+            if (descripteme != null)
+                descripteme.getEmphasizeProperty().set(true);
         });
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
             popup.hide();
-        });
-    }
 
-    private void setUpMouseEvent() {
-        area.setOnMousePressed(event -> {
-            userCaretPosition = area.getCaretPosition();
-            //System.out.println("area pressed " + userCaretPosition + " word: " + interviewText.getWordByIndex(userCaretPosition));
+            int userCaretPosition = area.getCaretPosition();
+            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
+            if (descripteme != null)
+                descripteme.getEmphasizeProperty().set(false);
         });
     }
 
@@ -151,6 +152,7 @@ public class RichTextAreaController {
     public void addDescripteme(Descripteme descripteme) {
         letterMap.becomeDescripteme(descripteme);
         applyStyle(descripteme);
+        interviewText.descriptemes.add(descripteme);
     }
 
     public void switchToAnalysisMode() {

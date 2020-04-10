@@ -64,6 +64,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         text.wrappingWidthProperty().set(200);
         /*text.setWrapText(false);*/
         text.textProperty().bind(descripteme.getSelectionProperty());
+        text.underlineProperty().bind(descripteme.getEmphasizeProperty());
 
         ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
         moveLeft.getChildren().add(ShiftController.createShiftController(leftShiftController));
@@ -162,6 +163,5 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     public void updateToolTip() {
         Tooltip.install(text, new Tooltip(descripteme.getSelection()));
     }
-
 
 }

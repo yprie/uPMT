@@ -12,9 +12,12 @@ public class InterviewText implements Serializable {
     private String text;
     private SimpleListProperty<Annotation> annotations;
 
+    public SimpleListProperty<Descripteme> descriptemes; // Dont save this on disk (redundancy)
+
     public InterviewText(String text) {
         this.text = text;
         this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
+        this.descriptemes = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
     public String getText() { return text; }
@@ -41,7 +44,7 @@ public class InterviewText implements Serializable {
 
     public Annotation getFirstAnnotationByIndex(int index) {
         ArrayList<Annotation> foundAnnotations = new ArrayList<Annotation>();
-        for (Annotation annotation : annotations) {
+        for (Annotation annotation : this.annotations) {
             if (annotation.getStartIndex() < index && index < annotation.getEndIndex()) {
                 foundAnnotations.add(annotation);
             }
@@ -54,6 +57,22 @@ public class InterviewText implements Serializable {
         }
     }
 
+    public Descripteme getFirstDescriptemeByIndex(int index) {
+        ArrayList<Descripteme> foundDescriptemes = new ArrayList<Descripteme>();
+        for (Descripteme descripteme : this.descriptemes) {
+            if (descripteme.getStartIndex() < index && index < descripteme.getEndIndex()) {
+                foundDescriptemes.add(descripteme);
+            }
+        }
+        if (!foundDescriptemes.isEmpty()) {
+            return foundDescriptemes.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+
     public String getWordByIndex(int index) {
         int end = text.indexOf(" ", index);
         int start = text.lastIndexOf(" ", index);
@@ -65,4 +84,5 @@ public class InterviewText implements Serializable {
         }
         return text.substring(start, end);
     }
+
 }
