@@ -1,7 +1,9 @@
 package utils;
 
-import models.RootMoment;
-import models.SchemaTreeRoot;
+import models.*;
+
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class GlobalVariables {
     /*
@@ -32,5 +34,45 @@ public class GlobalVariables {
     }
     public static RootMoment getRootMoment() {
         return rootMoment;
+    }
+
+
+    public ArrayList<Descripteme> getAllDescriteme() {
+        ArrayList<Descripteme> result = new ArrayList<Descripteme>();
+        for (Moment subMoment : rootMoment.momentsProperty()) {
+            computeMoment(subMoment, result);
+            iterateOverSubMoment(subMoment, result);
+        }
+        return result;
+    }
+
+    private void iterateOverSubMoment(Moment moment, ArrayList<Descripteme> result) {
+        for(Moment subMoment: moment.momentsProperty()) {
+            computeMoment(subMoment, result);
+            iterateOverSubMoment(subMoment, result);
+        }
+    }
+
+    private void computeMoment(Moment moment, ArrayList<Descripteme> result) {
+        // Add the descriptems of the moment
+        for (ListIterator<Descripteme> it = moment.getJustification().descriptemesProperty().listIterator(); it.hasNext(); ) {
+            Descripteme descripteme = it.next();
+            result.add(descripteme);
+        }
+
+        for (ListIterator<ConcreteCategory> itCategory = moment.concreteCategoriesProperty().listIterator(); itCategory.hasNext(); ) {
+            ConcreteCategory concreteCategory = itCategory.next();
+            for (ListIterator<Descripteme> itDescripteme = concreteCategory.getJustification().descriptemesProperty().listIterator(); itDescripteme.hasNext(); ) {
+                Descripteme descripteme = itDescripteme.next();
+                result.add(descripteme);
+            }
+            for (ListIterator<ConcreteProperty> itProperty = concreteCategory.propertiesProperty().listIterator(); itProperty.hasNext(); ) {
+                ConcreteProperty concreteProperty = itProperty.next();
+                for (ListIterator<Descripteme> itDescripteme = concreteProperty.getJustification().descriptemesProperty().listIterator(); itDescripteme.hasNext(); ) {
+                    Descripteme descripteme = itDescripteme.next();
+                    result.add(descripteme);
+                }
+            }
+        }
     }
 }

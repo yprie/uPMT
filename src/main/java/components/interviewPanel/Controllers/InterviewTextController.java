@@ -1,6 +1,7 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,10 +21,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import models.Descripteme;
 import models.Interview;
+import utils.GlobalVariables;
 import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class InterviewTextController implements Initializable {
@@ -93,6 +96,15 @@ public class InterviewTextController implements Initializable {
         });
 
         setupDragAndDrop();
+
+        Platform.runLater(this::initializeDescripteme);
+    }
+
+    private void initializeDescripteme() {
+        ArrayList<Descripteme> descriptemes = GlobalVariables.getGlobalVariables().getAllDescriteme();
+        for (Descripteme descripteme: descriptemes) {
+            richTextAreaController.addDescripteme(descripteme);
+        }
     }
 
     private void setupDragAndDrop() {

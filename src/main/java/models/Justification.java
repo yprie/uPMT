@@ -1,6 +1,5 @@
 package models;
 
-import models.Descripteme;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
