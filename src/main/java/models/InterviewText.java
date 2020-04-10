@@ -27,6 +27,16 @@ public class InterviewText implements Serializable {
 
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
+
+        Annotation annotationToCutBefore = getFirstAnnotationByIndex(annotation.startIndex);
+        if (annotationToCutBefore != null)
+            annotationToCutBefore.setEndIndex(annotation.startIndex);
+
+        Annotation annotationToCutAfter = getFirstAnnotationByIndex(annotation.endIndex);
+        if (annotationToCutAfter != null)
+            annotationToCutAfter.setStartIndex(annotation.endIndex);
+
+        // TODO: delete an annotation that is inside the new annotation
     }
 
     public Annotation getFirstAnnotationByIndex(int index) {

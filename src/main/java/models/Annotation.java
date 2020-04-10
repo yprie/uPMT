@@ -13,6 +13,9 @@ public class Annotation extends Fragment {
         color = c;
     }
 
+    public void setStartIndex(int start) { startIndex = start; }
+    public void setEndIndex(int end) { endIndex = end; }
+
     @Override
     public DataFormat getDataFormat() {
         return format;
