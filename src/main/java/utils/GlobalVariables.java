@@ -1,23 +1,23 @@
-package utils.autoSuggestion;
+package utils;
 
 import models.RootMoment;
 import models.SchemaTreeRoot;
 
-public class AutoSuggestions {
+public class GlobalVariables {
     /*
-    A class used by the suggestion strategies.
+    A class used by the suggestion strategies and for links between interview and modeling space
     This is a singleton.
      */
 
-    private static final AutoSuggestions autoSuggestions = new AutoSuggestions();
+    private static final GlobalVariables globalVariables = new GlobalVariables();
 
     private static SchemaTreeRoot root;
     private static RootMoment rootMoment;
 
-    private AutoSuggestions() {} // private constructor
+    private GlobalVariables() {} // private constructor
 
-    public static AutoSuggestions getAutoSuggestions() {
-        return autoSuggestions;
+    public static GlobalVariables getGlobalVariables() {
+        return globalVariables;
     }
 
     public void setSchemaTreeRoot(SchemaTreeRoot root) {

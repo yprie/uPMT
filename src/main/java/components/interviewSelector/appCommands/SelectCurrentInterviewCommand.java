@@ -3,7 +3,7 @@ package components.interviewSelector.appCommands;
 import application.history.HistoryManager;
 import models.Project;
 import models.Interview;
-import utils.autoSuggestion.AutoSuggestions;
+import utils.GlobalVariables;
 
 public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void> {
 
@@ -20,7 +20,7 @@ public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void
     public Void execute() {
         HistoryManager.addCommand(new components.interviewSelector.modelCommands.SelectCurrentInterviewCommand(project, interview), addToCommandHistory);
         if (interview != null)
-            AutoSuggestions.getAutoSuggestions().setRootMoment(interview.getRootMoment());
+            GlobalVariables.getGlobalVariables().setRootMoment(interview.getRootMoment());
         return null;
     }
 }
