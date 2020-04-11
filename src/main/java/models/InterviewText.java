@@ -12,7 +12,8 @@ public class InterviewText implements Serializable {
     private String text;
     private SimpleListProperty<Annotation> annotations;
 
-    public SimpleListProperty<Descripteme> descriptemes; // Dont save this on disk (redundancy)
+    // Dont save this on disk (redundancy)
+    private SimpleListProperty<Descripteme> descriptemes;
 
     public InterviewText(String text) {
         this.text = text;
@@ -22,6 +23,7 @@ public class InterviewText implements Serializable {
 
     public String getText() { return text; }
     public SimpleListProperty<Annotation> getAnnotationsProperty() { return annotations; }
+    public SimpleListProperty<Descripteme> getDescriptemesProperty() { return descriptemes; }
 
     public void removeAnnotation(Annotation annotation) {
         annotations.remove(annotation);

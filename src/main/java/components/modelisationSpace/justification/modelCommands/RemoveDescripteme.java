@@ -3,6 +3,7 @@ package components.modelisationSpace.justification.modelCommands;
 import application.history.ModelUserActionCommand;
 import models.Descripteme;
 import models.Justification;
+import utils.GlobalVariables;
 
 public class RemoveDescripteme extends ModelUserActionCommand<Void, Void> {
 
@@ -19,12 +20,14 @@ public class RemoveDescripteme extends ModelUserActionCommand<Void, Void> {
     public Void execute() {
         index = this.justification.indexOf(descripteme);
         this.justification.removeDescripteme(descripteme);
+        GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }
 
     @Override
     public Void undo() {
         this.justification.addDescripteme(descripteme, index);
+        GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }
 }

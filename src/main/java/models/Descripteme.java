@@ -8,9 +8,9 @@ public class Descripteme extends Fragment {
 
     public static final DataFormat format = new DataFormat("Descripteme");
 
-    private SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
+    private final SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
 
-    private SimpleBooleanProperty emphasize; // don't save this on disk
+    private final SimpleBooleanProperty emphasize; // don't save this on disk
 
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
         super(interviewText, startIndex, endIndex);
@@ -45,8 +45,8 @@ public class Descripteme extends Fragment {
     }
 
     public void modifyIndex(int start, int end) {
-        startIndex = start;
-        endIndex = end;
+        startIndex = start == -1 ? 0 : start;
+        endIndex = Math.min(end, interviewText.getText().length());
         this.descripteme.set(getSelection());
     }
 

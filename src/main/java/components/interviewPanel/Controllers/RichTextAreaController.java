@@ -21,6 +21,7 @@ import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
+import utils.GlobalVariables;
 
 import java.time.Duration;
 
@@ -42,6 +43,19 @@ public class RichTextAreaController {
             }
         }
     };
+    private ListChangeListener<Descripteme> onDescriptemeChangeListener = change -> {
+        System.out.println("\n" + change + "\n");
+        while (change.next()) {
+            for (Descripteme removed : change.getRemoved()) {
+                letterMap.removeDescripteme(removed);
+                applyStyle(removed);
+            }
+            for (Descripteme added : change.getAddedSubList()) {
+                letterMap.becomeDescripteme(added);
+                applyStyle(added);
+            }
+        }
+    };
 
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
@@ -58,6 +72,12 @@ public class RichTextAreaController {
 
         this.interviewText.getAnnotationsProperty().addListener(
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
+        this.interviewText.getDescriptemesProperty().addListener(
+                new WeakListChangeListener<>(onDescriptemeChangeListener));
+
+        GlobalVariables.getGlobalVariables()
+                .getDescriptemeChangedProperty()
+                .addListener(newValue -> { this.updateDescripteme(); });
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
@@ -95,6 +115,16 @@ public class RichTextAreaController {
             if (descripteme != null)
                 descripteme.getEmphasizeProperty().set(false);
         });
+    }
+
+    private void updateDescripteme() {
+        Descripteme changedDescripteme = GlobalVariables.getGlobalVariables()
+                .getDescriptemeChangedProperty().getValue();
+        System.out.println("121 changed descripteme : " + changedDescripteme);
+        if (!GlobalVariables.getGlobalVariables().getAllDescriteme().contains(changedDescripteme)) {
+            // the change is a deletion of the descripteme
+            interviewText.getDescriptemesProperty().remove(changedDescripteme);
+        }
     }
 
     public void setOnMouseReleased(EventHandler eventHandler) {
@@ -150,9 +180,7 @@ public class RichTextAreaController {
     }
 
     public void addDescripteme(Descripteme descripteme) {
-        letterMap.becomeDescripteme(descripteme);
-        applyStyle(descripteme);
-        interviewText.descriptemes.add(descripteme);
+        interviewText.getDescriptemesProperty().add(descripteme);
     }
 
     public void switchToAnalysisMode() {

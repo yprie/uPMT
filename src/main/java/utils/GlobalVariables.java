@@ -1,5 +1,7 @@
 package utils;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableObjectValue;
 import models.*;
 
 import java.util.ArrayList;
@@ -15,6 +17,9 @@ public class GlobalVariables {
 
     private static SchemaTreeRoot root;
     private static RootMoment rootMoment;
+
+    private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
+
 
     private GlobalVariables() {} // private constructor
 
@@ -36,6 +41,13 @@ public class GlobalVariables {
         return rootMoment;
     }
 
+    public void setDescriptemeChanged(Descripteme descripteme) {
+        System.out.println("49 changed descripteme : " + descripteme);
+        changedDescripteme.set(descripteme);
+    }
+    public ObservableObjectValue<Descripteme> getDescriptemeChangedProperty() {
+        return changedDescripteme;
+    }
 
     public ArrayList<Descripteme> getAllDescriteme() {
         ArrayList<Descripteme> result = new ArrayList<Descripteme>();
