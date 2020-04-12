@@ -309,7 +309,7 @@ public class MomentController extends ListViewController<Moment> implements Init
                     && justificationController.acceptDescripteme(DragStore.getDraggable())
                 ) {
                     categoryDropper.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 //Simple Schema Category
                 else if (

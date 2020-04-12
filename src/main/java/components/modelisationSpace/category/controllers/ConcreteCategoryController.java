@@ -120,7 +120,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
             ){
                 if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
                     container.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 else {
                     dragEvent.acceptTransferModes(TransferMode.NONE);

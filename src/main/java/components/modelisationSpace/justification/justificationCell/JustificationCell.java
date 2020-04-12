@@ -103,10 +103,20 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     private void setupDnd() {
         container.setOnDragDetected(mouseEvent -> {
-            Dragboard db = container.startDragAndDrop(TransferMode.MOVE);
+            Dragboard db;
+            Descripteme d;
+            if(mouseEvent.isShiftDown()) {
+                db = container.startDragAndDrop(TransferMode.COPY);
+                d = descripteme.duplicate();
+            }
+            else {
+                db = container.startDragAndDrop(TransferMode.MOVE);
+                d = descripteme;
+            }
+
             ClipboardContent content = new ClipboardContent();
             content.put(descripteme.getDataFormat(), 0);
-            DragStore.setDraggable(descripteme);
+            DragStore.setDraggable(d);
             db.setContent(content);
 
             container.setStyle("-fx-background-color: #bdc3c7;");
