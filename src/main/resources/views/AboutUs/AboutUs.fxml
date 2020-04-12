@@ -33,7 +33,7 @@
                 </Label>
             </center>
          <top>
-            <Label text="Current version : 0.3" BorderPane.alignment="CENTER">
+            <Label text="Current version : 0.4" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="15.0" />
                </BorderPane.margin>
