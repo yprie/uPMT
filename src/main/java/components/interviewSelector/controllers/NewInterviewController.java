@@ -1,5 +1,7 @@
 package components.interviewSelector.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import models.Interview;
 import application.configuration.Configuration;
 import models.InterviewText;
@@ -33,10 +35,11 @@ public class NewInterviewController implements Initializable {
     private File chosenFile;
     @FXML private TextField participantName;
     @FXML private Label chosenFilename;
-    @FXML private Label interviewTitle;
+    @FXML private TextField interviewTitle;
     @FXML private Label interviewTextExtract;
     @FXML private DatePicker interviewDate;
     @FXML private TextArea interviewComment;
+    @FXML private TextArea textPreview;
     @FXML private Button validateButton;
 
     public static NewInterviewController createNewInterview() {
@@ -73,6 +76,13 @@ public class NewInterviewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         validateButton.setDisable(true);
         validateForm();
+
+        textPreview.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
+                validateForm();
+            }
+        });
     }
 
     @FXML
@@ -80,7 +90,7 @@ public class NewInterviewController implements Initializable {
         if (validateForm()) {
 
             String res = "error during text loading !";
-            byte[] data = new byte[(int) chosenFile.length()];
+            //byte[] data = new byte[(int) chosenFile.length()];
             try {
                 res = readFile(chosenFile);
             } catch (IOException e) {
@@ -133,8 +143,10 @@ public class NewInterviewController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(res.length() > 0)
-                interviewTextExtract.setText(res.substring(0, Math.min(res.length(),100)) + " ...");
+            if(res.length() > 0) {
+                //interviewTextExtract.setText(res.substring(0, Math.min(res.length(), 100)) + " ...");
+                textPreview.setText(res);
+            }
         }
         else {
             chosenFilename.setText("/");
@@ -145,7 +157,7 @@ public class NewInterviewController implements Initializable {
 
     // Helpers:
     private boolean validateForm() {
-        boolean formIsValide = (!participantName.getText().equals("") && chosenFile != null);
+        boolean formIsValide = (!participantName.getText().equals("") && (chosenFile != null || !textPreview.getText().isEmpty()));
         validateButton.setDisable(!formIsValide);
         return formIsValide;
     }
@@ -175,13 +187,17 @@ public class NewInterviewController implements Initializable {
 
     public String readFile(File file) throws IOException  {
         String content = "";
-
         // Ok for utf-8 encoded files, but problems with line ending
-        FileInputStream fis = new FileInputStream(chosenFile);
-        //fis.read(data);
-        byte[] bytes = fis.readAllBytes();
-        content = new String(bytes, "UTF-8");
-        fis.close();
+        if (chosenFile!=null) {
+            FileInputStream fis = new FileInputStream(chosenFile);
+            //fis.read(data);
+            byte[] bytes = fis.readAllBytes();
+            content = new String(bytes, "UTF-8");
+            fis.close();
+        }
+        else
+            content = textPreview.getText();
+
         content = content.replaceAll("\\r\\n", "\n");
         content = content.replaceAll("\\r", "\n");
 

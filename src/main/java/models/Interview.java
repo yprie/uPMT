@@ -19,7 +19,14 @@ public class Interview implements Serializable {
     }
 
     public String getParticipantName() { return this.participantName; }
+    public void setParticipantName(String participantName) { this.participantName = participantName; }
+
     public LocalDate getDate() { return this.date; }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public InterviewText getInterviewText() { return this.interviewText; }
 
     public String getComment() { return this.comment; }

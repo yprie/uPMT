@@ -1,5 +1,6 @@
 package components.interviewSelector.controllers;
 
+import javafx.beans.value.ObservableValue;
 import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
@@ -34,18 +35,21 @@ public class InterviewSelectorCellController implements Initializable {
         pictureView.setImage(ResourceLoader.loadImage("category.png"));
 
         name.setText(interview.getTitle());
-
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        deleteButton.setOnAction(actionEvent -> { commandFactory.deleteInterview(interview).execute(); });
-        optionsMenu.getItems().add(deleteButton);
+        MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
 
-        //TODO: show/modify an interview
-        //MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
+        deleteButton.setOnAction(actionEvent -> { commandFactory.deleteInterview(interview).execute(); });
+        editButton.setOnAction(actionEvent -> {commandFactory.modifyInterview(interview).execute();});
+
+        optionsMenu.getItems().add(editButton);
+        optionsMenu.getItems().add(deleteButton);
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
             if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
         });
+
+
     }
 
     public void setOnHover(boolean YoN) {
