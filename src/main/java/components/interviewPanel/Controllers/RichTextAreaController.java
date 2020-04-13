@@ -4,12 +4,16 @@ import components.interviewPanel.appCommands.AddAnnotationCommand;
 import components.interviewPanel.appCommands.RemoveAnnotationCommand;
 import components.interviewPanel.utils.LetterMap;
 import components.interviewPanel.utils.TextStyle;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.WeakListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
@@ -27,9 +31,13 @@ import java.time.Duration;
 
 public class RichTextAreaController {
     private InlineCssTextArea area;
+    private ContextMenu menu;
+    private MenuItem deleteAnnotationMenuItem;
+
     private InterviewText interviewText;
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private LetterMap letterMap;
+    private SimpleObjectProperty<IndexRange> userSelection;
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
         while (change.next()) {
@@ -44,7 +52,6 @@ public class RichTextAreaController {
         }
     };
     private ListChangeListener<Descripteme> onDescriptemeChangeListener = change -> {
-        System.out.println("\n" + change + "\n");
         while (change.next()) {
             for (Descripteme removed : change.getRemoved()) {
                 letterMap.removeDescripteme(removed);
@@ -60,7 +67,7 @@ public class RichTextAreaController {
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
         this.letterMap = new LetterMap();
-
+        userSelection = new SimpleObjectProperty<>();
         area = new InlineCssTextArea();
         area.setWrapText(true);
         area.setEditable(false);
@@ -68,7 +75,14 @@ public class RichTextAreaController {
         area.appendText(interviewText.getText());
         area.setShowCaret(Caret.CaretVisibility.ON);
 
+        setUpMenu();
         setUpPopUp();
+        area.setOnMouseReleased(event -> {
+            userSelection.set(new IndexRange(
+                    area.getSelection().getStart(),
+                    area.getSelection().getEnd()
+            ));
+        });
 
         this.interviewText.getAnnotationsProperty().addListener(
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
@@ -78,12 +92,6 @@ public class RichTextAreaController {
         GlobalVariables.getGlobalVariables()
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> { this.updateDescripteme(); });
-    }
-
-    public VirtualizedScrollPane<InlineCssTextArea> getNode() {
-        VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(area);
-        this.vsPane = vsPane;
-        return vsPane;
     }
 
     private void setUpPopUp() {
@@ -97,18 +105,15 @@ public class RichTextAreaController {
 
         area.setMouseOverTextDelay(Duration.ofMillis(500));
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
-            //int chIdx = event.getCharacterIndex();
             Point2D pos = event.getScreenPosition();
-            //popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + chIdx);
 
             Annotation annotation = interviewText.getFirstAnnotationByIndex(event.getCharacterIndex());
-            if (annotation != null)
+            if (annotation != null) {
                 popupMsg.setText(annotation.toString());
-            else
-                popupMsg.setText("");
+                popup.show(area, pos.getX(), pos.getY() + 5);
+            }
 
-            popup.show(area, pos.getX(), pos.getY() + 5);
-
+            // emphasize descripteme in modeling space
             int userCaretPosition = area.getCaretPosition();
             Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
             if (descripteme != null)
@@ -117,6 +122,7 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
             popup.hide();
 
+            // de emphasize descripteme in modeling space
             int userCaretPosition = area.getCaretPosition();
             Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
             if (descripteme != null)
@@ -124,18 +130,45 @@ public class RichTextAreaController {
         });
     }
 
+    private  void setUpMenu() {
+        menu = new ContextMenu();
+        deleteAnnotationMenuItem = new MenuItem("Delete annotation");
+        deleteAnnotationMenuItem.setOnAction(event -> {
+            deleteAnnotation(userSelection.get().getStart());
+        });
+        //deleteAnnotationMenuItem.setDisable(true);
+        menu.getItems().add(deleteAnnotationMenuItem);
+        area.setContextMenu(menu);
+        area.setContextMenuXOffset(0);
+        area.setContextMenuYOffset(0);
+        menu.setOnShowing(e -> {
+            System.out.println("showing");
+        });
+        menu.setOnShown(e -> {
+            System.out.println("shown");
+        });
+
+        MenuItem item1 = new MenuItem("Blue");
+        item1.setOnAction(new EventHandler<>() {
+            public void handle(ActionEvent e) {
+                System.out.println("blue");
+                if (!area.getSelectedText().isEmpty()) {
+                    annotate(Color.BLUE,
+                            userSelection.get().getStart(),
+                            userSelection.get().getEnd());
+                }
+            }
+        });
+        menu.getItems().add(item1);
+    }
+
     private void updateDescripteme() {
         Descripteme changedDescripteme = GlobalVariables.getGlobalVariables()
                 .getDescriptemeChangedProperty().getValue();
-        System.out.println("121 changed descripteme : " + changedDescripteme);
         if (!GlobalVariables.getGlobalVariables().getAllDescriteme().contains(changedDescripteme)) {
             // the change is a deletion of the descripteme
             interviewText.getDescriptemesProperty().remove(changedDescripteme);
         }
-    }
-
-    public void setOnMouseReleased(EventHandler eventHandler) {
-        area.setOnMouseReleased(eventHandler);
     }
 
     private void applyStyle(Fragment fragment) {
@@ -152,17 +185,25 @@ public class RichTextAreaController {
         }
     }
 
+    private void annotate(Color color, Integer start, Integer end) {
+        Annotation annotation = new Annotation(interviewText,
+                start,
+                end,
+                color);
+        new AddAnnotationCommand(interviewText, annotation).execute();
+    }
+
+    private void deleteAnnotation(Integer index) {
+        Annotation annotation = interviewText.getFirstAnnotationByIndex(index);
+        new RemoveAnnotationCommand(interviewText, annotation).execute();
+        // there is a listener that apply the style
+    }
+
+
     public void annotate(Color color) {
         IndexRange selection = area.getSelection();
         if (selection.getStart() != selection.getEnd()) {
-            Annotation annotation = new Annotation(interviewText,
-                    selection.getStart(),
-                    selection.getEnd(),
-                    color);
-            new AddAnnotationCommand(interviewText, annotation).execute();
-            // there is a listener that apply the style
-            System.out.println(annotation);
-
+            annotate(color, selection.getStart(), selection.getEnd());
             area.deselect();
         }
     }
@@ -171,7 +212,6 @@ public class RichTextAreaController {
         Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
         new RemoveAnnotationCommand(interviewText, annotation).execute();
         // there is a listener that apply the style
-
     }
 
     public String getSelectedText() {
@@ -180,6 +220,16 @@ public class RichTextAreaController {
 
     public IndexRange getSelection() {
         return area.getSelection();
+    }
+
+    public VirtualizedScrollPane<InlineCssTextArea> getNode() {
+        VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(area);
+        this.vsPane = vsPane;
+        return vsPane;
+    }
+
+    public SimpleObjectProperty<IndexRange> getUserSelection() {
+        return userSelection;
     }
 
     public void deselect() {
