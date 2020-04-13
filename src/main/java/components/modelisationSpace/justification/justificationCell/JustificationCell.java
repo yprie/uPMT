@@ -1,6 +1,7 @@
 package components.modelisationSpace.justification.justificationCell;
 
 import application.configuration.Configuration;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
@@ -128,7 +129,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
                 RemoveDescriptemeCommand c = factory.removeDescripteme(DragStore.getDraggable());
                 c.isNotUserAction();
-                c.execute();
+                Platform.runLater(c::execute);
             }
             dragEvent.consume();
         });
