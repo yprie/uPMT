@@ -26,6 +26,7 @@ public class EditInterviewCommand extends ModelUserActionCommand<Void, Void> {
         interview.setDate(oldDate);
         interview.setParticipantName(oldParticipantName);
         interview.setComment(oldComment);
+        interview.updateTitle();
         return null;
     }
 
@@ -37,6 +38,7 @@ public class EditInterviewCommand extends ModelUserActionCommand<Void, Void> {
         interview.setDate(newDate);
         interview.setParticipantName(newParticipantName);
         interview.setComment(newComment);
+        interview.updateTitle();
         return null;
     }
 }

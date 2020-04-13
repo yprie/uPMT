@@ -35,7 +35,7 @@ public class NewInterviewController implements Initializable {
     private File chosenFile;
     @FXML private TextField participantName;
     @FXML private Label chosenFilename;
-    @FXML private TextField interviewTitle;
+    @FXML private Label interviewTitle;
     @FXML private Label interviewTextExtract;
     @FXML private DatePicker interviewDate;
     @FXML private TextArea interviewComment;

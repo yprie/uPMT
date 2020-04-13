@@ -21,9 +21,9 @@
         </HBox>
         <GridPane prefHeight="553.0" prefWidth="706.0" vgap="20.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="113.19999999999999" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="215.19999999999996" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="308.2000000000001" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="135.6" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="185.20000000000002" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="290.80000000000007" />
             <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
@@ -47,14 +47,15 @@
                 </font>
                 
             </Label>
-            <TextField fx:id="interviewTitle" disable="true" editable="false" prefHeight="34.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+<!--            disable="true" editable="false"-->
+            <Label fx:id="interviewTitle" prefHeight="34.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
                 <GridPane.margin>
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
                 <font>
                     <Font size="16.0" />
                 </font>
-            </TextField>
+            </Label>
             <Label id="particip" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="151.0" text="%participants" textAlignment="RIGHT" GridPane.rowIndex="1">
                 <font>
                     <Font size="16.0" />
@@ -95,12 +96,17 @@
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </TextArea>
+            <Label alignment="TOP_RIGHT" prefHeight="229.0" prefWidth="215.0" text="%interview" textAlignment="RIGHT" GridPane.rowIndex="5">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
               <Label fx:id="interviewTextExtract" prefHeight="48.0" prefWidth="136.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
                   <opaqueInsets>
                       <Insets left="10.0" />
                   </opaqueInsets>
               </Label>
-         <TextArea fx:id="textPreview" prefHeight="230.0" prefWidth="561.0" GridPane.columnSpan="3" GridPane.rowIndex="5">
+         <TextArea fx:id="textPreview" prefHeight="230.0" prefWidth="561.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>

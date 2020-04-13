@@ -1,16 +1,11 @@
 package components.interviewSelector.controllers;
 
 import application.configuration.Configuration;
-import application.project.controllers.SaveAsProjectController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -21,15 +16,14 @@ import utils.DialogState;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.EventListener;
 import java.util.ResourceBundle;
 
 public class ModifyInterviewController implements Initializable {
     @FXML private TextField participantName;
     @FXML private DatePicker interviewDate;
     @FXML private TextArea interviewComment;
-    @FXML private TextField interviewTitle;
-    @FXML private TextArea textPreview;
+    @FXML private Label interviewTitle;
+    @FXML private Label textPreview;
     @FXML private Button validateButton;
     private Interview currentInterview;
     private DialogState state;
@@ -63,7 +57,6 @@ public class ModifyInterviewController implements Initializable {
            stage.setScene(main);
            return controller;
        } catch (IOException e) {
-           // TODO Exit Program
            e.printStackTrace();
        }
        return null;
@@ -73,8 +66,8 @@ public class ModifyInterviewController implements Initializable {
         participantName.textProperty().addListener((observable, oldValue, newValue) -> {
             interviewTitle.setText(getTitle(newValue, interviewDate.getValue()));
         });
-        interviewDate.valueProperty().addListener((observableValue, localDate, t1) ->
-                interviewTitle.setText(getTitle(participantName.getText(), t1)));
+        interviewDate.valueProperty().addListener((observableValue, oldValue, newValue) ->
+                interviewTitle.setText(getTitle(participantName.getText(), newValue)));
     }
 
     public void initData(){
@@ -102,9 +95,6 @@ public class ModifyInterviewController implements Initializable {
     @FXML
     public void modifyInterview(){
         state = DialogState.SUCCESS;
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(Configuration.langBundle.getString("save_modification"));
-        alert.showAndWait();
         stage.close();
     }
     @FXML
