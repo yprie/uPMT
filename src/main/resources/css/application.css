@@ -191,9 +191,9 @@
     -fx-border-radius:3;
 }
 
-.momentCard:hover {
+/*.momentCard:hover {
     -fx-cursor: move;
-}
+}*/
 
 .categoryCard {
     -fx-background-color: #ffeaa7;
