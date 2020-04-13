@@ -97,9 +97,16 @@ public class RichTextAreaController {
 
         area.setMouseOverTextDelay(Duration.ofMillis(500));
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
-            int chIdx = event.getCharacterIndex();
+            //int chIdx = event.getCharacterIndex();
             Point2D pos = event.getScreenPosition();
-            popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + chIdx);
+            //popupMsg.setText("Character '" + area.getText(chIdx, chIdx+1) + "' at " + chIdx);
+
+            Annotation annotation = interviewText.getFirstAnnotationByIndex(event.getCharacterIndex());
+            if (annotation != null)
+                popupMsg.setText(annotation.toString());
+            else
+                popupMsg.setText("");
+
             popup.show(area, pos.getX(), pos.getY() + 5);
 
             int userCaretPosition = area.getCaretPosition();

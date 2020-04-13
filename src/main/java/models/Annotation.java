@@ -13,8 +13,18 @@ public class Annotation extends Fragment {
         color = c;
     }
 
-    public void setStartIndex(int start) { startIndex = start; }
-    public void setEndIndex(int end) { endIndex = end; }
+    public void setStartIndex(int start) {
+        if (start > endIndex) {
+            throw new IllegalArgumentException("Annotation start index can't be after end index");
+        }
+        startIndex = start;
+    }
+    public void setEndIndex(int end) {
+        if (end < startIndex) {
+            throw new IllegalArgumentException("Annotation end index can't be before start index");
+        }
+        endIndex = end;
+    }
 
     @Override
     public DataFormat getDataFormat() {
