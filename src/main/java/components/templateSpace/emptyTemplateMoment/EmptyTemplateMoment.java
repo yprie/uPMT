@@ -12,6 +12,6 @@ public class EmptyTemplateMoment extends TemplateMoment {
 
     @Override
     public Moment createConcreteMoment() {
-        return new Moment(nameProperty().getName());
+        return new Moment(nameProperty().get());
     }
 }

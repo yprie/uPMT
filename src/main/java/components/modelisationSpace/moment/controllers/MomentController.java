@@ -289,7 +289,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
                 separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
-                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1); });
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
             }
 
             //Make moment aligned, no need to understand that !
