@@ -38,6 +38,7 @@ public class RichTextAreaController {
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private LetterMap letterMap;
     private SimpleObjectProperty<IndexRange> userSelection;
+    private Descripteme emphazedDescripteme;
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
         while (change.next()) {
@@ -114,19 +115,20 @@ public class RichTextAreaController {
             }
 
             // emphasize descripteme in modeling space
-            int userCaretPosition = area.getCaretPosition();
-            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
-            if (descripteme != null)
+            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(event.getCharacterIndex());
+            if (descripteme != null) {
                 descripteme.getEmphasizeProperty().set(true);
+                emphazedDescripteme = descripteme;
+            }
         });
-        area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, e -> {
+        area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, event -> {
             popup.hide();
 
             // de emphasize descripteme in modeling space
-            int userCaretPosition = area.getCaretPosition();
-            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(userCaretPosition);
-            if (descripteme != null)
-                descripteme.getEmphasizeProperty().set(false);
+            if (emphazedDescripteme != null) {
+                emphazedDescripteme.getEmphasizeProperty().set(false);
+                emphazedDescripteme = null;
+            }
         });
     }
 
