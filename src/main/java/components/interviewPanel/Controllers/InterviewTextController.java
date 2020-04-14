@@ -10,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.ClipboardContent;
@@ -34,11 +33,12 @@ import java.util.ResourceBundle;
 public class InterviewTextController implements Initializable {
 
     @FXML private HBox toolBarAnnotation;
-    @FXML private Button buttonAnnotateYellow;
-    @FXML private Button buttonAnnotateRed;
-    @FXML private Button buttonDeleteAnnotate;
+    @FXML private ToggleButton buttonAnnotateYellow;
+    @FXML private ToggleButton buttonAnnotateRed;
+    @FXML private ToggleButton buttonAnnotateBlue;
+    //@FXML private Button buttonDeleteAnnotate;
     @FXML private StackPane stackPaneInterview;
-    @FXML private ToggleButton toggleButtonMode;
+    //@FXML private ToggleButton toggleButtonMode;
 
     private RichTextAreaController richTextAreaController;
     private Interview interview;
@@ -70,21 +70,47 @@ public class InterviewTextController implements Initializable {
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
-        toggleButtonMode.setSelected(false);
+        //toggleButtonMode.setSelected(false);
 
         buttonAnnotateRed.setOnMouseClicked(event -> {
-            richTextAreaController.annotate(Color.RED);
-            hideDnDPane();
+            if (buttonAnnotateRed.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.RED);
+                buttonAnnotateYellow.setSelected(false);
+                buttonAnnotateBlue.setSelected(false);
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+            }
         });
         buttonAnnotateYellow.setOnMouseClicked(event -> {
-            richTextAreaController.annotate(Color.YELLOW);
-            hideDnDPane();
+            if (buttonAnnotateYellow.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.YELLOW);
+                buttonAnnotateRed.setSelected(false);
+                buttonAnnotateBlue.setSelected(false);
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+            }
         });
+        buttonAnnotateBlue.setOnMouseClicked(event -> {
+            if (buttonAnnotateBlue.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.BLUE);
+                buttonAnnotateYellow.setSelected(false);
+                buttonAnnotateRed.setSelected(false);
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+            }
+        });
+        /*
         buttonDeleteAnnotate.setOnMouseClicked(event -> {
             richTextAreaController.deleteAnnotation();
             hideDnDPane();
         });
 
+         */
+
+        /*
         toggleButtonMode.setOnAction(event -> {
             analysisMode = toggleButtonMode.isSelected();
             if (analysisMode) {
@@ -95,11 +121,14 @@ public class InterviewTextController implements Initializable {
             }
         });
 
+         */
+
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener(new ChangeListener(){
             @Override public void changed(ObservableValue o, Object oldVal, Object newVal){
-                System.out.println("dans text controller");
-                if(!analysisMode && !richTextAreaController.getSelectedText().isEmpty()) {
+                if(!analysisMode
+                        && !richTextAreaController.getSelectedText().isEmpty()
+                        && richTextAreaController.getToolColorSelected() == null) {
                     stackPaneInterview.getChildren().add(paneDragText);
                 }
             }
@@ -152,6 +181,7 @@ public class InterviewTextController implements Initializable {
         paneDragText.setOnDragDone(event -> {
             if (event.isAccepted()) {
                 richTextAreaController.addDescripteme(DragStore.getDraggable());
+                hideDnDPane();
             }
         });
     }

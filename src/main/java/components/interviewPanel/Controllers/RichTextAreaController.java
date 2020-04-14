@@ -7,8 +7,6 @@ import components.interviewPanel.utils.TextStyle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.WeakListChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
@@ -32,13 +30,13 @@ import java.time.Duration;
 public class RichTextAreaController {
     private InlineCssTextArea area;
     private ContextMenu menu;
-    private MenuItem deleteAnnotationMenuItem;
 
     private InterviewText interviewText;
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private LetterMap letterMap;
     private SimpleObjectProperty<IndexRange> userSelection;
-    private Descripteme emphazedDescripteme;
+    private Descripteme emphazedDescripteme; // used temporary when over a descripteme
+    private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
         while (change.next()) {
@@ -83,6 +81,13 @@ public class RichTextAreaController {
                     area.getSelection().getStart(),
                     area.getSelection().getEnd()
             ));
+
+            if (toolColorSelected != null) {
+                annotate(toolColorSelected);
+            }
+            else {
+                // add the pane of interviewTextController (for d&d)
+            }
         });
 
         this.interviewText.getAnnotationsProperty().addListener(
@@ -134,34 +139,37 @@ public class RichTextAreaController {
 
     private  void setUpMenu() {
         menu = new ContextMenu();
-        deleteAnnotationMenuItem = new MenuItem("Delete annotation");
+
+        MenuItem deleteAnnotationMenuItem = new MenuItem("Delete annotation");
         deleteAnnotationMenuItem.setOnAction(event -> {
             deleteAnnotation(userSelection.get().getStart());
         });
-        //deleteAnnotationMenuItem.setDisable(true);
-        menu.getItems().add(deleteAnnotationMenuItem);
-        area.setContextMenu(menu);
-        area.setContextMenuXOffset(0);
-        area.setContextMenuYOffset(0);
-        menu.setOnShowing(e -> {
-            System.out.println("showing");
-        });
-        menu.setOnShown(e -> {
-            System.out.println("shown");
-        });
-
-        MenuItem item1 = new MenuItem("Blue");
-        item1.setOnAction(new EventHandler<>() {
-            public void handle(ActionEvent e) {
-                System.out.println("blue");
-                if (!area.getSelectedText().isEmpty()) {
-                    annotate(Color.BLUE,
-                            userSelection.get().getStart(),
-                            userSelection.get().getEnd());
-                }
+        MenuItem item1 = new MenuItem("Yellow");
+        item1.setOnAction(e -> {
+            if (!area.getSelectedText().isEmpty()) {
+                annotate(Color.YELLOW,
+                        userSelection.get().getStart(),
+                        userSelection.get().getEnd());
             }
         });
-        menu.getItems().add(item1);
+        MenuItem item2 = new MenuItem("Red");
+        item2.setOnAction(e -> {
+            if (!area.getSelectedText().isEmpty()) {
+                annotate(Color.RED,
+                        userSelection.get().getStart(),
+                        userSelection.get().getEnd());
+            }
+        });
+        MenuItem item3 = new MenuItem("Blue");
+        item3.setOnAction(e -> {
+            if (!area.getSelectedText().isEmpty()) {
+                annotate(Color.BLUE,
+                        userSelection.get().getStart(),
+                        userSelection.get().getEnd());
+            }
+        });
+        menu.getItems().addAll(deleteAnnotationMenuItem, item1, item2, item3);
+        area.setContextMenu(menu);
     }
 
     private void updateDescripteme() {
@@ -249,5 +257,13 @@ public class RichTextAreaController {
         /*
         for each annotation and descripteme, underline and highligth
          */
+    }
+
+    public void setToolColorSelected(Color color) {
+        toolColorSelected = color;
+    }
+
+    public Color getToolColorSelected() {
+        return toolColorSelected;
     }
 }
