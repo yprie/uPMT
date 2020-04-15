@@ -191,6 +191,10 @@
     -fx-border-radius:3;
 }
 
+/*.momentCard:hover {
+    -fx-cursor: move;
+}*/
+
 .categoryCard {
     -fx-background-color: #ffeaa7;
 	-fx-border-color: transparent;

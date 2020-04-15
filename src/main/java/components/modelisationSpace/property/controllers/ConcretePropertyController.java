@@ -94,7 +94,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
             ){
                 if(justificationController.acceptDescripteme(DragStore.getDraggable())){
                     container.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 else {
                     //dragEvent.acceptTransferModes(TransferMode.NONE);

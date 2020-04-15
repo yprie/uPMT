@@ -14,7 +14,9 @@ import utils.dragAndDrop.IDraggable;
 import java.util.LinkedList;
 
 public class Moment extends RootMoment implements IDraggable {
+
     public static final DataFormat format = new DataFormat("Moment");
+    public static final Integer maxMomentNameLength = 40;
 
     private SimpleStringProperty name;
     private Justification justification;
