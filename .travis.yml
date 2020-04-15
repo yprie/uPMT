@@ -1,6 +1,6 @@
 language: java
 os: osx
-jdk: openjdk11
+jdk: openjdk13
 
 cache:
  directories:
@@ -9,12 +9,15 @@ cache:
 
 before_install:
  - chmod +x gradlew
- - wget https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
- - unzip openjdk-11.0.2_windows-x64_bin.zip
+ - wget https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_windows-x64_bin.zip
+ - unzip openjdk-13.0.2_windows-x64_bin.zip
+ - wget https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_osx-x64_bin.tar.gz
+ - tar -zxvf openjdk-13.0.2_osx-x64_bin.tar.gz
 
 install: skip
 
-script: ./gradlew -b build-travis.gradle runtimeZip --warning-mode all
+script:
+ - ./gradlew -b build-travis.gradle runtimeZip --warning-mode all --info
 
 before_cache:
  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -33,6 +36,6 @@ deploy:
   - "build/libs/uPMT.jar"
   - "build/uPMT-osx-x64.zip"
   - "build/uPMT-win-x64.zip"
- on: master
+ on: dev
  skip_cleanup: true
 

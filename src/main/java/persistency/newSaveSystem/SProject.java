@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
+import models.Project;
+import models.Interview;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 

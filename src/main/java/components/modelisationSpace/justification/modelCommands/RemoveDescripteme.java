@@ -1,8 +1,8 @@
 package components.modelisationSpace.justification.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.interviewPanel.Models.Descripteme;
-import components.modelisationSpace.justification.models.Justification;
+import models.Descripteme;
+import models.Justification;
 
 public class RemoveDescripteme extends ModelUserActionCommand<Void, Void> {
 

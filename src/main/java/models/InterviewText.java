@@ -1,4 +1,4 @@
-package components.interviewPanel.Models;
+package models;
 
 import java.io.Serializable;
 

@@ -2,24 +2,22 @@ package components.modelisationSpace.property.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.controllers.JustificationController;
-import components.modelisationSpace.property.model.ConcreteProperty;
+import models.ConcreteProperty;
 import components.modelisationSpace.property.modelCommands.EditConcretePropertyValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import utils.DialogState;
+import utils.autoSuggestion.strategies.SuggestionStrategyProperty;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
@@ -38,6 +36,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
     @FXML private Label name;
     @FXML private Label value;
     @FXML private HBox justificationZone;
+    @FXML private HBox head;
 
     public ConcretePropertyController(ConcreteProperty p) {
         property = p;
@@ -65,8 +64,14 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         justif.setPadding(new Insets(0, 0, 0, 20));
         container.setCenter(justif);
 
-        container.setOnMouseClicked(mouseEvent -> {
-            TextEntryController c = TextEntryController.enterText(property.getName(), property.getValue(), 20);
+        head.setOnMouseClicked(mouseEvent -> {
+            TextEntryController c = TextEntryController.enterText(
+                    property.getName(),
+                    property.getValue(),
+                    20,
+                    new SuggestionStrategyProperty()
+            );
+            //c.setStrategy();
             if(c.getState() == DialogState.SUCCESS){
                 HistoryManager.addCommand(new EditConcretePropertyValue(property, c.getValue()), true);
             }

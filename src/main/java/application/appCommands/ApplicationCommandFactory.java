@@ -1,7 +1,7 @@
 package application.appCommands;
 
 import application.UPMTApp;
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import components.interviewSelector.modelCommands.AddInterviewCommand;
 
 import java.util.Locale;

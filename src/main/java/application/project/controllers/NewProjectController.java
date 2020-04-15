@@ -1,10 +1,10 @@
 package application.project.controllers;
 
-import application.project.models.Project;
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
-import components.schemaTree.Cell.Models.SchemaProperty;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
+import models.Project;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 import application.configuration.Configuration;
 import utils.DialogState;
 

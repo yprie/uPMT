@@ -1,7 +1,7 @@
 package persistency.newSaveSystem;
 
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
+import models.SchemaCategory;
+import models.SchemaFolder;
 
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 

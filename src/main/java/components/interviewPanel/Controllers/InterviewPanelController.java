@@ -1,6 +1,6 @@
 package components.interviewPanel.Controllers;
 
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import application.configuration.Configuration;
 
 import javafx.beans.value.ChangeListener;

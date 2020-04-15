@@ -1,14 +1,11 @@
 package components.schemaTree.Cell.Visitors;
 
 import components.schemaTree.Cell.Controllers.*;
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
-import components.schemaTree.Cell.Models.SchemaProperty;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
-import components.schemaTree.Cell.SchemaTreePluggable;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 
 public class CreateControllerVisitor extends SchemaTreePluggableVisitor {
 

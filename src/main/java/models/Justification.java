@@ -1,7 +1,6 @@
-package components.modelisationSpace.justification.models;
+package models;
 
-import components.interviewPanel.Models.Descripteme;
-import components.schemaTree.Cell.Models.SchemaProperty;
+import models.Descripteme;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

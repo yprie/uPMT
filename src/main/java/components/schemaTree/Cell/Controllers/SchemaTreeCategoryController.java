@@ -2,9 +2,11 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaProperty;
+import models.SchemaCategory;
+import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +20,11 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         super(model);
         this.category = model;
         this.cmdFactory = cmdFactory;
+    }
+
+    @Override
+    protected SuggestionStrategy getSuggestionStrategy() {
+        return new SuggestionStrategyCategory();
     }
 
     @Override

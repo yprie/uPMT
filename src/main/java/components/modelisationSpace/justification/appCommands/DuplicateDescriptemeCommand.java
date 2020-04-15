@@ -1,9 +1,9 @@
 package components.modelisationSpace.justification.appCommands;
 
 import application.history.HistoryManager;
-import components.interviewPanel.Models.Descripteme;
+import models.Descripteme;
 import components.modelisationSpace.justification.modelCommands.AddDescripteme;
-import components.modelisationSpace.justification.models.Justification;
+import models.Justification;
 import utils.command.Executable;
 
 public class DuplicateDescriptemeCommand implements Executable<Void> {

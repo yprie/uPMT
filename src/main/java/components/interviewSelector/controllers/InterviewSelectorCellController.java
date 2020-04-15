@@ -1,6 +1,6 @@
 package components.interviewSelector.controllers;
 
-import components.interviewSelector.models.Interview;
+import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.fxml.FXML;
@@ -38,6 +38,9 @@ public class InterviewSelectorCellController implements Initializable {
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> { commandFactory.deleteInterview(interview).execute(); });
         optionsMenu.getItems().add(deleteButton);
+
+        //TODO: show/modify an interview
+        //MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {

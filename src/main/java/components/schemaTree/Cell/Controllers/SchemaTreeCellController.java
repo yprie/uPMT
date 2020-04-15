@@ -15,6 +15,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import utils.ResourceLoader;
+import utils.autoSuggestion.AutoSuggestionsTextField;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,7 +30,7 @@ public abstract class SchemaTreeCellController implements Initializable {
     @FXML
     Label name;
 
-    TextField renamingField;
+    AutoSuggestionsTextField renamingField;
 
     @FXML
     ImageView pictureView;
@@ -43,6 +45,8 @@ public abstract class SchemaTreeCellController implements Initializable {
     public SchemaTreeCellController(SchemaTreePluggable element) {
         this.element = element;
     }
+
+    protected abstract SuggestionStrategy getSuggestionStrategy();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,14 +66,18 @@ public abstract class SchemaTreeCellController implements Initializable {
             if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
         });
 
-        Platform.runLater(()-> { if(element.mustBeRenamed()) passInRenamingMode(true); });
+        Platform.runLater(()-> {
+            if(element.mustBeRenamed())
+                passInRenamingMode(true);
+        });
     }
 
 
     public void passInRenamingMode(boolean YoN) {
         if(YoN != renamingMode) {
             if(YoN){
-                renamingField = new TextField(name.getText());
+                renamingField = new AutoSuggestionsTextField(name.getText());
+                renamingField.setStrategy(this.getSuggestionStrategy());
                 renamingField.setAlignment(Pos.CENTER);
                 renamingField.end();
                 renamingField.selectAll();

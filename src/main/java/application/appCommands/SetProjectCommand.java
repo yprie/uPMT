@@ -1,7 +1,7 @@
 package application.appCommands;
 
 import application.history.HistoryManager;
-import application.project.models.Project;
+import models.Project;
 import application.configuration.Configuration;
 import application.UPMTApp;
 

@@ -6,6 +6,8 @@
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
 <center>
    <SplitPane fx:id="mainSplitPane" dividerPositions="0.3727454909819639">
@@ -15,11 +17,21 @@
       </SplitPane>
       <!-- components.modelisationSpace -->
       <AnchorPane>
-         <ModelisationSpaceController fx:id="modelisationSpaceController" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+
+            <HBox fx:id="modelMomentBox" prefHeight="70" style="-fx-border-style: hidden hidden solid hidden;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" >
+               <padding>
+                  <Insets bottom="15" left="15" right="15" top="10" />
+               </padding>
+            </HBox>
+            <ModelisationSpaceController fx:id="modelisationSpaceController" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="0.0" >
+               <padding><Insets top="25" bottom="25" /></padding>
+
+            </ModelisationSpaceController>
+
       </AnchorPane>
 
       <!-- Interview are -->
-      <SplitPane fx:id="paneOfTextArea" maxWidth="400"/>
+      <SplitPane fx:id="paneOfTextArea" maxWidth="600"/>
    </SplitPane>
 </center>
 </BorderPane>

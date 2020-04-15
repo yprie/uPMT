@@ -1,8 +1,6 @@
-package application.project.models;
+package models;
 
 import persistency.ProjectSaver;
-import components.schemaTree.Cell.Models.SchemaTreeRoot;
-import components.interviewSelector.models.Interview;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

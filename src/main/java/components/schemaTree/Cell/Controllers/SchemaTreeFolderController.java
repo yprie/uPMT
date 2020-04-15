@@ -2,9 +2,11 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.Models.SchemaCategory;
-import components.schemaTree.Cell.Models.SchemaFolder;
+import models.SchemaCategory;
+import models.SchemaFolder;
 import javafx.scene.control.MenuItem;
+import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.autoSuggestion.strategies.SuggestionStrategyFolder;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +20,11 @@ public class SchemaTreeFolderController extends SchemaTreeCellController {
         super(folder);
         this.folder = folder;
         this.cmdFactory = cmdFactory;
+    }
+
+    @Override
+    protected SuggestionStrategy getSuggestionStrategy() {
+        return new SuggestionStrategyFolder();
     }
 
     @Override

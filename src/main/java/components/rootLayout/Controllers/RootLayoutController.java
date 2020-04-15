@@ -23,7 +23,7 @@ package components.rootLayout.Controllers;
 
 import components.aboutUs.Controllers.AboutUsController;
 import application.history.HistoryManager;
-import application.project.models.Project;
+import models.Project;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
 import components.mainView.controller.MainViewController;

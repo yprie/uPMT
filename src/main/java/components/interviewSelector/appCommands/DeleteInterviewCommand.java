@@ -1,8 +1,8 @@
 package components.interviewSelector.appCommands;
 
 import application.history.HistoryManager;
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
+import models.Project;
+import models.Interview;
 
 public class DeleteInterviewCommand extends InterviewSelectorCommand<Void> {
 
