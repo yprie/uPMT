@@ -25,4 +25,5 @@ public class ApplicationCommandFactory {
     public ChangeLanguageCommand changeLanguage(Locale locale) { return new ChangeLanguageCommand(application, locale); }
     public ProjectSavingStatusChangedCommand projectSavingStatusChanged() { return new ProjectSavingStatusChangedCommand(application); }
     public AddInterviewCommand addInterview(Interview interview) { return new AddInterviewCommand(application.getCurrentProject(), interview); }
+    public ExportToCSVCommand exportToCSV(){return new ExportToCSVCommand(application);}
 }

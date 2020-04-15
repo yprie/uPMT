@@ -123,7 +123,7 @@ public class RootLayoutController implements Initializable {
 	@FXML
 	public void exportProject(){
 		//TODO
-		System.out.println("Exporting project functionnality not availaible yet !");
+		appCommandFactory.exportToCSV().execute();
 	}
 	
 	@FXML
