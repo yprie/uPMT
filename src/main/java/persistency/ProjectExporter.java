@@ -1,13 +1,9 @@
 package persistency;
 
 import application.configuration.Configuration;
-import application.project.models.Project;
-import components.interviewSelector.models.Interview;
-import components.modelisationSpace.category.model.ConcreteCategory;
-import components.modelisationSpace.moment.model.Moment;
-import components.modelisationSpace.moment.model.RootMoment;
-import components.modelisationSpace.property.model.ConcreteProperty;
+
 import javafx.scene.control.Alert;
+import models.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -79,7 +75,7 @@ public class ProjectExporter {
     }
 
     private static void addToCSVObjectList(String interviewName, RootMoment moment, String id, List<CSVObject> list) {
-        List<CSVObject> csvObject = generateCsvObjList(interviewName, (Moment) moment, id);
+        List<CSVObject> csvObject = getCsvObjList(interviewName, (Moment) moment, id);
         list.addAll(csvObject);
         if (moment.momentsProperty().size() > 0) {
             for (int j = 0; j < moment.momentsProperty().size(); j++) {
@@ -89,8 +85,8 @@ public class ProjectExporter {
         }
     }
 
-    //one moment could contain create many CSVObjects
-    private static List<CSVObject> generateCsvObjList(String interviewName, Moment moment, String id) {
+    //one moment could contain many CSVObjects
+    private static List<CSVObject> getCsvObjList(String interviewName, Moment moment, String id) {
         List<CSVObject> oneMomentList = new LinkedList<>();
         if (moment.concreteCategoriesProperty().size() == 0) {
             CSVObject csvObject = new CSVObject(interviewName, id, moment.getName(), moment.getJustification().toString());
@@ -116,6 +112,7 @@ public class ProjectExporter {
 
 }
 
+//the form of one record in the csv
 class CSVObject {
     private String interviewName;
     private String momentId;
