@@ -160,7 +160,7 @@ public class RichTextAreaController {
 
         MenuItem deleteAnnotationMenuItem = new MenuItem("Delete annotation");
         deleteAnnotationMenuItem.setOnAction(event -> {
-            deleteAnnotation(userSelection.get().getStart());
+            deleteAnnotation(area.getCaretPosition());
         });
         MenuItem item1 = new MenuItem("Yellow");
         item1.setOnAction(e -> {
