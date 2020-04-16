@@ -22,6 +22,14 @@
                           text="Green"
                           styleClass="button-tool-annotation"
                           stylesheets="/css/application.css"></ToggleButton>
+            <ToggleButton fx:id="buttonAnnotateEraser"
+                          text="Eraser"
+                          styleClass="button-tool-annotation"
+                          stylesheets="/css/application.css"></ToggleButton>
+            <ToggleButton fx:id="buttonAnnotateSelection"
+                          text="Selection"
+                          styleClass="button-tool-annotation"
+                          stylesheets="/css/application.css"></ToggleButton>
         </HBox>
     </top>
     <center>

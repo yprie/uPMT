@@ -37,6 +37,8 @@ public class InterviewTextController implements Initializable {
     @FXML private ToggleButton buttonAnnotateRed;
     @FXML private ToggleButton buttonAnnotateBlue;
     @FXML private ToggleButton buttonAnnotateGreen;
+    @FXML private ToggleButton buttonAnnotateEraser;
+    @FXML private ToggleButton buttonAnnotateSelection;
     @FXML private StackPane stackPaneInterview;
 
     private RichTextAreaController richTextAreaController;
@@ -69,37 +71,6 @@ public class InterviewTextController implements Initializable {
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
-        buttonAnnotateRed.setOnMouseClicked(event -> {
-            if (buttonAnnotateRed.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.RED);
-                buttonAnnotateYellow.setSelected(false);
-                buttonAnnotateBlue.setSelected(false);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-            }
-        });
-        buttonAnnotateYellow.setOnMouseClicked(event -> {
-            if (buttonAnnotateYellow.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.YELLOW);
-                buttonAnnotateRed.setSelected(false);
-                buttonAnnotateBlue.setSelected(false);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-            }
-        });
-        buttonAnnotateBlue.setOnMouseClicked(event -> {
-            if (buttonAnnotateBlue.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.BLUE);
-                buttonAnnotateYellow.setSelected(false);
-                buttonAnnotateRed.setSelected(false);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-            }
-        });
-
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener(new ChangeListener(){
             @Override public void changed(ObservableValue o, Object oldVal, Object newVal){
@@ -112,6 +83,7 @@ public class InterviewTextController implements Initializable {
         });
 
         setupDragAndDrop();
+        setUpTools();
 
         Platform.runLater(this::initializeDescripteme);
     }
@@ -161,6 +133,104 @@ public class InterviewTextController implements Initializable {
                 hideDnDPane();
             }
         });
+    }
+
+    private void setUpTools() {
+        buttonAnnotateYellow.setStyle("-fx-text-fill: #D7A350;");
+        buttonAnnotateRed.setStyle("-fx-text-fill: #D75050;");
+        buttonAnnotateBlue.setStyle("-fx-text-fill: #3B608D;");
+        buttonAnnotateGreen.setStyle("-fx-text-fill: #40AC40;");
+        buttonAnnotateEraser.setStyle("-fx-text-fill: #8B8B8B;");
+        buttonAnnotateSelection.setStyle("-fx-text-fill: black;");
+        buttonAnnotateSelection.setSelected(true);
+
+        buttonAnnotateYellow.setOnMouseClicked(event -> {
+            if (buttonAnnotateYellow.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.web("#D7A350"));
+                deselectTools(buttonAnnotateYellow);
+                buttonAnnotateYellow.setStyle("-fx-text-fill: white;-fx-background-color: #D7A350;");
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+                buttonAnnotateYellow.setStyle("-fx-text-fill: #D7A350;-fx-background-color: none;");
+            }
+        });
+        buttonAnnotateRed.setOnMouseClicked(event -> {
+            if (buttonAnnotateRed.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.web("#D75050"));
+                deselectTools(buttonAnnotateRed);
+                buttonAnnotateRed.setStyle("-fx-text-fill: white;-fx-background-color: #D75050;");
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+                buttonAnnotateRed.setStyle("-fx-text-fill: #D75050;-fx-background-color: none;");
+            }
+        });
+        buttonAnnotateBlue.setOnMouseClicked(event -> {
+            if (buttonAnnotateBlue.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.web("#3B608D"));
+                deselectTools(buttonAnnotateBlue);
+                buttonAnnotateBlue.setStyle("-fx-text-fill: white;-fx-background-color: #3B608D;");
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+                buttonAnnotateBlue.setStyle("-fx-text-fill: #3B608D;-fx-background-color: none;");
+            }
+        });
+        buttonAnnotateGreen.setOnMouseClicked(event -> {
+            if (buttonAnnotateGreen.isSelected()) {
+                richTextAreaController.setToolColorSelected(Color.web("#40AC40"));
+                deselectTools(buttonAnnotateGreen);
+                buttonAnnotateGreen.setStyle("-fx-text-fill: white;-fx-background-color: #40AC40;");
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+                buttonAnnotateGreen.setStyle("-fx-text-fill: #40AC40;-fx-background-color: none;");
+            }
+        });
+        buttonAnnotateEraser.setOnMouseClicked(event -> {
+            if (buttonAnnotateEraser.isSelected()) {
+                richTextAreaController.setToolColorSelected(null); // TODO: not null but special value
+                deselectTools(buttonAnnotateEraser);
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+            }
+        });
+        buttonAnnotateSelection.setOnMouseClicked(event -> {
+            if (buttonAnnotateSelection.isSelected()) {
+                richTextAreaController.setToolColorSelected(null);
+                deselectTools(buttonAnnotateSelection);
+                buttonAnnotateYellow.setStyle("-fx-text-fill: #D7A350;-fx-background-color: none;");
+                buttonAnnotateRed.setStyle("-fx-text-fill: #D75050;-fx-background-color: none;");
+                buttonAnnotateBlue.setStyle("-fx-text-fill: #3B608D;-fx-background-color: none;");
+                buttonAnnotateGreen.setStyle("-fx-text-fill: #40AC40;-fx-background-color: none;");
+            }
+            else {
+                richTextAreaController.setToolColorSelected(null);
+                buttonAnnotateSelection.setSelected(true);
+            }
+        });
+    }
+
+    private void deselectTools(ToggleButton slectedTool) {
+        ArrayList<ToggleButton> tools = new ArrayList();
+        tools.add(buttonAnnotateYellow);
+        tools.add(buttonAnnotateRed);
+        tools.add(buttonAnnotateBlue);
+        tools.add(buttonAnnotateGreen);
+        tools.add(buttonAnnotateEraser);
+        tools.add(buttonAnnotateSelection);
+        for (ToggleButton tool : tools) {
+            if (tool != slectedTool) {
+                tool.setSelected(false);
+            }
+        }
     }
 
     private void hideDnDPane() {

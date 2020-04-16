@@ -364,25 +364,17 @@ moment-no-left-padding {
 }
 
 .button-tool-annotation {
-	-fx-background-radius: 3px;
     -fx-border-radius:3;
 	-fx-border-width: 1;
-    -fx-border-insets: 0px;
-    -fx-background-insets: 0px;
-    -fx-background-repeat: no-repeat;
-  	-fx-background-position: center;
-  	-fx-background-size: 20;
-  	-fx-text-fill:white;
-  	-fx-fill: white;
-  	-fx-pref-height:37px;
-  	-fx-min-height:37px;
-  	-fx-background-color: #fe4c4d;
+	-fx-border-color: black;
+}
+
+.button-tool-annotation:selected {
 }
 
 /*
-Red: #D75050  #F61F1F
-Green: #40AC40  #19C519
-Blue: #3B608D  #205BA1
 Yellow : #D7A350  #F6A31F
-
+Red: #D75050  #F61F1F
+Blue: #3B608D  #205BA1
+Green: #40AC40  #19C519
 */
