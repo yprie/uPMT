@@ -1,9 +1,10 @@
 package models;
 
 import javafx.scene.input.DataFormat;
+import utils.Emphasable;
 import utils.dragAndDrop.IDraggable;
 
-public abstract class Fragment implements IDraggable {
+public abstract class Fragment extends Emphasable implements IDraggable {
     public static final DataFormat format = new DataFormat("Fragment");
 
     protected InterviewText interviewText;

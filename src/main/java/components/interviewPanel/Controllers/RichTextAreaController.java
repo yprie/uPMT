@@ -14,10 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
-import models.Annotation;
-import models.Descripteme;
-import models.Fragment;
-import models.InterviewText;
+import models.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -26,6 +23,7 @@ import org.fxmisc.richtext.event.MouseOverTextEvent;
 import utils.GlobalVariables;
 
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class RichTextAreaController {
     private InlineCssTextArea area;
@@ -36,6 +34,7 @@ public class RichTextAreaController {
     private LetterMap letterMap;
     private SimpleObjectProperty<IndexRange> userSelection;
     private Descripteme emphazedDescripteme; // used temporary when over a descripteme
+    private ArrayList<Moment> emphazedMoments; // used temporary when over a descripteme
     private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
@@ -113,17 +112,15 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
             Point2D pos = event.getScreenPosition();
 
-            Annotation annotation = interviewText.getFirstAnnotationByIndex(event.getCharacterIndex());
-            if (annotation != null) {
-                popupMsg.setText(annotation.toString());
-                popup.show(area, pos.getX(), pos.getY() + 5);
-            }
-
             // emphasize descripteme in modeling space
             Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(event.getCharacterIndex());
             if (descripteme != null) {
                 descripteme.getEmphasizeProperty().set(true);
                 emphazedDescripteme = descripteme;
+            }
+            emphazedMoments = GlobalVariables.getGlobalVariables().getMomentsByDescripteme(descripteme);
+            for(Moment moment : emphazedMoments) {
+                moment.getEmphasizeProperty().set(true);
             }
         });
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, event -> {
@@ -133,6 +130,12 @@ public class RichTextAreaController {
             if (emphazedDescripteme != null) {
                 emphazedDescripteme.getEmphasizeProperty().set(false);
                 emphazedDescripteme = null;
+            }
+            if (emphazedMoments != null) {
+                for(Moment moment : emphazedMoments) {
+                    moment.getEmphasizeProperty().set(false);
+                }
+                emphazedMoments = null;
             }
         });
     }
@@ -175,7 +178,7 @@ public class RichTextAreaController {
     private void updateDescripteme() {
         Descripteme changedDescripteme = GlobalVariables.getGlobalVariables()
                 .getDescriptemeChangedProperty().getValue();
-        if (!GlobalVariables.getGlobalVariables().getAllDescriteme().contains(changedDescripteme)) {
+        if (!GlobalVariables.getGlobalVariables().getAllDescripteme().contains(changedDescripteme)) {
             // the change is a deletion of the descripteme
             interviewText.getDescriptemesProperty().remove(changedDescripteme);
         }

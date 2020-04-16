@@ -3,6 +3,7 @@ package components.modelisationSpace.moment.controllers;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import javafx.scene.input.*;
+import javafx.scene.paint.Color;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -166,6 +167,17 @@ public class MomentController extends ListViewController<Moment> implements Init
                     System.out.println("Double clicked");
                     passInRenamingMode(true);
                 }
+            }
+        });
+
+
+        // Emphasize
+        moment.getEmphasizeProperty().addListener((observableValue, eventEventHandler, value) -> {
+            if(value) {
+                momentBody.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.MEDIUM)));
+            }
+            else {
+                momentBody.setBorder(null);
             }
         });
     }

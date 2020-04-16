@@ -5,7 +5,7 @@ import javafx.beans.value.ObservableObjectValue;
 import models.*;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.function.BiFunction;
 
 public class GlobalVariables {
     /*
@@ -22,6 +22,13 @@ public class GlobalVariables {
 
 
     private GlobalVariables() {} // private constructor
+
+    private void iterateOverSubMoment(Moment moment, ArrayList result, BiFunction<Moment, ArrayList, Void> computeMoment) {
+        for(Moment subMoment: moment.momentsProperty()) {
+            computeMoment.apply(subMoment, result);
+            iterateOverSubMoment(subMoment, result, computeMoment);
+        }
+    }
 
     public static GlobalVariables getGlobalVariables() {
         return globalVariables;
@@ -49,42 +56,50 @@ public class GlobalVariables {
         return changedDescripteme;
     }
 
-    public ArrayList<Descripteme> getAllDescriteme() {
+    public ArrayList<Descripteme> getAllDescripteme() {
+        BiFunction<Moment, ArrayList, Void> computeMoment = (Moment moment, ArrayList result) -> {
+            // Add the descriptems of the moment
+            result.addAll(moment.getJustification().descriptemesProperty());
+
+            for (ConcreteCategory concreteCategory : moment.concreteCategoriesProperty()) {
+                result.addAll(concreteCategory.getJustification().descriptemesProperty());
+                for (ConcreteProperty concreteProperty : concreteCategory.propertiesProperty()) {
+                    result.addAll(concreteProperty.getJustification().descriptemesProperty());
+                }
+            }
+            return null;
+        };
+
         ArrayList<Descripteme> result = new ArrayList<Descripteme>();
         for (Moment subMoment : rootMoment.momentsProperty()) {
-            computeMoment(subMoment, result);
-            iterateOverSubMoment(subMoment, result);
+            computeMoment.apply(subMoment, result);
+            iterateOverSubMoment(subMoment, result, computeMoment);
         }
         return result;
     }
 
-    private void iterateOverSubMoment(Moment moment, ArrayList<Descripteme> result) {
-        for(Moment subMoment: moment.momentsProperty()) {
-            computeMoment(subMoment, result);
-            iterateOverSubMoment(subMoment, result);
-        }
-    }
-
-    private void computeMoment(Moment moment, ArrayList<Descripteme> result) {
-        // Add the descriptems of the moment
-        for (ListIterator<Descripteme> it = moment.getJustification().descriptemesProperty().listIterator(); it.hasNext(); ) {
-            Descripteme descripteme = it.next();
-            result.add(descripteme);
-        }
-
-        for (ListIterator<ConcreteCategory> itCategory = moment.concreteCategoriesProperty().listIterator(); itCategory.hasNext(); ) {
-            ConcreteCategory concreteCategory = itCategory.next();
-            for (ListIterator<Descripteme> itDescripteme = concreteCategory.getJustification().descriptemesProperty().listIterator(); itDescripteme.hasNext(); ) {
-                Descripteme descripteme = itDescripteme.next();
-                result.add(descripteme);
+    public ArrayList<Moment> getMomentsByDescripteme(Descripteme descripteme) {
+        BiFunction<Moment, ArrayList, Void> computeMoment = (Moment moment, ArrayList result) -> {
+            if(moment.getJustification().descriptemesProperty().contains(descripteme)) {
+                result.add(moment);
             }
-            for (ListIterator<ConcreteProperty> itProperty = concreteCategory.propertiesProperty().listIterator(); itProperty.hasNext(); ) {
-                ConcreteProperty concreteProperty = itProperty.next();
-                for (ListIterator<Descripteme> itDescripteme = concreteProperty.getJustification().descriptemesProperty().listIterator(); itDescripteme.hasNext(); ) {
-                    Descripteme descripteme = itDescripteme.next();
-                    result.add(descripteme);
+            for (ConcreteCategory concreteCategory : moment.concreteCategoriesProperty()) {
+                if(concreteCategory.getJustification().descriptemesProperty().contains(descripteme)) {
+                    result.add(moment);
+                }
+                for (ConcreteProperty concreteProperty : concreteCategory.propertiesProperty()) {
+                    if(concreteProperty.getJustification().descriptemesProperty().contains(descripteme)) {
+                        result.add(moment);
+                    }
                 }
             }
+            return null;
+        };
+        ArrayList<Moment> result = new ArrayList();
+        for (Moment subMoment : rootMoment.momentsProperty()) {
+            computeMoment.apply(subMoment, result);
+            iterateOverSubMoment(subMoment, result, computeMoment);
         }
+        return result;
     }
 }

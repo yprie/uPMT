@@ -1,6 +1,5 @@
 package models;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.input.DataFormat;
 
@@ -10,22 +9,17 @@ public class Descripteme extends Fragment {
 
     private final SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
 
-    private final SimpleBooleanProperty emphasize; // don't save this on disk
-
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
         super(interviewText, startIndex, endIndex);
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
-        emphasize = new SimpleBooleanProperty();
-        emphasize.set(false);
+
     }
 
     public Descripteme(Annotation a) {
         super(a.getInterviewText(), a.getStartIndex(),a.getEndIndex());
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
-        emphasize = new SimpleBooleanProperty();
-        emphasize.set(false);
     }
 
     public InterviewText getInterviewText() { return interviewText; }
@@ -33,8 +27,6 @@ public class Descripteme extends Fragment {
     public final SimpleStringProperty getSelectionProperty() {
         return this.descripteme;
     }
-
-    public final SimpleBooleanProperty getEmphasizeProperty() { return emphasize; }
 
     public final String getSelection() {
         return interviewText.getText().substring(startIndex, endIndex).replace("\n", "").replace("\r", "");
