@@ -75,4 +75,16 @@ public class TextStyle {
         merged.isDescripteme = this.isDescripteme || style.isDescripteme;
         return merged;
     }
+
+    public void brighter() {
+        if (isAnnotation) {
+            color = color.brighter();
+        }
+    }
+
+    public void darker() {
+        if (isAnnotation) {
+            color = color.darker();
+        }
+    }
 }

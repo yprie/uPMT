@@ -73,21 +73,9 @@ public class RichTextAreaController {
         area.appendText(interviewText.getText());
         area.setShowCaret(Caret.CaretVisibility.ON);
 
-        setUpMenu();
+        setUpClick();
         setUpPopUp();
-        area.setOnMouseReleased(event -> {
-            userSelection.set(new IndexRange(
-                    area.getSelection().getStart(),
-                    area.getSelection().getEnd()
-            ));
-
-            if (toolColorSelected != null) {
-                annotate(toolColorSelected);
-            }
-            else {
-                // add the pane of interviewTextController (for d&d)
-            }
-        });
+        setUpMenu();
 
         this.interviewText.getAnnotationsProperty().addListener(
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
@@ -97,6 +85,33 @@ public class RichTextAreaController {
         GlobalVariables.getGlobalVariables()
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> { this.updateDescripteme(); });
+    }
+
+    private void setUpClick() {
+        area.setOnMouseReleased(event -> {
+            userSelection.set(new IndexRange(
+                    area.getSelection().getStart(),
+                    area.getSelection().getEnd()
+            ));
+
+            if (toolColorSelected != null) {
+                annotate(toolColorSelected);
+            }
+        });
+
+        area.setOnMousePressed(event -> {
+            Annotation previousSelected = letterMap.getSelectedAnnotation();
+            if (previousSelected != null) {
+                letterMap.deSelectAnnotation();
+                applyStyle(previousSelected);
+            }
+
+            Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
+            if (annotation != null) {
+                letterMap.selectAnnotation(annotation);
+                applyStyle(annotation);
+            }
+        });
     }
 
     private void setUpPopUp() {

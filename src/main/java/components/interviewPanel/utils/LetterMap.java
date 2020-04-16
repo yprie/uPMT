@@ -1,11 +1,13 @@
 package components.interviewPanel.utils;
 
 import javafx.scene.paint.Color;
+import models.Annotation;
 import models.Fragment;
 
 import java.util.HashMap;
 
 public class LetterMap extends HashMap<Integer, TextStyle> {
+    Annotation selectedAnnotation;
 
     public void becomeDescripteme(Fragment fragment) {
         for (int i = fragment.getStartIndex() ; i < fragment.getEndIndex() ; i++) {
@@ -60,5 +62,31 @@ public class LetterMap extends HashMap<Integer, TextStyle> {
 
     public TextStyle getStyleByIndex(int index) {
         return this.get(index);
+    }
+
+    public void selectAnnotation(Annotation annotation) {
+        if (selectedAnnotation != annotation) {
+            for (int i = annotation.getStartIndex() ; i < annotation.getEndIndex() ; i++) {
+                TextStyle style = this.get(i);
+                style.darker();
+                this.put(i, style);
+            }
+            selectedAnnotation = annotation;
+        }
+    }
+
+    public void deSelectAnnotation() {
+        if (selectedAnnotation != null) {
+            for (int i = selectedAnnotation.getStartIndex() ; i < selectedAnnotation.getEndIndex() ; i++) {
+                TextStyle style = this.get(i);
+                style.brighter();
+                this.put(i, style);
+            }
+            selectedAnnotation = null;
+        }
+    }
+
+    public Annotation getSelectedAnnotation() {
+        return selectedAnnotation;
     }
 }
