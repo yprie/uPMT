@@ -36,9 +36,8 @@ public class InterviewTextController implements Initializable {
     @FXML private ToggleButton buttonAnnotateYellow;
     @FXML private ToggleButton buttonAnnotateRed;
     @FXML private ToggleButton buttonAnnotateBlue;
-    //@FXML private Button buttonDeleteAnnotate;
+    @FXML private ToggleButton buttonAnnotateGreen;
     @FXML private StackPane stackPaneInterview;
-    //@FXML private ToggleButton toggleButtonMode;
 
     private RichTextAreaController richTextAreaController;
     private Interview interview;
@@ -70,8 +69,6 @@ public class InterviewTextController implements Initializable {
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
-        //toggleButtonMode.setSelected(false);
-
         buttonAnnotateRed.setOnMouseClicked(event -> {
             if (buttonAnnotateRed.isSelected()) {
                 richTextAreaController.setToolColorSelected(Color.RED);
@@ -102,26 +99,6 @@ public class InterviewTextController implements Initializable {
                 richTextAreaController.setToolColorSelected(null);
             }
         });
-        /*
-        buttonDeleteAnnotate.setOnMouseClicked(event -> {
-            richTextAreaController.deleteAnnotation();
-            hideDnDPane();
-        });
-
-         */
-
-        /*
-        toggleButtonMode.setOnAction(event -> {
-            analysisMode = toggleButtonMode.isSelected();
-            if (analysisMode) {
-                richTextAreaController.switchToAnalysisMode();
-            }
-            else {
-                richTextAreaController.switchToAnnotationMode();
-            }
-        });
-
-         */
 
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener(new ChangeListener(){
@@ -140,7 +117,7 @@ public class InterviewTextController implements Initializable {
     }
 
     private void initializeDescripteme() {
-        ArrayList<Descripteme> descriptemes = GlobalVariables.getGlobalVariables().getAllDescriteme();
+        ArrayList<Descripteme> descriptemes = GlobalVariables.getGlobalVariables().getAllDescripteme();
         for (Descripteme descripteme: descriptemes) {
             richTextAreaController.addDescripteme(descripteme);
         }
