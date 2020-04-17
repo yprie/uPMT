@@ -12,7 +12,7 @@ public class InterviewText implements Serializable {
     private String text;
     private SimpleListProperty<Annotation> annotations;
 
-    // Dont save this on disk (redundancy)
+    // Don't save this on disk (redundancy)
     private SimpleListProperty<Descripteme> descriptemes;
 
     public InterviewText(String text) {
@@ -75,7 +75,7 @@ public class InterviewText implements Serializable {
         }
     }
 
-    public Descripteme getFirstDescriptemeByIndex(int index) {
+    public ArrayList<Descripteme> getDescriptemesByIndex(int index) {
         ArrayList<Descripteme> foundDescriptemes = new ArrayList<Descripteme>();
         for (Descripteme descripteme : this.descriptemes) {
             if (descripteme.getStartIndex() < index && index < descripteme.getEndIndex()) {
@@ -83,14 +83,21 @@ public class InterviewText implements Serializable {
             }
         }
         if (!foundDescriptemes.isEmpty()) {
-            return foundDescriptemes.get(0);
+            return foundDescriptemes;
         }
         else {
             return null;
         }
     }
 
+    public void addDescripteme(Descripteme descripteme) {
+        descriptemes.add(descripteme);
+        descripteme.getDuplicatedDescriptemeProperty().addListener(value -> {
+            addDescripteme(descripteme.getDuplicatedDescriptemeProperty().getValue());
+        });
+    }
 
+    /*
     public String getWordByIndex(int index) {
         int end = text.indexOf(" ", index);
         int start = text.lastIndexOf(" ", index);
@@ -102,5 +109,7 @@ public class InterviewText implements Serializable {
         }
         return text.substring(start, end);
     }
+
+     */
 
 }

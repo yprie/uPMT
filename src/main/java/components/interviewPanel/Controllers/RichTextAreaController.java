@@ -33,8 +33,8 @@ public class RichTextAreaController {
     private VirtualizedScrollPane<InlineCssTextArea> vsPane;
     private LetterMap letterMap;
     private SimpleObjectProperty<IndexRange> userSelection;
-    private Descripteme emphazedDescripteme; // used temporary when over a descripteme
-    private ArrayList<Moment> emphazedMoments; // used temporary when over a descripteme
+    private ArrayList<Descripteme> emphasizedDescriptemes; // used temporary when over a descripteme
+    private ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
     private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
@@ -128,29 +128,33 @@ public class RichTextAreaController {
             Point2D pos = event.getScreenPosition();
 
             // emphasize descripteme in modeling space
-            Descripteme descripteme = interviewText.getFirstDescriptemeByIndex(event.getCharacterIndex());
-            if (descripteme != null) {
-                descripteme.getEmphasizeProperty().set(true);
-                emphazedDescripteme = descripteme;
-            }
-            emphazedMoments = GlobalVariables.getGlobalVariables().getMomentsByDescripteme(descripteme);
-            for(Moment moment : emphazedMoments) {
-                moment.getEmphasizeProperty().set(true);
+            emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
+            if (emphasizedDescriptemes != null) {
+                emphasizedMoments.clear();
+                for (Descripteme descripteme : emphasizedDescriptemes) {
+                    descripteme.getEmphasizeProperty().set(true);
+                    emphasizedMoments.addAll(GlobalVariables.getGlobalVariables().getMomentsByDescripteme(descripteme));
+                }
+                for(Moment moment : emphasizedMoments) {
+                    moment.getEmphasizeProperty().set(true);
+                }
             }
         });
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, event -> {
             popup.hide();
 
-            // de emphasize descripteme in modeling space
-            if (emphazedDescripteme != null) {
-                emphazedDescripteme.getEmphasizeProperty().set(false);
-                emphazedDescripteme = null;
+            // de-emphasize descripteme in modeling space
+            if (emphasizedDescriptemes != null) {
+                for (Descripteme descripteme : emphasizedDescriptemes) {
+                    descripteme.getEmphasizeProperty().set(false);
+                }
+                emphasizedDescriptemes = null;
             }
-            if (emphazedMoments != null) {
-                for(Moment moment : emphazedMoments) {
+            if (!emphasizedMoments.isEmpty()) {
+                for(Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(false);
                 }
-                emphazedMoments = null;
+                emphasizedMoments.clear();
             }
         });
     }
@@ -265,16 +269,7 @@ public class RichTextAreaController {
     }
 
     public void addDescripteme(Descripteme descripteme) {
-        interviewText.getDescriptemesProperty().add(descripteme);
-    }
-
-    public void switchToAnalysisMode() {
-        area.clearStyle(0, interviewText.getText().length() - 1);
-    }
-    public void switchToAnnotationMode() {
-        /*
-        for each annotation and descripteme, underline and highligth
-         */
+        interviewText.addDescripteme(descripteme);
     }
 
     public void setToolColorSelected(Color color) {
