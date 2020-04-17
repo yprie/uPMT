@@ -69,7 +69,6 @@ public class RichTextAreaController {
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
 
         this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
-
             while (c.next()) {
                 for (Descripteme removed : c.getRemoved()) {
                     letterMap.removeDescripteme(removed);
@@ -78,11 +77,6 @@ public class RichTextAreaController {
                 for (Descripteme added : c.getAddedSubList()) {
                     letterMap.becomeDescripteme(added);
                     applyStyle(added);
-                }
-                if (c.wasUpdated()) {
-                    this.interviewText.getDescriptemesProperty().subList(c.getFrom(), c.getTo()).forEach(descripteme -> {
-                        System.out.println(descripteme);
-                    });
                 }
             }
         });
@@ -216,7 +210,10 @@ public class RichTextAreaController {
                 css += "-rtfx-background-color: " + style.getCSSColor() + ";";
             }
             if (style.getIsDescripteme()) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1.5;";
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
+            }
+            else if (style.getIsSeveralDescriptemes()) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
             }
             area.setStyle(i, i+1, css);
         }

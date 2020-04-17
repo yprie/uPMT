@@ -4,51 +4,46 @@ package components.interviewPanel.utils;
 import javafx.scene.paint.Color;
 
 public class TextStyle {
-    private boolean isDescripteme;
-    private boolean isAnnotation;
-    private Color color;
+    private int nbDescripteme = 0;
+    private boolean isAnnotation = false;
+    private Color color = null;
 
     public TextStyle(boolean isDescripteme, boolean isAnnotation, Color color) {
-        this.isDescripteme = isDescripteme;
+        this.nbDescripteme = isDescripteme ? 1 : 0;
         this.isAnnotation = isAnnotation;
         this.color = color;
     }
 
-    public TextStyle(boolean isDescripteme) {
-        this.isDescripteme = isDescripteme;
-        this.isAnnotation = false;
-        this.color = null;
+    TextStyle(boolean isDescripteme) {
+        this.nbDescripteme = isDescripteme ? 1 : 0;
     }
 
-    public TextStyle() {
-        this.isDescripteme = false;
-        this.isAnnotation = false;
-        this.color = null;
+    TextStyle() {
     }
 
     @Override
     public String toString() {
-        String str = "WordStyle: isDescripteme: " + isDescripteme;
+        String str = "WordStyle: nbDescripteme: " + nbDescripteme;
         str += " isAnnotation: " + isAnnotation;
         if (color != null)
             str += " color: " + getCSSColor();
         return str;
     }
 
-    public void removeAnnotation() {
+    void removeAnnotation() {
         this.isAnnotation = false;
         this.color = null;
     }
 
-    public void removeDescripteme() {
-        this.isDescripteme = false;
+    void removeDescripteme() {
+        nbDescripteme = Math.max(0, nbDescripteme-1);
     }
 
-    public void becomeDescripteme() {
-        this.isDescripteme = true;
+    void becomeDescripteme() {
+        nbDescripteme++;
     }
 
-    public void becomeAnnotation(Color color) {
+    void becomeAnnotation(Color color) {
         this.isAnnotation = true;
         this.color = color;
     }
@@ -56,24 +51,15 @@ public class TextStyle {
     public boolean getIsAnnotation() {
         return isAnnotation;
     }
-
     public boolean getIsDescripteme() {
-        return isDescripteme;
+        return nbDescripteme == 1 ? true : false;
+    }
+    public boolean getIsSeveralDescriptemes() {
+        return nbDescripteme > 1 ? true : false;
     }
 
     public String getCSSColor() {
         return color.toString().replace("0x", "#");
-    }
-
-    public TextStyle mergeStyles(TextStyle style) {
-        // given style is prioritise
-        TextStyle merged = new TextStyle(isDescripteme, isAnnotation, color);
-        if (style.color != null) {
-            merged.color = style.color;
-        }
-        merged.isAnnotation = this.isAnnotation || style.isAnnotation;
-        merged.isDescripteme = this.isDescripteme || style.isDescripteme;
-        return merged;
     }
 
     public void brighter() {
