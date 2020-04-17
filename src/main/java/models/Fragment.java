@@ -1,5 +1,7 @@
 package models;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.input.DataFormat;
 import utils.Emphasable;
 import utils.dragAndDrop.IDraggable;
@@ -8,20 +10,22 @@ public abstract class Fragment extends Emphasable implements IDraggable {
     public static final DataFormat format = new DataFormat("Fragment");
 
     protected InterviewText interviewText;
-    protected int startIndex, endIndex;
+    protected IntegerProperty startIndex, endIndex;
 
     public Fragment(InterviewText interviewText, int startIndex, int endIndex) {
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
+        this.startIndex = new SimpleIntegerProperty(startIndex);
+        this.endIndex = new SimpleIntegerProperty(endIndex);
         this.interviewText = interviewText;
     }
 
-    public int getStartIndex() { return startIndex; }
-    public int getEndIndex() { return endIndex; }
+    public int getStartIndex() { return startIndex.getValue(); }
+    public IntegerProperty startIndexProperty() { return startIndex; }
+    public int getEndIndex() { return endIndex.getValue(); }
+    public IntegerProperty endIndexProperty() { return endIndex; }
     public InterviewText getInterviewText() { return interviewText; }
 
     public String getFragmentText() {
-        return interviewText.getText().substring(startIndex, endIndex);
+        return interviewText.getText().substring(startIndex.getValue(), endIndex.getValue());
     }
 
     @Override
@@ -36,7 +40,7 @@ public abstract class Fragment extends Emphasable implements IDraggable {
 
     @Override
     public String toString() {
-        return "Fragment [" + startIndex + ", " + endIndex + "] " + getFragmentText();
+        return "Fragment [" + startIndex.get() + ", " + endIndex.get() + "] " + getFragmentText();
     }
 
     /*

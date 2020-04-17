@@ -1,7 +1,9 @@
 package models;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,21 +11,24 @@ import java.util.LinkedList;
 
 public class InterviewText implements Serializable {
 
-    private String text;
-    private SimpleListProperty<Annotation> annotations;
+    private final String text;
+    private final SimpleListProperty<Annotation> annotations;
 
     // Don't save this on disk (redundancy)
-    private SimpleListProperty<Descripteme> descriptemes;
+    private final ObservableList<Descripteme> descriptemes = FXCollections.observableArrayList(descripteme ->
+            new Observable[] {
+                    descripteme.startIndex,
+                    descripteme.endIndex,
+            });
 
     public InterviewText(String text) {
         this.text = text;
         this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
-        this.descriptemes = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
     public String getText() { return text; }
     public SimpleListProperty<Annotation> getAnnotationsProperty() { return annotations; }
-    public SimpleListProperty<Descripteme> getDescriptemesProperty() { return descriptemes; }
+    public ObservableList<Descripteme> getDescriptemesProperty() { return descriptemes; }
 
     public void removeAnnotation(Annotation annotation) {
         annotations.remove(annotation);
@@ -33,25 +38,25 @@ public class InterviewText implements Serializable {
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
 
-        Annotation annotationToCutBefore = getFirstAnnotationByIndex(annotation.startIndex);
-        Annotation annotationToCutAfter = getFirstAnnotationByIndex(annotation.endIndex);
+        Annotation annotationToCutBefore = getFirstAnnotationByIndex(annotation.startIndex.get());
+        Annotation annotationToCutAfter = getFirstAnnotationByIndex(annotation.endIndex.get());
         if (annotationToCutBefore != null && annotationToCutAfter != null) {
             if (annotationToCutBefore == annotationToCutAfter) {
                 Annotation annotationEnd = new Annotation(
                         annotationToCutAfter.interviewText,
-                        annotation.endIndex,
-                        annotationToCutAfter.endIndex,
+                        annotation.endIndex.get(),
+                        annotationToCutAfter.endIndex.get(),
                         annotationToCutAfter.color);
                 this.addAnnotation(annotationEnd);
-                annotationToCutBefore.setEndIndex(annotation.startIndex);
+                annotationToCutBefore.setEndIndex(annotation.startIndex.get());
             }
         }
         else {
             if (annotationToCutBefore != null){
-                annotationToCutBefore.setEndIndex(annotation.startIndex);
+                annotationToCutBefore.setEndIndex(annotation.startIndex.get());
             }
             if (annotationToCutAfter != null) {
-                annotationToCutAfter.setStartIndex(annotation.endIndex);
+                annotationToCutAfter.setStartIndex(annotation.endIndex.get());
             }
         }
 

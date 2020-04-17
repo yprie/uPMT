@@ -14,16 +14,16 @@ public class Annotation extends Fragment {
     }
 
     public void setStartIndex(int start) {
-        if (start > endIndex) {
+        if (start > endIndex.get()) {
             throw new IllegalArgumentException("Annotation start index can't be after end index");
         }
-        startIndex = start;
+        startIndex.set(start);
     }
     public void setEndIndex(int end) {
-        if (end < startIndex) {
+        if (end < startIndex.get()) {
             throw new IllegalArgumentException("Annotation end index can't be before start index");
         }
-        endIndex = end;
+        endIndex.set(end);
     }
 
     @Override
@@ -37,11 +37,11 @@ public class Annotation extends Fragment {
 
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString() + " - " + color.toString();
     }
 
     public Descripteme toDescripteme() {
-        return new Descripteme(interviewText, startIndex, endIndex);
+        return new Descripteme(interviewText, startIndex.get(), endIndex.get());
     }
 
     public TextStyle getStyle() {

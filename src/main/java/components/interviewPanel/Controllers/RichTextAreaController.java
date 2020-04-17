@@ -26,15 +26,14 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 public class RichTextAreaController {
-    private InlineCssTextArea area;
+    private final InlineCssTextArea area;
     private ContextMenu menu;
 
-    private InterviewText interviewText;
-    private VirtualizedScrollPane<InlineCssTextArea> vsPane;
+    private final InterviewText interviewText;
     private LetterMap letterMap;
-    private SimpleObjectProperty<IndexRange> userSelection;
+    private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes; // used temporary when over a descripteme
-    private ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
+    private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
     private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
 
     private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
@@ -45,18 +44,6 @@ public class RichTextAreaController {
             }
             for (Annotation added : change.getAddedSubList()) {
                 letterMap.becomeAnnotation(added, added.getColor());
-                applyStyle(added);
-            }
-        }
-    };
-    private ListChangeListener<Descripteme> onDescriptemeChangeListener = change -> {
-        while (change.next()) {
-            for (Descripteme removed : change.getRemoved()) {
-                letterMap.removeDescripteme(removed);
-                applyStyle(removed);
-            }
-            for (Descripteme added : change.getAddedSubList()) {
-                letterMap.becomeDescripteme(added);
                 applyStyle(added);
             }
         }
@@ -77,10 +64,28 @@ public class RichTextAreaController {
         setUpPopUp();
         setUpMenu();
 
+        // Two listeners that update the view (highlight and underline)
         this.interviewText.getAnnotationsProperty().addListener(
                 new WeakListChangeListener<>(onAnnotationsChangeListener));
-        this.interviewText.getDescriptemesProperty().addListener(
-                new WeakListChangeListener<>(onDescriptemeChangeListener));
+
+        this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
+
+            while (c.next()) {
+                for (Descripteme removed : c.getRemoved()) {
+                    letterMap.removeDescripteme(removed);
+                    applyStyle(removed);
+                }
+                for (Descripteme added : c.getAddedSubList()) {
+                    letterMap.becomeDescripteme(added);
+                    applyStyle(added);
+                }
+                if (c.wasUpdated()) {
+                    this.interviewText.getDescriptemesProperty().subList(c.getFrom(), c.getTo()).forEach(descripteme -> {
+                        System.out.println(descripteme);
+                    });
+                }
+            }
+        });
 
         GlobalVariables.getGlobalVariables()
                 .getDescriptemeChangedProperty()
@@ -240,12 +245,6 @@ public class RichTextAreaController {
         }
     }
 
-    public void deleteAnnotation() {
-        Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
-        new RemoveAnnotationCommand(interviewText, annotation).execute();
-        // there is a listener that apply the style
-    }
-
     public String getSelectedText() {
         return area.getSelectedText();
     }
@@ -256,7 +255,6 @@ public class RichTextAreaController {
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
         VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(area);
-        this.vsPane = vsPane;
         return vsPane;
     }
 
@@ -264,12 +262,26 @@ public class RichTextAreaController {
         return userSelection;
     }
 
-    public void deselect() {
-        area.deselect();
-    }
-
     public void addDescripteme(Descripteme descripteme) {
         interviewText.addDescripteme(descripteme);
+        descripteme.startIndexProperty().addListener((observable, oldValue, newValue) -> {
+            // create a temporary descripteme with the shape avec the previous descripteme...
+            Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
+            // ... in order to be able to delete the underline
+            letterMap.removeDescripteme(temp);
+            applyStyle(temp);
+            letterMap.becomeDescripteme(descripteme);
+            applyStyle(descripteme);
+        });
+        descripteme.endIndexProperty().addListener((observable, oldValue, newValue) -> {
+            // create a temporary descripteme with the shape avec the previous descripteme...
+            Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
+            // ... in order to be able to delete the underline
+            letterMap.removeDescripteme(temp);
+            applyStyle(temp);
+            letterMap.becomeDescripteme(descripteme);
+            applyStyle(descripteme);
+        });
     }
 
     public void setToolColorSelected(Color color) {

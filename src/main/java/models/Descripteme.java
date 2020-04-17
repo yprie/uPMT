@@ -46,33 +46,24 @@ public class Descripteme extends Fragment {
     }
 
     public final String getSelection() {
-        return interviewText.getText().substring(startIndex, endIndex).replace("\n", "").replace("\r", "");
+        return interviewText.getText().substring(startIndex.get(), endIndex.get()).replace("\n", "").replace("\r", "");
     }
 
     public Descripteme duplicate() {
-        Descripteme newDescripteme = new Descripteme(interviewText, startIndex, endIndex);
+        Descripteme newDescripteme = new Descripteme(interviewText, startIndex.get(), endIndex.get());
         duplicatedFormMeDescripteme.set(newDescripteme);
         return newDescripteme;
     }
 
     public void modifyIndex(int start, int end) {
-        startIndex = start == -1 ? 0 : start;
-        endIndex = Math.min(end, interviewText.getText().length());
+        startIndex.set(start == -1 ? 0 : start);
+        endIndex.set(Math.min(end, interviewText.getText().length()));
         this.descripteme.set(getSelection());
     }
 
     @Override
     public DataFormat getDataFormat() {
         return format;
-    }
-
-    @Override
-    public String toString() {
-        String result = super.toString();
-        result += " - ";
-        //result += interviewText.getText();
-        result += getSelection();
-        return result;
     }
 
     public ObservableObjectValue<Descripteme> getDuplicatedDescriptemeProperty() {
