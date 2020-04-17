@@ -83,7 +83,7 @@ public class InterviewText implements Serializable {
     public ArrayList<Descripteme> getDescriptemesByIndex(int index) {
         ArrayList<Descripteme> foundDescriptemes = new ArrayList<Descripteme>();
         for (Descripteme descripteme : this.descriptemes) {
-            if (descripteme.getStartIndex() < index && index < descripteme.getEndIndex()) {
+            if (descripteme.getStartIndex() <=   index && index < descripteme.getEndIndex()) {
                 foundDescriptemes.add(descripteme);
             }
         }

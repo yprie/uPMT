@@ -126,9 +126,12 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
             Point2D pos = event.getScreenPosition();
 
-            // emphasize descripteme in modeling space
+            // emphasize descripteme in modeling spac
             emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
             if (emphasizedDescriptemes != null) {
+                String message = emphasizedDescriptemes.size() + " descripteme(s)";
+                popup.show(area, pos.getX(), pos.getY() + 10);
+
                 emphasizedMoments.clear();
                 for (Descripteme descripteme : emphasizedDescriptemes) {
                     descripteme.getEmphasizeProperty().set(true);
@@ -137,6 +140,10 @@ public class RichTextAreaController {
                 for(Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(true);
                 }
+                message += " dans " + emphasizedMoments.size() + " moment(s)";
+
+                popupMsg.setText(message);
+                popup.show(area, pos.getX(), pos.getY() + 10);
             }
         });
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_END, event -> {
