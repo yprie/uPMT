@@ -17,12 +17,15 @@ public class SDescripteme extends Serializable<Descripteme> {
         super(serializer);
     }
 
-    public SDescripteme(Descripteme modelReference) {
-        super(modelName, version, modelReference);
+    public SDescripteme(ObjectSerializer serializer, Descripteme modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
+    @Override
+    public void init(Descripteme modelReference) {
         this.startIndex = modelReference.getStartIndex();
         this.endIndex = modelReference.getEndIndex();
-        this.interviewText = new SInterviewText(modelReference.getInterviewText());
+        this.interviewText = new SInterviewText(serializer, modelReference.getInterviewText());
     }
 
     @Override

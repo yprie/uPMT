@@ -39,8 +39,11 @@ public interface ObjectSerializer {
     <T extends Serializable> ArrayList<T> getArray(String name, Function<ObjectSerializer, T> serializableCreator);
     void writeArray(String name, ArrayList<? extends Serializable> objects);
 
+    //get the serialized object from the real object. Used to avoid cycling problems
+    <T> SerializationPool<Object, Serializable> getSerializationPool();
+
     //get the concrete object pool to use it when reading a save. To reuse already created objects.
-    SerializationPool<Object> getModelsPool();
+    SerializationPool<Integer, Object> getModelsPool();
 
     String setListSuffix(String name);
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 public abstract class Serializable<ModelType> {
 
     protected ObjectSerializer serializer;
+    private Object modelReference;
     private int version;
     private String name;
     private int serializationId;
@@ -14,23 +15,34 @@ public abstract class Serializable<ModelType> {
 
     private HashMap<Integer, UpgradeStrategy> upgrade_strategies;
 
-    //Reading initialization
+    //Reading
     public Serializable(ObjectSerializer serializer) {
         this.serializer = serializer;
         this.upgrade_strategies = new HashMap<>();
         readHeader();
-        read();
-
-        addStrategies();
-        upgrade();
     }
 
-    //writing initialization
-    public Serializable(String modelName, int version, Object modelReference) {
+    //writing
+    public Serializable(ObjectSerializer serializer, String modelName, int version, ModelType modelReference) {
+        this.serializer = serializer;
         this.upgrade_strategies = new HashMap<>();
+        this.modelReference = modelReference;
         this.name = modelName;
         this.version = version;
-        this.serializationId = System.identityHashCode(modelReference);
+
+        if(!serializer.getSerializationPool().contain(modelReference)) {
+            serializer.getSerializationPool().add(modelReference, this);
+            init(modelReference);
+        }
+    }
+
+    //Writing deferred initialization
+    public abstract void init(ModelType modelReference);
+    //Reading deferred initialization
+    public void initReading() {
+        read();
+        addStrategies();
+        upgrade();
     }
 
     public final int getVersion() {
@@ -39,7 +51,7 @@ public abstract class Serializable<ModelType> {
     public final String getName() {
         return name;
     }
-    public final int getSerializationId() { return serializationId; }
+    public final int getSerializationId() { return System.identityHashCode(modelReference); }
 
     public void addUpgradingStrategy(UpgradeStrategy strategy) throws IllegalArgumentException {
         if (upgrade_strategies.containsKey(strategy.getPriorVersion()))
@@ -68,7 +80,11 @@ public abstract class Serializable<ModelType> {
         serializer.writeInt("@id", getSerializationId());
         serializer.writeString("@model", name);
         serializer.writeInt("@version", version);
-        write(serializer);
+
+        if(serializer.getSerializationPool().contain(modelReference))
+            serializer.getSerializationPool().get(modelReference).write(serializer);
+        else
+            write(serializer);
     }
 
     public void saveReferenced(ObjectSerializer serializer) {
@@ -83,11 +99,13 @@ public abstract class Serializable<ModelType> {
             return m;
         }
         catch(IllegalArgumentException e) {
-            m =  createModel();
+            m = createModel();
             serializer.getModelsPool().add(serializationId, m);
+            finalizeModelCreation(m);
             return m;
         }
     }
 
     protected abstract ModelType createModel();
+    protected void finalizeModelCreation(ModelType model) {}
 }

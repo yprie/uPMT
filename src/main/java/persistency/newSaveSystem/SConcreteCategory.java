@@ -21,14 +21,17 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
         super(serializer);
     }
 
-    public SConcreteCategory(ConcreteCategory modelReference) {
-        super(modelName, version, modelReference);
+    public SConcreteCategory(ObjectSerializer serializer, ConcreteCategory modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
-        schemaCategory = new SSchemaCategory(modelReference.getSchemaCategory());
-        justification = new SJustification(modelReference.getJustification());
+    @Override
+    public void init(ConcreteCategory modelReference) {
+        schemaCategory = new SSchemaCategory(serializer, modelReference.getSchemaCategory());
+        justification = new SJustification(serializer, modelReference.getJustification());
         properties = new ArrayList<>();
         for(ConcreteProperty p: modelReference.propertiesProperty())
-            properties.add(new SConcreteProperty(p));
+            properties.add(new SConcreteProperty(serializer, p));
     }
 
     @Override

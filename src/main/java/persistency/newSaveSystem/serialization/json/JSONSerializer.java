@@ -10,23 +10,31 @@ import persistency.newSaveSystem.serialization.SerializationPool;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.function.Function;
 
 public class JSONSerializer implements ObjectSerializer {
 
     private JSONWritePool write_pool;
+    private SerializationPool<Object, Serializable> serializationPool;
+    private Stack<Serializable> write_stack;
+
     private JSONReadPool read_pool;
-    private SerializationPool<Object> models_pool;
+    private SerializationPool<Integer, Object> models_pool;
+    private Stack<Serializable> read_stack;
+
     private JSONObject jsonObject;
 
     //Writing constructor
-    public JSONSerializer(JSONObject jsonObject, JSONWritePool pool) {
+    public JSONSerializer(JSONObject jsonObject, JSONWritePool pool, Stack<Serializable> write_stack, SerializationPool<Object, Serializable> serializationPool) {
         this.jsonObject = jsonObject;
         this.write_pool = pool;
+        this.write_stack = write_stack;
+        this.serializationPool = serializationPool;
     }
 
     //Reading constructor
-    public JSONSerializer(JSONObject jsonObject, JSONReadPool pool, SerializationPool<Object> models_pool) {
+    public JSONSerializer(JSONObject jsonObject, JSONReadPool pool, SerializationPool<Integer, Object> models_pool) {
         this.jsonObject = jsonObject;
         this.read_pool = pool;
         this.models_pool = models_pool;
@@ -105,6 +113,7 @@ public class JSONSerializer implements ObjectSerializer {
     public <T extends Serializable> T getObject(String name, Function<ObjectSerializer, T> serializableCreator) {
         JSONObject object = jsonObject.getJSONObject(name);
         int id = object.getInt("@id");
+
         if(read_pool.contain(id)){
             //Take from pool with the required cast
             return (T) read_pool.get(id);
@@ -114,6 +123,7 @@ public class JSONSerializer implements ObjectSerializer {
             JSONSerializer serializer = new JSONSerializer(object, read_pool, models_pool);
             T result = serializableCreator.apply(serializer);
             read_pool.add(id, result);
+            result.initReading();
             return result;
         }
     }
@@ -153,6 +163,7 @@ public class JSONSerializer implements ObjectSerializer {
                 JSONSerializer serializer = new JSONSerializer(array.getJSONObject(i), read_pool, models_pool);
                 T serializable = serializableCreator.apply(serializer);
                 read_pool.add(id, serializable);
+                serializable.initReading();
                 result.add(serializable);
             }
         }
@@ -169,7 +180,12 @@ public class JSONSerializer implements ObjectSerializer {
     }
 
     @Override
-    public SerializationPool<Object> getModelsPool() {
+    public <T> SerializationPool<Object, Serializable> getSerializationPool() {
+        return serializationPool;
+    }
+
+    @Override
+    public SerializationPool<Integer, Object> getModelsPool() {
         return models_pool;
     }
 
@@ -181,22 +197,25 @@ public class JSONSerializer implements ObjectSerializer {
 
     private JSONObject fillJSONObject(Serializable object) {
         JSONObject obj = new JSONObject();
-        JSONSerializer serializer = new JSONSerializer(obj, write_pool);
+        JSONSerializer serializer = new JSONSerializer(obj, write_pool, write_stack, serializationPool);
 
         int id = object.getSerializationId();
-        //Write the id in every case
-        serializer.writeInt("@id", id);
 
-        //Only write the header if in the pool
+        //If in the pool we save the reference
         if(write_pool.contain(id)){
             object.saveReferenced(serializer);
         }
-        //Adding the serializer in the pool
+        //If in the save stack we also save the reference to avoid cycles
+        else if(write_stack.contains(object)){
+            object.saveReferenced(serializer);
+        }
         else {
             write_pool.add(id, serializer);
-            //Write head and body for the first apparition
+            write_stack.push(object);
             object.save(serializer);
+            write_stack.pop();
         }
+
         return obj;
     }
 }

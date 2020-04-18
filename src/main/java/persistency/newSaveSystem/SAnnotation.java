@@ -18,13 +18,16 @@ public class SAnnotation extends Serializable<Annotation> {
         super(serializer);
     }
 
-    public SAnnotation(Annotation modelReference, SInterviewText interviewText) {
-        super(modelName, version, modelReference);
-
+    @Override
+    public void init(Annotation modelReference) {
         this.startIndex = modelReference.getStartIndex();
         this.endIndex = modelReference.getEndIndex();
         this.color = modelReference.getColor();
-        this.interviewText = interviewText;
+        this.interviewText = new SInterviewText(serializer, modelReference.getInterviewText());
+    }
+
+    public SAnnotation(ObjectSerializer serializer, Annotation modelReference) {
+        super(serializer, modelName, version, modelReference);
     }
 
     @Override
@@ -48,8 +51,13 @@ public class SAnnotation extends Serializable<Annotation> {
         serializer.writeObject("interviewText", interviewText);
     }
 
+    public void setInterviewText(SInterviewText interviewText) {
+        this.interviewText = interviewText;
+    }
+
     @Override
     protected Annotation createModel() {
         return new Annotation(interviewText.convertToModel(), startIndex, endIndex, color);
     }
+
 }

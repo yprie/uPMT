@@ -1,5 +1,6 @@
 package persistency.newSaveSystem;
 
+import models.SchemaCategory;
 import models.SchemaFolder;
 import models.SchemaTreeRoot;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
@@ -19,15 +20,19 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
     public SSchemaTreeRoot(ObjectSerializer serializer) {
         super(serializer);
     }
-    public SSchemaTreeRoot(SchemaTreeRoot modelReference) {
-        super(modelName, version, modelReference);
+    public SSchemaTreeRoot(ObjectSerializer serializer, SchemaTreeRoot modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
+
+    @Override
+    public void init(SchemaTreeRoot modelReference) {
+        super.init(modelReference);
 
         this.folders = new ArrayList<>();
         for(SchemaFolder f: modelReference.foldersProperty()) {
-            folders.add(new SSchemaFolder(f));
+            folders.add(new SSchemaFolder(serializer, f));
         }
     }
-
 
     @Override
     protected void addStrategies() {

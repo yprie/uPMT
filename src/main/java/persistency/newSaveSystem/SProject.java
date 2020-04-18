@@ -21,20 +21,22 @@ public class SProject extends Serializable<Project> {
         super(serializer);
     }
 
-    public SProject(Project modelReference) {
-        super(modelName, version, modelReference);
+    public SProject(ObjectSerializer serializer, Project modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
+    @Override
+    public void init(Project modelReference) {
         this.name = modelReference.getName();
-        this.schemaTreeRoot = new SSchemaTreeRoot(modelReference.getSchemaTreeRoot());
+        this.schemaTreeRoot = new SSchemaTreeRoot(serializer, modelReference.getSchemaTreeRoot());
         this.interviews = new ArrayList<>();
         for(Interview i : modelReference.interviewsProperty()){
-            interviews.add(new SInterview(i));
+            interviews.add(new SInterview(serializer, i));
         }
 
         if(modelReference.getSelectedInterview() != null){
-            this.selectedInterview = new SInterview(modelReference.getSelectedInterview());
+            this.selectedInterview = new SInterview(serializer, modelReference.getSelectedInterview());
         }
-
     }
 
     @Override

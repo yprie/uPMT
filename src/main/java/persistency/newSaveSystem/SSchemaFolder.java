@@ -22,17 +22,22 @@ public class SSchemaFolder extends SSchemaElement<SchemaFolder> {
         super(serializer);
     }
 
-    public SSchemaFolder(SchemaFolder modelReference) {
-        super(modelName, version, modelReference);
+    public SSchemaFolder(ObjectSerializer serializer, SchemaFolder modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
+
+    @Override
+    public void init(SchemaFolder modelReference) {
+        super.init(modelReference);
 
         this.folders = new ArrayList<>();
         for(SchemaFolder f: modelReference.foldersProperty()) {
-            folders.add(new SSchemaFolder(f));
+            folders.add(new SSchemaFolder(serializer, f));
         }
 
         this.categories = new ArrayList<>();
         for(SchemaCategory c: modelReference.categoriesProperty()) {
-            categories.add(new SSchemaCategory(c));
+            categories.add(new SSchemaCategory(serializer, c));
         }
     }
 

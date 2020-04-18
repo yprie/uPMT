@@ -19,12 +19,16 @@ public class SSchemaCategory extends SSchemaElement<SchemaCategory> {
         super(serializer);
     }
 
-    public SSchemaCategory(SchemaCategory modelReference) {
-        super(modelName, version, modelReference);
+    public SSchemaCategory(ObjectSerializer serializer, SchemaCategory modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
+    @Override
+    public void init(SchemaCategory modelReference) {
+        super.init(modelReference);
         this.properties = new ArrayList<>();
         for(SchemaProperty p: modelReference.propertiesProperty()) {
-            properties.add(new SSchemaProperty(p));
+            properties.add(new SSchemaProperty(serializer, p));
         }
     }
 

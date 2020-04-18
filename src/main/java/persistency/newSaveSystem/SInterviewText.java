@@ -1,6 +1,7 @@
 package persistency.newSaveSystem;
 
 import models.Annotation;
+import models.Interview;
 import models.InterviewText;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
@@ -18,15 +19,21 @@ public class SInterviewText extends Serializable<InterviewText> {
     public String text;
     public ArrayList<SAnnotation> annotations;
 
+
     public SInterviewText(ObjectSerializer serializer) {
         super(serializer);
     }
-    public SInterviewText(InterviewText objectReference) {
-        super(modelName, version, objectReference);
-        this.text = objectReference.getText();
+
+    public SInterviewText(ObjectSerializer serializer, InterviewText objectReference) {
+        super(serializer, modelName, version, objectReference);
+    }
+
+    @Override
+    public void init(InterviewText modelReference) {
+        this.text = modelReference.getText();
         annotations = new ArrayList<>();
-        for (Annotation annotation : objectReference.getAnnotationsProperty())
-            annotations.add(new SAnnotation(annotation, this));
+        for (Annotation annotation : modelReference.getAnnotationsProperty())
+            annotations.add(new SAnnotation(serializer, annotation));
     }
 
     @Override
@@ -48,10 +55,13 @@ public class SInterviewText extends Serializable<InterviewText> {
 
     @Override
     protected InterviewText createModel() {
-        ArrayList<Annotation> annotations = new ArrayList<>();
+        return new InterviewText(text);
+    }
+
+    @Override
+    protected void finalizeModelCreation(InterviewText model) {
         for (SAnnotation sAnnotation : this.annotations) {
-            annotations.add(sAnnotation.convertToModel());
+            model.addAnnotation(sAnnotation.convertToModel());
         }
-        return new InterviewText(text, annotations);
     }
 }
