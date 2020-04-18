@@ -6,8 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 
 public class InterviewText implements Serializable {
 
@@ -37,32 +36,32 @@ public class InterviewText implements Serializable {
 
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
+        cutAnnotation(annotation.startIndex.get(), annotation.endIndex.get());
+        // TODO: delete an annotation that is inside the new annotation
+    }
 
-        Annotation annotationToCutBefore = getFirstAnnotationByIndex(annotation.startIndex.get());
-        Annotation annotationToCutAfter = getFirstAnnotationByIndex(annotation.endIndex.get());
+    public void cutAnnotation(int start, int end) {
+        Annotation annotationToCutBefore = getFirstAnnotationByIndex(start);
+        Annotation annotationToCutAfter = getFirstAnnotationByIndex(end);
         if (annotationToCutBefore != null && annotationToCutAfter != null) {
             if (annotationToCutBefore == annotationToCutAfter) {
                 Annotation annotationEnd = new Annotation(
                         annotationToCutAfter.interviewText,
-                        annotation.endIndex.get(),
+                        end,
                         annotationToCutAfter.endIndex.get(),
                         annotationToCutAfter.color);
                 this.addAnnotation(annotationEnd);
-                annotationToCutBefore.setEndIndex(annotation.startIndex.get());
+                annotationToCutBefore.setEndIndex(start);
             }
         }
         else {
             if (annotationToCutBefore != null){
-                annotationToCutBefore.setEndIndex(annotation.startIndex.get());
+                annotationToCutBefore.setEndIndex(start);
             }
             if (annotationToCutAfter != null) {
-                annotationToCutAfter.setStartIndex(annotation.endIndex.get());
+                annotationToCutAfter.setStartIndex(end);
             }
         }
-
-
-
-        // TODO: delete an annotation that is inside the new annotation
     }
 
     public Annotation getFirstAnnotationByIndex(int index) {
@@ -102,19 +101,8 @@ public class InterviewText implements Serializable {
         });
     }
 
-    /*
-    public String getWordByIndex(int index) {
-        int end = text.indexOf(" ", index);
-        int start = text.lastIndexOf(" ", index);
-        if (start == -1) {
-            start = 0;
-        }
-        if (end == -1) {
-            end = text.length() - 1;
-        }
-        return text.substring(start, end);
+    public List<Annotation> getSortedAnnotation() {
+        return annotations.sorted(Comparator.comparingInt(a -> a.startIndex.get()));
     }
-
-     */
 
 }

@@ -47,8 +47,8 @@ public class LetterMap extends HashMap<Integer, TextStyle> {
         }
     }
 
-    public void removeAnnotation(Fragment fragment) {
-        for (int i = fragment.getStartIndex() ; i < fragment.getEndIndex() ; i++) {
+    public void removeAnnotation(int start, int end) {
+        for (int i = start ; i < end ; i++) {
             TextStyle style = this.get(i);
             if (style == null) {
                 style = new TextStyle();

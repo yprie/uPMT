@@ -3,7 +3,6 @@ package components.interviewPanel.Controllers;
 import application.configuration.Configuration;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,14 +46,12 @@ public class InterviewTextController implements Initializable {
     @FXML private StackPane stackPaneInterview;
 
     private RichTextAreaController richTextAreaController;
-    private Interview interview;
+    private final Interview interview;
     Pane paneDragText;
-    private boolean analysisMode;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
         paneDragText = new Pane();
-        analysisMode = false;
     }
 
     public static Node createInterviewTextController(Interview interview) {
@@ -77,13 +74,10 @@ public class InterviewTextController implements Initializable {
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
         // On click release on text area: add a pane over the text area
-        richTextAreaController.getUserSelection().addListener(new ChangeListener(){
-            @Override public void changed(ObservableValue o, Object oldVal, Object newVal){
-                if(!analysisMode
-                        && !richTextAreaController.getSelectedText().isEmpty()
-                        && richTextAreaController.getToolColorSelected() == null) {
-                    stackPaneInterview.getChildren().add(paneDragText);
-                }
+        richTextAreaController.getUserSelection().addListener((ChangeListener) (o, oldVal, newVal) -> {
+            if(!richTextAreaController.getSelectedText().isEmpty()
+                    && richTextAreaController.getToolColorSelected() == null) {
+                stackPaneInterview.getChildren().add(paneDragText);
             }
         });
 
@@ -199,8 +193,10 @@ public class InterviewTextController implements Initializable {
         });
         buttonAnnotateEraser.setOnMouseClicked(event -> {
             if (buttonAnnotateEraser.isSelected()) {
-                richTextAreaController.setToolColorSelected(null); // TODO: not null but special value
+                richTextAreaController.setToolColorSelected(null);
                 deselectTools(buttonAnnotateEraser);
+                richTextAreaController.setEraserToolSelected(true);
+
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -223,7 +219,7 @@ public class InterviewTextController implements Initializable {
         });
     }
 
-    private void deselectTools(ToggleButton slectedTool) {
+    private void deselectTools(ToggleButton selectedTool) {
         ArrayList<ToggleButton> tools = new ArrayList();
         tools.add(buttonAnnotateYellow);
         tools.add(buttonAnnotateRed);
@@ -232,7 +228,7 @@ public class InterviewTextController implements Initializable {
         tools.add(buttonAnnotateEraser);
         tools.add(buttonAnnotateSelection);
         for (ToggleButton tool : tools) {
-            if (tool != slectedTool) {
+            if (tool != selectedTool) {
                 tool.setSelected(false);
             }
         }
@@ -240,6 +236,7 @@ public class InterviewTextController implements Initializable {
         buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
         buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
         buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
+        richTextAreaController.setEraserToolSelected(false);
     }
 
     private void hideDnDPane() {
