@@ -58,7 +58,7 @@ public class Interview implements Serializable {
 
 
 //    //display interview in trees
-//    public String gettitle(){
+//    public String getTitle(){
 //        return getTitle(participantName, date);
 //    }
 

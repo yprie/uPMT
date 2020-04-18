@@ -2,14 +2,9 @@ package application.appCommands;
 
 import application.UPMTApp;
 import application.configuration.Configuration;
-import application.project.controllers.NewProjectController;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import persistency.Export.CSVTableModel;
-import persistency.Export.CSVWriter;
-import persistency.Export.ProjectTableModel;
-import persistency.ProjectExporter;
-import utils.DialogState;
+import persistency.Export.ProjectExporter;
+import persistency.Export.exportModel;
 
 import java.io.File;
 
@@ -30,8 +25,7 @@ public class ExportToCSVCommand extends ApplicationCommand<Void> {
         fileChooser.getExtensionFilters().add(extFilter);
         File saveFile = fileChooser.showSaveDialog(upmtApp.getPrimaryStage());
         if(saveFile != null) {
-            CSVWriter.write(saveFile, new ProjectTableModel(upmtApp.getCurrentProject()), CSVWriter.SEMICOLON_SEPARATOR);
-            //ProjectExporter.exportToCSV(upmtApp.getCurrentProject(), saveFile);
+            ProjectExporter.write(saveFile, new exportModel(upmtApp.getCurrentProject()), ProjectExporter.SEMICOLON_SEPARATOR);
         }
         return null;
     }

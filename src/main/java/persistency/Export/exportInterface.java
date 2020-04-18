@@ -1,6 +1,6 @@
 package persistency.Export;
 
-public interface CSVTableModel {
+public interface exportInterface {
         public String getValueAt(int row, int column);
 
         public int getColumnCount();

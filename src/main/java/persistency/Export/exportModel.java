@@ -6,16 +6,17 @@ import models.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ProjectTableModel implements CSVTableModel {
+public class exportModel implements exportInterface {
     Project project;
     List<Interview> interviews;
     List<String[]> values;
-    static String[] headers = new String[]{"INTERVIEW", "ID", "NAME", "DESCRIPTEME OF MOMENT",
-            "CATEGORY", "DESCRIPTEME OF CATEGORY", "PROPERTY", "VALUE", "DESCRIPTEME OF PROPERTY"};
+
+    static String[] headers = new String[]{"INTERVIEW", "ID", "NOM", "DESCRIPTEME DE MOMENT",
+            "CATEGORIE", "DESCRIPTEME DE CATEGORIE", "PROPRIETE", "VALEUR", "DESCRIPTEME DE PROPRIETE"};
 
 
 
-    public ProjectTableModel(Project project){
+    public exportModel(Project project){
         this.project = project;
         this.interviews = project.interviewsProperty();
         this.values = new LinkedList<>();

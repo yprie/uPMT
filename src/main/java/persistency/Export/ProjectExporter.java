@@ -6,13 +6,13 @@ import javafx.scene.control.Alert;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class CSVWriter {
+public class ProjectExporter {
     public static final char COMMA_SEPARATOR = 0x2C;
     public static final char COLON_SEPARATOR = 0x3A;
     public static final char SEMICOLON_SEPARATOR = 0x3B;
     public static final char TABULATOR_SEPARATOR = 0x09;
 
-    public static void write(File file, CSVTableModel model, char separator) {
+    public static void write(File file, exportInterface model, char separator) {
         FileOutputStream fos = null;
         OutputStreamWriter osw = null;
         BufferedWriter bw = null;
@@ -68,7 +68,7 @@ public class CSVWriter {
     }
 
     protected static String encodeValue(String value) {
-        return "\"" + value + "\"";
+        return  value==null? "" : value + "\"";
     }
     private static void showExportResult(boolean succeed){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
