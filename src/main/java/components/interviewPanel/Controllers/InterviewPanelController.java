@@ -38,11 +38,15 @@ public class InterviewPanelController implements Initializable {
 
     private ObservableValue<Interview> interview;
     private ChangeListener<Interview> interviewChangeListener;
+    private ChangeListener<String> titleChangeListener;
+    private ChangeListener<String> commentChangeListener;
 
     public InterviewPanelController(ObservableValue<Interview> interview, SplitPane mainSplitPane) {
         this.mainSplitPane = mainSplitPane;
         this.interview = interview;
         this.interviewChangeListener = (observable, oldValue, newValue) -> refreshContent(newValue);
+        this.commentChangeListener = (observableValue, oldValue, newValue) -> textInterviewComment.setText(newValue);
+        this.titleChangeListener = (observableValue, oldValue, newValue) -> textInterviewTitle.setText(newValue);
     }
 
     public static Node createInterviewPanel(InterviewPanelController controller) {
@@ -87,8 +91,19 @@ public class InterviewPanelController implements Initializable {
         });
     }
 
-    private void bind() { interview.addListener(interviewChangeListener); }
-    public void unbind() { interview.removeListener(interviewChangeListener); }
+    private void bind() {
+        System.out.println("binded "+ interview.getValue().getTitle());
+        interview.addListener(interviewChangeListener);
+        interview.getValue().commentProperty().addListener(commentChangeListener);
+        interview.getValue().titleProperty().addListener(titleChangeListener);
+
+
+    }
+    public void unbind() {
+        interview.removeListener(interviewChangeListener);
+        interview.getValue().commentProperty().removeListener(commentChangeListener);
+        interview.getValue().titleProperty().removeListener(titleChangeListener);
+    }
     
     private void refreshContent(Interview newInterview) {
         if (!collapsed) {

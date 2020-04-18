@@ -1,5 +1,6 @@
 package models;
 
+import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -7,35 +8,40 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Interview implements Serializable {
-    private SimpleStringProperty name;
-
-    private String participantName;
+    private SimpleStringProperty title;
+    private SimpleStringProperty participantName;
     private LocalDate date;
-    private String comment;
+    private SimpleStringProperty comment;
     private InterviewText interviewText;
     private RootMoment rootMoment;
 
     public Interview(String participantName, LocalDate date, InterviewText interviewText, RootMoment rootMoment) {
-        this.participantName = participantName;
+        this.participantName = new SimpleStringProperty(participantName);
         this.date = date;
         this.interviewText = interviewText;
         this.rootMoment = rootMoment;
-        this.name = new SimpleStringProperty(getTitle(participantName, date));
+        this.title = new SimpleStringProperty(getTitle(participantName, date));
+        this.comment = new SimpleStringProperty();
     }
 
     public String getTitle(){
-        return name.get();
+        return title.get();
     }
-    public ReadOnlyStringProperty nameProperty() {
-        return name;
+    public SimpleStringProperty titleProperty() {
+        return title;
     }
 
     public void updateTitle(){
-        name.set(getTitle(participantName, date));
+        title.set(getTitle(getParticipantName(), date));
     }
 
-    public String getParticipantName() { return this.participantName; }
-    public void setParticipantName(String participantName) { this.participantName = participantName; }
+    public String getParticipantName() { return participantName.get(); }
+
+    public SimpleStringProperty participantNameProperty() {
+        return participantName;
+    }
+
+    public void setParticipantName(String participantName) { this.participantName.set(participantName); }
 
     public LocalDate getDate() { return this.date; }
 
@@ -45,8 +51,11 @@ public class Interview implements Serializable {
 
     public InterviewText getInterviewText() { return this.interviewText; }
 
-    public String getComment() { return this.comment; }
-    public void setComment(String comment) { this.comment = comment; }
+
+    public String getComment() { return this.comment.get(); }
+    public void setComment(String comment) { this.comment.set(comment); }
+    public SimpleStringProperty commentProperty() { return this.comment; }
+
 
 //    //display interview in trees
 //    public String gettitle(){

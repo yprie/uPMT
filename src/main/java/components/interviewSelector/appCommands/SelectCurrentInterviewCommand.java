@@ -18,6 +18,7 @@ public class SelectCurrentInterviewCommand extends InterviewSelectorCommand<Void
 
     @Override
     public Void execute() {
+        System.out.println(interview.getTitle());
         HistoryManager.addCommand(new components.interviewSelector.modelCommands.SelectCurrentInterviewCommand(project, interview), addToCommandHistory);
         if (interview != null)
             AutoSuggestions.getAutoSuggestions().setRootMoment(interview.getRootMoment());

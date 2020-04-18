@@ -33,7 +33,7 @@ public class InterviewSelectorCellController implements Initializable {
         pictureView.setImage(ResourceLoader.loadImage("category.png"));
 
         name.setText(interview.getTitle());
-        name.textProperty().bind(interview.nameProperty());
+        name.textProperty().bind(interview.titleProperty());
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
 
