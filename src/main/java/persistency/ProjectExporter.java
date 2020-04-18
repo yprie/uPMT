@@ -5,6 +5,7 @@ import application.configuration.Configuration;
 import javafx.scene.control.Alert;
 import models.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProjectExporter {
+
     public static void exportToCSV(Project project, File saveFile) {
         List<Interview> interviews = project.interviewsProperty();
         List<CSVObject> csvObjects = new LinkedList<>();
@@ -25,6 +27,8 @@ public class ProjectExporter {
 
         try {
             FileWriter csvWriter = new FileWriter(saveFile,false);
+            BufferedWriter bw = new BufferedWriter(csvWriter);
+
             String[] headers = new String[]{"INTERVIEW", "ID", "NAME", "DESCRIPTEME OF MOMENT",
                     "CATEGORY", "DESCRIPTEME OF CATEGORY", "PROPERTY", "VALUE", "DESCRIPTEME OF PROPERTY"};
             csvWriter.append(String.join(";",headers));
