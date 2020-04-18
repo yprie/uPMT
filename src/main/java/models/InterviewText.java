@@ -26,6 +26,7 @@ public class InterviewText implements Serializable {
     }
 
     public String getText() { return text; }
+
     public SimpleListProperty<Annotation> getAnnotationsProperty() { return annotations; }
     public ObservableList<Descripteme> getDescriptemesProperty() { return descriptemes; }
 
@@ -105,4 +106,8 @@ public class InterviewText implements Serializable {
         return annotations.sorted(Comparator.comparingInt(a -> a.startIndex.get()));
     }
 
+    @Override
+    public String toString() {
+        return text;
+    }
 }

@@ -1,8 +1,8 @@
-package components.modelisationSpace.justification.controllers;
+package components.modelisationSpace.justification.justificationCell;
 
 import application.configuration.Configuration;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.layout.HBox;
 import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import components.modelisationSpace.justification.appCommands.RemoveDescriptemeCommand;
@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
@@ -25,9 +24,7 @@ import java.util.ResourceBundle;
 
 public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
 
-    @FXML private HBox moveLeft;
-    @FXML private HBox moveRight;
-    @FXML private Text text;
+    @FXML private Label text;
     @FXML private MenuButton menuButton;
     @FXML BorderPane container;
     @FXML ImageView descriptemeDndLogo;
@@ -47,7 +44,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     public static Node create(JustificationCell controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/JustificationCell.fxml"));
+            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/JustificationCell/JustificationCell.fxml"));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             return loader.load();
@@ -59,33 +56,28 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Text init
-        //text.setText(descripteme.getSelection());
-        text.wrappingWidthProperty().set(200);
-        /*text.setWrapText(false);*/
         text.textProperty().bind(descripteme.getSelectionProperty());
         text.underlineProperty().bind(descripteme.getEmphasizeProperty());
 
-        ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
+/*        ShiftController leftShiftController = new ShiftController(descripteme, factory, "left");
         moveLeft.getChildren().add(ShiftController.createShiftController(leftShiftController));
 
         ShiftController rightShiftController = new ShiftController(descripteme, factory, "right");
-        moveRight.getChildren().add(ShiftController.createShiftController(rightShiftController));
+        moveRight.getChildren().add(ShiftController.createShiftController(rightShiftController));*/
 
 
         //Actions
+        MenuItem modifyButton = new MenuItem(Configuration.langBundle.getString("modify"));
+        modifyButton.setOnAction(actionEvent -> {
+            EditJustificationCell.edit(descripteme, menuButton.getScene().getWindow());
+        });
+        menuButton.getItems().add(modifyButton);
+
         MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
         duplicateButton.setOnAction(actionEvent -> {
             factory.duplicateDescripteme(descripteme).execute();
         });
         menuButton.getItems().add(duplicateButton);
-
-        /*MenuItem modifyButton = new MenuItem(Configuration.langBundle.getString("modify"));
-        modifyButton.setOnAction(actionEvent -> {
-            this.modifyDescripteme();
-        });
-        menuButton.getItems().add(modifyButton);
-        */
 
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
         removeButton.setOnAction(actionEvent -> {
@@ -108,15 +100,25 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
         setupDnd();
 
-        text.setOnMouseEntered(event -> text.setStyle("-fx-cursor: move;"));
+        //text.setOnMouseEntered(event -> text.setStyle("-fx-cursor: move;"));
     }
 
     private void setupDnd() {
         container.setOnDragDetected(mouseEvent -> {
-            Dragboard db = container.startDragAndDrop(TransferMode.MOVE);
+            Dragboard db;
+            Descripteme d;
+            if(mouseEvent.isShiftDown()) {
+                db = container.startDragAndDrop(TransferMode.COPY);
+                d = descripteme.duplicate();
+            }
+            else {
+                db = container.startDragAndDrop(TransferMode.MOVE);
+                d = descripteme;
+            }
+
             ClipboardContent content = new ClipboardContent();
             content.put(descripteme.getDataFormat(), 0);
-            DragStore.setDraggable(descripteme);
+            DragStore.setDraggable(d);
             db.setContent(content);
 
             container.setStyle("-fx-background-color: #bdc3c7;");
@@ -128,7 +130,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
                 RemoveDescriptemeCommand c = factory.removeDescripteme(DragStore.getDraggable());
                 c.isNotUserAction();
-                c.execute();
+                Platform.runLater(c::execute);
             }
             dragEvent.consume();
         });

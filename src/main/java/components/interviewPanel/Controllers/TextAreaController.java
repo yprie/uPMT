@@ -62,7 +62,7 @@ public class TextAreaController implements Initializable {
 
         Pane paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
-        paneDragText.setCursor(Cursor.MOVE);
+        //paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
 
         // On click release on text area: add a pane over the text area

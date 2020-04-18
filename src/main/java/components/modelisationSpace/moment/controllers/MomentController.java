@@ -2,6 +2,7 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import javafx.scene.Cursor;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import models.Descripteme;
@@ -142,6 +143,9 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setOnDragMomentDone((moment, originParent) -> {
             childCmdFactory.moveMomentCommand(moment, originParent).execute();
         });
+        separatorBottom.setOnDragTemplateMomentDone(templateMoment -> {
+            childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute();
+        });
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
@@ -271,6 +275,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 cmdFactory.moveMomentCommand(m, originParent,index + 1).execute();
             });
 
+            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), 0).execute(); });
+            separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
+
             //Make moment aligned, no need to understand that !
             Insets ins = momentContainer.getPadding();
             momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
@@ -285,13 +292,16 @@ public class MomentController extends ListViewController<Moment> implements Init
             //Do nothing with the left separator
             separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
             separatorLeft.setOnDragMomentDone((m, factory) -> {});
+            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> {});
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
                 separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()); });
             }
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
                 separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
             }
 
             //Make moment aligned, no need to understand that !
@@ -302,7 +312,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private void setupDragAndDrop() {
 
-        categoryDropper.setOnDragOver(dragEvent -> {
+        momentBody.setOnDragOver(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
             if(DragStore.getDraggable().isDraggable()) {
                 //Descripteme
@@ -312,7 +322,8 @@ public class MomentController extends ListViewController<Moment> implements Init
                     && justificationController.acceptDescripteme(DragStore.getDraggable())
                 ) {
                     categoryDropper.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    dragEvent.consume();
                 }
                 //Simple Schema Category
                 else if (
@@ -320,7 +331,7 @@ public class MomentController extends ListViewController<Moment> implements Init
                     && moment.indexOfSchemaCategory(DragStore.getDraggable()) == -1
                 ) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
-                    //dragEvent.consume();
+                    dragEvent.consume();
                 }
                 //Existing concrete category
                 else if (
@@ -328,11 +339,12 @@ public class MomentController extends ListViewController<Moment> implements Init
                     && !moment.hadThisCategory(DragStore.getDraggable())
                 ) {
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.consume();
                 }
             }
         });
 
-        categoryDropper.setOnDragDropped(dragEvent -> {
+        momentBody.setOnDragDropped(dragEvent -> {
             if(
                 DragStore.getDraggable().getDataFormat() == Descripteme.format
                 && dragEvent.isAccepted()
@@ -353,7 +365,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         });
 
-        categoryDropper.setOnDragExited(dragEvent -> {
+        momentBody.setOnDragExited(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
@@ -365,6 +377,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             DragStore.setDraggable(moment);
             DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows deleting the original one once drag is finished
             db.setContent(content);
+
             momentBody.setOpacity(0.5);
             separatorLeft.setActive(false);
             separatorRight.setActive(false);

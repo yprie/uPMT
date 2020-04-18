@@ -1,6 +1,7 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import javafx.scene.Cursor;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -120,7 +121,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
             ){
                 if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
                     container.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 else {
                     dragEvent.acceptTransferModes(TransferMode.NONE);
@@ -133,8 +134,9 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
                 if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
                     justificationController.addDescripteme(DragStore.getDraggable());
                     dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
                 }
-                dragEvent.consume();
+                //dragEvent.consume();
             }
         });
 
