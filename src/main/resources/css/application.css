@@ -363,4 +363,18 @@ moment-no-left-padding {
     -fx-background-position: center;
 }
 
+.button-tool-annotation {
+    -fx-border-radius:3;
+	-fx-border-width: 1;
+	-fx-border-color: black;
+}
 
+.button-tool-annotation:selected {
+}
+
+/*
+Yellow : #D7A350  #F6A31F
+Red: #D75050  #F61F1F
+Blue: #3B608D  #205BA1
+Green: #40AC40  #19C519
+*/

@@ -21,7 +21,7 @@ public abstract class ReactiveTreeContainer<T extends ReactiveTreePluggable> ext
                 //addChildren(added);
             }
         }
-    };;
+    };
 
     public ReactiveTreeContainer(T item) {
         super(item);

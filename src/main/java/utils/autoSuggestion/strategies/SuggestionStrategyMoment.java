@@ -1,7 +1,7 @@
 package utils.autoSuggestion.strategies;
 
 import models.Moment;
-import utils.autoSuggestion.AutoSuggestions;
+import utils.GlobalVariables;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ public class SuggestionStrategyMoment extends SuggestionStrategy<Moment> {
     public Map<String, Moment> fetchSuggestions() {
         // Create a list with all the possibilities: the list where we search the entered text for a match
         Map<String, Moment> result = new HashMap<>();
-        for(Moment subMoment: AutoSuggestions.getRootMoment().momentsProperty()) {
+        for(Moment subMoment: GlobalVariables.getRootMoment().momentsProperty()) {
             result.put(subMoment.getName(), subMoment);
             iterateOverSubMoment(subMoment, result);
         }
