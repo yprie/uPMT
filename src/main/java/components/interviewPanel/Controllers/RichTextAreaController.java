@@ -259,7 +259,8 @@ public class RichTextAreaController {
     }
 
     private void annotate(Color color, Integer start, Integer end) {
-        Annotation annotation = new Annotation(interviewText,
+        Annotation annotation = new Annotation(
+                interviewText,
                 start,
                 end,
                 color);

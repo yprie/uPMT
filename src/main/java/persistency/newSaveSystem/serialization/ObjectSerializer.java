@@ -1,5 +1,7 @@
 package persistency.newSaveSystem.serialization;
 
+import javafx.scene.paint.Color;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public interface ObjectSerializer {
 
     LocalDate getLocalDate(String s);
     void writeLocalDate(String name, LocalDate d);
+
+    Color getColor(String s);
+    void writeColor(String name, Color c);
 
     <T extends Serializable> T getObject(String name, Function<ObjectSerializer, T> serializableCreator);
     <T extends Serializable> T getFacultativeObject(String name, Function<ObjectSerializer, T> serializableCreator);

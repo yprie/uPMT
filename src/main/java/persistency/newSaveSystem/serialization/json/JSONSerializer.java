@@ -1,5 +1,6 @@
 package persistency.newSaveSystem.serialization.json;
 
+import javafx.scene.paint.Color;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,6 +88,16 @@ public class JSONSerializer implements ObjectSerializer {
     @Override
     public void writeLocalDate(String name, LocalDate d) {
         writeString(name, d.format(dateFormat));
+    }
+
+    @Override
+    public Color getColor(String s) {
+        return Color.valueOf(getString(s));
+    }
+
+    @Override
+    public void writeColor(String name, Color c) {
+        writeString(name, c.toString());
     }
 
 
