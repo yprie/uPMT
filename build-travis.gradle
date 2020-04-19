@@ -69,7 +69,7 @@ jar {
 runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     imageZip = file("$buildDir/uPMT.zip")
-    targetPlatform('osx-x64', 'jdk-13.0.2.jdk/Contents/Home')
+    targetPlatform('osx-x64', '/Users/travis/openjdk13')
     targetPlatform('win-x64', 'jdk-13.0.2')
 
     // OSX
