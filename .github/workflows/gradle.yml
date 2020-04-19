@@ -36,7 +36,7 @@ jobs:
           name: build-${{ runner.os }}-${{ matrix.java }}-runtime
           path: build/uPMT.zip
       - name: Upload jar
-          uses: actions/upload-artifact@v1
-          with:
-            name: build-${{ runner.os }}-${{ matrix.java }}-jar
-            path: build/libs/uPMT.jar
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-${{ runner.os }}-${{ matrix.java }}-jar
+          path: build/libs/uPMT.jar
