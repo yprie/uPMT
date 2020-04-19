@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,21 +21,23 @@ import java.util.ResourceBundle;
 
 public class EditJustificationCell implements Initializable {
 
+    private Stage stage;
     private Descripteme descripteme;
     private Descripteme descriptemeCopy;
 
-    private @FXML Label descriptemeText;
-    private @FXML Button shiftLeft, shiftRight;
+    private @FXML TextArea textArea;
+    private @FXML Button shiftLeft, shiftRight, cancelButton, confirmButton;
     private @FXML RadioButton beginningButton, endButton;
 
-    public EditJustificationCell(Descripteme descripteme) {
+    public EditJustificationCell(Stage stage, Descripteme descripteme) {
+        this.stage = stage;
         this.descripteme = descripteme;
         this.descriptemeCopy = descripteme.duplicate();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        descriptemeText.textProperty().bind(descriptemeCopy.getSelectionProperty());
+        textArea.textProperty().bind(descriptemeCopy.getSelectionProperty());
 
         shiftLeft.setOnAction(actionEvent -> {
             if(beginningButton.isSelected()){
@@ -47,6 +46,7 @@ public class EditJustificationCell implements Initializable {
             else if(endButton.isSelected()){
                 descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()-1);
             }
+            onDescriptemeUpdate();
         });
 
         shiftRight.setOnAction(actionEvent -> {
@@ -56,6 +56,24 @@ public class EditJustificationCell implements Initializable {
             else if(endButton.isSelected()){
                 descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()+1);
             }
+            onDescriptemeUpdate();
+        });
+
+        beginningButton.setOnAction(actionEvent -> {
+            onDescriptemeUpdate();
+        });
+
+        endButton.setOnAction(actionEvent -> {
+            onDescriptemeUpdate();
+        });
+
+        cancelButton.setOnAction(actionEvent -> {
+            stage.close();
+        });
+
+        confirmButton.setOnAction(actionEvent -> {
+            descripteme.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex());
+            stage.close();
         });
     }
 
@@ -64,7 +82,7 @@ public class EditJustificationCell implements Initializable {
         stage.initOwner(primaryStage);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle(Configuration.langBundle.getString("descripteme_edit"));
-        EditJustificationCell controller = new EditJustificationCell(descripteme);
+        EditJustificationCell controller = new EditJustificationCell(stage, descripteme);
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/JustificationCell/EditJustificationCell.fxml"));
@@ -82,8 +100,24 @@ public class EditJustificationCell implements Initializable {
         return null;
     }
 
-    private void onRadioButtonChange() {
+    private void onDescriptemeUpdate() {
         //TODO disable a button if it is to a border of the entire text.
+        shiftLeft.setDisable(false);
+        shiftRight.setDisable(false);
+
+        if(beginningButton.isSelected()){
+            if(descriptemeCopy.getStartIndex() == 0)
+                shiftLeft.setDisable(true);
+            else if(descriptemeCopy.getFragmentText().length() == 1)
+                shiftRight.setDisable(true);
+        }
+
+        else if(endButton.isSelected()) {
+            if(descriptemeCopy.getEndIndex() == descriptemeCopy.getInterviewText().getText().length())
+                shiftRight.setDisable(true);
+            else if(descriptemeCopy.getFragmentText().length() == 1)
+                shiftLeft.setDisable(true);
+        }
     }
 
 }
