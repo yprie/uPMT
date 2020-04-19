@@ -83,7 +83,7 @@ public class ModifyInterviewController implements Initializable {
     }
 
     public LocalDate getDate(){
-        return interviewDate.getValue();
+        return interviewDate.getEditor().getText().isEmpty() ? null : interviewDate.getValue();
     }
     public String getComment(){
         return interviewComment.getText();

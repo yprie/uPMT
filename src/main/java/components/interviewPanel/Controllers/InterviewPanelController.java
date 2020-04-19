@@ -39,11 +39,25 @@ public class InterviewPanelController implements Initializable {
 
     private ObservableValue<Interview> interview;
     private ChangeListener<Interview> interviewChangeListener;
+    private ChangeListener<String> titleChangeListener;
+    private ChangeListener<String> commentChangeListener;
 
     public InterviewPanelController(ObservableValue<Interview> interview, SplitPane mainSplitPane) {
         this.mainSplitPane = mainSplitPane;
         this.interview = interview;
-        this.interviewChangeListener = (observable, oldValue, newValue) -> refreshContent(newValue);
+
+        System.out.println("in panel: "+interview.toString());
+
+        this.interviewChangeListener = (observable, oldValue, newValue) -> {
+                interview.getValue().commentProperty().addListener(commentChangeListener);
+                oldValue.commentProperty().removeListener(commentChangeListener);
+                interview.getValue().titleProperty().addListener(titleChangeListener);
+                oldValue.titleProperty().removeListener(titleChangeListener);
+                refreshContent(newValue);
+        };
+
+        this.commentChangeListener = (observableValue, oldValue, newValue) -> { textInterviewComment.setText(newValue); };
+        this.titleChangeListener = (observableValue, oldValue, newValue) -> { textInterviewTitle.setText(newValue); };
     }
 
     public static Node createInterviewPanel(InterviewPanelController controller) {
@@ -61,8 +75,8 @@ public class InterviewPanelController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        refreshContent(interview.getValue());
         bind();
+        refreshContent(interview.getValue());
         panePosition = mainSplitPane.getDividers().get(1).getPosition();
 
         buttonCollapseInterviewPanel.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -88,8 +102,17 @@ public class InterviewPanelController implements Initializable {
         });
     }
 
-    private void bind() { interview.addListener(interviewChangeListener); }
-    public void unbind() { interview.removeListener(interviewChangeListener); }
+    private void bind() {
+        interview.addListener(interviewChangeListener);
+        interview.getValue().commentProperty().addListener(commentChangeListener);
+        interview.getValue().titleProperty().addListener(titleChangeListener);
+    }
+
+    public void unbind() {
+        interview.removeListener(interviewChangeListener);
+        interview.getValue().commentProperty().removeListener(commentChangeListener);
+        interview.getValue().titleProperty().removeListener(titleChangeListener);
+    }
     
     private void refreshContent(Interview newInterview) {
         if (!collapsed) {
