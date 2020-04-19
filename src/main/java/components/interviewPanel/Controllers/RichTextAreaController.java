@@ -88,6 +88,12 @@ public class RichTextAreaController {
         getGlobalVariables()
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> { this.updateDescripteme(); });
+
+
+        interviewText.getAnnotationsProperty().forEach(annotation -> {
+            letterMap.becomeAnnotation(annotation, annotation.getColor());
+            applyStyle(annotation);
+        });
     }
 
     private void setUpClick() {
@@ -259,7 +265,8 @@ public class RichTextAreaController {
     }
 
     private void annotate(Color color, Integer start, Integer end) {
-        Annotation annotation = new Annotation(interviewText,
+        Annotation annotation = new Annotation(
+                interviewText,
                 start,
                 end,
                 color);

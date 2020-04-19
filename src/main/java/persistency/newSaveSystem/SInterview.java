@@ -22,13 +22,18 @@ public class SInterview extends Serializable<Interview> {
     public SInterview(ObjectSerializer serializer) {
         super(serializer);
     }
-    public SInterview(Interview modelReference) {
-        super(modelName, version, modelReference);
+
+    public SInterview(ObjectSerializer serializer, Interview modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
+
+    @Override
+    public void init(Interview modelReference) {
         this.participantName = modelReference.getParticipantName();
         this.date = modelReference.getDate();
         this.comment = modelReference.getComment();
-        this.interviewText = new SInterviewText(modelReference.getInterviewText());
-        this.rootMoment = new SRootMoment(modelReference.getRootMoment());
+        this.interviewText = new SInterviewText(serializer, modelReference.getInterviewText());
+        this.rootMoment = new SRootMoment(serializer, modelReference.getRootMoment());
     }
 
     @Override

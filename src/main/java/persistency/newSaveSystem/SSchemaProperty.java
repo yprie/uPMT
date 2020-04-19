@@ -15,8 +15,13 @@ public class SSchemaProperty extends SSchemaElement<SchemaProperty> {
         super(serializer);
     }
 
-    public SSchemaProperty(SchemaProperty modelReference) {
-        super(modelName, version, modelReference);
+    public SSchemaProperty(ObjectSerializer serializer, SchemaProperty modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
+
+    @Override
+    public void init(SchemaProperty modelReference) {
+        super.init(modelReference);
     }
 
     @Override

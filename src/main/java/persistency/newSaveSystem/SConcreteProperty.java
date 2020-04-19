@@ -18,11 +18,14 @@ public class SConcreteProperty extends Serializable<ConcreteProperty> {
         super(serializer);
     }
 
-    public SConcreteProperty(ConcreteProperty modelReference) {
-        super(modelName, version, modelReference);
+    public SConcreteProperty(ObjectSerializer serializer, ConcreteProperty modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
-        schemaProperty = new SSchemaProperty(modelReference.getSchemaProperty());
-        justification = new SJustification(modelReference.getJustification());
+    @Override
+    public void init(ConcreteProperty modelReference) {
+        schemaProperty = new SSchemaProperty(serializer, modelReference.getSchemaProperty());
+        justification = new SJustification(serializer, modelReference.getJustification());
         value = modelReference.getValue();
     }
 

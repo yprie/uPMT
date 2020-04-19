@@ -25,6 +25,13 @@ public class InterviewText implements Serializable {
         this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
     }
 
+    public InterviewText(String text, ArrayList<Annotation> annotations) {
+        this.text = text;
+        this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
+        annotations.addAll(annotations);
+        System.out.println("dans interview test on a pleins d'annationations : " + annotations);
+    }
+
     public String getText() { return text; }
 
     public SimpleListProperty<Annotation> getAnnotationsProperty() { return annotations; }

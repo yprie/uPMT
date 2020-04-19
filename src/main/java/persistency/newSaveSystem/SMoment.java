@@ -22,19 +22,23 @@ public class SMoment extends Serializable<Moment> {
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
     }
-    public SMoment(Moment objectReference) {
-        super(modelName, version, objectReference);
 
-        this.name = objectReference.getName();
-        this.justification = new SJustification(objectReference.getJustification());
+    public SMoment(ObjectSerializer serializer, Moment objectReference) {
+        super(serializer, modelName, version, objectReference);
+    }
+
+    @Override
+    public void init(Moment modelReference) {
+        this.name = modelReference.getName();
+        this.justification = new SJustification(serializer, modelReference.getJustification());
 
         this.categories = new ArrayList<>();
-        for(ConcreteCategory cc: objectReference.concreteCategoriesProperty())
-            categories.add(new SConcreteCategory(cc));
+        for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
+            categories.add(new SConcreteCategory(serializer, cc));
 
         this.submoments = new ArrayList<>();
-        for(Moment m: objectReference.momentsProperty())
-            submoments.add(new SMoment(m));
+        for(Moment m: modelReference.momentsProperty())
+            submoments.add(new SMoment(serializer, m));
     }
 
     @Override

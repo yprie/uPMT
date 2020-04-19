@@ -2,24 +2,24 @@ package persistency.newSaveSystem.serialization;
 
 import java.util.HashMap;
 
-public class SerializationPool<T> {
+public class SerializationPool<K, V> {
 
-    HashMap<Integer, T> hashmap = new HashMap<>();
+    HashMap<K, V> hashmap = new HashMap<>();
 
-    public void add(int id, T s) {
-        if(contain(id))
-            throw new IllegalArgumentException("Serializable with id = " + id + " is already present in the pool !");
-        hashmap.put(id, s);
+    public void add(K key, V s) {
+        if(contain(key))
+            throw new IllegalArgumentException("Serializable with key = " + key + " is already present in the pool !");
+        hashmap.put(key, s);
     }
 
-    public boolean contain(int id) {
-        return hashmap.containsKey(id);
+    public boolean contain(K key) {
+        return hashmap.containsKey(key);
     }
 
-    public T get(int id) {
-        if(!contain(id))
-            throw new IllegalArgumentException("Serializable with id = " + id + " is not present in the pool !");
-        return hashmap.get(id);
+    public V get(K key) {
+        if(!contain(key))
+            throw new IllegalArgumentException("Serializable with id = " + key + " is not present in the pool !");
+        return hashmap.get(key);
     }
 
 
