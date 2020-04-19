@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        java: [11]
+        java: [11, 8]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
@@ -30,9 +30,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew -b build.gradle runtimeZip
-      - name: Upload artifact
+      - name: Upload runtime
         uses: actions/upload-artifact@v1
         with:
-          name: build-${{ runner.os }}-${{ matrix.java }}-
+          name: build-${{ runner.os }}-${{ matrix.java }}-runtime
           path: build/uPMT.zip
-
+      - name: Upload jar
+          uses: actions/upload-artifact@v1
+          with:
+            name: build-${{ runner.os }}-${{ matrix.java }}-jar
+            path: build/libs/uPMT.jar
