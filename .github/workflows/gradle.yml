@@ -18,8 +18,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-18.04, windows-latest]
-        java: [8, 11]
+        os: [macos-latest]
+        java: [11]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -34,22 +34,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: build
-          path: build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v1
-      with:
-        name: build
-      - uses: actions/checkout@master
-      with:
-        fetch-depth: 2
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@3.0.0
-        with:
-          ftp-server: ${{ secrets.FtpServer }}
-          ftp-username: ${{ secrets.FtpUser }}
-          ftp-password: ${{ secrets.FtpPassWord }}
-          local-dir: build
+          path: build/uPMT.zip
