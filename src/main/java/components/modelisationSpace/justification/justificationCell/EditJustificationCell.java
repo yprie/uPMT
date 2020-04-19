@@ -32,7 +32,7 @@ public class EditJustificationCell implements Initializable {
     public EditJustificationCell(Stage stage, Descripteme descripteme) {
         this.stage = stage;
         this.descripteme = descripteme;
-        this.descriptemeCopy = descripteme.duplicate();
+        this.descriptemeCopy = new Descripteme(descripteme.getInterviewText(), descripteme.getStartIndex(), descripteme.getEndIndex());
     }
 
     @Override
