@@ -296,7 +296,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
                 separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
-                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()); });
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute(); });
             }
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
