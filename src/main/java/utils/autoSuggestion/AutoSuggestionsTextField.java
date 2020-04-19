@@ -27,10 +27,14 @@ public class AutoSuggestionsTextField extends TextField {
     // Suggestion Strategy
     private SuggestionStrategy suggestionStrategy;
 
+    //Flag to avoid suggestions to pop up after selected, (because of Run Later ...)
+    private boolean canAppear;
+
     public AutoSuggestionsTextField() {
         super();
         this.entriesPopup = new ContextMenu();
         this.suggestionStrategy = null;
+        canAppear = true;
         setListener();
     }
 
@@ -38,6 +42,7 @@ public class AutoSuggestionsTextField extends TextField {
         super();
         this.entriesPopup = new ContextMenu();
         this.suggestionStrategy = suggestionStrategy;
+        canAppear = true;
         setListener();
     }
 
@@ -46,6 +51,7 @@ public class AutoSuggestionsTextField extends TextField {
         this.entriesPopup = new ContextMenu();
         this.suggestionStrategy = null;
         this.setText(text);
+        canAppear = true;
         setListener();
     }
 
@@ -53,6 +59,7 @@ public class AutoSuggestionsTextField extends TextField {
         super();
         this.entriesPopup = new ContextMenu();
         this.suggestionStrategy = autoSuggestionStrategy;
+        canAppear = true;
         this.setText(text);
         setListener();
     }
@@ -69,14 +76,10 @@ public class AutoSuggestionsTextField extends TextField {
     private void setListener() {
         //Add "suggestions" by changing text
         textProperty().addListener((observable, oldValue, newValue) -> {
-            showSuggestions();
-        });
-
-        //Hide always by focus-in (optional) and out
-        focusedProperty().addListener((observableValue, oldValue, newValue) -> {
-            if (newValue) {
+            if(Math.abs(newValue.length() - oldValue.length()) >= 1 && (oldValue.length() != 0 || newValue.length() == 1) && canAppear)
                 showSuggestions();
-            }
+            else
+                hide();
         });
     }
 
@@ -126,7 +129,9 @@ public class AutoSuggestionsTextField extends TextField {
     }
 
     private void onClick(String result) {
+        canAppear = false;
         setText(result);
+        canAppear = true;
         positionCaret(result.length());
         hide();
         Object selectedElement = suggestions.get(result);
