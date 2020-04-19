@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
-import utils.autoSuggestion.AutoSuggestions;
+import utils.GlobalVariables;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class SchemaTreeController implements Initializable {
     private long milliSecondsBetweenScrolls = 200;
     private SchemaTreeRoot root;
 
-    private AutoSuggestions autoSuggestions = AutoSuggestions.getAutoSuggestions();
+    private GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
 
     public SchemaTreeController(SchemaTreeRoot root) { this.root = root; }
 
@@ -55,7 +55,7 @@ public class SchemaTreeController implements Initializable {
         schemaTree.setEditable(true);
         schemaTree.setCellFactory(modelTreeElementTreeView -> new SchemaTreeCell());
         setTreeRoot(root);
-        autoSuggestions.setSchemaTreeRoot(root);
+        globalVariables.setSchemaTreeRoot(root);
 
         //Scrolling system
         bottomScroll.setOnDragEntered(event -> {

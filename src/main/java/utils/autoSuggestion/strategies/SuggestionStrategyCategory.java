@@ -2,7 +2,7 @@ package utils.autoSuggestion.strategies;
 
 import models.SchemaCategory;
 import models.SchemaFolder;
-import utils.autoSuggestion.AutoSuggestions;
+import utils.GlobalVariables;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class SuggestionStrategyCategory extends SuggestionStrategy<SchemaCategor
         Map<String, SchemaCategory> result = new HashMap<>();
 
         // Loop over the folders of the root
-        for(SchemaFolder folder: AutoSuggestions.getSchemaTreeRoot().foldersProperty()) {
+        for(SchemaFolder folder: GlobalVariables.getSchemaTreeRoot().foldersProperty()) {
             iterateOverFolder(folder, result);
         }
         return result;
