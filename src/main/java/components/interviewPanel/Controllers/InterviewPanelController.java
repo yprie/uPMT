@@ -50,9 +50,11 @@ public class InterviewPanelController implements Initializable {
 
         this.interviewChangeListener = (observable, oldValue, newValue) -> {
                 interview.getValue().commentProperty().addListener(commentChangeListener);
-                oldValue.commentProperty().removeListener(commentChangeListener);
                 interview.getValue().titleProperty().addListener(titleChangeListener);
-                oldValue.titleProperty().removeListener(titleChangeListener);
+                if (oldValue != null) {
+                    oldValue.commentProperty().removeListener(commentChangeListener);
+                    oldValue.titleProperty().removeListener(titleChangeListener);
+                }
                 refreshContent(newValue);
         };
 
@@ -104,20 +106,27 @@ public class InterviewPanelController implements Initializable {
 
     private void bind() {
         interview.addListener(interviewChangeListener);
+        /*System.out.println(interview);
+        System.out.println(interview.getValue());
+        System.out.println(interview.getValue().commentProperty());
         interview.getValue().commentProperty().addListener(commentChangeListener);
         interview.getValue().titleProperty().addListener(titleChangeListener);
+
+         */
     }
 
     public void unbind() {
         interview.removeListener(interviewChangeListener);
-        interview.getValue().commentProperty().removeListener(commentChangeListener);
+        /*interview.getValue().commentProperty().removeListener(commentChangeListener);
         interview.getValue().titleProperty().removeListener(titleChangeListener);
+
+         */
     }
     
     private void refreshContent(Interview newInterview) {
         if (!collapsed) {
             if(newInterview != null) {
-                textInterviewTitle.setText(newInterview.getParticipantName());
+                textInterviewTitle.setText(newInterview.getTitle());
                 textInterviewComment.setText(newInterview.getComment());
                 textInterviewComment.setVisible(true);
                 showTextInterview(newInterview);

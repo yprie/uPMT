@@ -34,7 +34,7 @@ public class NewInterviewController implements Initializable {
     private Interview resultInterview;
     private File chosenFile;
     @FXML private TextField participantName;
-    @FXML private Label chosenFilename;
+    //@FXML private Label chosenFilename;
     @FXML private TextField interviewTitle;
     @FXML private Label interviewTextExtract;
     @FXML private DatePicker interviewDate;
@@ -135,7 +135,7 @@ public class NewInterviewController implements Initializable {
         fileChooser.setTitle(Configuration.langBundle.getString("select_verbatim"));
         chosenFile = fileChooser.showOpenDialog(stage);
         if(chosenFile != null){
-            chosenFilename.setText(chosenFile.getPath());
+            //chosenFilename.setText(chosenFile.getPath());
 
             String res = "error during text loading !";
             try {
@@ -149,7 +149,7 @@ public class NewInterviewController implements Initializable {
             }
         }
         else {
-            chosenFilename.setText("/");
+            //chosenFilename.setText("/");
             interviewTextExtract.setText("");
         }
         validateForm();
