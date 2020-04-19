@@ -204,7 +204,7 @@ public class RichTextAreaController {
                         userSelection.get().getEnd());
             }
         });
-        menu.getItems().addAll(deleteAnnotationMenuItem, item1, item2, item3);
+        menu.getItems().addAll(deleteAnnotationMenuItem);
         area.setContextMenu(menu);
     }
 
