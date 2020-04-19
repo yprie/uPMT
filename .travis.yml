@@ -11,8 +11,6 @@ before_install:
  - chmod +x gradlew
  - wget https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_windows-x64_bin.zip
  - unzip openjdk-13.0.2_windows-x64_bin.zip
- - wget https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_osx-x64_bin.tar.gz
- - tar -zxvf openjdk-13.0.2_osx-x64_bin.tar.gz
 
 install: skip
 
@@ -36,5 +34,5 @@ deploy:
   - "build/libs/uPMT.jar"
   - "build/uPMT-osx-x64.zip"
   - "build/uPMT-win-x64.zip"
- on: dev
+ on: ci
  skip_cleanup: true
