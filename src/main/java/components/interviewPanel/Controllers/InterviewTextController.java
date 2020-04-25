@@ -230,7 +230,7 @@ public class InterviewTextController implements Initializable {
         buttonAnnotateBlue.setStyle("-fx-background-color: white;-fx-text-fill:" + BLUE);
         buttonAnnotateGreen.setStyle(";-fx-background-color: white;-fx-text-fill:" + GREEN);
         buttonAnnotateSelection.setStyle("-fx-text-fill: black;-fx-background-color: white");
-        buttonAnnotateEraser.setStyle("-fx-text-fill: 8b8b8b;-fx-background-color: white");
+        buttonAnnotateEraser.setStyle("-fx-text-fill: #8b8b8b;-fx-background-color: white");
         richTextAreaController.setEraserToolSelected(false);
     }
 
