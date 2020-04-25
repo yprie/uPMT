@@ -4,7 +4,7 @@ import models.SchemaElement;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
-public abstract class SSchemaElement<ModelType> extends Serializable<ModelType> {
+public abstract class SSchemaElement<ModelType extends SchemaElement> extends Serializable<ModelType> {
 
     //Fields
     public String name;
@@ -14,12 +14,15 @@ public abstract class SSchemaElement<ModelType> extends Serializable<ModelType> 
         super(serializer);
     }
 
-    public SSchemaElement(String modelName, int version, SchemaElement modelReference) {
-        super(modelName, version, modelReference);
+    public SSchemaElement(ObjectSerializer serializer, String modelName, int version, ModelType modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
+
+    @Override
+    public void init(ModelType modelReference) {
         this.name = modelReference.getName();
         this.expanded = modelReference.isExpanded();
     }
-
 
     @Override
     protected void read() {

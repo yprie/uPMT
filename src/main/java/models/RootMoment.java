@@ -4,11 +4,11 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.input.DataFormat;
+import utils.Emphasable;
 
 import java.util.LinkedList;
 
-public class RootMoment {
+public class RootMoment extends Emphasable {
     private ListProperty<Moment> submoments;
 
     public RootMoment() {

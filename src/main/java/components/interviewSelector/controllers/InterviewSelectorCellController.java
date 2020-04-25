@@ -1,17 +1,18 @@
 package components.interviewSelector.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.*;
 import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import utils.ResourceLoader;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class InterviewSelectorCellController implements Initializable {
@@ -32,15 +33,27 @@ public class InterviewSelectorCellController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         pictureView.setImage(ResourceLoader.loadImage("category.png"));
-
         name.setText(interview.getTitle());
 
-        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        deleteButton.setOnAction(actionEvent -> { commandFactory.deleteInterview(interview).execute(); });
-        optionsMenu.getItems().add(deleteButton);
+        interview.titleProperty().addListener((observableValue, s, t1) -> name.setText(t1));
 
-        //TODO: show/modify an interview
-        //MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
+
+        deleteButton.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle(Configuration.langBundle.getString("confirmation_dialog"));
+            alert.setHeaderText(Configuration.langBundle.getString("delete_interview"));
+            alert.setContentText(Configuration.langBundle.getString("continue_alert"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK){
+                commandFactory.deleteInterview(interview).execute();
+            }
+        });
+        editButton.setOnAction(actionEvent -> { commandFactory.modifyInterview(interview).execute(); });
+
+        optionsMenu.getItems().add(editButton);
+        optionsMenu.getItems().add(deleteButton);
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {

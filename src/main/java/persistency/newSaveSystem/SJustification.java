@@ -20,12 +20,15 @@ public class SJustification extends Serializable<Justification> {
         super(serializer);
     }
 
-    public SJustification(Justification modelReference) {
-        super(modelName, version, modelReference);
+    public SJustification(ObjectSerializer serializer, Justification modelReference) {
+        super(serializer, modelName, version, modelReference);
+    }
 
+    @Override
+    public void init(Justification modelReference) {
         descriptemes = new ArrayList<>();
         for(Descripteme d: modelReference.descriptemesProperty()) {
-            descriptemes.add(new SDescripteme(d));
+            descriptemes.add(new SDescripteme(serializer, d));
         }
     }
 

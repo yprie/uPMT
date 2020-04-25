@@ -7,7 +7,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
-import utils.autoSuggestion.AutoSuggestions;
+import utils.GlobalVariables;
 
 import java.util.LinkedList;
 
@@ -19,7 +19,7 @@ public class SchemaTreeRoot extends SchemaElement {
     public SchemaTreeRoot(String name) {
         super(name);
         this.folders = new SimpleListProperty<SchemaFolder>(FXCollections.observableList(new LinkedList<SchemaFolder>()));
-        AutoSuggestions.getAutoSuggestions().setSchemaTreeRoot(this);
+        GlobalVariables.getGlobalVariables().setSchemaTreeRoot(this);
     }
 
     public final ObservableList<SchemaFolder> foldersProperty() { return folders; }

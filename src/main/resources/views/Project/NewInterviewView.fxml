@@ -6,157 +6,162 @@
 <?import javafx.scene.text.*?>
 
 <!-- fx:controller="components.InterviewSelector.Controllers.NewInterviewController" -->
-<AnchorPane
-            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-    <VBox prefHeight="480.0" prefWidth="800.0">
-        <HBox>
+
+<AnchorPane prefHeight="678.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox layoutY="-18.0" prefHeight="695.0" prefWidth="800.0">
+        <HBox prefHeight="25.0" prefWidth="800.0">
             <Label id="wel" textFill="#9a1111">
                 <padding>
-                    <Insets bottom="5.0" top="5.0"/>
+                    <Insets bottom="5.0" top="5.0" />
                 </padding>
                 <HBox.margin>
-                    <Insets bottom="10.0" left="60.0" top="10.0"/>
+                    <Insets bottom="10.0" left="60.0" top="10.0" />
                 </HBox.margin>
             </Label>
         </HBox>
-        <GridPane vgap="25.0">
+        <GridPane prefHeight="553.0" prefWidth="706.0" vgap="20.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="331.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="519.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="135.6" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="185.20000000000002" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="290.80000000000007" />
+            <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES"/>
-                <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="48.4" minHeight="10.0" prefHeight="48.4" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="48.79999999999999" minHeight="10.0" prefHeight="28.39999999999999" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40.19999999999999" minHeight="10.0" prefHeight="28.80000000000001" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="91.19999999999999" minHeight="10.0" prefHeight="77.4" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="34.60000000000002" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="228.0" vgrow="SOMETIMES" />
 
             </rowConstraints>
             <VBox.margin>
-                <Insets bottom="30.0" left="40.0" right="50.0"/>
+                <Insets bottom="30.0" left="40.0" right="50.0" />
             </VBox.margin>
             <padding>
-                <Insets left="50.0" right="50.0"/>
+                <Insets left="50.0" right="50.0" />
             </padding>
-            <Label id="nom" text="%name(ID)">
+            <Label id="nom" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="385.0" text="%name(ID)" textAlignment="RIGHT">
                 <font>
-                    <Font size="20.0"/>
+                    <Font size="16.0" />
                 </font>
+                
+            </Label>
+<!--            disable="true" editable="false"-->
+            <TextField fx:id="interviewTitle" disable="true" editable="false" prefHeight="34.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
                 <GridPane.margin>
-                    <Insets top="10.0"/>
+                    <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
-            </Label>
-            <Label fx:id="interviewTitle" prefHeight="48.0" GridPane.columnIndex="1">
-                <GridPane.margin>
-                    <Insets left="20.0" right="20.0"/>
-                </GridPane.margin>
                 <font>
-                    <Font size="20.0"/>
+                    <Font size="16.0" />
+                </font>
+            </TextField>
+            <Label id="particip" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="151.0" text="%participants" textAlignment="RIGHT" GridPane.rowIndex="1">
+                <font>
+                    <Font size="16.0" />
                 </font>
             </Label>
-            <Label id="particip" text="%participants" GridPane.rowIndex="1">
-                <font>
-                    <Font size="20.0"/>
-                </font>
-            </Label>
-            <TextField id="partiEnt" fx:id="participantName" onKeyReleased="#participantNameOnKeyReleased"
-                       prefHeight="48.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField id="partiEnt" fx:id="participantName" onKeyReleased="#participantNameOnKeyReleased" prefHeight="30.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <GridPane.margin>
-                    <Insets left="20.0" right="20.0"/>
+                    <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </TextField>
-            <Label id="dateEnt" text="%date" GridPane.rowIndex="2">
+            <Label id="dateEnt" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="164.0" text="%date" textAlignment="RIGHT" GridPane.rowIndex="2">
                 <font>
-                    <Font size="20.0"/>
+                    <Font size="16.0" />
                 </font>
             </Label>
-            <DatePicker id="date" fx:id="interviewDate" onAction="#interviewDateOnAction"
-                        onKeyReleased="#interviewDateOnKeyReleased" prefHeight="48.0" prefWidth="509.0"
-                        GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <DatePicker id="date" fx:id="interviewDate" onAction="#interviewDateOnAction" onKeyReleased="#interviewDateOnKeyReleased" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <GridPane.margin>
-                    <Insets left="20.0" right="20.0"/>
+                    <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </DatePicker>
-            <Label id="addFile" text="%add_file" GridPane.rowIndex="3">
+            <Label id="addFile" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="160.0" text="%add_file" textAlignment="RIGHT" GridPane.rowIndex="4">
                 <font>
-                    <Font size="20.0"/>
+                    <Font size="16.0" />
                 </font>
             </Label>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1"
-                  GridPane.rowIndex="3">
-                <HBox prefWidth="509.0">
-                    <Button id="btnSelectFile" minWidth="-Infinity"
-                            mnemonicParsing="false" onAction="#openFileChooser" prefHeight="48.0"
-                            styleClass="button-gray" stylesheets="/css/application.css"
-                            text="%select_file">
-                        <HBox.margin>
-                            <Insets left="20.0"/>
-                        </HBox.margin>
-                    </Button>
-                    <Label fx:id="interviewTextExtract" prefHeight="48.0">
-                        <opaqueInsets>
-                            <Insets left="10.0"/>
-                        </opaqueInsets>
-                        <HBox.margin>
-                            <Insets left="5.0"/>
-                        </HBox.margin>
-                    </Label>
-                </HBox>
-                <Label id="newIntFileName" fx:id="chosenFilename" prefHeight="32.0" text="/">
-                    <padding>
-                        <Insets left="40.0" right="10.0"/>
-                    </padding>
-                </Label>
-            </VBox>
-            <Label id="comm" text="%commentaire" GridPane.rowIndex="4">
+             <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="142.0">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+             </HBox>
+            <Label id="comm" alignment="TOP_RIGHT" prefHeight="87.0" prefWidth="142.0" text="%commentaire" textAlignment="RIGHT" GridPane.rowIndex="3">
                 <font>
-                    <Font size="20.0"/>
+                    <Font size="16.0" />
                 </font>
             </Label>
-            <TextArea id="commentaire" fx:id="interviewComment" prefHeight="73.0" prefWidth="100.0"
-                      GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextArea id="commentaire" fx:id="interviewComment" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <GridPane.margin>
-                    <Insets left="20.0" right="20.0"/>
+                    <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </TextArea>
+            <Label alignment="TOP_RIGHT" prefHeight="229.0" prefWidth="215.0" text="%interview" textAlignment="RIGHT" GridPane.rowIndex="5">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+              <Label fx:id="interviewTextExtract" prefHeight="48.0" prefWidth="136.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                  <opaqueInsets>
+                      <Insets left="10.0" />
+                  </opaqueInsets>
+              </Label>
+         <TextArea fx:id="textPreview" prefHeight="230.0" prefWidth="561.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <GridPane.margin>
+               <Insets left="20.0" right="20.0" />
+            </GridPane.margin></TextArea>
+         <Label prefHeight="75.0" prefWidth="283.0" text="Or paste below" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+              <Button id="btnSelectFile" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="32.0" prefWidth="106.0" styleClass="button-gray" stylesheets="/css/application.css" text="%select_file" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+              </Button>
         </GridPane>
         <GridPane>
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                <RowConstraints/>
-                <RowConstraints/>
-                <RowConstraints maxHeight="4.5" minHeight="4.5" prefHeight="4.5"/>
-                <RowConstraints maxHeight="4.5" minHeight="0.0" prefHeight="0.0"/>
-                <RowConstraints maxHeight="16.0" minHeight="0.0" prefHeight="7.0"/>
-                <RowConstraints maxHeight="31.5" minHeight="0.0" prefHeight="0.0"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints />
+                <RowConstraints maxHeight="4.0" minHeight="0.0" prefHeight="4.0" />
+                <RowConstraints maxHeight="4.799999999999997" minHeight="0.7999999999999972" prefHeight="0.7999999999999972" />
+                <RowConstraints maxHeight="4.5" minHeight="0.0" prefHeight="0.0" />
+                <RowConstraints maxHeight="16.0" minHeight="0.0" prefHeight="0.0" />
+                <RowConstraints maxHeight="31.5" minHeight="0.0" prefHeight="7.200000000000003" />
             </rowConstraints>
             <VBox.margin>
-                <Insets bottom="25.0"/>
+                <Insets bottom="25.0" />
             </VBox.margin>
-            <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow"
-                    prefHeight="25.0" prefWidth="120.0" styleClass="button-gray"
-                    stylesheets="/css/application.css" text="%cancel">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-                <GridPane.margin>
-                    <Insets left="210.0"/>
-                </GridPane.margin>
-            </Button>
-            <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#createInterview"
-                    prefHeight="25.0" prefWidth="120.0" styleClass="button-gray"
-                    stylesheets="/css/application.css" text="%confirm" GridPane.columnIndex="1">
-                <font>
-                    <Font size="18.0"/>
-                </font>
-                <GridPane.margin>
-                    <Insets left="120.0"/>
-                </GridPane.margin>
-            </Button>
+         <HBox GridPane.columnIndex="2">
+            <children>
+                  <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="36.0" prefWidth="98.0" styleClass="button-gray" stylesheets="/css/application.css" text="%cancel">
+                      <font>
+                          <Font size="18.0" />
+                      </font>
+                  <HBox.margin>
+                     <Insets right="20.0" />
+                  </HBox.margin>
+                  </Button>
+                  <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#createInterview" styleClass="button-gray" stylesheets="/css/application.css" text="%confirm">
+                      <font>
+                          <Font size="18.0" />
+                      </font>
+                  </Button>
+            </children>
+         </HBox>
         </GridPane>
     </VBox>
 </AnchorPane>

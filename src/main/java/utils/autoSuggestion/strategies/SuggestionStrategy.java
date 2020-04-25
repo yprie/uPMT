@@ -20,9 +20,12 @@ public abstract class SuggestionStrategy<T> {
     }
 
     public Map<String, T> getSuggestions(String enteredText) {
-        return filter(
-                fetchSuggestions(),
-                enteredText
-        );
+        if(enteredText.equals(" "))
+            return fetchSuggestions();
+        else
+            return filter(
+                    fetchSuggestions(),
+                    enteredText
+            );
     }
 }

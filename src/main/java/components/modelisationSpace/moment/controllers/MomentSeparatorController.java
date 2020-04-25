@@ -1,5 +1,6 @@
 package components.modelisationSpace.moment.controllers;
 
+import javafx.application.Platform;
 import models.*;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import javafx.scene.input.DataFormat;
@@ -21,6 +22,8 @@ public class MomentSeparatorController {
     private Consumer<ConcreteCategory> onDragDoneCategory = category -> {};
     private Consumer<SchemaCategory> onDragDoneShemaCategory = category -> {};
     private BiConsumer<Moment, RootMoment> onDragMomentDone = (moment, originParentMoment) -> { };
+    private Consumer<TemplateMoment> onDragTemplateMoment = templateMoment -> {};
+
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
         p.getStyleClass().add("moment-dnd-zone");
@@ -51,20 +54,33 @@ public class MomentSeparatorController {
         });
 
         p.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format && active){
-                onDragDoneDescripteme.accept(DragStore.getDraggable());
+            if(dragEvent.isAccepted()) {
+                if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format && active){
+                    dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
+                    Platform.runLater(() -> { onDragDoneDescripteme.accept(DragStore.getDraggable()); });
+                }
+                else if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == ConcreteCategory.format && active){
+                    dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
+                    Platform.runLater(() -> { onDragDoneCategory.accept(DragStore.getDraggable()); });
+                }
+                else if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == SchemaCategory.format && active){
+                    dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
+                    Platform.runLater(() -> { onDragDoneShemaCategory.accept(DragStore.getDraggable()); });
+                }
+                else if( DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Moment.format && active){
+                    dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
+                    Platform.runLater(() -> { onDragMomentDone.accept(DragStore.getDraggable(), DragStore.getDoubleObject()); });
+                }
+                else if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == TemplateMoment.format && active) {
+                    dragEvent.setDropCompleted(true);
+                    dragEvent.consume();
+                    Platform.runLater(() -> { onDragTemplateMoment.accept(DragStore.getDraggable()); });
+                }
             }
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == ConcreteCategory.format && active){
-                onDragDoneCategory.accept(DragStore.getDraggable());
-            }
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == SchemaCategory.format && active){
-                onDragDoneShemaCategory.accept(DragStore.getDraggable());
-            }
-            if( DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Moment.format && active){
-                onDragMomentDone.accept(DragStore.getDraggable(), DragStore.getDoubleObject());
-            }
-            dragEvent.setDropCompleted(true);
-            dragEvent.consume();
         });
 
         p.setOnDragExited(dragEvent -> {
@@ -90,6 +106,11 @@ public class MomentSeparatorController {
     public void setOnDragMomentDone(BiConsumer<Moment, RootMoment>consumer){
         this.onDragMomentDone = consumer;
     }
+
+    public void setOnDragTemplateMomentDone(Consumer<TemplateMoment> consumer) {
+        this.onDragTemplateMoment = consumer;
+    }
+
     public Pane getNode() {
         return p;
     }
@@ -99,6 +120,7 @@ public class MomentSeparatorController {
                 || DragStore.getDraggable().getDataFormat() == ConcreteCategory.format
                 || DragStore.getDraggable().getDataFormat() == SchemaCategory.format
                 || DragStore.getDraggable().getDataFormat() == Moment.format
+                || DragStore.getDraggable().getDataFormat() == TemplateMoment.format
 
         );
     }

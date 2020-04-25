@@ -10,8 +10,6 @@ public class ModifyDescripteme extends ModelUserActionCommand<Void, Void> {
     private int end;
     private Descripteme descripteme;
 
-    private int sourceIndex;
-
     public ModifyDescripteme(Descripteme d, int start, int end) {
         descripteme = d;
         oldStart = descripteme.getStartIndex();
@@ -23,12 +21,14 @@ public class ModifyDescripteme extends ModelUserActionCommand<Void, Void> {
     @Override
     public Void execute() {
         descripteme.modifyIndex(start, end);
+        //GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }
 
     @Override
     public Void undo() {
         descripteme.modifyIndex(oldStart, oldEnd);
+        //GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }
 }

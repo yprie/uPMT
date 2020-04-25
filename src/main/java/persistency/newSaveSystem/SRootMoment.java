@@ -19,12 +19,15 @@ public class SRootMoment extends Serializable<RootMoment> {
         super(serializer);
     }
 
-    public SRootMoment(RootMoment modelReference) {
-        super(modelName, version, modelReference);
-
+    @Override
+    public void init(RootMoment modelReference) {
         this.submoments = new ArrayList<>();
         for(Moment m: modelReference.momentsProperty())
-            submoments.add(new SMoment(m));
+            submoments.add(new SMoment(serializer ,m));
+    }
+
+    public SRootMoment(ObjectSerializer serializer, RootMoment modelReference) {
+        super(serializer, modelName, version, modelReference);
     }
 
 

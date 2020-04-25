@@ -1,8 +1,6 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
-import models.Descripteme;
-import models.Interview;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import models.Descripteme;
+import models.Interview;
 import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class TextAreaController implements Initializable {
 
         Pane paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
-        paneDragText.setCursor(Cursor.MOVE);
+        //paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
 
         // On click release on text area: add a pane over the text area

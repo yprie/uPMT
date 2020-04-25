@@ -1,6 +1,5 @@
 package models;
 
-import models.Descripteme;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,4 +36,14 @@ public class Justification {
         return descriptemes.indexOf(d);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Descripteme descripteme :
+                descriptemes) {
+            sb.append(descripteme.getSelection());
+            sb.append('\t');
+        }
+        return sb.toString();
+    }
 }

@@ -1,6 +1,7 @@
 package components.modelisationSpace.justification.controllers;
 
 import application.configuration.Configuration;
+import components.modelisationSpace.justification.justificationCell.JustificationCell;
 import models.Descripteme;
 import components.modelisationSpace.justification.appCommands.JustificationCommandFactory;
 import models.Justification;
