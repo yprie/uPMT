@@ -139,8 +139,8 @@ public class InterviewTextController implements Initializable {
         buttonAnnotateRed.setStyle("-fx-text-fill:" + RED);
         buttonAnnotateBlue.setStyle("-fx-text-fill:" + BLUE);
         buttonAnnotateGreen.setStyle("-fx-text-fill:" + GREEN);
-        buttonAnnotateEraser.setStyle("-fx-text-fill: #8B8B8B;");
-        buttonAnnotateSelection.setStyle("-fx-text-fill: black;");
+        buttonAnnotateEraser.setStyle("-fx-text-fill: #8b8b8b;-fx-background-color: white");
+        buttonAnnotateSelection.setStyle("-fx-text-fill: white;-fx-background-color: black");
         buttonAnnotateSelection.setSelected(true);
 
         buttonAnnotateYellow.setOnMouseClicked(event -> {
@@ -152,7 +152,6 @@ public class InterviewTextController implements Initializable {
             else {
                 richTextAreaController.setToolColorSelected(null);
                 buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
             }
         });
         buttonAnnotateRed.setOnMouseClicked(event -> {
@@ -164,7 +163,6 @@ public class InterviewTextController implements Initializable {
             else {
                 richTextAreaController.setToolColorSelected(null);
                 buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
             }
         });
         buttonAnnotateBlue.setOnMouseClicked(event -> {
@@ -176,7 +174,6 @@ public class InterviewTextController implements Initializable {
             else {
                 richTextAreaController.setToolColorSelected(null);
                 buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
             }
         });
         buttonAnnotateGreen.setOnMouseClicked(event -> {
@@ -188,15 +185,14 @@ public class InterviewTextController implements Initializable {
             else {
                 richTextAreaController.setToolColorSelected(null);
                 buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
             }
         });
         buttonAnnotateEraser.setOnMouseClicked(event -> {
             if (buttonAnnotateEraser.isSelected()) {
                 richTextAreaController.setToolColorSelected(null);
-                deselectTools(buttonAnnotateEraser);
                 richTextAreaController.setEraserToolSelected(true);
-
+                deselectTools(buttonAnnotateEraser);
+                buttonAnnotateEraser.setStyle("-fx-text-fill: white;-fx-background-color: #8b8b8b");
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -207,10 +203,7 @@ public class InterviewTextController implements Initializable {
             if (buttonAnnotateSelection.isSelected()) {
                 richTextAreaController.setToolColorSelected(null);
                 deselectTools(buttonAnnotateSelection);
-                buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
-                buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
-                buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
-                buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
+                buttonAnnotateSelection.setStyle("-fx-text-fill: white;-fx-background-color: black");
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -232,10 +225,12 @@ public class InterviewTextController implements Initializable {
                 tool.setSelected(false);
             }
         }
-        buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
-        buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
-        buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
-        buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
+        buttonAnnotateYellow.setStyle("-fx-background-color: white;-fx-text-fill:" + YELLOW);
+        buttonAnnotateRed.setStyle("-fx-background-color: white;-fx-text-fill:" + RED);
+        buttonAnnotateBlue.setStyle("-fx-background-color: white;-fx-text-fill:" + BLUE);
+        buttonAnnotateGreen.setStyle(";-fx-background-color: white;-fx-text-fill:" + GREEN);
+        buttonAnnotateSelection.setStyle("-fx-text-fill: black;-fx-background-color: white");
+        buttonAnnotateEraser.setStyle("-fx-text-fill: 8b8b8b;-fx-background-color: white");
         richTextAreaController.setEraserToolSelected(false);
     }
 
