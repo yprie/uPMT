@@ -4,6 +4,7 @@ import components.interviewPanel.appCommands.AddAnnotationCommand;
 import components.interviewPanel.appCommands.RemoveAnnotationCommand;
 import components.interviewPanel.utils.LetterMap;
 import components.interviewPanel.utils.TextStyle;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.WeakListChangeListener;
@@ -101,13 +102,17 @@ public class RichTextAreaController {
             Annotation previousSelected = letterMap.getSelectedAnnotation();
             if (previousSelected != null) {
                 letterMap.deSelectAnnotation();
-                applyStyle(previousSelected);
+                Platform.runLater(() -> {
+                    applyStyle(previousSelected);
+                });
             }
 
             Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
             if (annotation != null) {
                 letterMap.selectAnnotation(annotation);
-                applyStyle(annotation);
+                Platform.runLater(() -> {
+                    applyStyle(annotation);
+                });
             }
         });
 
@@ -334,7 +339,7 @@ public class RichTextAreaController {
         toolColorSelected = color;
     }
 
-    public Color getToolColorSelected() {
-        return toolColorSelected;
+    public boolean getSelectionToolSelected() {
+        return toolColorSelected == null && !eraserToolSelected;
     }
 }
