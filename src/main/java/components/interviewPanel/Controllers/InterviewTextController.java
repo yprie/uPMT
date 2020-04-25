@@ -3,7 +3,6 @@ package components.interviewPanel.Controllers;
 import application.configuration.Configuration;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -76,7 +74,7 @@ public class InterviewTextController implements Initializable {
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener((ChangeListener) (o, oldVal, newVal) -> {
             if(!richTextAreaController.getSelectedText().isEmpty()
-                    && richTextAreaController.getToolColorSelected() == null) {
+                    && richTextAreaController.getSelectionToolSelected()) {
                 stackPaneInterview.getChildren().add(paneDragText);
             }
         });
@@ -100,30 +98,21 @@ public class InterviewTextController implements Initializable {
         paneDragText.setOpacity(0.2);
 
         // On click on the added pane, remove the pane
-        paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent arg0) {
-                hideDnDPane();
-            }
-        });
+        paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
 
         // On dragging the pane: start dragging from the text area
-        paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                String text = interview.getInterviewText().getText();
-                IndexRange selectedText = richTextAreaController.getSelection();
+        paneDragText.setOnDragDetected(event -> {
+            IndexRange selectedText = richTextAreaController.getSelection();
 
-                Descripteme descripteme = new Descripteme(
-                        interview.getInterviewText(),
-                        selectedText.getStart(),
-                        selectedText.getEnd());
-                Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.put(descripteme.getDataFormat(), 0);
-                DragStore.setDraggable(descripteme);
-                db.setContent(content);
-            }
+            Descripteme descripteme = new Descripteme(
+                    interview.getInterviewText(),
+                    selectedText.getStart(),
+                    selectedText.getEnd());
+            Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.put(descripteme.getDataFormat(), 0);
+            DragStore.setDraggable(descripteme);
+            db.setContent(content);
         });
 
         paneDragText.setOnDragDone(event -> {
@@ -190,8 +179,8 @@ public class InterviewTextController implements Initializable {
         buttonAnnotateEraser.setOnMouseClicked(event -> {
             if (buttonAnnotateEraser.isSelected()) {
                 richTextAreaController.setToolColorSelected(null);
-                richTextAreaController.setEraserToolSelected(true);
                 deselectTools(buttonAnnotateEraser);
+                richTextAreaController.setEraserToolSelected(true);
                 buttonAnnotateEraser.setStyle("-fx-text-fill: white;-fx-background-color: #8b8b8b");
             }
             else {
@@ -213,7 +202,7 @@ public class InterviewTextController implements Initializable {
     }
 
     private void deselectTools(ToggleButton selectedTool) {
-        ArrayList<ToggleButton> tools = new ArrayList();
+        ArrayList<ToggleButton> tools = new ArrayList<>();
         tools.add(buttonAnnotateYellow);
         tools.add(buttonAnnotateRed);
         tools.add(buttonAnnotateBlue);
