@@ -1,5 +1,6 @@
 package components.interviewPanel.Controllers;
 
+import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import components.interviewPanel.appCommands.AddAnnotationCommand;
 import components.interviewPanel.appCommands.RemoveAnnotationCommand;
 import components.interviewPanel.utils.LetterMap;
@@ -9,10 +10,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.WeakListChangeListener;
 import javafx.geometry.Point2D;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.*;
@@ -30,14 +30,14 @@ import static utils.GlobalVariables.getGlobalVariables;
 
 public class RichTextAreaController {
     private final InlineCssTextArea area;
-    private ContextMenu menu;
 
     private final InterviewText interviewText;
     private LetterMap letterMap;
     private final SimpleObjectProperty<IndexRange> userSelection;
-    private ArrayList<Descripteme> emphasizedDescriptemes; // used temporary when over a descripteme
+    private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
     private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
     private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
+    private ContextMenuFactory contextMenuFactory;
 
     private boolean eraserToolSelected = false;
 
@@ -64,6 +64,8 @@ public class RichTextAreaController {
         area.setParagraphGraphicFactory(LineNumberFactory.get(area));
         area.appendText(interviewText.getText());
         area.setShowCaret(Caret.CaretVisibility.ON);
+
+        contextMenuFactory = new ContextMenuFactory(this, interviewText);
 
         setUpClick();
         setUpPopUp();
@@ -146,7 +148,7 @@ public class RichTextAreaController {
 
             // emphasize descripteme in modeling spac
             emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
-            if (emphasizedDescriptemes != null) {
+            if (!emphasizedDescriptemes.isEmpty()) {
                 String message = emphasizedDescriptemes.size() + " descripteme(s)";
                 popup.show(area, pos.getX(), pos.getY() + 10);
 
@@ -168,11 +170,11 @@ public class RichTextAreaController {
             popup.hide();
 
             // de-emphasize descripteme in modeling space
-            if (emphasizedDescriptemes != null) {
+            if (!emphasizedDescriptemes.isEmpty()) {
                 for (Descripteme descripteme : emphasizedDescriptemes) {
                     descripteme.getEmphasizeProperty().set(false);
                 }
-                emphasizedDescriptemes = null;
+                emphasizedDescriptemes.clear();
             }
             if (!emphasizedMoments.isEmpty()) {
                 for(Moment moment : emphasizedMoments) {
@@ -184,39 +186,34 @@ public class RichTextAreaController {
     }
 
     private  void setUpMenu() {
-        menu = new ContextMenu();
+        area.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
+                ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
+                if (annotation != null && !descriptemes.isEmpty()) {
+                    System.out.println("we have selected an annotation and a descripteme");
+                    area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
+                }
+                else if (annotation != null) {
+                    System.out.println("we are in an annotation");
+                    //area.setContextMenu(ContextMenuFactory.getContextMenuAnnotation);
+                }
+                else if (!descriptemes.isEmpty()) {
+                    System.out.println("we are in descriptemes");
+                    //area.setContextMenu(ContextMenuFactory.getContextMenuDescripteme(descriptemes));
+                }
+                else if (!area.getSelectedText().isEmpty()) {
+                    System.out.println("we have just a text selection");
+                    //area.setContextMenu(ContextMenuFactory.getContextMenuSelection);
+                }
+                else {
+                    System.out.println("we have nothing special, just the caret somewhere");
+                    //area.setContextMenu(ContextMenuFactory.getContextMenuDefault);
+                }
+            }
+        });
 
-        MenuItem deleteAnnotationMenuItem = new MenuItem("Delete annotation");
-        deleteAnnotationMenuItem.setOnAction(event -> {
-            Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
-            deleteAnnotation(annotation);
-        });
-        MenuItem item1 = new MenuItem("Yellow");
-        item1.setOnAction(e -> {
-            if (!area.getSelectedText().isEmpty()) {
-                annotate(Color.YELLOW,
-                        userSelection.get().getStart(),
-                        userSelection.get().getEnd());
-            }
-        });
-        MenuItem item2 = new MenuItem("Red");
-        item2.setOnAction(e -> {
-            if (!area.getSelectedText().isEmpty()) {
-                annotate(Color.RED,
-                        userSelection.get().getStart(),
-                        userSelection.get().getEnd());
-            }
-        });
-        MenuItem item3 = new MenuItem("Blue");
-        item3.setOnAction(e -> {
-            if (!area.getSelectedText().isEmpty()) {
-                annotate(Color.BLUE,
-                        userSelection.get().getStart(),
-                        userSelection.get().getEnd());
-            }
-        });
-        menu.getItems().addAll(deleteAnnotationMenuItem);
-        area.setContextMenu(menu);
+
     }
 
     private void updateDescripteme() {
@@ -267,6 +264,7 @@ public class RichTextAreaController {
 
         });
         annotationToDelete.forEach(annotation -> deleteAnnotation(annotation));
+        area.deselect();
     }
 
     private void annotate(Color color, Integer start, Integer end) {

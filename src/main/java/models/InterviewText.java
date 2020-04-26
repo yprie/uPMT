@@ -94,12 +94,7 @@ public class InterviewText implements Serializable {
                 foundDescriptemes.add(descripteme);
             }
         }
-        if (!foundDescriptemes.isEmpty()) {
-            return foundDescriptemes;
-        }
-        else {
-            return null;
-        }
+        return foundDescriptemes;
     }
 
     public void addDescripteme(Descripteme descripteme) {
