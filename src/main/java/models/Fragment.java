@@ -2,6 +2,7 @@ package models;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.IndexRange;
 import javafx.scene.input.DataFormat;
 import utils.Emphasable;
 import utils.dragAndDrop.IDraggable;
@@ -41,6 +42,10 @@ public abstract class Fragment extends Emphasable implements IDraggable {
     @Override
     public String toString() {
         return "Fragment [" + startIndex.get() + ", " + endIndex.get() + "] " + getFragmentText();
+    }
+
+    public IndexRange getIndexRange() {
+        return new IndexRange(startIndex.get(), endIndex.get());
     }
 
     /*

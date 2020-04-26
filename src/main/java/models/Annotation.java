@@ -13,6 +13,11 @@ public class Annotation extends Fragment {
         color = c;
     }
 
+    public Annotation(Fragment fragment, Color color) {
+        super(fragment.interviewText, fragment.getStartIndex(), fragment.getEndIndex());
+        this.color = color;
+    }
+
     public void setStartIndex(int start) {
         if (start > endIndex.get()) {
             throw new IllegalArgumentException("Annotation start index can't be after end index");

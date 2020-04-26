@@ -65,8 +65,6 @@ public class RichTextAreaController {
         area.appendText(interviewText.getText());
         area.setShowCaret(Caret.CaretVisibility.ON);
 
-        contextMenuFactory = new ContextMenuFactory(this, interviewText);
-
         setUpClick();
         setUpPopUp();
         setUpMenu();
@@ -97,6 +95,10 @@ public class RichTextAreaController {
             letterMap.becomeAnnotation(annotation, annotation.getColor());
             applyStyle(annotation);
         });
+    }
+
+    public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
+        this.contextMenuFactory = contextMenuFactory;
     }
 
     private void setUpClick() {
@@ -188,11 +190,12 @@ public class RichTextAreaController {
     private  void setUpMenu() {
         area.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
+                area.setContextMenu(null);
                 Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
                 ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
                 if (annotation != null && !descriptemes.isEmpty()) {
                     System.out.println("we have selected an annotation and a descripteme");
-                    area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
+                    //area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
                 }
                 else if (annotation != null) {
                     System.out.println("we are in an annotation");
@@ -200,15 +203,15 @@ public class RichTextAreaController {
                 }
                 else if (!descriptemes.isEmpty()) {
                     System.out.println("we are in descriptemes");
-                    //area.setContextMenu(ContextMenuFactory.getContextMenuDescripteme(descriptemes));
+                    //area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(descriptemes));
                 }
                 else if (!area.getSelectedText().isEmpty()) {
                     System.out.println("we have just a text selection");
-                    //area.setContextMenu(ContextMenuFactory.getContextMenuSelection);
+                    area.setContextMenu(contextMenuFactory.getContextMenuSelection(interviewText, area.getSelection()));
                 }
                 else {
                     System.out.println("we have nothing special, just the caret somewhere");
-                    //area.setContextMenu(ContextMenuFactory.getContextMenuDefault);
+                    //area.setContextMenu(contextMenuFactory.getContextMenuDefault);
                 }
             }
         });
@@ -263,7 +266,10 @@ public class RichTextAreaController {
             }
 
         });
-        annotationToDelete.forEach(annotation -> deleteAnnotation(annotation));
+        annotationToDelete.forEach(annotation -> {
+            new RemoveAnnotationCommand(interviewText, annotation).execute();
+            // there is a listener that apply the style
+        });
         area.deselect();
     }
 
@@ -275,12 +281,6 @@ public class RichTextAreaController {
                 color);
         new AddAnnotationCommand(interviewText, annotation).execute();
     }
-
-    private void deleteAnnotation(Annotation annotation) {
-        new RemoveAnnotationCommand(interviewText, annotation).execute();
-        // there is a listener that apply the style
-    }
-
 
     public void annotate(Color color) {
         IndexRange selection = area.getSelection();
@@ -296,6 +296,10 @@ public class RichTextAreaController {
 
     public IndexRange getSelection() {
         return area.getSelection();
+    }
+
+    public Integer getCaretPosition() {
+        return area.getCaretPosition();
     }
 
     public void setEraserToolSelected(boolean eraserToolSelected) {
@@ -339,5 +343,13 @@ public class RichTextAreaController {
 
     public boolean getSelectionToolSelected() {
         return toolColorSelected == null && !eraserToolSelected;
+    }
+
+    public void deselect() {
+        area.deselect();
+    }
+
+    public void select(IndexRange selection) {
+        area.selectRange(selection.getStart(), selection.getEnd());
     }
 }

@@ -1,45 +1,64 @@
 package components.interviewPanel.ContextMenus;
 
 import components.interviewPanel.AnnotationColor;
+import components.interviewPanel.Controllers.InterviewTextController;
 import components.interviewPanel.Controllers.RichTextAreaController;
 import components.interviewPanel.appCommands.AddAnnotationCommand;
+import components.interviewPanel.appCommands.RemoveAnnotationCommand;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import models.Annotation;
+import models.Fragment;
 import models.InterviewText;
 
 public class MenuItemFactory {
 
-    private RichTextAreaController area; // ref to the rich text area
-    private InterviewText interviewText; // ref to the interview Text
+    private final InterviewTextController interviewTextController; // ref of the controller
+    private final RichTextAreaController area; // ref to the rich text area
+    private final InterviewText interviewText; // ref to the interview Text
 
-    MenuItemFactory(RichTextAreaController area, InterviewText interviewText) {
+    MenuItemFactory(InterviewTextController interviewTextController, RichTextAreaController area) {
+        this.interviewTextController = interviewTextController;
         this.area = area;
-        this.interviewText = interviewText;
+        this.interviewText = interviewTextController.getInterviewText();
     }
 
-    public MenuItem getAnnotate(String colorName, Annotation annotation) {
+    public MenuItem getAnnotate(String colorName, Fragment fragment) {
+        MenuItem item = new MenuItem(colorName);
+        item.setOnAction(e -> new AddAnnotationCommand(interviewText, new Annotation(
+                fragment,
+                AnnotationColor.getColor(colorName))
+        ).execute());
+        return item;
+    }
+
+    public MenuItem getAnnotate(InterviewText interviewText, String colorName, IndexRange selection) {
         MenuItem item = new MenuItem(colorName);
         item.setOnAction(e -> {
             new AddAnnotationCommand(interviewText, new Annotation(
                     interviewText,
-                    annotation.getStartIndex(),
-                    annotation.getEndIndex(),
+                    selection.getStart(),
+                    selection.getEnd(),
                     AnnotationColor.getColor(colorName))
             ).execute();
+            area.deselect();
 
         });
         return item;
     }
 
-    /*
-    public static MenuItem getEraser() {
-        MenuItem deleteAnnotationMenuItem = new MenuItem("Delete annotation");
-        deleteAnnotationMenuItem.setOnAction(event -> {
-            Annotation annotation = interviewText.getFirstAnnotationByIndex(area.area.getCaretPosition());
-            area.deleteAnnotation(annotation);
-        });
-        return deleteAnnotationMenuItem;
+    public MenuItem getEraser(Annotation annotation) {
+        MenuItem item = new MenuItem("Delete annotation");
+        item.setOnAction(event -> new RemoveAnnotationCommand(interviewText, annotation).execute());
+        return item;
     }
 
-     */
+    public MenuItem getCatch(IndexRange selection) {
+        MenuItem item = new MenuItem("Catch");
+        item.setOnAction(event -> {
+            area.select(selection);
+            interviewTextController.addPaneForDragAndDrop();
+        });
+        return item;
+    }
 }

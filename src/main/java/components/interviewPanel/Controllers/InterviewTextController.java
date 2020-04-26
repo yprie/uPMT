@@ -2,6 +2,7 @@ package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.AnnotationColor;
+import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import models.Descripteme;
 import models.Interview;
+import models.InterviewText;
 import utils.GlobalVariables;
 import utils.dragAndDrop.DragStore;
 
@@ -44,7 +46,6 @@ public class InterviewTextController implements Initializable {
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
-        paneDragText = new Pane();
     }
 
     public static Node createInterviewTextController(Interview interview) {
@@ -63,14 +64,17 @@ public class InterviewTextController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
+        richTextAreaController.setContextMenuFactory(new ContextMenuFactory(richTextAreaController, this));
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener((ChangeListener) (o, oldVal, newVal) -> {
             if(!richTextAreaController.getSelectedText().isEmpty()
                     && richTextAreaController.getSelectionToolSelected()) {
-                stackPaneInterview.getChildren().add(paneDragText);
+                //addPaneForDragAndDrop();
+                // TODO: I propose to remove the line above ^
             }
         });
 
@@ -88,6 +92,7 @@ public class InterviewTextController implements Initializable {
     }
 
     private void setupDragAndDrop() {
+        paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
         paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
@@ -219,7 +224,15 @@ public class InterviewTextController implements Initializable {
     }
 
     private void hideDnDPane() {
-        //richTextAreaController.deselect();
         stackPaneInterview.getChildren().remove(paneDragText);
+    }
+
+
+    public void addPaneForDragAndDrop() {
+        stackPaneInterview.getChildren().add(paneDragText);
+    }
+
+    public InterviewText getInterviewText() {
+        return interview.getInterviewText();
     }
 }
