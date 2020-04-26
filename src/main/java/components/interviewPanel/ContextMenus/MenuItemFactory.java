@@ -8,6 +8,7 @@ import components.interviewPanel.appCommands.RemoveAnnotationCommand;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import models.Annotation;
+import models.Descripteme;
 import models.Fragment;
 import models.InterviewText;
 
@@ -58,6 +59,14 @@ public class MenuItemFactory {
         item.setOnAction(event -> {
             area.select(selection);
             interviewTextController.addPaneForDragAndDrop();
+        });
+        return item;
+    }
+
+    public MenuItem getReveal(Descripteme descripteme) {
+        MenuItem item = new MenuItem("Reveal");
+        item.setOnAction(event -> {
+            descripteme.getEmphasizeProperty().set(!descripteme.getEmphasizeProperty().get());
         });
         return item;
     }

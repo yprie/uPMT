@@ -195,7 +195,7 @@ public class RichTextAreaController {
                 ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
                 if (annotation != null && !descriptemes.isEmpty()) {
                     System.out.println("we have selected an annotation and a descripteme");
-                    //area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
+                    area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
                 }
                 else if (annotation != null) {
                     System.out.println("we are in an annotation");
@@ -203,15 +203,11 @@ public class RichTextAreaController {
                 }
                 else if (!descriptemes.isEmpty()) {
                     System.out.println("we are in descriptemes");
-                    //area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(descriptemes));
+                    area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(descriptemes));
                 }
                 else if (!area.getSelectedText().isEmpty()) {
                     System.out.println("we have just a text selection");
                     area.setContextMenu(contextMenuFactory.getContextMenuSelection(interviewText, area.getSelection()));
-                }
-                else {
-                    System.out.println("we have nothing special, just the caret somewhere");
-                    //area.setContextMenu(contextMenuFactory.getContextMenuDefault);
                 }
             }
         });

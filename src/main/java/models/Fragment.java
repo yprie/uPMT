@@ -29,6 +29,14 @@ public abstract class Fragment extends Emphasable implements IDraggable {
         return interviewText.getText().substring(startIndex.getValue(), endIndex.getValue());
     }
 
+    public String getCroppedFragmentText() {
+        String fragmentText = getFragmentText().replace("\n", "").replace("\r", "");
+        if (fragmentText.length() > 20) {
+            return fragmentText.substring(0, 17) + "...";
+        }
+        return fragmentText;
+    }
+
     @Override
     public DataFormat getDataFormat() {
         return format;
