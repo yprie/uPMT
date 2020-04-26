@@ -196,7 +196,7 @@ public class RichTextAreaController {
                 }
                 else if (annotation != null) {
                     System.out.println("we are in an annotation");
-                    //area.setContextMenu(ContextMenuFactory.getContextMenuAnnotation);
+                    area.setContextMenu(contextMenuFactory.getContextMenuAnnotation(annotation));
                 }
                 else if (!descriptemes.isEmpty()) {
                     System.out.println("we are in descriptemes");

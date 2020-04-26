@@ -1,10 +1,9 @@
 package components.interviewPanel.ContextMenus;
 
-import components.interviewPanel.ColorAnnotation;
+import components.interviewPanel.AnnotationColor;
 import components.interviewPanel.Controllers.RichTextAreaController;
 import components.interviewPanel.appCommands.AddAnnotationCommand;
 import javafx.scene.control.MenuItem;
-import javafx.scene.paint.Color;
 import models.Annotation;
 import models.InterviewText;
 
@@ -18,14 +17,15 @@ public class MenuItemFactory {
         this.interviewText = interviewText;
     }
 
-    public MenuItem getYellowAnnotate(Annotation annotation) {
-        MenuItem item = new MenuItem("Yellow");
+    public MenuItem getAnnotate(String colorName, Annotation annotation) {
+        MenuItem item = new MenuItem(colorName);
         item.setOnAction(e -> {
             new AddAnnotationCommand(interviewText, new Annotation(
                     interviewText,
                     annotation.getStartIndex(),
                     annotation.getEndIndex(),
-                    Color.web(ColorAnnotation.YELLOW))).execute();
+                    AnnotationColor.getColor(colorName))
+            ).execute();
 
         });
         return item;

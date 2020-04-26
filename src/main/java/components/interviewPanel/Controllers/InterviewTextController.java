@@ -1,7 +1,7 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
-import components.interviewPanel.ColorAnnotation;
+import components.interviewPanel.AnnotationColor;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -17,7 +17,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import models.Descripteme;
 import models.Interview;
 import utils.GlobalVariables;
@@ -120,19 +119,19 @@ public class InterviewTextController implements Initializable {
     }
 
     private void setUpTools() {
-        buttonAnnotateYellow.setStyle("-fx-text-fill:" + ColorAnnotation.YELLOW);
-        buttonAnnotateRed.setStyle("-fx-text-fill:" + ColorAnnotation.RED);
-        buttonAnnotateBlue.setStyle("-fx-text-fill:" + ColorAnnotation.BLUE);
-        buttonAnnotateGreen.setStyle("-fx-text-fill:" + ColorAnnotation.GREEN);
+        buttonAnnotateYellow.setStyle("-fx-text-fill:" + AnnotationColor.YELLOW());
+        buttonAnnotateRed.setStyle("-fx-text-fill:" + AnnotationColor.RED());
+        buttonAnnotateBlue.setStyle("-fx-text-fill:" + AnnotationColor.BLUE());
+        buttonAnnotateGreen.setStyle("-fx-text-fill:" + AnnotationColor.GREEN());
         buttonAnnotateEraser.setStyle("-fx-text-fill: #8b8b8b;-fx-background-color: white");
         buttonAnnotateSelection.setStyle("-fx-text-fill: white;-fx-background-color: black");
         buttonAnnotateSelection.setSelected(true);
 
         buttonAnnotateYellow.setOnMouseClicked(event -> {
             if (buttonAnnotateYellow.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(ColorAnnotation.YELLOW));
+                richTextAreaController.setToolColorSelected(AnnotationColor.ColorYELLOW());
                 deselectTools(buttonAnnotateYellow);
-                buttonAnnotateYellow.setStyle("-fx-text-fill: white;-fx-background-color:" + ColorAnnotation.YELLOW);
+                buttonAnnotateYellow.setStyle("-fx-text-fill: white;-fx-background-color:" + AnnotationColor.YELLOW());
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -141,9 +140,9 @@ public class InterviewTextController implements Initializable {
         });
         buttonAnnotateRed.setOnMouseClicked(event -> {
             if (buttonAnnotateRed.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(ColorAnnotation.RED));
+                richTextAreaController.setToolColorSelected(AnnotationColor.ColorRED());
                 deselectTools(buttonAnnotateRed);
-                buttonAnnotateRed.setStyle("-fx-text-fill: white;-fx-background-color:" + ColorAnnotation.RED);
+                buttonAnnotateRed.setStyle("-fx-text-fill: white;-fx-background-color:" + AnnotationColor.RED());
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -152,9 +151,9 @@ public class InterviewTextController implements Initializable {
         });
         buttonAnnotateBlue.setOnMouseClicked(event -> {
             if (buttonAnnotateBlue.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(ColorAnnotation.BLUE));
+                richTextAreaController.setToolColorSelected(AnnotationColor.ColorBLUE());
                 deselectTools(buttonAnnotateBlue);
-                buttonAnnotateBlue.setStyle("-fx-text-fill: white;-fx-background-color:" + ColorAnnotation.BLUE);
+                buttonAnnotateBlue.setStyle("-fx-text-fill: white;-fx-background-color:" + AnnotationColor.BLUE());
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -163,9 +162,9 @@ public class InterviewTextController implements Initializable {
         });
         buttonAnnotateGreen.setOnMouseClicked(event -> {
             if (buttonAnnotateGreen.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(ColorAnnotation.GREEN));
+                richTextAreaController.setToolColorSelected(AnnotationColor.ColorGREEN());
                 deselectTools(buttonAnnotateGreen);
-                buttonAnnotateGreen.setStyle("-fx-text-fill: white;-fx-background-color:" + ColorAnnotation.GREEN);
+                buttonAnnotateGreen.setStyle("-fx-text-fill: white;-fx-background-color:" + AnnotationColor.GREEN());
             }
             else {
                 richTextAreaController.setToolColorSelected(null);
@@ -210,10 +209,10 @@ public class InterviewTextController implements Initializable {
                 tool.setSelected(false);
             }
         }
-        buttonAnnotateYellow.setStyle("-fx-background-color: white;-fx-text-fill:" + ColorAnnotation.YELLOW);
-        buttonAnnotateRed.setStyle("-fx-background-color: white;-fx-text-fill:" + ColorAnnotation.RED);
-        buttonAnnotateBlue.setStyle("-fx-background-color: white;-fx-text-fill:" + ColorAnnotation.BLUE);
-        buttonAnnotateGreen.setStyle(";-fx-background-color: white;-fx-text-fill:" + ColorAnnotation.GREEN);
+        buttonAnnotateYellow.setStyle("-fx-background-color: white;-fx-text-fill:" + AnnotationColor.YELLOW());
+        buttonAnnotateRed.setStyle("-fx-background-color: white;-fx-text-fill:" + AnnotationColor.RED());
+        buttonAnnotateBlue.setStyle("-fx-background-color: white;-fx-text-fill:" + AnnotationColor.BLUE());
+        buttonAnnotateGreen.setStyle(";-fx-background-color: white;-fx-text-fill:" + AnnotationColor.GREEN());
         buttonAnnotateSelection.setStyle("-fx-text-fill: black;-fx-background-color: white");
         buttonAnnotateEraser.setStyle("-fx-text-fill: #8b8b8b;-fx-background-color: white");
         richTextAreaController.setEraserToolSelected(false);
