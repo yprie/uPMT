@@ -24,7 +24,6 @@ import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -83,16 +82,13 @@ public class InterviewTextController implements Initializable {
         });
 
         setupDragAndDrop();
-        //setUpTools();
 
         Platform.runLater(this::initializeDescripteme);
     }
 
     private void initializeDescripteme() {
-        ArrayList<Descripteme> descriptemes = GlobalVariables.getGlobalVariables().getAllDescripteme();
-        for (Descripteme descripteme: descriptemes) {
-            richTextAreaController.addDescripteme(descripteme);
-        }
+        GlobalVariables.getGlobalVariables().getAllDescripteme()
+                .forEach(descripteme -> richTextAreaController.addDescripteme(descripteme));
     }
 
     private void setupDragAndDrop() {

@@ -1,14 +1,12 @@
 package components.interviewPanel.Controllers;
 
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
-import components.interviewPanel.appCommands.AddAnnotationCommand;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import models.Annotation;
 import models.Descripteme;
@@ -29,18 +27,13 @@ public class RichTextAreaController {
     private final InlineCssTextArea area;
 
     private final InterviewText interviewText;
-    //private final LetterMap letterMap;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
     private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
-    private Color toolColorSelected; // the selected tool, if null -> default tool is descripteme
     private ContextMenuFactory contextMenuFactory;
-
-    private boolean eraserToolSelected = false;
 
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
-        //this.letterMap = new LetterMap();
         userSelection = new SimpleObjectProperty<>();
         area = new InlineCssTextArea();
         area.setWrapText(true);
@@ -57,11 +50,10 @@ public class RichTextAreaController {
         this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
             while (c.next()) {
                 for (Annotation removed : c.getRemoved()) {
-                    //letterMap.removeAnnotation(removed.getStartIndex(), removed.getEndIndex());
                     applyStyle(removed.getStartIndex(), removed.getEndIndex());
+                    deselect();
                 }
                 for (Annotation added : c.getAddedSubList()) {
-                    //letterMap.becomeAnnotation(added, added.getColor());
                     applyStyle(added);
                     deselect();
                 }
@@ -71,11 +63,9 @@ public class RichTextAreaController {
         this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
             while (c.next()) {
                 for (Descripteme removed : c.getRemoved()) {
-                    //letterMap.removeDescripteme(removed);
                     applyStyle(removed.getStartIndex(), removed.getEndIndex());
                 }
                 for (Descripteme added : c.getAddedSubList()) {
-                    //letterMap.becomeDescripteme(added);
                     applyStyle(added.getStartIndex(), added.getEndIndex());
                 }
             }
@@ -85,11 +75,7 @@ public class RichTextAreaController {
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> this.updateDescripteme());
 
-
-        interviewText.getAnnotationsProperty().forEach(annotation -> {
-            //letterMap.becomeAnnotation(annotation, annotation.getColor());
-            applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
-        });
+        interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
     }
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
@@ -114,22 +100,10 @@ public class RichTextAreaController {
 
          */
 
-        area.setOnMouseReleased(event -> {
-            userSelection.set(new IndexRange(
-                    area.getSelection().getStart(),
-                    area.getSelection().getEnd()
-            ));
-
-            /*
-            if (toolColorSelected != null && area.getSelection().getStart() != area.getSelection().getEnd()) {
-                annotate(toolColorSelected);
-            }
-            if (eraserToolSelected && area.getSelection().getStart() != area.getSelection().getEnd()) {
-                erase();
-            }
-
-             */
-        });
+        area.setOnMouseReleased(event -> userSelection.set(new IndexRange(
+                area.getSelection().getStart(),
+                area.getSelection().getEnd()
+        )));
     }
 
     private void setUpPopUp() {
@@ -251,62 +225,8 @@ public class RichTextAreaController {
         }
     }
 
-    /*
-    private void erase() {
-        IndexRange selection = area.getSelection();
-        interviewText.cutAnnotation(selection.getStart(), selection.getEnd());
-        letterMap.removeAnnotation(selection.getStart(), selection.getEnd());
-        applyStyle(selection.getStart(), selection.getEnd());
-        List<Annotation> sortedAnnotations = interviewText.getSortedAnnotation();
-        List<Annotation> annotationToDelete = new ArrayList<>();
-        sortedAnnotations.forEach(annotation -> {
-            if (annotation.getStartIndex() >= selection.getStart()
-                    && annotation.getEndIndex() <= selection.getEnd()) {
-                annotationToDelete.add(annotation);
-            }
-
-        });
-        annotationToDelete.forEach(annotation -> {
-            new RemoveAnnotationCommand(interviewText, annotation).execute();
-            // there is a listener that apply the style
-        });
-        area.deselect();
-    }
-
-     */
-
-
-    private void annotate(Color color, Integer start, Integer end) {
-        Annotation annotation = new Annotation(
-                interviewText,
-                start,
-                end,
-                color);
-        new AddAnnotationCommand(interviewText, annotation).execute();
-    }
-
-    public void annotate(Color color) {
-        IndexRange selection = area.getSelection();
-        if (selection.getStart() != selection.getEnd()) {
-            annotate(color, selection.getStart(), selection.getEnd());
-            area.deselect();
-        }
-    }
-
-    public String getSelectedText() {
-        return area.getSelectedText();
-    }
-
     public IndexRange getSelection() {
         return area.getSelection();
-    }
-
-    public Integer getCaretPosition() {
-        return area.getCaretPosition();
-    }
-
-    public void setEraserToolSelected(boolean eraserToolSelected) {
-        this.eraserToolSelected = eraserToolSelected;
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
@@ -337,14 +257,6 @@ public class RichTextAreaController {
             //letterMap.becomeDescripteme(descripteme);
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
-    }
-
-    public void setToolColorSelected(Color color) {
-        toolColorSelected = color;
-    }
-
-    public boolean getSelectionToolSelected() {
-        return toolColorSelected == null && !eraserToolSelected;
     }
 
     public void deselect() {
