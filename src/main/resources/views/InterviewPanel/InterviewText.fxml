@@ -6,30 +6,6 @@
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <HBox fx:id="toolBarAnnotation">
-            <ToggleButton fx:id="buttonAnnotateYellow"
-                          text="Yellow"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
-            <ToggleButton fx:id="buttonAnnotateRed"
-                          text="Red"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
-            <ToggleButton fx:id="buttonAnnotateBlue"
-                          text="Blue"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
-            <ToggleButton fx:id="buttonAnnotateGreen"
-                          text="Green"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
-            <ToggleButton fx:id="buttonAnnotateEraser"
-                          text="Eraser"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
-            <ToggleButton fx:id="buttonAnnotateSelection"
-                          text="Selection"
-                          styleClass="button-tool-annotation"
-                          stylesheets="/css/application.css"></ToggleButton>
         </HBox>
     </top>
     <center>

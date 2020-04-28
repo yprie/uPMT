@@ -2,20 +2,18 @@ package components.interviewPanel.Controllers;
 
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import components.interviewPanel.appCommands.AddAnnotationCommand;
-import components.interviewPanel.appCommands.RemoveAnnotationCommand;
-import components.interviewPanel.utils.LetterMap;
-import components.interviewPanel.utils.TextStyle;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
-import javafx.collections.WeakListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
-import models.*;
+import models.Annotation;
+import models.Descripteme;
+import models.InterviewText;
+import models.Moment;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -24,7 +22,6 @@ import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
 
 import static utils.GlobalVariables.getGlobalVariables;
 
@@ -32,7 +29,7 @@ public class RichTextAreaController {
     private final InlineCssTextArea area;
 
     private final InterviewText interviewText;
-    private LetterMap letterMap;
+    //private final LetterMap letterMap;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
     private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
@@ -41,22 +38,9 @@ public class RichTextAreaController {
 
     private boolean eraserToolSelected = false;
 
-    private ListChangeListener<Annotation> onAnnotationsChangeListener = change -> {
-        while (change.next()) {
-            for (Annotation removed : change.getRemoved()) {
-                letterMap.removeAnnotation(removed.getStartIndex(), removed.getEndIndex());
-                applyStyle(removed);
-            }
-            for (Annotation added : change.getAddedSubList()) {
-                letterMap.becomeAnnotation(added, added.getColor());
-                applyStyle(added);
-            }
-        }
-    };
-
     public RichTextAreaController(InterviewText interviewText) {
         this.interviewText = interviewText;
-        this.letterMap = new LetterMap();
+        //this.letterMap = new LetterMap();
         userSelection = new SimpleObjectProperty<>();
         area = new InlineCssTextArea();
         area.setWrapText(true);
@@ -70,30 +54,41 @@ public class RichTextAreaController {
         setUpMenu();
 
         // Two listeners that update the view (highlight and underline)
-        this.interviewText.getAnnotationsProperty().addListener(
-                new WeakListChangeListener<>(onAnnotationsChangeListener));
+        this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
+            while (c.next()) {
+                for (Annotation removed : c.getRemoved()) {
+                    //letterMap.removeAnnotation(removed.getStartIndex(), removed.getEndIndex());
+                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
+                }
+                for (Annotation added : c.getAddedSubList()) {
+                    //letterMap.becomeAnnotation(added, added.getColor());
+                    applyStyle(added);
+                    deselect();
+                }
+            }
+        });
 
         this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
             while (c.next()) {
                 for (Descripteme removed : c.getRemoved()) {
-                    letterMap.removeDescripteme(removed);
-                    applyStyle(removed);
+                    //letterMap.removeDescripteme(removed);
+                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
                 }
                 for (Descripteme added : c.getAddedSubList()) {
-                    letterMap.becomeDescripteme(added);
-                    applyStyle(added);
+                    //letterMap.becomeDescripteme(added);
+                    applyStyle(added.getStartIndex(), added.getEndIndex());
                 }
             }
         });
 
         getGlobalVariables()
                 .getDescriptemeChangedProperty()
-                .addListener(newValue -> { this.updateDescripteme(); });
+                .addListener(newValue -> this.updateDescripteme());
 
 
         interviewText.getAnnotationsProperty().forEach(annotation -> {
-            letterMap.becomeAnnotation(annotation, annotation.getColor());
-            applyStyle(annotation);
+            //letterMap.becomeAnnotation(annotation, annotation.getColor());
+            applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
         });
     }
 
@@ -102,23 +97,22 @@ public class RichTextAreaController {
     }
 
     private void setUpClick() {
+        /*
         area.setOnMousePressed(event -> {
             Annotation previousSelected = letterMap.getSelectedAnnotation();
             if (previousSelected != null) {
                 letterMap.deSelectAnnotation();
-                Platform.runLater(() -> {
-                    applyStyle(previousSelected);
-                });
+                Platform.runLater(() -> applyStyle(previousSelected));
             }
 
             Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
             if (annotation != null) {
                 letterMap.selectAnnotation(annotation);
-                Platform.runLater(() -> {
-                    applyStyle(annotation);
-                });
+                Platform.runLater(() -> applyStyle(annotation));
             }
         });
+
+         */
 
         area.setOnMouseReleased(event -> {
             userSelection.set(new IndexRange(
@@ -126,12 +120,15 @@ public class RichTextAreaController {
                     area.getSelection().getEnd()
             ));
 
+            /*
             if (toolColorSelected != null && area.getSelection().getStart() != area.getSelection().getEnd()) {
                 annotate(toolColorSelected);
             }
             if (eraserToolSelected && area.getSelection().getStart() != area.getSelection().getEnd()) {
                 erase();
             }
+
+             */
         });
     }
 
@@ -211,8 +208,6 @@ public class RichTextAreaController {
                 }
             }
         });
-
-
     }
 
     private void updateDescripteme() {
@@ -224,30 +219,39 @@ public class RichTextAreaController {
         }
     }
 
-    private void applyStyle(Fragment fragment) {
-        applyStyle(fragment.getStartIndex(), fragment.getEndIndex());
-    }
-
     private void applyStyle(int start, int end) {
         for (int i = start ; i < end ; i++) {
-            TextStyle style = letterMap.getStyleByIndex(i);
-            if (style != null) {
-                String css = "";
-                if (style.getIsAnnotation()) {
-                    css += "-rtfx-background-color: " + style.getCSSColor() + ";";
-                }
-                if (style.getIsDescripteme()) {
-                    css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
-                }
-                else if (style.getIsSeveralDescriptemes()) {
-                    css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
-                }
-                area.setStyle(i, i+1, css);
+            String css = "";
+            Annotation annotation = interviewText.getFirstAnnotationByIndex(i);
+            if (annotation != null) {
+                css += "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
             }
-
+            ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
+            if (descriptemes.size() == 1) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
+            }
+            else if (descriptemes.size() > 1) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
+            }
+            area.setStyle(i, i+1, css);
         }
     }
 
+    private void applyStyle(Annotation annotation) {
+        for (int i = annotation.getStartIndex() ; i < annotation.getEndIndex() ; i++) {
+            String css = "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
+            ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
+            if (descriptemes.size() == 1) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
+            }
+            else if (descriptemes.size() > 1) {
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
+            }
+            area.setStyle(i, i+1, css);
+        }
+    }
+
+    /*
     private void erase() {
         IndexRange selection = area.getSelection();
         interviewText.cutAnnotation(selection.getStart(), selection.getEnd());
@@ -268,6 +272,9 @@ public class RichTextAreaController {
         });
         area.deselect();
     }
+
+     */
+
 
     private void annotate(Color color, Integer start, Integer end) {
         Annotation annotation = new Annotation(
@@ -303,8 +310,7 @@ public class RichTextAreaController {
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
-        VirtualizedScrollPane<InlineCssTextArea> vsPane = new VirtualizedScrollPane(area);
-        return vsPane;
+        return new VirtualizedScrollPane(area);
     }
 
     public SimpleObjectProperty<IndexRange> getUserSelection() {
@@ -317,19 +323,19 @@ public class RichTextAreaController {
             // create a temporary descripteme with the shape avec the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
             // ... in order to be able to delete the underline
-            letterMap.removeDescripteme(temp);
-            applyStyle(temp);
-            letterMap.becomeDescripteme(descripteme);
-            applyStyle(descripteme);
+            //letterMap.removeDescripteme(temp);
+            applyStyle(temp.getStartIndex(), temp.getEndIndex());
+            //letterMap.becomeDescripteme(descripteme);
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
         descripteme.endIndexProperty().addListener((observable, oldValue, newValue) -> {
             // create a temporary descripteme with the shape avec the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
             // ... in order to be able to delete the underline
-            letterMap.removeDescripteme(temp);
-            applyStyle(temp);
-            letterMap.becomeDescripteme(descripteme);
-            applyStyle(descripteme);
+            //letterMap.removeDescripteme(temp);
+            applyStyle(temp.getStartIndex(), temp.getEndIndex());
+            //letterMap.becomeDescripteme(descripteme);
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
     }
 

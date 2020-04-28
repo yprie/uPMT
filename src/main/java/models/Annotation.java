@@ -1,6 +1,5 @@
 package models;
 
-import components.interviewPanel.utils.TextStyle;
 import javafx.scene.input.DataFormat;
 import javafx.scene.paint.Color;
 
@@ -16,6 +15,11 @@ public class Annotation extends Fragment {
     public Annotation(Fragment fragment, Color color) {
         super(fragment.interviewText, fragment.getStartIndex(), fragment.getEndIndex());
         this.color = color;
+    }
+
+    public Annotation(Annotation annotation) {
+        super(annotation.interviewText, annotation.getStartIndex(), annotation.getEndIndex());
+        this.color = annotation.color;
     }
 
     public void setStartIndex(int start) {
@@ -43,13 +47,5 @@ public class Annotation extends Fragment {
     @Override
     public String toString() {
         return super.toString() + " - " + color.toString();
-    }
-
-    public Descripteme toDescripteme() {
-        return new Descripteme(interviewText, startIndex.get(), endIndex.get());
-    }
-
-    public TextStyle getStyle() {
-        return new TextStyle(false, true, color);
     }
 }

@@ -44,13 +44,14 @@ public class InterviewText implements Serializable {
 
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
-        cutAnnotation(annotation.startIndex.get(), annotation.endIndex.get());
+        //cutAnnotation(annotation.startIndex.get(), annotation.endIndex.get());
         // TODO: delete an annotation that is inside the new annotation
     }
 
     public void cutAnnotation(int start, int end) {
         Annotation annotationToCutBefore = getFirstAnnotationByIndex(start);
         Annotation annotationToCutAfter = getFirstAnnotationByIndex(end);
+
         if (annotationToCutBefore != null && annotationToCutAfter != null) {
             if (annotationToCutBefore == annotationToCutAfter) {
                 Annotation annotationEnd = new Annotation(
@@ -70,27 +71,43 @@ public class InterviewText implements Serializable {
                 annotationToCutAfter.setStartIndex(end);
             }
         }
+
+
+        /*
+        if (annotationToCutAfter != null && annotationToCutBefore == annotationToCutAfter) {
+            // TODO: create a command ?
+            Annotation annotationEnd = new Annotation(
+                    annotationToCutAfter.interviewText,
+                    end,
+                    annotationToCutAfter.endIndex.get(),
+                    annotationToCutAfter.color);
+            this.addAnnotation(annotationEnd);
+            annotationToCutBefore.setEndIndex(start);
+        }
+        if (annotationToCutBefore != null && annotationToCutAfter == null) {
+            annotationToCutBefore.setEndIndex(start);
+        }
+        if (annotationToCutAfter != null && annotationToCutBefore == null) {
+            annotationToCutAfter.setStartIndex(end);
+        }
+
+         */
+
     }
 
     public Annotation getFirstAnnotationByIndex(int index) {
-        ArrayList<Annotation> foundAnnotations = new ArrayList<Annotation>();
         for (Annotation annotation : this.annotations) {
-            if (annotation.getStartIndex() < index && index < annotation.getEndIndex()) {
-                foundAnnotations.add(annotation);
+            if (annotation.getStartIndex() <= index && index < annotation.getEndIndex()) {
+                return annotation;
             }
         }
-        if (!foundAnnotations.isEmpty()) {
-            return foundAnnotations.get(0);
-        }
-        else {
-            return null;
-        }
+        return null;
     }
 
     public ArrayList<Descripteme> getDescriptemesByIndex(int index) {
         ArrayList<Descripteme> foundDescriptemes = new ArrayList<Descripteme>();
         for (Descripteme descripteme : this.descriptemes) {
-            if (descripteme.getStartIndex() <=   index && index < descripteme.getEndIndex()) {
+            if (descripteme.getStartIndex() <= index && index < descripteme.getEndIndex()) {
                 foundDescriptemes.add(descripteme);
             }
         }
