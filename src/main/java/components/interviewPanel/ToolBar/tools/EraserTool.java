@@ -15,6 +15,10 @@ public class EraserTool extends Tool {
 
     @Override
     public void handle(IndexRange indexRange) {
+        erase(interviewText, indexRange);
+    }
+
+    static void erase(InterviewText interviewText, IndexRange indexRange) {
         ArrayList<Annotation> annotationsInside = new ArrayList<>();
         for (int i = indexRange.getStart() ; i < indexRange.getEnd() ; i++) {
             Annotation annotation = interviewText.getFirstAnnotationByIndex(i);

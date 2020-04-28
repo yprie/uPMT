@@ -13,13 +13,12 @@ public class AnnotationTool extends Tool {
 
     @Override
     public void handle(IndexRange indexRange) {
-        if (indexRange.getStart() != indexRange.getEnd()) {
-            Annotation annotation = new Annotation(
-                    interviewText,
-                    indexRange.getStart(),
-                    indexRange.getEnd(),
-                    Color.web(hexa));
-            new AddAnnotationCommand(interviewText, annotation).execute();
-        }
+        EraserTool.erase(interviewText, indexRange);
+        Annotation annotation = new Annotation(
+                interviewText,
+                indexRange.getStart(),
+                indexRange.getEnd(),
+                Color.web(hexa));
+        new AddAnnotationCommand(interviewText, annotation).execute();
     }
 }

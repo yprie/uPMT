@@ -41,8 +41,6 @@ public class InterviewPanelController implements Initializable {
         this.mainSplitPane = mainSplitPane;
         this.interview = interview;
 
-        System.out.println("in panel: "+interview.toString());
-
         this.interviewChangeListener = (observable, oldValue, newValue) -> {
                 interview.getValue().commentProperty().addListener(commentChangeListener);
                 interview.getValue().titleProperty().addListener(titleChangeListener);

@@ -25,14 +25,10 @@ public class ToolBarController implements Initializable {
     private final SimpleObjectProperty<ToolController> selectedTool = new SimpleObjectProperty<>();
     private final Map<String, String> colors;
 
-    private ToolBarController(InterviewText interviewText, Map<String, String> colors) {
+    public ToolBarController(InterviewText interviewText, Map<String, String> colors) {
         this.interviewText = interviewText;
         toolBar = new ToolBar();
         this.colors = colors;
-    }
-
-    public static ToolBarController createToolBarController(InterviewText interviewText, Map<String, String> colors) {
-        return new ToolBarController(interviewText, colors);
     }
 
     @Override

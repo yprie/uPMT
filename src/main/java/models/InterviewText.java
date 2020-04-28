@@ -44,55 +44,6 @@ public class InterviewText implements Serializable {
 
     public void addAnnotation(Annotation annotation) {
         annotations.add(annotation);
-        //cutAnnotation(annotation.startIndex.get(), annotation.endIndex.get());
-        // TODO: delete an annotation that is inside the new annotation
-    }
-
-    public void cutAnnotation(int start, int end) {
-        Annotation annotationToCutBefore = getFirstAnnotationByIndex(start);
-        Annotation annotationToCutAfter = getFirstAnnotationByIndex(end);
-
-        if (annotationToCutBefore != null && annotationToCutAfter != null) {
-            if (annotationToCutBefore == annotationToCutAfter) {
-                Annotation annotationEnd = new Annotation(
-                        annotationToCutAfter.interviewText,
-                        end,
-                        annotationToCutAfter.endIndex.get(),
-                        annotationToCutAfter.color);
-                this.addAnnotation(annotationEnd);
-                annotationToCutBefore.setEndIndex(start);
-            }
-        }
-        else {
-            if (annotationToCutBefore != null){
-                annotationToCutBefore.setEndIndex(start);
-            }
-            if (annotationToCutAfter != null) {
-                annotationToCutAfter.setStartIndex(end);
-            }
-        }
-
-
-        /*
-        if (annotationToCutAfter != null && annotationToCutBefore == annotationToCutAfter) {
-            // TODO: create a command ?
-            Annotation annotationEnd = new Annotation(
-                    annotationToCutAfter.interviewText,
-                    end,
-                    annotationToCutAfter.endIndex.get(),
-                    annotationToCutAfter.color);
-            this.addAnnotation(annotationEnd);
-            annotationToCutBefore.setEndIndex(start);
-        }
-        if (annotationToCutBefore != null && annotationToCutAfter == null) {
-            annotationToCutBefore.setEndIndex(start);
-        }
-        if (annotationToCutAfter != null && annotationToCutBefore == null) {
-            annotationToCutAfter.setStartIndex(end);
-        }
-
-         */
-
     }
 
     public Annotation getFirstAnnotationByIndex(int index) {

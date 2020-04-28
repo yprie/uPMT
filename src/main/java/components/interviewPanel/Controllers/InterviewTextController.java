@@ -65,11 +65,8 @@ public class InterviewTextController implements Initializable {
                 put("GREEN", "#7BCF7B");
             }
         };
-        ToolBarController toolBarController = ToolBarController.createToolBarController(interview.getInterviewText(), colors);
+        ToolBarController toolBarController = new ToolBarController(interview.getInterviewText(), colors);
         toolBarAnnotation.getChildren().add(toolBarController.getNode());
-
-        toolBarController.getSelectedToolProperty() // DEBUG
-                .addListener(change -> System.out.println("new tool is " + change));
 
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         richTextAreaController.setContextMenuFactory(new ContextMenuFactory(richTextAreaController, this));
