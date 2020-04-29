@@ -5,12 +5,10 @@ import javafx.scene.paint.Color;
 import models.InterviewText;
 
 public abstract class Tool {
-    protected String colorName;
     protected String hexa;
     protected InterviewText interviewText;
 
-    protected Tool(String colorName, String hexa, InterviewText interviewText) {
-        this.colorName = colorName;
+    protected Tool(String hexa, InterviewText interviewText) {
         this.hexa = hexa;
         this.interviewText = interviewText;
     }

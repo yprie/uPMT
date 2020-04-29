@@ -2,7 +2,15 @@ package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
+import components.interviewPanel.ToolBar.CommandFactory;
 import components.interviewPanel.ToolBar.ToolBarController;
+import components.interviewPanel.ToolBar.tools.AnnotationTool;
+import components.interviewPanel.ToolBar.tools.Controllers.AnnotationToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.EraserToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.SelectionToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.ToolController;
+import components.interviewPanel.ToolBar.tools.EraserTool;
+import components.interviewPanel.ToolBar.tools.SelectionTool;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -25,12 +34,11 @@ import utils.dragAndDrop.DragStore;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class InterviewTextController implements Initializable {
 
-    @FXML private HBox toolBarAnnotation;
+    @FXML private HBox hboxAnnotation;
     @FXML private StackPane stackPaneInterview;
 
     private RichTextAreaController richTextAreaController;
@@ -57,26 +65,35 @@ public class InterviewTextController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Map<String, String> colors = new HashMap<>() {
+        ToolBarController toolBarController = new ToolBarController();
+        ToolController selectionToolController = new SelectionToolController("selection",
+                new SelectionTool( "#fff", interview.getInterviewText(), new CommandFactory(this)), true);
+        toolBarController.addTool(selectionToolController);
+        new HashMap<String, String>() {
             {
-                put("YELLOW", "#FFDC97");
-                put("RED", "#FF9797");
-                put("BLUE", "#7084B0");
-                put("GREEN", "#7BCF7B");
+                put("yellow", "#FFDC97");
+                put("red", "#FF9797");
+                put("blue", "#7084B0");
+                put("green", "#7BCF7B");
             }
-        };
-        ToolBarController toolBarController = new ToolBarController(interview.getInterviewText(), colors);
-        toolBarAnnotation.getChildren().add(toolBarController.getNode());
+        }.forEach((key, value) -> {
+            toolBarController.addTool(new AnnotationToolController(key,
+                    new AnnotationTool(value, interview.getInterviewText())));
+        });
+        toolBarController.addSeparator();
+        toolBarController.addTool(new EraserToolController("eraser",
+                new EraserTool("#8b8b8b", interview.getInterviewText())));
+        toolBarController.setSelectedToolProperty(selectionToolController);
+        hboxAnnotation.getChildren().add(toolBarController);
+
 
         richTextAreaController = new RichTextAreaController(interview.getInterviewText());
         richTextAreaController.setContextMenuFactory(new ContextMenuFactory(richTextAreaController, this));
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
         // On click release on text area: add a pane over the text area
-        richTextAreaController.getUserSelection().addListener((change) -> {
-            toolBarController.getSelectedToolProperty().get()
-                    .getTool().handle(richTextAreaController.getUserSelection().get());
-        });
+        richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
+                .getTool().handle(richTextAreaController.getUserSelection().get()));
 
         setupDragAndDrop();
 
@@ -96,6 +113,12 @@ public class InterviewTextController implements Initializable {
 
         // On click on the added pane, remove the pane
         paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
+        paneDragText.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.SECONDARY){
+                hideDnDPane();
+                richTextAreaController.updateContextMenu();
+            }
+        });
 
         // On dragging the pane: start dragging from the text area
         paneDragText.setOnDragDetected(event -> {

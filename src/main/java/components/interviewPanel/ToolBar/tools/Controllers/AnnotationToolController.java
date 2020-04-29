@@ -10,10 +10,10 @@ public class AnnotationToolController extends ToolController {
     @Override
     protected void updateStyle() {
         if (selectedProperty.get()) {
-            button.setStyle("-fx-text-fill: white;-fx-background-color:" + tool.getHexa());
+            setStyle("-fx-text-fill: white;-fx-background-color:" + tool.getHexa());
         }
         else {
-            button.setStyle("-fx-background-color: white;-fx-text-fill:" + tool.getHexa());
+            setStyle("-fx-background-color: white;-fx-text-fill:" + tool.getHexa());
         }
     }
 }

@@ -9,8 +9,8 @@ import models.InterviewText;
 import java.util.ArrayList;
 
 public class EraserTool extends Tool {
-    public EraserTool(String colorName, String hexa, InterviewText interviewText) {
-        super(colorName, hexa, interviewText);
+    public EraserTool(String hexa, InterviewText interviewText) {
+        super(hexa, interviewText);
     }
 
     @Override

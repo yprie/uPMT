@@ -10,10 +10,10 @@ public class SelectionToolController extends ToolController {
     @Override
     protected void updateStyle() {
         if (selectedProperty.get()) {
-            button.setStyle("-fx-background-color: black;-fx-text-fill:" + tool.getHexa());
+            setStyle("-fx-background-color: black;-fx-text-fill:" + tool.getHexa());
         }
         else {
-            button.setStyle("-fx-text-fill: black;-fx-background-color:" + tool.getHexa());
+            setStyle("-fx-text-fill: black;-fx-background-color:" + tool.getHexa());
         }
     }
 }

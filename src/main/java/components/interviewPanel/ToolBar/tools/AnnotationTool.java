@@ -7,8 +7,8 @@ import models.Annotation;
 import models.InterviewText;
 
 public class AnnotationTool extends Tool {
-    public AnnotationTool(String colorName, String hexa, InterviewText interviewText) {
-        super(colorName, hexa, interviewText);
+    public AnnotationTool(String hexa, InterviewText interviewText) {
+        super(hexa, interviewText);
     }
 
     @Override
