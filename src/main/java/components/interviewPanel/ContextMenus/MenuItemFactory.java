@@ -1,72 +1,49 @@
 package components.interviewPanel.ContextMenus;
 
-import components.interviewPanel.AnnotationColor;
-import components.interviewPanel.Controllers.InterviewTextController;
-import components.interviewPanel.Controllers.RichTextAreaController;
-import components.interviewPanel.appCommands.AddAnnotationCommand;
-import components.interviewPanel.appCommands.RemoveAnnotationCommand;
+import application.configuration.Configuration;
+import components.interviewPanel.appCommands.InterviewTextCommandFactory;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.MenuItem;
 import models.Annotation;
+import models.AnnotationColor;
 import models.Descripteme;
-import models.Fragment;
-import models.InterviewText;
 
 public class MenuItemFactory {
 
-    private final InterviewTextController interviewTextController; // ref of the controller
-    private final RichTextAreaController area; // ref to the rich text area
-    private final InterviewText interviewText; // ref to the interview Text
+    private final InterviewTextCommandFactory interviewPanelCommandFactory;
 
-    MenuItemFactory(InterviewTextController interviewTextController, RichTextAreaController area) {
-        this.interviewTextController = interviewTextController;
-        this.area = area;
-        this.interviewText = interviewTextController.getInterviewText();
+    MenuItemFactory(InterviewTextCommandFactory interviewPanelCommandFactory) {
+        this.interviewPanelCommandFactory = interviewPanelCommandFactory;
     }
 
-    public MenuItem getAnnotate(String colorName, Fragment fragment) {
-        MenuItem item = new MenuItem(colorName);
-        item.setOnAction(e -> new AddAnnotationCommand(interviewText, new Annotation(
-                fragment,
-                AnnotationColor.getColor(colorName))
-        ).execute());
-        return item;
-    }
-
-    public MenuItem getAnnotate(InterviewText interviewText, String colorName, IndexRange selection) {
-        MenuItem item = new MenuItem(colorName);
+    public MenuItem getAnnotate(AnnotationColor annotationColor, IndexRange selection) {
+        MenuItem item = new MenuItem(annotationColor.getName());
         item.setOnAction(e -> {
-            new AddAnnotationCommand(interviewText, new Annotation(
-                    interviewText,
-                    selection.getStart(),
-                    selection.getEnd(),
-                    AnnotationColor.getColor(colorName))
-            ).execute();
-            area.deselect();
-
+            interviewPanelCommandFactory.getAddAnnotationCommand(selection, annotationColor).execute();
         });
         return item;
     }
 
     public MenuItem getEraser(Annotation annotation) {
-        MenuItem item = new MenuItem("Delete annotation");
-        item.setOnAction(event -> new RemoveAnnotationCommand(interviewText, annotation).execute());
+        MenuItem item = new MenuItem(Configuration.langBundle.getString("delete_annotation"));
+        item.setOnAction(event -> {
+            interviewPanelCommandFactory.getRemoveAnnotationCommand(annotation).execute();
+        });
         return item;
     }
 
-    public MenuItem getCatch(IndexRange selection) {
-        MenuItem item = new MenuItem("Catch");
+    public MenuItem getCatch(IndexRange indexRange) {
+        MenuItem item = new MenuItem(Configuration.langBundle.getString("catch"));
         item.setOnAction(event -> {
-            area.select(selection);
-            interviewTextController.addPaneForDragAndDrop();
+            interviewPanelCommandFactory.getDragSelectionCommand(indexRange).execute();
         });
         return item;
     }
 
     public MenuItem getReveal(Descripteme descripteme) {
-        MenuItem item = new MenuItem("Reveal");
+        MenuItem item = new MenuItem(Configuration.langBundle.getString("reveal"));
         item.setOnAction(event -> {
-            descripteme.getEmphasizeProperty().set(!descripteme.getEmphasizeProperty().get());
+            interviewPanelCommandFactory.getRevealDescriptemeCommand(descripteme).execute();
         });
         return item;
     }

@@ -1,24 +1,25 @@
 package components.interviewPanel.ToolBar.tools;
 
 import components.interviewPanel.appCommands.AddAnnotationCommand;
+import components.interviewPanel.appCommands.InterviewTextCommandFactory;
 import javafx.scene.control.IndexRange;
 import javafx.scene.paint.Color;
 import models.Annotation;
 import models.InterviewText;
 
 public class AnnotationTool extends Tool {
-    public AnnotationTool(String hexa, InterviewText interviewText) {
-        super(hexa, interviewText);
+    public AnnotationTool(String hexa, InterviewText interviewText, InterviewTextCommandFactory interviewPanelCommandFactory) {
+        super(hexa, interviewText, interviewPanelCommandFactory);
     }
 
     @Override
     public void handle(IndexRange indexRange) {
-        EraserTool.erase(interviewText, indexRange);
-        Annotation annotation = new Annotation(
-                interviewText,
-                indexRange.getStart(),
-                indexRange.getEnd(),
-                Color.web(hexa));
-        new AddAnnotationCommand(interviewText, annotation).execute();
+        if (indexRange.getStart() != indexRange.getEnd()) {
+            new AddAnnotationCommand(interviewText, new Annotation(
+                    interviewText,
+                    indexRange.getStart(),
+                    indexRange.getEnd(),
+                    Color.web(hexa))).execute();
+        }
     }
 }

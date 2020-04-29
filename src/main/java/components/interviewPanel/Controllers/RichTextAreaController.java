@@ -1,6 +1,7 @@
 package components.interviewPanel.Controllers;
 
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
@@ -8,10 +9,7 @@ import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Popup;
-import models.Annotation;
-import models.Descripteme;
-import models.InterviewText;
-import models.Moment;
+import models.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -20,20 +18,23 @@ import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 import static utils.GlobalVariables.getGlobalVariables;
 
 public class RichTextAreaController {
     private final InlineCssTextArea area;
-
+    private Annotation selectedAnnotation;
     private final InterviewText interviewText;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
     private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
     private ContextMenuFactory contextMenuFactory;
+    private final List<AnnotationColor> annotationColorList;
 
-    public RichTextAreaController(InterviewText interviewText) {
+    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList) {
         this.interviewText = interviewText;
+        this.annotationColorList = annotationColorList;
         userSelection = new SimpleObjectProperty<>();
         area = new InlineCssTextArea();
         area.setWrapText(true);
@@ -51,11 +52,11 @@ public class RichTextAreaController {
             while (c.next()) {
                 for (Annotation removed : c.getRemoved()) {
                     applyStyle(removed.getStartIndex(), removed.getEndIndex());
-                    deselect();
+                    area.deselect();
                 }
                 for (Annotation added : c.getAddedSubList()) {
-                    applyStyle(added);
-                    deselect();
+                    applyStyle(added.getStartIndex(), added.getEndIndex());
+                    area.deselect();
                 }
             }
         });
@@ -64,17 +65,21 @@ public class RichTextAreaController {
             while (c.next()) {
                 for (Descripteme removed : c.getRemoved()) {
                     applyStyle(removed.getStartIndex(), removed.getEndIndex());
+                    area.deselect();
                 }
                 for (Descripteme added : c.getAddedSubList()) {
                     applyStyle(added.getStartIndex(), added.getEndIndex());
+                    area.deselect();
                 }
             }
         });
 
+        // Watch for new descriptemes
         getGlobalVariables()
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> this.updateDescripteme());
 
+        // Initialize view annotation
         interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
     }
 
@@ -83,23 +88,28 @@ public class RichTextAreaController {
     }
 
     private void setUpClick() {
-        /*
         area.setOnMousePressed(event -> {
-            Annotation previousSelected = letterMap.getSelectedAnnotation();
-            if (previousSelected != null) {
-                letterMap.deSelectAnnotation();
-                Platform.runLater(() -> applyStyle(previousSelected));
+            if (selectedAnnotation != null) {
+                Platform.runLater(() -> {
+                    if (interviewText.getAnnotationsProperty().get().contains(selectedAnnotation)) {
+                        selectedAnnotation.setSelected(false);
+                        applyStyle(selectedAnnotation.getStartIndex(), selectedAnnotation.getEndIndex());
+                        selectedAnnotation = null;
+                    }
+                });
             }
 
-            Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
+            Annotation annotation = interviewText.getAnnotationByIndex(area.getCaretPosition());
             if (annotation != null) {
-                letterMap.selectAnnotation(annotation);
-                Platform.runLater(() -> applyStyle(annotation));
+                Platform.runLater(() -> {
+                    annotation.setSelected(true);
+                    applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
+                    selectedAnnotation = annotation;
+                });
             }
         });
 
-         */
-
+        // Remove this and bind area.selectionProperty()
         area.setOnMouseReleased(event -> userSelection.set(new IndexRange(
                 area.getSelection().getStart(),
                 area.getSelection().getEnd()
@@ -119,7 +129,8 @@ public class RichTextAreaController {
         area.addEventHandler(MouseOverTextEvent.MOUSE_OVER_TEXT_BEGIN, event -> {
             Point2D pos = event.getScreenPosition();
 
-            // emphasize descripteme in modeling spac
+            // TODO: create a app command, because context menu could use it
+            // emphasize descripteme in modeling space
             emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
             if (!emphasizedDescriptemes.isEmpty()) {
                 String message = emphasizedDescriptemes.size() + " descripteme(s)";
@@ -178,24 +189,14 @@ public class RichTextAreaController {
     private void applyStyle(int start, int end) {
         for (int i = start ; i < end ; i++) {
             String css = "";
-            Annotation annotation = interviewText.getFirstAnnotationByIndex(i);
+            Annotation annotation = interviewText.getAnnotationByIndex(i);
             if (annotation != null) {
                 css += "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
+                if (annotation.isSelected()) {
+                    css += "-rtfx-border-stroke-color: black; " +
+                            "-rtfx-border-stroke-width: 1;";
+                }
             }
-            ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
-            if (descriptemes.size() == 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
-            }
-            else if (descriptemes.size() > 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
-            }
-            area.setStyle(i, i+1, css);
-        }
-    }
-
-    private void applyStyle(Annotation annotation) {
-        for (int i = annotation.getStartIndex() ; i < annotation.getEndIndex() ; i++) {
-            String css = "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
             ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
             if (descriptemes.size() == 1) {
                 css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
@@ -241,17 +242,13 @@ public class RichTextAreaController {
         });
     }
 
-    public void deselect() {
-        area.deselect();
-    }
-
     public void select(IndexRange selection) {
         area.selectRange(selection.getStart(), selection.getEnd());
     }
 
     public void updateContextMenu() {
         area.setContextMenu(null);
-        Annotation annotation = interviewText.getFirstAnnotationByIndex(area.getCaretPosition());
+        Annotation annotation = interviewText.getAnnotationByIndex(area.getCaretPosition());
         ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
         if (annotation != null && !descriptemes.isEmpty()) {
             System.out.println("we have selected an annotation and a descripteme");
@@ -267,7 +264,7 @@ public class RichTextAreaController {
         }
         else if (!area.getSelectedText().isEmpty()) {
             System.out.println("we have just a text selection");
-            area.setContextMenu(contextMenuFactory.getContextMenuSelection(interviewText, area.getSelection()));
+            area.setContextMenu(contextMenuFactory.getContextMenuSelection(area.getSelection()));
         }
     }
 }

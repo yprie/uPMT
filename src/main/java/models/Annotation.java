@@ -5,7 +5,9 @@ import javafx.scene.paint.Color;
 
 public class Annotation extends Fragment {
     public static final DataFormat format = new DataFormat("Annotation");
-    Color color;
+    private final Color color;
+
+    private boolean isSelected;
 
     public Annotation(InterviewText interviewText, int startIndex, int endIndex, Color c) {
         super(interviewText, startIndex, endIndex);
@@ -47,5 +49,13 @@ public class Annotation extends Fragment {
     @Override
     public String toString() {
         return super.toString() + " - " + color.toString();
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }

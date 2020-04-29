@@ -17,10 +17,8 @@ public class AddAnnotationCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        AddAnnotation cmd = new AddAnnotation(interviewText, annotation);
-
-        HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
-
+        Boolean newModelUserActionCommandExecuted = new EraseAnnotationCommand(interviewText, annotation.getIndexRange()).execute();
+        HistoryManager.addCommand(new AddAnnotation(interviewText, annotation), !newModelUserActionCommandExecuted);
         return null;
     }
 }

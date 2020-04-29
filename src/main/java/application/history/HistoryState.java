@@ -84,6 +84,7 @@ public class HistoryState {
 
     private void executeSingleAction() {
         ModelUserActionCommand c = next.pop();
+        System.out.println("ExecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
         c.execute();
         previous.push(c);
         canGoBack.set(userMadeAnAction);

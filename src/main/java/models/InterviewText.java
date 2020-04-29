@@ -46,7 +46,7 @@ public class InterviewText implements Serializable {
         annotations.add(annotation);
     }
 
-    public Annotation getFirstAnnotationByIndex(int index) {
+    public Annotation getAnnotationByIndex(int index) {
         for (Annotation annotation : this.annotations) {
             if (annotation.getStartIndex() <= index && index < annotation.getEndIndex()) {
                 return annotation;
