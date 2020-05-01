@@ -171,7 +171,7 @@ public class RichTextAreaController {
 
     private  void setUpMenu() {
         area.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
+            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
                 updateContextMenu();
             }
         });
