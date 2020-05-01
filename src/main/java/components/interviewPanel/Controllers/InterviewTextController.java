@@ -100,7 +100,7 @@ public class InterviewTextController implements Initializable {
 
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
-                .getTool().handle(richTextAreaController.getUserSelection().get()));
+                .getTool().handle(richTextAreaController.getUserSelection().getValue()));
 
         Platform.runLater(this::initializeDescripteme);
     }

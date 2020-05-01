@@ -45,7 +45,6 @@ public class RichTextAreaController {
 
         setUpClick();
         setUpPopUp();
-        setUpMenu();
 
         // Two listeners that update the view (highlight and underline)
         this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
@@ -81,6 +80,11 @@ public class RichTextAreaController {
 
         // Initialize view annotation
         interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
+
+
+        area.caretPositionProperty().addListener(event -> {
+            System.out.println("caret position changed: " + area.caretPositionProperty().getValue());
+        });
     }
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
@@ -106,6 +110,16 @@ public class RichTextAreaController {
                     applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
                     selectedAnnotation = annotation;
                 });
+            }
+        });
+
+        area.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
+                System.out.println("mouse right click "
+                        + area.hit(event.getX(), event.getY()).getInsertionIndex()
+                        + " " + area.hit(event.getX(), event.getY()).getCharacterIndex());
+                area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
+                updateContextMenu();
             }
         });
 
@@ -165,14 +179,6 @@ public class RichTextAreaController {
                     moment.getEmphasizeProperty().set(false);
                 }
                 emphasizedMoments.clear();
-            }
-        });
-    }
-
-    private  void setUpMenu() {
-        area.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
-                updateContextMenu();
             }
         });
     }
