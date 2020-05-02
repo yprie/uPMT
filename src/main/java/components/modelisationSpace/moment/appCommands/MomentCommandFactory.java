@@ -43,7 +43,7 @@ public class MomentCommandFactory {
     }
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
-
+    public AddCommentCommand addCommentCommand(Moment m, String comment){ return new AddCommentCommand(m, comment);}
     public RootMoment getParentMoment(){
         return parent;
     }
