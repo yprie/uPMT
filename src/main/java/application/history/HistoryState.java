@@ -84,6 +84,7 @@ public class HistoryState {
 
     private void executeSingleAction() {
         ModelUserActionCommand c = next.pop();
+        //System.out.println("ExecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
         c.execute();
         previous.push(c);
         canGoBack.set(userMadeAnAction);
@@ -91,7 +92,7 @@ public class HistoryState {
 
     private void unexecuteSingleAction() {
         ModelUserActionCommand c = previous.pop();
-        System.out.println("unexecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
+        //System.out.println("unexecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
         c.undo();
         next.push(c);
         canGoForward.set(true);

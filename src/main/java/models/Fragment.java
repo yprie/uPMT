@@ -2,6 +2,7 @@ package models;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.control.IndexRange;
 import javafx.scene.input.DataFormat;
 import utils.Emphasable;
 import utils.dragAndDrop.IDraggable;
@@ -28,6 +29,14 @@ public abstract class Fragment extends Emphasable implements IDraggable {
         return interviewText.getText().substring(startIndex.getValue(), endIndex.getValue());
     }
 
+    public String getCroppedFragmentText() {
+        String fragmentText = getFragmentText().replace("\n", "").replace("\r", "");
+        if (fragmentText.length() > 20) {
+            return fragmentText.substring(0, 17) + "...";
+        }
+        return fragmentText;
+    }
+
     @Override
     public DataFormat getDataFormat() {
         return format;
@@ -41,6 +50,10 @@ public abstract class Fragment extends Emphasable implements IDraggable {
     @Override
     public String toString() {
         return "Fragment [" + startIndex.get() + ", " + endIndex.get() + "] " + getFragmentText();
+    }
+
+    public IndexRange getIndexRange() {
+        return new IndexRange(startIndex.get(), endIndex.get());
     }
 
     /*

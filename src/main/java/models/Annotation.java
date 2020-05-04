@@ -1,16 +1,27 @@
 package models;
 
-import components.interviewPanel.utils.TextStyle;
 import javafx.scene.input.DataFormat;
 import javafx.scene.paint.Color;
 
 public class Annotation extends Fragment {
     public static final DataFormat format = new DataFormat("Annotation");
-    Color color;
+    private final Color color;
+
+    private boolean isSelected;
 
     public Annotation(InterviewText interviewText, int startIndex, int endIndex, Color c) {
         super(interviewText, startIndex, endIndex);
         color = c;
+    }
+
+    public Annotation(Fragment fragment, Color color) {
+        super(fragment.interviewText, fragment.getStartIndex(), fragment.getEndIndex());
+        this.color = color;
+    }
+
+    public Annotation(Annotation annotation) {
+        super(annotation.interviewText, annotation.getStartIndex(), annotation.getEndIndex());
+        this.color = annotation.color;
     }
 
     public void setStartIndex(int start) {
@@ -40,11 +51,11 @@ public class Annotation extends Fragment {
         return super.toString() + " - " + color.toString();
     }
 
-    public Descripteme toDescripteme() {
-        return new Descripteme(interviewText, startIndex.get(), endIndex.get());
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
-    public TextStyle getStyle() {
-        return new TextStyle(false, true, color);
+    public boolean isSelected() {
+        return isSelected;
     }
 }

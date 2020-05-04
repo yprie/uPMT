@@ -1,24 +1,31 @@
 package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
+import components.interviewPanel.ContextMenus.ContextMenuFactory;
+import components.interviewPanel.ToolBar.ToolBarController;
+import components.interviewPanel.ToolBar.tools.AnnotationTool;
+import components.interviewPanel.ToolBar.tools.Controllers.AnnotationToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.EraserToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.SelectionToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.ToolController;
+import components.interviewPanel.ToolBar.tools.EraserTool;
+import components.interviewPanel.ToolBar.tools.SelectionTool;
+import components.interviewPanel.appCommands.InterviewTextCommandFactory;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.IndexRange;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
+import models.AnnotationColor;
 import models.Descripteme;
 import models.Interview;
 import utils.GlobalVariables;
@@ -27,31 +34,20 @@ import utils.dragAndDrop.DragStore;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class InterviewTextController implements Initializable {
 
-    final private String YELLOW = "#FFDC97";
-    final private String RED = "#FF9797";
-    final private String BLUE = "#7084B0";
-    final private String GREEN = "#7BCF7B";
-
-    @FXML private HBox toolBarAnnotation;
-    @FXML private ToggleButton buttonAnnotateYellow;
-    @FXML private ToggleButton buttonAnnotateRed;
-    @FXML private ToggleButton buttonAnnotateBlue;
-    @FXML private ToggleButton buttonAnnotateGreen;
-    @FXML private ToggleButton buttonAnnotateEraser;
-    @FXML private ToggleButton buttonAnnotateSelection;
+    @FXML private HBox hboxAnnotation;
     @FXML private StackPane stackPaneInterview;
-
+    private InterviewTextCommandFactory interviewTextCommandFactory;
     private RichTextAreaController richTextAreaController;
     private final Interview interview;
-    Pane paneDragText;
+    private Pane paneDragText;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
-        paneDragText = new Pane();
     }
 
     public static Node createInterviewTextController(Interview interview) {
@@ -70,60 +66,78 @@ public class InterviewTextController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        richTextAreaController = new RichTextAreaController(interview.getInterviewText());
+
+        List<AnnotationColor> annotationColorList = new ArrayList<>();
+        annotationColorList.add(new AnnotationColor("yellow", "#FFDC97"));
+        annotationColorList.add(new AnnotationColor("red", "#FF9797"));
+        annotationColorList.add(new AnnotationColor("blue", "#7084B0"));
+        annotationColorList.add(new AnnotationColor("green", "#7BCF7B"));
+
+        richTextAreaController = new RichTextAreaController(interview.getInterviewText(), annotationColorList);
+
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
-        // On click release on text area: add a pane over the text area
-        richTextAreaController.getUserSelection().addListener((ChangeListener) (o, oldVal, newVal) -> {
-            if(!richTextAreaController.getSelectedText().isEmpty()
-                    && richTextAreaController.getToolColorSelected() == null) {
-                stackPaneInterview.getChildren().add(paneDragText);
-            }
-        });
-
         setupDragAndDrop();
-        setUpTools();
+
+        interviewTextCommandFactory = new InterviewTextCommandFactory(this,
+                richTextAreaController, interview.getInterviewText());
+        ContextMenuFactory contextMenuFactory = new ContextMenuFactory(interviewTextCommandFactory, annotationColorList);
+        richTextAreaController.setContextMenuFactory(contextMenuFactory);
+
+        ToolBarController toolBarController = new ToolBarController();
+        ToolController selectionToolController = new SelectionToolController("selection",
+                new SelectionTool( "#fff", interview.getInterviewText(), interviewTextCommandFactory), true);
+        toolBarController.addTool(selectionToolController);
+        annotationColorList.forEach((annotationColor) -> {
+            toolBarController.addTool(new AnnotationToolController(annotationColor.getName(),
+                    new AnnotationTool(annotationColor.getHexa(), interview.getInterviewText(), interviewTextCommandFactory)));
+        });
+        toolBarController.addSeparator();
+        toolBarController.addTool(new EraserToolController("eraser",
+                new EraserTool("#8b8b8b", interview.getInterviewText(), interviewTextCommandFactory)));
+        toolBarController.setSelectedToolProperty(selectionToolController);
+        hboxAnnotation.getChildren().add(toolBarController);
+
+        // On click release on text area: add a pane over the text area
+        richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
+                .getTool().handle(richTextAreaController.getUserSelection().getValue()));
 
         Platform.runLater(this::initializeDescripteme);
     }
 
     private void initializeDescripteme() {
-        ArrayList<Descripteme> descriptemes = GlobalVariables.getGlobalVariables().getAllDescripteme();
-        for (Descripteme descripteme: descriptemes) {
-            richTextAreaController.addDescripteme(descripteme);
-        }
+        GlobalVariables.getGlobalVariables().getAllDescripteme()
+                .forEach(descripteme -> richTextAreaController.addDescripteme(descripteme));
     }
 
     private void setupDragAndDrop() {
+        paneDragText = new Pane();
         paneDragText.setStyle("-fx-background-color:#f4f4f4;");
         paneDragText.setCursor(Cursor.MOVE);
         paneDragText.setOpacity(0.2);
 
         // On click on the added pane, remove the pane
-        paneDragText.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent arg0) {
+        paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
+        paneDragText.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.SECONDARY){
                 hideDnDPane();
+                richTextAreaController.updateContextMenu();
             }
         });
 
         // On dragging the pane: start dragging from the text area
-        paneDragText.setOnDragDetected(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                String text = interview.getInterviewText().getText();
-                IndexRange selectedText = richTextAreaController.getSelection();
+        paneDragText.setOnDragDetected(event -> {
+            IndexRange selectedText = richTextAreaController.getSelection();
 
-                Descripteme descripteme = new Descripteme(
-                        interview.getInterviewText(),
-                        selectedText.getStart(),
-                        selectedText.getEnd());
-                Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.put(descripteme.getDataFormat(), 0);
-                DragStore.setDraggable(descripteme);
-                db.setContent(content);
-            }
+            Descripteme descripteme = new Descripteme(
+                    interview.getInterviewText(),
+                    selectedText.getStart(),
+                    selectedText.getEnd());
+            Dragboard db = paneDragText.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.put(descripteme.getDataFormat(), 0);
+            DragStore.setDraggable(descripteme);
+            db.setContent(content);
         });
 
         paneDragText.setOnDragDone(event -> {
@@ -134,113 +148,11 @@ public class InterviewTextController implements Initializable {
         });
     }
 
-    private void setUpTools() {
-        buttonAnnotateYellow.setStyle("-fx-text-fill:" + YELLOW);
-        buttonAnnotateRed.setStyle("-fx-text-fill:" + RED);
-        buttonAnnotateBlue.setStyle("-fx-text-fill:" + BLUE);
-        buttonAnnotateGreen.setStyle("-fx-text-fill:" + GREEN);
-        buttonAnnotateEraser.setStyle("-fx-text-fill: #8B8B8B;");
-        buttonAnnotateSelection.setStyle("-fx-text-fill: black;");
-        buttonAnnotateSelection.setSelected(true);
-
-        buttonAnnotateYellow.setOnMouseClicked(event -> {
-            if (buttonAnnotateYellow.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(YELLOW));
-                deselectTools(buttonAnnotateYellow);
-                buttonAnnotateYellow.setStyle("-fx-text-fill: white;-fx-background-color:" + YELLOW);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
-            }
-        });
-        buttonAnnotateRed.setOnMouseClicked(event -> {
-            if (buttonAnnotateRed.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(RED));
-                deselectTools(buttonAnnotateRed);
-                buttonAnnotateRed.setStyle("-fx-text-fill: white;-fx-background-color:" + RED);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
-            }
-        });
-        buttonAnnotateBlue.setOnMouseClicked(event -> {
-            if (buttonAnnotateBlue.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(BLUE));
-                deselectTools(buttonAnnotateBlue);
-                buttonAnnotateBlue.setStyle("-fx-text-fill: white;-fx-background-color:" + BLUE);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
-            }
-        });
-        buttonAnnotateGreen.setOnMouseClicked(event -> {
-            if (buttonAnnotateGreen.isSelected()) {
-                richTextAreaController.setToolColorSelected(Color.web(GREEN));
-                deselectTools(buttonAnnotateGreen);
-                buttonAnnotateGreen.setStyle("-fx-text-fill: white;-fx-background-color:" + GREEN);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-                buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
-            }
-        });
-        buttonAnnotateEraser.setOnMouseClicked(event -> {
-            if (buttonAnnotateEraser.isSelected()) {
-                richTextAreaController.setToolColorSelected(null);
-                deselectTools(buttonAnnotateEraser);
-                richTextAreaController.setEraserToolSelected(true);
-
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-            }
-        });
-        buttonAnnotateSelection.setOnMouseClicked(event -> {
-            if (buttonAnnotateSelection.isSelected()) {
-                richTextAreaController.setToolColorSelected(null);
-                deselectTools(buttonAnnotateSelection);
-                buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
-                buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
-                buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
-                buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
-            }
-            else {
-                richTextAreaController.setToolColorSelected(null);
-                buttonAnnotateSelection.setSelected(true);
-            }
-        });
-    }
-
-    private void deselectTools(ToggleButton selectedTool) {
-        ArrayList<ToggleButton> tools = new ArrayList();
-        tools.add(buttonAnnotateYellow);
-        tools.add(buttonAnnotateRed);
-        tools.add(buttonAnnotateBlue);
-        tools.add(buttonAnnotateGreen);
-        tools.add(buttonAnnotateEraser);
-        tools.add(buttonAnnotateSelection);
-        for (ToggleButton tool : tools) {
-            if (tool != selectedTool) {
-                tool.setSelected(false);
-            }
-        }
-        buttonAnnotateYellow.setStyle("-fx-background-color: none;-fx-text-fill:" + YELLOW);
-        buttonAnnotateRed.setStyle("-fx-background-color: none;-fx-text-fill:" + RED);
-        buttonAnnotateBlue.setStyle("-fx-background-color: none;-fx-text-fill:" + BLUE);
-        buttonAnnotateGreen.setStyle(";-fx-background-color: none;-fx-text-fill:" + GREEN);
-        richTextAreaController.setEraserToolSelected(false);
-    }
-
     private void hideDnDPane() {
-        //richTextAreaController.deselect();
         stackPaneInterview.getChildren().remove(paneDragText);
+    }
+
+    public void addPaneForDragAndDrop() {
+        stackPaneInterview.getChildren().add(paneDragText);
     }
 }
