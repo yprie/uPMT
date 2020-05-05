@@ -2,7 +2,11 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import models.Descripteme;
@@ -25,11 +29,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import utils.autoSuggestion.AutoSuggestionsTextField;
@@ -61,6 +60,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
     @FXML private AnchorPane momentBoundingBox;
+    @FXML private TextArea commentArea;
     @FXML HBox nameBox;
 
     //Importants elements of a moment
@@ -104,7 +104,11 @@ public class MomentController extends ListViewController<Moment> implements Init
     public void initialize(URL url, ResourceBundle resourceBundle) {
         grid.add(separatorBottom.getNode(), 1, 1);
         momentName.textProperty().bind(moment.nameProperty());
-
+        commentArea.managedProperty().bind(commentArea.visibleProperty());
+        if (!(moment.getComment() == null || moment.getComment().isEmpty())){
+            commentArea.setVisible(true);
+            commentArea.setText(moment.getComment());
+        }
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
@@ -149,6 +153,12 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
+        MenuItem commentButton = new MenuItem(Configuration.langBundle.getString("add_comment"));
+        commentButton.setOnAction(actionEvent -> {
+            commentArea.setVisible(true);
+        });
+        menuButton.getItems().add(commentButton);
+
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             cmdFactory.deleteCommand(moment).execute();
@@ -162,18 +172,38 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(renameButton);
 
 
+
         //DND
         setupDragAndDrop();
 
+        //Rename moment
         momentName.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    System.out.println("Double clicked");
                     passInRenamingMode(true);
                 }
             }
         });
 
+        //Add the comment; When the moment has no comment the textArea disappears
+        commentArea.focusedProperty().addListener((observableValue, oldValue, focused) -> {
+            if(!focused){
+                cmdFactory.addCommentCommand(moment, commentArea.getText()).execute();
+                if (commentArea.getText().isEmpty()){
+                    commentArea.setVisible(false);
+                }
+            }
+        });
+        moment.commentProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (!commentArea.isVisible() && !newValue.isEmpty()) {
+                commentArea.setVisible(true);
+            }
+            commentArea.setText(newValue);
+            //delete all comments
+            if(newValue == null || newValue.isEmpty()){
+                commentArea.setVisible(false);
+            }
+        });
 
         // Emphasize
         moment.getEmphasizeProperty().addListener((observableValue, eventEventHandler, value) -> {

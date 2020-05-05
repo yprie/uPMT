@@ -23,16 +23,20 @@ public class Moment extends RootMoment implements IDraggable {
 
     private ListProperty<ConcreteCategory> categories;
 
+    private SimpleStringProperty comment;
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
         this.justification = new Justification();
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
-    public Moment(String name, Justification j) {
+    public Moment(String name, String comment, Justification j) {
         super();
         this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
         this.justification = j;
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
@@ -40,7 +44,7 @@ public class Moment extends RootMoment implements IDraggable {
     public Moment(String name, Descripteme d) {
         super();
         this.name = new SimpleStringProperty(name);
-
+        this.comment = new SimpleStringProperty();
         this.justification = new Justification();
         this.justification.addDescripteme(d);
 
@@ -52,6 +56,12 @@ public class Moment extends RootMoment implements IDraggable {
     }
     public String getName() { return this.name.get(); }
     public ObservableValue<String> nameProperty() { return name; }
+
+    public String getComment() { return comment.get(); }
+
+    public SimpleStringProperty commentProperty() { return comment; }
+
+    public void setComment(String comment) { this.comment.set(comment); }
 
     public Justification getJustification() { return justification; }
 
