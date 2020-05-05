@@ -51,8 +51,7 @@ public class SMoment extends Serializable<Moment> {
     @Override
     protected void read() {
         name = serializer.getString("name");
-        comment = serializer.getString("comment");
-        if (comment.equals("null")) comment = null;
+        comment = serializer.getFacultativeString("momentComment",null);
         justification = serializer.getObject("justification", SJustification::new);
         categories = serializer.getArray(serializer.setListSuffix(SConcreteCategory.modelName), SConcreteCategory::new);
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
@@ -61,7 +60,7 @@ public class SMoment extends Serializable<Moment> {
     @Override
     protected void write(ObjectSerializer serializer) {
         serializer.writeString("name", name);
-        serializer.writeString("comment",comment==null?"null":comment);
+        serializer.writeFacultativeString("momentComment",comment);
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
