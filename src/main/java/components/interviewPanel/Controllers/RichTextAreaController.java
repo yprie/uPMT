@@ -7,7 +7,6 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
 import javafx.stage.Popup;
 import models.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -93,7 +92,8 @@ public class RichTextAreaController {
 
     private void setUpClick() {
         area.setOnMousePressed(event -> {
-            area.getContextMenu().hide();
+            area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
+            updateContextMenu();
 
             if (selectedAnnotation != null) {
                 Platform.runLater(() -> {
@@ -112,16 +112,6 @@ public class RichTextAreaController {
                     applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
                     selectedAnnotation = annotation;
                 });
-            }
-        });
-
-        area.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
-                System.out.println("mouse right click "
-                        + area.hit(event.getX(), event.getY()).getInsertionIndex()
-                        + " " + area.hit(event.getX(), event.getY()).getCharacterIndex());
-                area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
-                updateContextMenu();
             }
         });
 
