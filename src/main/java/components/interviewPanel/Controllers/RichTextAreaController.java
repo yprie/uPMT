@@ -122,7 +122,6 @@ public class RichTextAreaController {
                         + " " + area.hit(event.getX(), event.getY()).getCharacterIndex());
                 area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
                 updateContextMenu();
-                area.getContextMenu().show(area, event.getScreenX(), event.getScreenY());
             }
         });
 
