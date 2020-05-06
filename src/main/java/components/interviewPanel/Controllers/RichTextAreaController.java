@@ -123,10 +123,6 @@ public class RichTextAreaController {
                 area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
                 updateContextMenu();
                 area.getContextMenu().show(area, event.getScreenX(), event.getScreenY());
-                area.getContextMenu().setOnAction(e -> {
-                    System.out.println("menu clicked -> hide menu");
-                    area.getContextMenu().hide();
-                });
             }
         });
 
