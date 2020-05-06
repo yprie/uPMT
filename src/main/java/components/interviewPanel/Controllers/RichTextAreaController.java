@@ -93,6 +93,8 @@ public class RichTextAreaController {
 
     private void setUpClick() {
         area.setOnMousePressed(event -> {
+            if (area.getContextMenu() != null)
+                area.getContextMenu().hide();
             if (selectedAnnotation != null) {
                 Platform.runLater(() -> {
                     if (interviewText.getAnnotationsProperty().get().contains(selectedAnnotation)) {
@@ -120,11 +122,13 @@ public class RichTextAreaController {
                         + " " + area.hit(event.getX(), event.getY()).getCharacterIndex());
                 area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
                 updateContextMenu();
-                area.getContextMenu().show(area, event.getScreenX(), event.getScreenY());
-                area.getContextMenu().setOnAction(e -> {
-                    System.out.println("menu clicked -> hide menu");
-                    area.getContextMenu().hide();
-                });
+                if (area.getContextMenu() != null) {
+                    area.getContextMenu().show(area, event.getScreenX(), event.getScreenY());
+                    area.getContextMenu().setOnAction(e -> {
+                        System.out.println("menu clicked -> hide menu");
+                        area.getContextMenu().hide();
+                    });
+                }
             }
         });
 
