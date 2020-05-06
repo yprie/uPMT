@@ -93,8 +93,10 @@ public class RichTextAreaController {
 
     private void setUpClick() {
         area.setOnMousePressed(event -> {
-            if (area.getContextMenu() != null)
+            if (area.getContextMenu() != null) {
+                System.out.println("click -> hide menu");
                 area.getContextMenu().hide();
+            }
             if (selectedAnnotation != null) {
                 Platform.runLater(() -> {
                     if (interviewText.getAnnotationsProperty().get().contains(selectedAnnotation)) {

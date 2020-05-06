@@ -119,7 +119,7 @@ public class InterviewTextController implements Initializable {
         // On click on the added pane, remove the pane
         paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
         paneDragText.setOnMousePressed(event -> {
-            if (event.getButton() == MouseButton.SECONDARY){
+            if (event.getButton() == MouseButton.SECONDARY  || event.isControlDown()){
                 hideDnDPane();
                 richTextAreaController.updateContextMenu();
             }
