@@ -21,8 +21,8 @@ public class AddConcreteCategoryCommand implements Executable<Void> {
     public Void execute() {
         AddConcreteCategory cmd = new AddConcreteCategory(parent, category);
         if(hookNotifier != null) {
-            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterExecute, () -> { hookNotifier.notifyCategoryAdded(category.getSchemaCategory()); });
-            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterUndo, () -> { hookNotifier.notifyCategoryRemoved(category.getSchemaCategory()); });
+            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterExecute, () -> { hookNotifier.notifyConcreteCategoryAdded(category); });
+            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterUndo, () -> { hookNotifier.notifyConcreteCategoryRemoved(category); });
         }
         HistoryManager.addCommand(cmd, userCommand);
 

@@ -1,24 +1,29 @@
 package components.modelisationSpace.hooks;
 
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 import models.Moment;
 import models.SchemaCategory;
 import java.util.ArrayList;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ModelisationSpaceHook {
 
-    ArrayList<Consumer<SchemaCategory>> onCategoryAddedListeners = new ArrayList<>();
-    ArrayList<Consumer<SchemaCategory>> onCategoryRemovedListeners = new ArrayList<>();
+    ArrayList<Consumer<ConcreteCategory>> onConcreteCategoryAddedListeners = new ArrayList<>();
+    ArrayList<Consumer<ConcreteCategory>> onConcreteCategoryRemovedListeners = new ArrayList<>();
 
     ArrayList<Consumer<Moment>> onMomentAddedListeners = new ArrayList<>();
     ArrayList<Consumer<Moment>> onMomentRemovedListeners = new ArrayList<>();
 
+    ArrayList<BiConsumer<String, ConcreteProperty>> onConcretePropertyValueChanged = new ArrayList<>();
+
     public ModelisationSpaceHook() { }
 
-    public void addOnCategoryAdded(Consumer<SchemaCategory> consumer) {
-        this.onCategoryAddedListeners.add(consumer);
+    public void addOnConcreteCategoryAdded(Consumer<ConcreteCategory> consumer) {
+        this.onConcreteCategoryAddedListeners.add(consumer);
     }
-    public void addOnCategoryRemoved(Consumer<SchemaCategory> consumer) { this.onCategoryRemovedListeners.add(consumer); }
+    public void addOnConcreteCategoryRemoved(Consumer<ConcreteCategory> consumer) { this.onConcreteCategoryRemovedListeners.add(consumer); }
 
     public void addOnMomentAdded(Consumer<Moment> consumer) {
         this.onMomentAddedListeners.add(consumer);
@@ -27,10 +32,13 @@ public class ModelisationSpaceHook {
         this.onMomentRemovedListeners.add(consumer);
     }
 
+    public void addOnConcretePropertyValueChanged(BiConsumer<String, ConcreteProperty> consumer) { this.onConcretePropertyValueChanged.add(consumer); }
+
     public void resetListeners() {
-        onCategoryAddedListeners.clear();
-        onCategoryRemovedListeners.clear();
+        onConcreteCategoryAddedListeners.clear();
+        onConcreteCategoryRemovedListeners.clear();
         onMomentAddedListeners.clear();
         onMomentRemovedListeners.clear();
+        onConcretePropertyValueChanged.clear();
     }
 }

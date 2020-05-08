@@ -18,4 +18,6 @@ public class ConcreteCategoryCommandFactory {
     public AddConcreteCategoryCommand addConcreteCategoryCommand(ConcreteCategory c, boolean userCommand) { return new AddConcreteCategoryCommand(parent, c, userCommand); }
     public AddConcreteCategoryCommand addSchemaCategoryCommand(SchemaCategory sc, boolean userCommand) { return new AddConcreteCategoryCommand(hookNotifier, parent, sc, userCommand); }
     public RemoveConcreteCategoryCommand removeConcreteCategoryCommand(ConcreteCategory c, boolean userCommand) { return new RemoveConcreteCategoryCommand(hookNotifier, parent, c, userCommand); }
+
+    public ModelisationSpaceHookNotifier getHookNotifier() { return hookNotifier; }
 }

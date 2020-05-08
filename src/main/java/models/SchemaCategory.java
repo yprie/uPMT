@@ -115,5 +115,5 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     }
 
     public void setNumberOfUsesInModelisation(int nbUses) { this.nbUsesInModelisation.set(nbUses); }
-    public ReadOnlyIntegerProperty getNumberOfUsesInModelisation() { return this.nbUsesInModelisation; }
+    public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
 }

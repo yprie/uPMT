@@ -32,15 +32,16 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        name.textProperty().bind(Bindings.createStringBinding(() -> {
-            String s = element.nameProperty().get();
-            int nUses = category.getNumberOfUsesInModelisation().get();
+        name.textProperty().bind(element.nameProperty());
+        complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int nUses = category.numberOfUsesInModelisationProperty().get();
             if(nUses > 0) {
-                s += " (" + nUses + " ";
-                s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses") + ")";
+                s += nUses + " ";
+                s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
             }
             return s;
-        }, element.nameProperty(), category.getNumberOfUsesInModelisation()));
+        }, category.numberOfUsesInModelisationProperty()));
 
         MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {

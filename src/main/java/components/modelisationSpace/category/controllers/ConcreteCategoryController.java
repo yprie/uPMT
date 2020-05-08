@@ -80,7 +80,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         properties = new ListView<>(
                 category.propertiesProperty(),
-                ConcretePropertyController::new,
+                (property) -> { return new ConcretePropertyController(cmdFactory.getHookNotifier(), property); },
                 ConcretePropertyController::create,
                 propertiesContainer
         );

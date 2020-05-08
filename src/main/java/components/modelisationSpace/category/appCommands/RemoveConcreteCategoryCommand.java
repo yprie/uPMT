@@ -24,7 +24,7 @@ public class RemoveConcreteCategoryCommand implements Executable<Void> {
     @Override
     public Void execute() {
         HistoryManager.addCommand(new RemoveConcreteCategory(parent, category), userCommand);
-        hooksNotifier.notifyCategoryRemoved(category.getSchemaCategory());
+        hooksNotifier.notifyConcreteCategoryRemoved(category);
         return null;
     }
 }

@@ -1,17 +1,16 @@
-package components.schemaTree.Cell.Visitors;
+package components.schemaTree.Services.propertyUsesCounter;
 
+import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import models.SchemaProperty;
 import models.SchemaTreeRoot;
 
-public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVisitor {
-
-    private boolean result = true;
+public class ResetPropertyUsesCounterVisitor extends SchemaTreePluggableVisitor {
 
     @Override
     public void visit(SchemaTreeRoot element) {
-        result = false;
+        element.foldersProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
     }
 
     @Override
@@ -22,14 +21,12 @@ public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVis
 
     @Override
     public void visit(SchemaCategory element) {
-        if(element.numberOfUsesInModelisationProperty().get() > 0)
-            result = false;
+        element.propertiesProperty().forEach(schemaProperty -> { schemaProperty.accept(this); });
     }
 
     @Override
     public void visit(SchemaProperty element) {
-
+        element.setNumberOfUsesInModelisation(0);
     }
 
-    public boolean elementCanBeSafelyDeleted() { return result; }
 }

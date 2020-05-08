@@ -1,5 +1,8 @@
 package components.modelisationSpace.hooks;
 
+import javafx.scene.control.skin.SliderSkin;
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 import models.Moment;
 import models.SchemaCategory;
 
@@ -11,15 +14,15 @@ public class ModelisationSpaceHookNotifier {
         this.hook = hook;
     }
 
-    public void notifyCategoryAdded(SchemaCategory schemaCategory) {
-        this.hook.onCategoryAddedListeners.forEach(listener -> {
-            listener.accept(schemaCategory);
+    public void notifyConcreteCategoryAdded(ConcreteCategory cc) {
+        this.hook.onConcreteCategoryAddedListeners.forEach(listener -> {
+            listener.accept(cc);
         });
     }
 
-    public void notifyCategoryRemoved(SchemaCategory schemaCategory) {
-        this.hook.onCategoryRemovedListeners.forEach(listener -> {
-            listener.accept(schemaCategory);
+    public void notifyConcreteCategoryRemoved(ConcreteCategory cc) {
+        this.hook.onConcreteCategoryRemovedListeners.forEach(listener -> {
+            listener.accept(cc);
         });
     }
 
@@ -32,6 +35,12 @@ public class ModelisationSpaceHookNotifier {
     public void notifyMomentRemoved(Moment moment) {
         this.hook.onMomentRemovedListeners.forEach(listener -> {
             listener.accept(moment);
+        });
+    }
+
+    public void notifyConcretePropertyValueChanged(String oldValue, ConcreteProperty concreteProperty) {
+        this.hook.onConcretePropertyValueChanged.forEach(listener -> {
+            listener.accept(oldValue, concreteProperty);
         });
     }
 

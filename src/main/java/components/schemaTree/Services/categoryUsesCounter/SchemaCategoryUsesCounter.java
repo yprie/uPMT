@@ -5,27 +5,26 @@ import models.Moment;
 import models.Project;
 import models.SchemaCategory;
 
-public class SchemaTreeElementUsesCounter {
+public class SchemaCategoryUsesCounter {
 
     private ModelisationSpaceHook modelisationSpaceHook;
     private enum CountingMethod { INCREMENT, DECREMENT };
 
-    public SchemaTreeElementUsesCounter(Project project, ModelisationSpaceHook modelisationSpaceHook) {
+    public SchemaCategoryUsesCounter(Project project, ModelisationSpaceHook modelisationSpaceHook) {
         initalize(project);
-        updateModelisationSpaceHooks(modelisationSpaceHook);
+        setupModelisationSpaceHooks(modelisationSpaceHook);
     }
 
-    public void updateModelisationSpaceHooks(ModelisationSpaceHook msh) {
-        if(modelisationSpaceHook != null)
-            modelisationSpaceHook.resetListeners();
-
+    public void setupModelisationSpaceHooks(ModelisationSpaceHook msh) {
         modelisationSpaceHook = msh;
-        modelisationSpaceHook.addOnCategoryAdded(schemaCategory -> {
-            schemaCategory.setNumberOfUsesInModelisation(schemaCategory.getNumberOfUsesInModelisation().get() + 1);
+        modelisationSpaceHook.addOnConcreteCategoryAdded(cc -> {
+            SchemaCategory sc = cc.getSchemaCategory();
+            sc.setNumberOfUsesInModelisation(sc.numberOfUsesInModelisationProperty().get() + 1);
         });
 
-        modelisationSpaceHook.addOnCategoryRemoved(schemaCategory -> {
-            schemaCategory.setNumberOfUsesInModelisation(schemaCategory.getNumberOfUsesInModelisation().get() - 1);
+        modelisationSpaceHook.addOnConcreteCategoryRemoved(cc -> {
+            SchemaCategory sc = cc.getSchemaCategory();
+            sc.setNumberOfUsesInModelisation(sc.numberOfUsesInModelisationProperty().get() - 1);
         });
 
         modelisationSpaceHook.addOnMomentAdded(moment -> {
@@ -52,7 +51,7 @@ public class SchemaTreeElementUsesCounter {
         m.concreteCategoriesProperty().forEach(concreteCategory -> {
             SchemaCategory sc = concreteCategory.getSchemaCategory();
             int i = cm == CountingMethod.INCREMENT ? 1 : cm == CountingMethod.DECREMENT ? -1 : 0;
-            sc.setNumberOfUsesInModelisation(sc.getNumberOfUsesInModelisation().get() + i);
+            sc.setNumberOfUsesInModelisation(sc.numberOfUsesInModelisationProperty().get() + i);
         });
         m.momentsProperty().forEach(moment -> { countThroughAMoment(moment, cm); });
     }
