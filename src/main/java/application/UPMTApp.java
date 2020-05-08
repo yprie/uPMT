@@ -1,7 +1,6 @@
 package application;
 
 import application.appCommands.ApplicationCommandFactory;
-import application.appCommands.SetProjectCommand;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.rootLayout.Controllers.RootLayoutController;
@@ -9,10 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Project;
-import persistency.ProjectLoader;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 
@@ -46,12 +48,18 @@ public class UPMTApp {
             appCommandFactory.openRecentProject(Configuration.getProjectsPath()[0]).execute();
         }
         else {
-            URL example = getClass().getResource("/save/example.upmt");
-            String filename = example.getFile();
-            Project project = ProjectLoader.load(filename);
-            new SetProjectCommand(this, project, filename).execute();
-
-            //appCommandFactory.openProjectManagerCommand().execute();
+            String exampleResource = "/save/example.upmt";
+            String filename = "example.upmt";
+            InputStream in = getClass().getResourceAsStream(exampleResource);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder builder = new StringBuilder();
+            int ch = 0;
+            while ((ch = reader.read()) != -1) {
+                builder.append((char) ch);
+            }
+            Files.write(Paths.get(filename), builder.toString().getBytes());
+            Configuration.addToProjects(filename);
+            appCommandFactory.openProjectManagerCommand().execute();
         }
 
 
