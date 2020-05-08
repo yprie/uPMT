@@ -6,6 +6,7 @@ import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Section;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -53,7 +54,7 @@ public abstract class SchemaTreeCellController implements Initializable {
         pictureView.setImage(ResourceLoader.loadImage(element.getIconPath()));
 
         name.setText(element.nameProperty().get());
-        this.name.textProperty().bind(element.nameProperty());
+        name.textProperty().bind(element.nameProperty());
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
         renameButton.setOnAction(actionEvent -> {

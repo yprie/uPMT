@@ -1,6 +1,8 @@
 package components.modelisationSpace.controllers;
 
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
+import components.modelisationSpace.hooks.ModelisationSpaceHook;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.moment.controllers.RootMomentController;
 import models.RootMoment;
 import javafx.fxml.FXML;
@@ -25,6 +27,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     private  @FXML AnchorPane pane;
     private @FXML ScrollPane superPane;
 
+    private ModelisationSpaceHook hooks;
+    private ModelisationSpaceHookNotifier hooksNotifier;
+
     public ModelisationSpaceController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/modelisationSpace/ModelisationSpace.fxml"));
         fxmlLoader.setRoot(this);
@@ -35,6 +40,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        hooks = new ModelisationSpaceHook();
+        hooksNotifier = new ModelisationSpaceHookNotifier(hooks);
     }
 
     @Override
@@ -47,7 +55,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         //Set new moment
         clearSpace();
         if(m != null) {
-            rmController = new RootMomentController(m, paneCmdFactory);
+            rmController = new RootMomentController(m, paneCmdFactory, hooksNotifier);
             superPane.setContent(RootMomentController.createRootMoment(rmController));
         }
     }
@@ -56,5 +64,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         if(rmController != null)
             rmController.unmount();
         superPane.setContent(null);
+        hooks.resetListeners();
+
     }
+
+    public ModelisationSpaceHook getHooks() { return hooks; }
 }

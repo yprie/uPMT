@@ -1,5 +1,6 @@
 package components.modelisationSpace.moment.appCommands;
 
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import models.ConcreteCategory;
 import models.Moment;
 import models.RootMoment;
@@ -7,32 +8,34 @@ import models.SchemaCategory;
 
 public class MomentCommandFactory {
 
-    RootMoment parent;
+    private RootMoment parent;
+    private ModelisationSpaceHookNotifier hookNotifier;
 
-    public MomentCommandFactory(RootMoment parent) {
+    public MomentCommandFactory(ModelisationSpaceHookNotifier hookNotifier, RootMoment parent) {
+        this.hookNotifier = hookNotifier;
         this.parent = parent;
     }
 
     public AddSiblingMomentCommand addSiblingCommand(Moment m, int index) {
-        return new AddSiblingMomentCommand(parent, m, index);
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, index);
     }
     public AddSiblingMomentCommand addSiblingCommand(Moment m) {
-        return new AddSiblingMomentCommand(parent, m);
+        return new AddSiblingMomentCommand(hookNotifier, parent, m);
     }
 
 
     public AddSiblingMomentCommand addSiblingCommand(Moment m, ConcreteCategory category) {
-        return new AddSiblingMomentCommand(parent, m, category);
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, category);
     }
     public AddSiblingMomentCommand addSiblingCommand(Moment m, ConcreteCategory category, int index) {
-        return new AddSiblingMomentCommand(parent, m, category, index);
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, category, index);
     }
 
     public AddSiblingMomentCommand addSiblingCommand(Moment m, SchemaCategory category, Moment parent) {
-        return new AddSiblingMomentCommand(this.parent, m, category, parent);
+        return new AddSiblingMomentCommand(hookNotifier, this.parent, m, category, parent);
     }
     public AddSiblingMomentCommand addSiblingCommand(Moment m, SchemaCategory category, Moment parent, int index) {
-        return new AddSiblingMomentCommand(this.parent, m, category, parent, index);
+        return new AddSiblingMomentCommand(hookNotifier, this.parent, m, category, parent, index);
     }
 
     public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent, int index){
@@ -41,10 +44,12 @@ public class MomentCommandFactory {
     public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent){
         return new MoveMomentCommand(parent, originParent, m);
     }
-    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(parent, m); }
+    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
     public AddCommentCommand addCommentCommand(Moment m, String comment){ return new AddCommentCommand(m, comment);}
+
     public RootMoment getParentMoment(){
         return parent;
     }
+    public ModelisationSpaceHookNotifier getHookNotifier() { return hookNotifier; }
 }

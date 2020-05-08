@@ -29,7 +29,7 @@ public class RenameMomentCommand implements Executable {
         TextEntryController c = TextEntryController.enterText(
                 Configuration.langBundle.getString("new_moment_name"),
                 moment.getName(),
-                20,
+                50,
                 new SuggestionStrategyMoment()
         );
         //c.setStrategy(new SuggestionStrategyMoment());
