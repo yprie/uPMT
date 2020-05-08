@@ -7,11 +7,19 @@ import models.SchemaCategory;
 
 public class SchemaTreeElementUsesCounter {
 
+    private ModelisationSpaceHook modelisationSpaceHook;
     private enum CountingMethod { INCREMENT, DECREMENT };
 
     public SchemaTreeElementUsesCounter(Project project, ModelisationSpaceHook modelisationSpaceHook) {
         initalize(project);
+        updateModelisationSpaceHooks(modelisationSpaceHook);
+    }
 
+    public void updateModelisationSpaceHooks(ModelisationSpaceHook msh) {
+        if(modelisationSpaceHook != null)
+            modelisationSpaceHook.resetListeners();
+
+        modelisationSpaceHook = msh;
         modelisationSpaceHook.addOnCategoryAdded(schemaCategory -> {
             schemaCategory.setNumberOfUsesInModelisation(schemaCategory.getNumberOfUsesInModelisation().get() + 1);
         });

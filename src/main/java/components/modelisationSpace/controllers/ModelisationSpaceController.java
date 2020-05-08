@@ -64,8 +64,6 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         if(rmController != null)
             rmController.unmount();
         superPane.setContent(null);
-        hooks.resetListeners();
-
     }
 
     public ModelisationSpaceHook getHooks() { return hooks; }
