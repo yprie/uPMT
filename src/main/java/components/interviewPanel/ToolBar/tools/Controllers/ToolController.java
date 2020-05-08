@@ -5,41 +5,73 @@ import components.interviewPanel.ToolBar.tools.Tool;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
-public abstract class ToolController extends Button {
+public abstract class ToolController extends Node {
     protected final String name;
     protected final Tool tool;
     protected final SimpleBooleanProperty selectedProperty;
 
-    public ToolController(String name, Tool tool) {
+    protected GraphicsContext gc;
+
+    protected Label label;
+    protected VBox vbox;
+
+    protected ToolController(String name, Tool tool) {
         this.name = name;
         this.tool = tool;
         selectedProperty = new SimpleBooleanProperty();
-        initialize();
+        initializeController();
     }
 
     public ToolController(String name, Tool tool, boolean selected) {
         this.name = name;
         this.tool = tool;
         selectedProperty = new SimpleBooleanProperty(selected);
-        initialize();
+        initializeController();
     }
 
-    private void initialize() {
+    protected void initializeController() {
+        label = new Label();
+        vbox = new VBox();
+
         String name = Configuration.langBundle.getString(this.name).substring(0, 1).toUpperCase() + Configuration.langBundle.getString(this.name).substring(1);
-        setText(name);
+        label.setText(name);
         selectedProperty.addListener(change -> updateStyle());
-        setOnMouseClicked(event -> {
+        vbox.setOnMouseClicked(event -> {
+            System.out.println("vbox cliked " + name);
             if (!selectedProperty.get()) {
                 setIsSelected(true);
             }
         });
 
+        Canvas canvas = new Canvas(30, 20);
+        gc = canvas.getGraphicsContext2D();
+        vbox.getChildren().add(canvas);
+        vbox.getChildren().add(label);
+
         Platform.runLater(this::updateStyle);
     }
 
-    protected abstract void updateStyle();
+    protected void updateStyle() {
+        if (selectedProperty.get()) {
+            label.setStyle("-fx-font-weight: bold");
+            setSelectedGraphic();
+        }
+        else {
+            label.setStyle("");
+            initializeGraphic();
+        }
+    }
+
+    public Node getNode() {
+        return vbox;
+    }
 
     public BooleanProperty getSelectedProperty() {
         return selectedProperty;
@@ -51,5 +83,15 @@ public abstract class ToolController extends Button {
 
     public Tool getTool() {
         return tool;
+    }
+
+    abstract void initializeGraphic();
+    void setSelectedGraphic() {
+        gc.setLineWidth(3);
+        gc.setStroke(Color.BLACK);
+        gc.strokeLine(0, 0, 30, 0);
+        gc.strokeLine(0, 20, 30, 20);
+        gc.strokeLine(0, 0, 0, 20);
+        gc.strokeLine(30, 0, 30, 20);
     }
 }
