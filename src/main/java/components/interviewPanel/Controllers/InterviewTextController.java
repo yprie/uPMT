@@ -85,14 +85,17 @@ public class InterviewTextController implements Initializable {
         richTextAreaController.setContextMenuFactory(contextMenuFactory);
 
         ToolBarController toolBarController = new ToolBarController();
-        ToolController selectionToolController = new SelectionToolController("selection",
-                new SelectionTool( "#fff", interview.getInterviewText(), interviewTextCommandFactory), true);
-        toolBarController.addTool(selectionToolController);
+
         annotationColorList.forEach((annotationColor) -> {
-            toolBarController.addTool(new AnnotationToolController(annotationColor.getName(),
-                    new AnnotationTool(annotationColor.getHexa(), interview.getInterviewText(), interviewTextCommandFactory)));
+            ToolController annotationToolController = new AnnotationToolController(annotationColor.getName(),
+                    new AnnotationTool(annotationColor.getHexa(), interview.getInterviewText(), interviewTextCommandFactory));
+            toolBarController.addTool(annotationToolController);
         });
         toolBarController.addSeparator();
+        ToolController selectionToolController = new SelectionToolController(
+                "selection",
+                new SelectionTool( "#fff", interview.getInterviewText(), interviewTextCommandFactory), true);
+        toolBarController.addTool(selectionToolController);
         toolBarController.addTool(new EraserToolController("eraser",
                 new EraserTool("#8b8b8b", interview.getInterviewText(), interviewTextCommandFactory)));
         toolBarController.setSelectedToolProperty(selectionToolController);
@@ -119,7 +122,7 @@ public class InterviewTextController implements Initializable {
         // On click on the added pane, remove the pane
         paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
         paneDragText.setOnMousePressed(event -> {
-            if (event.getButton() == MouseButton.SECONDARY){
+            if (event.getButton() == MouseButton.SECONDARY  || event.isControlDown()){
                 hideDnDPane();
                 richTextAreaController.updateContextMenu();
             }

@@ -17,7 +17,7 @@ public class MenuItemFactory {
     }
 
     public MenuItem getAnnotate(AnnotationColor annotationColor, IndexRange selection) {
-        MenuItem item = new MenuItem(annotationColor.getName());
+        MenuItem item = new MenuItem(Configuration.langBundle.getString(annotationColor.getName()));
         item.setOnAction(e -> {
             interviewPanelCommandFactory.getAddAnnotationCommand(selection, annotationColor).execute();
         });
