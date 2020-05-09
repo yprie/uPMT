@@ -86,14 +86,12 @@ public class EditJustificationCell implements Initializable {
             stage.showAndWait();
             return controller;
         } catch (IOException e) {
-            // TODO Exit Program
             e.printStackTrace();
         }
         return null;
     }
 
     private void onDescriptemeUpdate() {
-        //TODO disable a button if it is to a border of the entire text.
         frontShiftLeft.setDisable(false);
         frontShiftRight.setDisable(false);
         endShiftLeft.setDisable(false);
