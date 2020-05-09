@@ -26,8 +26,8 @@ public class EditJustificationCell implements Initializable {
     private Descripteme descriptemeCopy;
 
     private @FXML TextArea textArea;
-    private @FXML Button shiftLeft, shiftRight, cancelButton, confirmButton;
-    private @FXML RadioButton beginningButton, endButton;
+    private @FXML Button frontShiftLeft, frontShiftRight, endShiftLeft, endShiftRight, cancelButton, confirmButton;
+
 
     public EditJustificationCell(Stage stage, Descripteme descripteme) {
         this.stage = stage;
@@ -39,33 +39,25 @@ public class EditJustificationCell implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         textArea.textProperty().bind(descriptemeCopy.getSelectionProperty());
 
-        shiftLeft.setOnAction(actionEvent -> {
-            if(beginningButton.isSelected()){
-                descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()-1, descriptemeCopy.getEndIndex());
-            }
-            else if(endButton.isSelected()){
-                descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()-1);
-            }
+        frontShiftLeft.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()-1, descriptemeCopy.getEndIndex());
+            onDescriptemeUpdate();
+        });
+        endShiftLeft.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()-1);
             onDescriptemeUpdate();
         });
 
-        shiftRight.setOnAction(actionEvent -> {
-            if(beginningButton.isSelected()){
-                descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()+1, descriptemeCopy.getEndIndex());
-            }
-            else if(endButton.isSelected()){
-                descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()+1);
-            }
+        frontShiftRight.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()+1, descriptemeCopy.getEndIndex());
+            onDescriptemeUpdate();
+        });
+        endShiftRight.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()+1);
             onDescriptemeUpdate();
         });
 
-        beginningButton.setOnAction(actionEvent -> {
-            onDescriptemeUpdate();
-        });
 
-        endButton.setOnAction(actionEvent -> {
-            onDescriptemeUpdate();
-        });
 
         cancelButton.setOnAction(actionEvent -> {
             stage.close();
@@ -102,22 +94,20 @@ public class EditJustificationCell implements Initializable {
 
     private void onDescriptemeUpdate() {
         //TODO disable a button if it is to a border of the entire text.
-        shiftLeft.setDisable(false);
-        shiftRight.setDisable(false);
+        frontShiftLeft.setDisable(false);
+        frontShiftRight.setDisable(false);
+        endShiftLeft.setDisable(false);
+        endShiftRight.setDisable(false);
 
-        if(beginningButton.isSelected()){
-            if(descriptemeCopy.getStartIndex() == 0)
-                shiftLeft.setDisable(true);
-            else if(descriptemeCopy.getFragmentText().length() == 1)
-                shiftRight.setDisable(true);
-        }
+        if(descriptemeCopy.getStartIndex() == 0)
+            frontShiftLeft.setDisable(true);
+        else if(descriptemeCopy.getFragmentText().length() == 1)
+            frontShiftRight.setDisable(true);
+        if(descriptemeCopy.getEndIndex() == descriptemeCopy.getInterviewText().getText().length())
+            endShiftRight.setDisable(true);
+        else if(descriptemeCopy.getFragmentText().length() == 1)
+            endShiftLeft.setDisable(true);
 
-        else if(endButton.isSelected()) {
-            if(descriptemeCopy.getEndIndex() == descriptemeCopy.getInterviewText().getText().length())
-                shiftRight.setDisable(true);
-            else if(descriptemeCopy.getFragmentText().length() == 1)
-                shiftLeft.setDisable(true);
-        }
     }
 
 }
