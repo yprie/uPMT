@@ -1,11 +1,13 @@
 package components.schemaTree.Cell.appCommands;
 
 import application.configuration.Configuration;
+import application.history.HistoryManager;
 import components.schemaTree.Cell.SchemaTreePluggable;
-import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyDeletedVisitor;
+import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyUpdatedVisitor;
 import components.schemaTree.Cell.Visitors.CreateAddChildStrategyVisitor;
 import components.schemaTree.Cell.Visitors.CreateRemovingStrategyVisitor;
 import components.schemaTree.Cell.appCommands.strategies.UnremovableRemovingStrategy;
+import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
@@ -31,7 +33,7 @@ public class SchemaTreeCommandFactory {
         CreateRemovingStrategyVisitor v = new CreateRemovingStrategyVisitor<>(view, item.getParent().getValue(), element);
         element.accept(v);
 
-        CanTreeElementBeSafelyDeletedVisitor safeDelete = new CanTreeElementBeSafelyDeletedVisitor();
+        CanTreeElementBeSafelyUpdatedVisitor safeDelete = new CanTreeElementBeSafelyUpdatedVisitor();
         element.accept(safeDelete);
 
         if(safeDelete.elementCanBeSafelyDeleted()) {
@@ -45,6 +47,25 @@ public class SchemaTreeCommandFactory {
             }
             else
                 return new UnremovableRemovingStrategy();
+        }
+    }
+
+    public <E extends SchemaTreePluggable> void renameTreeElement(E element, String newName) {
+
+        RenameSchemaTreePluggable cmd = new RenameSchemaTreePluggable(element, newName);
+
+        CanTreeElementBeSafelyUpdatedVisitor safeDelete = new CanTreeElementBeSafelyUpdatedVisitor();
+        element.accept(safeDelete);
+
+        if(safeDelete.elementCanBeSafelyDeleted()) {
+            HistoryManager.addCommand(cmd, !element.mustBeRenamed());
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Configuration.langBundle.getString("schemaTree_renaming_prevent"), ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                HistoryManager.addCommand(cmd, !element.mustBeRenamed());
+            }
         }
     }
 }

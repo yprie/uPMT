@@ -18,7 +18,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     private SchemaTreeCommandFactory cmdFactory;
 
     public SchemaTreeCategoryController(SchemaCategory model, SchemaTreeCommandFactory cmdFactory) {
-        super(model);
+        super(model, cmdFactory);
         this.category = model;
         this.cmdFactory = cmdFactory;
     }

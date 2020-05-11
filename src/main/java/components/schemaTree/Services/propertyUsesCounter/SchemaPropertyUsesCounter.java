@@ -22,7 +22,7 @@ public class SchemaPropertyUsesCounter {
             countThroughACategory(concreteCategory, CountingMethod.INCREMENT);
         });
 
-        modelisationSpaceHook.addOnConcreteCategoryAdded(concreteCategory -> {
+        modelisationSpaceHook.addOnConcreteCategoryRemoved(concreteCategory -> {
             countThroughACategory(concreteCategory, CountingMethod.DECREMENT);
         });
 

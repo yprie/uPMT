@@ -18,7 +18,7 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
     private SchemaTreeCommandFactory cmdFactory;
 
     public SchemaTreePropertyController(SchemaProperty property, SchemaTreeCommandFactory cmdFactory) {
-        super(property);
+        super(property, cmdFactory);
         this.property = property;
         this.cmdFactory = cmdFactory;
     }

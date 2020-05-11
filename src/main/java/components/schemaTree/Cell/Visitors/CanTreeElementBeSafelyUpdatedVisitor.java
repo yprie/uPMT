@@ -5,7 +5,7 @@ import models.SchemaFolder;
 import models.SchemaProperty;
 import models.SchemaTreeRoot;
 
-public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVisitor {
+public class CanTreeElementBeSafelyUpdatedVisitor extends SchemaTreePluggableVisitor {
 
     private boolean result = true;
 
@@ -28,7 +28,8 @@ public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVis
 
     @Override
     public void visit(SchemaProperty element) {
-
+        if(element.numberOfUsesInModelisationProperty().get() > 0)
+            result = false;
     }
 
     public boolean elementCanBeSafelyDeleted() { return result; }

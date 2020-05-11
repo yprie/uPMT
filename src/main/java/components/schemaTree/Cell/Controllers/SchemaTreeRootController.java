@@ -22,7 +22,7 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
     SchemaTreeCommandFactory cmdFactory;
 
     public SchemaTreeRootController(SchemaTreeRoot root, SchemaTreeCommandFactory cmdFactory) {
-        super(root);
+        super(root, cmdFactory);
         this.root = root;
         this.cmdFactory = cmdFactory;
     }
