@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
         java: [11]
     steps:
       - uses: actions/checkout@v2
@@ -33,5 +33,5 @@ jobs:
       - name: Upload runtime
         uses: actions/upload-artifact@v1
         with:
-          name: build-${{ runner.os }}-${{ matrix.java }}-runtime
+          name: uPMT-${{ GITHUB_RUN_ID }}-${{ runner.os }}-JAVA${{ matrix.java }}-runtime
           path: build/uPMT.zip
