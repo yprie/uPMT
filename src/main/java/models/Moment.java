@@ -1,6 +1,8 @@
 package models;
 
+import application.history.HistoryManager;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
+import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -103,8 +105,7 @@ public class Moment extends RootMoment implements IDraggable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
-                    new RemoveConcreteCategoryCommand(m, category, false).execute();
-                    System.out.println("removed");
+                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category), false);
                     category.existsProperty().removeListener(this);
                 }
             }

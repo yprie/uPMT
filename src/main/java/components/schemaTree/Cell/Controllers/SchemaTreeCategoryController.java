@@ -2,6 +2,7 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
+import javafx.beans.binding.Bindings;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -30,6 +31,17 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+
+        name.textProperty().bind(element.nameProperty());
+        complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int nUses = category.numberOfUsesInModelisationProperty().get();
+            if(nUses > 0) {
+                s += nUses + " ";
+                s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
+            }
+            return s;
+        }, category.numberOfUsesInModelisationProperty()));
 
         MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {

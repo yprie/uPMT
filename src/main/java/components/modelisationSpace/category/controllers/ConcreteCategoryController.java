@@ -1,6 +1,8 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import javafx.scene.Cursor;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
@@ -54,7 +56,11 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         }
     };
 
-    public ConcreteCategoryController(ConcreteCategory c, ConcreteCategoryCommandFactory cmdFactory, ScrollPaneCommandFactory paneCommandFactory) {
+    public ConcreteCategoryController(
+            ConcreteCategory c,
+            ConcreteCategoryCommandFactory cmdFactory,
+            ScrollPaneCommandFactory paneCommandFactory
+    ) {
         this.category = c;
         this.cmdFactory = cmdFactory;
         this.paneCommandFactory = paneCommandFactory;
@@ -74,7 +80,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         properties = new ListView<>(
                 category.propertiesProperty(),
-                ConcretePropertyController::new,
+                (property) -> { return new ConcretePropertyController(cmdFactory.getHookNotifier(), property); },
                 ConcretePropertyController::create,
                 propertiesContainer
         );

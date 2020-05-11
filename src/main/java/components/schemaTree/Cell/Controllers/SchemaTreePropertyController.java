@@ -2,6 +2,7 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
+import javafx.beans.binding.Bindings;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
@@ -30,6 +31,18 @@ public class SchemaTreePropertyController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+
+        name.textProperty().bind(element.nameProperty());
+        complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int nUses = property.numberOfUsesInModelisationProperty().get();
+            if(nUses > 0) {
+                s += nUses + " ";
+                s += Configuration.langBundle.getString(nUses == 1 ? "filled" : "filled_plural");
+            }
+            return s;
+        }, property.numberOfUsesInModelisationProperty()));
+
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             cmdFactory.removeTreeElement(property).execute();

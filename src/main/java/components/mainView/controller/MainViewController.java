@@ -20,6 +20,8 @@
 
 package components.mainView.controller;
 
+import components.schemaTree.Services.categoryUsesCounter.SchemaCategoryUsesCounter;
+import components.schemaTree.Services.propertyUsesCounter.SchemaPropertyUsesCounter;
 import components.templateSpace.controllers.TemplateSpaceController;
 import javafx.scene.layout.HBox;
 import models.Project;
@@ -114,5 +116,8 @@ public class MainViewController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refreshContent();
 		project.selectedInterviewProperty().addListener(onSelectedInterviewChanges);
+
+		SchemaCategoryUsesCounter service = new SchemaCategoryUsesCounter(project, modelisationSpaceController.getHooks());
+		SchemaPropertyUsesCounter service2 = new SchemaPropertyUsesCounter(project, modelisationSpaceController.getHooks());
 	}
 }

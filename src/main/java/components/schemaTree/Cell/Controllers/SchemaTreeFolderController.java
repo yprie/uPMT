@@ -1,6 +1,7 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
+import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyDeletedVisitor;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import models.SchemaCategory;
 import models.SchemaFolder;

@@ -2,10 +2,8 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import javafx.beans.property.Property;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.Cursor;
+import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
@@ -50,6 +48,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ConcreteCategoryCommandFactory categoryCmdFactory;
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
+    private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
 
     @FXML private AnchorPane categoryDropper;
     @FXML private BorderPane momentContainer;
@@ -77,8 +76,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.cmdFactory = cmdFactory;
-        this.categoryCmdFactory = new ConcreteCategoryCommandFactory(moment);
-        this.childCmdFactory = new MomentCommandFactory(moment);
+        this.categoryCmdFactory = new ConcreteCategoryCommandFactory(cmdFactory.getHookNotifier(), moment);
+        this.childCmdFactory = new MomentCommandFactory(cmdFactory.getHookNotifier(), moment);
         this.paneCmdFactory = paneCmdFactory;
         this.justificationController = new JustificationController(m.getJustification());
 
@@ -384,7 +383,7 @@ public class MomentController extends ListViewController<Moment> implements Init
                 dragEvent.consume();
             }
             else if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
-                categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
+                categoryCmdFactory.addSchemaCategoryCommand(DragStore.getDraggable(), true).execute();
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
             }

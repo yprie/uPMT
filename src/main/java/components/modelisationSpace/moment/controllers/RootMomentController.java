@@ -2,6 +2,7 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import models.Moment;
 import models.RootMoment;
@@ -29,10 +30,9 @@ public class RootMomentController implements Initializable {
     private ListView<Moment, MomentController> momentsHBox;
 
 
-
-    public RootMomentController(RootMoment m, ScrollPaneCommandFactory paneCmdFactory) {
+    public RootMomentController(RootMoment m, ScrollPaneCommandFactory paneCmdFactory, ModelisationSpaceHookNotifier hooksNotifier) {
         this.moment = m;
-        this.childCmdFactory = new MomentCommandFactory(moment);
+        this.childCmdFactory = new MomentCommandFactory(hooksNotifier, moment);
         this.paneCmdFactory = paneCmdFactory;
     }
 

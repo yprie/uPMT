@@ -19,10 +19,14 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     private SimpleBooleanProperty exists;
     private ListProperty<SchemaProperty> properties;
 
+    //Computed values, no need to store them
+    private SimpleIntegerProperty nbUsesInModelisation;
+
     public SchemaCategory(String name) {
         super(name);
         this.exists = new SimpleBooleanProperty(true);
         this.properties = new SimpleListProperty<SchemaProperty>(FXCollections.observableList(new LinkedList<SchemaProperty>()));
+        this.nbUsesInModelisation = new SimpleIntegerProperty(0);
     }
 
     public final ObservableList<SchemaProperty> propertiesProperty() { return properties; }
@@ -109,4 +113,7 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     private void removeProperty(SchemaProperty p){
         properties.remove(p);
     }
+
+    public void setNumberOfUsesInModelisation(int nbUses) { this.nbUsesInModelisation.set(nbUses); }
+    public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
 }
