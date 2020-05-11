@@ -221,21 +221,17 @@ public class RichTextAreaController {
     public void addDescripteme(Descripteme descripteme) {
         interviewText.addDescripteme(descripteme);
         descripteme.startIndexProperty().addListener((observable, oldValue, newValue) -> {
-            // create a temporary descripteme with the shape avec the previous descripteme...
+            // create a temporary descripteme with the shape of the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
             // ... in order to be able to delete the underline
-            //letterMap.removeDescripteme(temp);
             applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            //letterMap.becomeDescripteme(descripteme);
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
         descripteme.endIndexProperty().addListener((observable, oldValue, newValue) -> {
             // create a temporary descripteme with the shape avec the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
             // ... in order to be able to delete the underline
-            //letterMap.removeDescripteme(temp);
             applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            //letterMap.becomeDescripteme(descripteme);
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
     }
