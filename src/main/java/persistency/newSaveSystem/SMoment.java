@@ -16,6 +16,7 @@ public class SMoment extends Serializable<Moment> {
     //Fields
     public String name;
     public String comment;
+    public boolean isCommentVisible;
     public SJustification justification;
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
@@ -32,6 +33,7 @@ public class SMoment extends Serializable<Moment> {
     public void init(Moment modelReference) {
         this.name = modelReference.getName();
         this.comment = modelReference.getComment();
+        this.isCommentVisible = modelReference.isCommentVisible();
         this.justification = new SJustification(serializer, modelReference.getJustification());
 
         this.categories = new ArrayList<>();
@@ -52,6 +54,7 @@ public class SMoment extends Serializable<Moment> {
     protected void read() {
         name = serializer.getString("name");
         comment = serializer.getFacultativeString("momentComment",null);
+        isCommentVisible = serializer.getBoolean("isCommentVisible");
         justification = serializer.getObject("justification", SJustification::new);
         categories = serializer.getArray(serializer.setListSuffix(SConcreteCategory.modelName), SConcreteCategory::new);
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
@@ -61,6 +64,7 @@ public class SMoment extends Serializable<Moment> {
     protected void write(ObjectSerializer serializer) {
         serializer.writeString("name", name);
         serializer.writeFacultativeString("momentComment",comment);
+        serializer.writeBoolean("isCommentVisible", isCommentVisible);
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
@@ -68,7 +72,7 @@ public class SMoment extends Serializable<Moment> {
 
     @Override
     protected Moment createModel() {
-        Moment m = new Moment(name, comment, justification.createModel());
+        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel());
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
         for(SConcreteCategory cc: categories)
