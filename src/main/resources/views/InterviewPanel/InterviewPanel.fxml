@@ -47,7 +47,7 @@
     </top>
     <center>
         <StackPane fx:id="stackPaneInterview">
-            <!-- Here is inserted InterviewTextArea.fxml -->
+            <!-- Here is inserted InterviewText.fxml -->
         </StackPane>
     </center>
 </BorderPane>

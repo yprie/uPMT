@@ -7,7 +7,6 @@ import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
 import javafx.stage.Popup;
 import models.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -93,6 +92,9 @@ public class RichTextAreaController {
 
     private void setUpClick() {
         area.setOnMousePressed(event -> {
+            area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
+            updateContextMenu();
+
             if (selectedAnnotation != null) {
                 Platform.runLater(() -> {
                     if (interviewText.getAnnotationsProperty().get().contains(selectedAnnotation)) {
@@ -110,16 +112,6 @@ public class RichTextAreaController {
                     applyStyle(annotation.getStartIndex(), annotation.getEndIndex());
                     selectedAnnotation = annotation;
                 });
-            }
-        });
-
-        area.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
-                System.out.println("mouse right click "
-                        + area.hit(event.getX(), event.getY()).getInsertionIndex()
-                        + " " + area.hit(event.getX(), event.getY()).getCharacterIndex());
-                area.getCaretSelectionBind().moveTo(area.hit(event.getX(), event.getY()).getInsertionIndex());
-                updateContextMenu();
             }
         });
 
@@ -229,21 +221,17 @@ public class RichTextAreaController {
     public void addDescripteme(Descripteme descripteme) {
         interviewText.addDescripteme(descripteme);
         descripteme.startIndexProperty().addListener((observable, oldValue, newValue) -> {
-            // create a temporary descripteme with the shape avec the previous descripteme...
+            // create a temporary descripteme with the shape of the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
             // ... in order to be able to delete the underline
-            //letterMap.removeDescripteme(temp);
             applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            //letterMap.becomeDescripteme(descripteme);
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
         descripteme.endIndexProperty().addListener((observable, oldValue, newValue) -> {
             // create a temporary descripteme with the shape avec the previous descripteme...
             Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
             // ... in order to be able to delete the underline
-            //letterMap.removeDescripteme(temp);
             applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            //letterMap.becomeDescripteme(descripteme);
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
     }
@@ -257,19 +245,15 @@ public class RichTextAreaController {
         Annotation annotation = interviewText.getAnnotationByIndex(area.getCaretPosition());
         ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
         if (annotation != null && !descriptemes.isEmpty()) {
-            System.out.println("we have selected an annotation and a descripteme");
             area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
         }
         else if (annotation != null) {
-            System.out.println("we are in an annotation");
             area.setContextMenu(contextMenuFactory.getContextMenuAnnotation(annotation));
         }
         else if (!descriptemes.isEmpty()) {
-            System.out.println("we are in descriptemes");
             area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(descriptemes));
         }
         else if (!area.getSelectedText().isEmpty()) {
-            System.out.println("we have just a text selection");
             area.setContextMenu(contextMenuFactory.getContextMenuSelection(area.getSelection()));
         }
     }

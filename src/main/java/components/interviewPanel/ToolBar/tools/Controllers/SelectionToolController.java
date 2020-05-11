@@ -1,19 +1,19 @@
 package components.interviewPanel.ToolBar.tools.Controllers;
 
 import components.interviewPanel.ToolBar.tools.Tool;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class SelectionToolController extends ToolController {
     public SelectionToolController(String name, Tool tool, boolean selected) {
         super(name, tool, selected);
+
     }
 
     @Override
-    protected void updateStyle() {
-        if (selectedProperty.get()) {
-            setStyle("-fx-background-color: black;-fx-text-fill:" + tool.getHexa());
-        }
-        else {
-            setStyle("-fx-text-fill: black;-fx-background-color:" + tool.getHexa());
-        }
+    void initializeGraphic() {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, 30, 20);
+        gc.drawImage(new Image("/images/cursor-select.png"), 0, 0, 30, 20);
     }
 }

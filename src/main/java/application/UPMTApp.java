@@ -1,7 +1,6 @@
 package application;
 
 import application.appCommands.ApplicationCommandFactory;
-import application.appCommands.SetProjectCommand;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.rootLayout.Controllers.RootLayoutController;
@@ -9,10 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Project;
-import persistency.ProjectLoader;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.UUID;
 
 
@@ -46,12 +43,8 @@ public class UPMTApp {
             appCommandFactory.openRecentProject(Configuration.getProjectsPath()[0]).execute();
         }
         else {
-            URL example = getClass().getResource("/save/example.upmt");
-            String filename = example.getFile();
-            Project project = ProjectLoader.load(filename);
-            new SetProjectCommand(this, project, filename).execute();
-
-            //appCommandFactory.openProjectManagerCommand().execute();
+            Configuration.SetUpExampleProject(getClass());
+            appCommandFactory.openProjectManagerCommand().execute();
         }
 
 
