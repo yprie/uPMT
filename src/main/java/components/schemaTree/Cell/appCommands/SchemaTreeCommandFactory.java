@@ -3,7 +3,8 @@ package components.schemaTree.Cell.appCommands;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.schemaTree.Cell.SchemaTreePluggable;
-import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyUpdatedVisitor;
+import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyDeletedVisitor;
+import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyRenamedVisitor;
 import components.schemaTree.Cell.Visitors.CreateAddChildStrategyVisitor;
 import components.schemaTree.Cell.Visitors.CreateRemovingStrategyVisitor;
 import components.schemaTree.Cell.appCommands.strategies.UnremovableRemovingStrategy;
@@ -33,7 +34,7 @@ public class SchemaTreeCommandFactory {
         CreateRemovingStrategyVisitor v = new CreateRemovingStrategyVisitor<>(view, item.getParent().getValue(), element);
         element.accept(v);
 
-        CanTreeElementBeSafelyUpdatedVisitor safeDelete = new CanTreeElementBeSafelyUpdatedVisitor();
+        CanTreeElementBeSafelyDeletedVisitor safeDelete = new CanTreeElementBeSafelyDeletedVisitor();
         element.accept(safeDelete);
 
         if(safeDelete.elementCanBeSafelyDeleted()) {
@@ -54,10 +55,10 @@ public class SchemaTreeCommandFactory {
 
         RenameSchemaTreePluggable cmd = new RenameSchemaTreePluggable(element, newName);
 
-        CanTreeElementBeSafelyUpdatedVisitor safeDelete = new CanTreeElementBeSafelyUpdatedVisitor();
+        CanTreeElementBeSafelyRenamedVisitor safeDelete = new CanTreeElementBeSafelyRenamedVisitor();
         element.accept(safeDelete);
 
-        if(safeDelete.elementCanBeSafelyDeleted()) {
+        if(safeDelete.elementCanBeSafelyRenamed()) {
             HistoryManager.addCommand(cmd, !element.mustBeRenamed());
         }
         else {

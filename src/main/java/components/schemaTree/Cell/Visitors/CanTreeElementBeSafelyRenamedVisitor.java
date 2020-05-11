@@ -5,20 +5,15 @@ import models.SchemaFolder;
 import models.SchemaProperty;
 import models.SchemaTreeRoot;
 
-public class CanTreeElementBeSafelyUpdatedVisitor extends SchemaTreePluggableVisitor {
+public class CanTreeElementBeSafelyRenamedVisitor extends SchemaTreePluggableVisitor {
 
     private boolean result = true;
 
     @Override
-    public void visit(SchemaTreeRoot element) {
-        result = false;
-    }
+    public void visit(SchemaTreeRoot element) { }
 
     @Override
-    public void visit(SchemaFolder element) {
-        element.foldersProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
-        element.categoriesProperty().forEach(schemaCategory -> { schemaCategory.accept(this); });
-    }
+    public void visit(SchemaFolder element) { }
 
     @Override
     public void visit(SchemaCategory element) {
@@ -32,5 +27,5 @@ public class CanTreeElementBeSafelyUpdatedVisitor extends SchemaTreePluggableVis
             result = false;
     }
 
-    public boolean elementCanBeSafelyDeleted() { return result; }
+    public boolean elementCanBeSafelyRenamed() { return result; }
 }
