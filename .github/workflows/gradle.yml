@@ -34,5 +34,5 @@ jobs:
       - name: Upload runtime
         uses: actions/upload-artifact@v1
         with:
-          name: uPMT-${GITHUB_RUN_ID}-${{ runner.os }}-JAVA${{ matrix.java }}-runtime
+          name: uPMT-${{ runner.os }}-JAVA${{ matrix.java }}-runtime
           path: build/uPMT.zip
