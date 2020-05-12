@@ -4,8 +4,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.DragEvent;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -18,18 +20,46 @@ public class ScrollOnDragPane extends ScrollPane implements Initializable {
     private Animation scrollXAnimation = null;
     private Animation scrollYAnimation = null;
 
+    private EventHandler<? super DragEvent> onDragOverHook = (e) -> {};
+    private EventHandler<? super DragEvent> onDragExitedHook = (e) -> {};
+    private EventHandler<? super DragEvent> onDragDroppedHook = (e) -> {};
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setOnDragOver(dragEvent -> { onDragOver(dragEvent.getX(), dragEvent.getY()); });
-        setOnMouseExited(mouseEvent-> { stopXAndYScroll(); });
-        setOnDragExited(dragEvent -> { stopXAndYScroll(); });
-        setOnDragDropped(dragEvent -> { stopXAutoScroll(); });
+
+        setOnDragOver(dragEvent -> {
+            onDragOver(dragEvent.getX(), dragEvent.getY());
+            this.onDragOverHook.handle(dragEvent);
+        });
+
+        setOnMouseExited(mouseEvent-> {
+            stopXAndYScroll();
+        });
+
+        setOnDragExited(dragEvent -> {
+            stopXAndYScroll();
+            this.onDragExitedHook.handle(dragEvent);
+        });
+
+        setOnDragDropped(dragEvent -> {
+            stopXAutoScroll();
+            this.onDragDroppedHook.handle(dragEvent);
+        });
     }
 
     public void setScrollingSpeed(double pixelPerSeconds) { pixelScrolledPerSeconds = pixelPerSeconds; }
 
+    public void setOnDragOverHook(EventHandler<? super DragEvent> value) {
+        this.onDragOverHook = value;
+    }
 
+    public void setOnDragExitedHook(EventHandler<? super DragEvent> value) {
+        this.onDragExitedHook = value;
+    }
 
+    public void setOnDragDroppedHook(EventHandler<? super DragEvent> value) {
+        this.onDragDroppedHook = value;
+    }
 
     private void onDragOver(double mouseX, double mouseY) {
         //Horizontal detection

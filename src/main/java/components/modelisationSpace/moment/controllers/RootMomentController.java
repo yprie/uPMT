@@ -43,7 +43,6 @@ public class RootMomentController implements Initializable {
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment,
                 childrenBox);
-
     }
 
     public static Node createRootMoment(RootMomentController controller) {
@@ -61,5 +60,10 @@ public class RootMomentController implements Initializable {
 
     public void unmount() {
         momentsHBox.onUnmount();
+    }
+
+    public boolean hasAtLeastOneChildMoment() { return moment.momentsProperty().size() > 0;}
+    public void addMoment(Moment moment) {
+        childCmdFactory.addSiblingCommand(moment).execute();
     }
 }

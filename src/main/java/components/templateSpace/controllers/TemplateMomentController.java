@@ -51,7 +51,7 @@ public class TemplateMomentController implements Initializable {
 
     private void setupDragAndDrop() {
         container.setOnDragDetected(event -> {
-            Dragboard db = container.startDragAndDrop(TransferMode.MOVE);
+            Dragboard db = container.startDragAndDrop(TransferMode.COPY);
             ClipboardContent content = new ClipboardContent();
             content.put(TemplateMoment.format, 0);
             DragStore.setDraggable(templateMoment);
