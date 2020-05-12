@@ -9,29 +9,41 @@
                     "@model": "annotation",
                     "interviewText": {
                         "@model": "interviewText",
-                        "@id": 1466566836
+                        "@id": 2088225739
                     },
                     "color": "0x7bcf7bff",
                     "endIndex": 106,
                     "@version": 1,
-                    "@id": 1116362131
+                    "@id": 1864926884
                 },
                 {
                     "startIndex": 107,
                     "@model": "annotation",
                     "interviewText": {
                         "@model": "interviewText",
-                        "@id": 1466566836
+                        "@id": 2088225739
                     },
                     "color": "0xff9797ff",
                     "endIndex": 118,
                     "@version": 1,
-                    "@id": 1223593995
+                    "@id": 2100804870
+                },
+                {
+                    "startIndex": 260,
+                    "@model": "annotation",
+                    "interviewText": {
+                        "@model": "interviewText",
+                        "@id": 2088225739
+                    },
+                    "color": "0x7bcf7bff",
+                    "endIndex": 268,
+                    "@version": 1,
+                    "@id": 2050825165
                 }
             ],
             "@model": "interviewText",
             "@version": 1,
-            "@id": 1466566836,
+            "@id": 2088225739,
             "text": "?It was in Puiseaux one April morning, last spring. I just hung up the phone after a conversation with Tom. I feel sad. My heart is tight, like a frozen ball in the middle of my chest. At one point, the song of a turtle-dove comes through the open window. And suddenly, this ball begins to melt, to dilute, a new heat invades my whole body."
         },
         "@version": 1,
@@ -51,18 +63,18 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 24212458
+                                        "@id": 5397500
                                     },
-                                    "@id": 1427683059,
+                                    "@id": 1107248070,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [],
                                         "@version": 1,
-                                        "@id": 792500120
+                                        "@id": 402378654
                                     },
                                     "value": "sadness"
                                 }],
-                                "@id": 1110908221,
+                                "@id": 1606837165,
                                 "justification": {
                                     "@model": "justification",
                                     "descripteme_list": [{
@@ -70,18 +82,18 @@
                                         "@model": "descripteme",
                                         "interviewText": {
                                             "@model": "interviewText",
-                                            "@id": 1466566836
+                                            "@id": 2088225739
                                         },
                                         "endIndex": 118,
                                         "@version": 1,
-                                        "@id": 1828918938
+                                        "@id": 711245351
                                     }],
                                     "@version": 1,
-                                    "@id": 2101081010
+                                    "@id": 1988213970
                                 },
                                 "schemaCategory": {
                                     "@model": "schemaCategory",
-                                    "@id": 48427768
+                                    "@id": 1761568383
                                 }
                             },
                             {
@@ -93,14 +105,24 @@
                                         "@version": 1,
                                         "schemaProperty": {
                                             "@model": "schemaProperty",
-                                            "@id": 2043063322
+                                            "@id": 1203573301
                                         },
-                                        "@id": 1328829370,
+                                        "@id": 998951919,
                                         "justification": {
                                             "@model": "justification",
-                                            "descripteme_list": [],
+                                            "descripteme_list": [{
+                                                "startIndex": 146,
+                                                "@model": "descripteme",
+                                                "interviewText": {
+                                                    "@model": "interviewText",
+                                                    "@id": 2088225739
+                                                },
+                                                "endIndex": 152,
+                                                "@version": 1,
+                                                "@id": 911927869
+                                            }],
                                             "@version": 1,
-                                            "@id": 83860883
+                                            "@id": 1925477439
                                         },
                                         "value": "cold"
                                     },
@@ -109,14 +131,24 @@
                                         "@version": 1,
                                         "schemaProperty": {
                                             "@model": "schemaProperty",
-                                            "@id": 1960769999
+                                            "@id": 489602409
                                         },
-                                        "@id": 1261780885,
+                                        "@id": 1769860485,
                                         "justification": {
                                             "@model": "justification",
-                                            "descripteme_list": [],
+                                            "descripteme_list": [{
+                                                "startIndex": 153,
+                                                "@model": "descripteme",
+                                                "interviewText": {
+                                                    "@model": "interviewText",
+                                                    "@id": 2088225739
+                                                },
+                                                "endIndex": 157,
+                                                "@version": 1,
+                                                "@id": 309684033
+                                            }],
                                             "@version": 1,
-                                            "@id": 1257441436
+                                            "@id": 1801827107
                                         },
                                         "value": "ball"
                                     },
@@ -125,14 +157,24 @@
                                         "@version": 1,
                                         "schemaProperty": {
                                             "@model": "schemaProperty",
-                                            "@id": 90932382
+                                            "@id": 1236445933
                                         },
-                                        "@id": 657931259,
+                                        "@id": 115202067,
                                         "justification": {
                                             "@model": "justification",
-                                            "descripteme_list": [],
+                                            "descripteme_list": [{
+                                                "startIndex": 158,
+                                                "@model": "descripteme",
+                                                "interviewText": {
+                                                    "@model": "interviewText",
+                                                    "@id": 2088225739
+                                                },
+                                                "endIndex": 183,
+                                                "@version": 1,
+                                                "@id": 1516313118
+                                            }],
                                             "@version": 1,
-                                            "@id": 1599879563
+                                            "@id": 1466511739
                                         },
                                         "value": "chest"
                                     },
@@ -141,19 +183,19 @@
                                         "@version": 1,
                                         "schemaProperty": {
                                             "@model": "schemaProperty",
-                                            "@id": 1309159775
+                                            "@id": 1207760911
                                         },
-                                        "@id": 1039629410,
+                                        "@id": 1367277526,
                                         "justification": {
                                             "@model": "justification",
                                             "descripteme_list": [],
                                             "@version": 1,
-                                            "@id": 1863464104
+                                            "@id": 398766705
                                         },
                                         "value": ""
                                     }
                                 ],
-                                "@id": 230180782,
+                                "@id": 2068585927,
                                 "justification": {
                                     "@model": "justification",
                                     "descripteme_list": [{
@@ -161,24 +203,24 @@
                                         "@model": "descripteme",
                                         "interviewText": {
                                             "@model": "interviewText",
-                                            "@id": 1466566836
+                                            "@id": 2088225739
                                         },
                                         "endIndex": 183,
                                         "@version": 1,
-                                        "@id": 909706407
+                                        "@id": 78910966
                                     }],
                                     "@version": 1,
-                                    "@id": 1594612102
+                                    "@id": 5265744
                                 },
                                 "schemaCategory": {
                                     "@model": "schemaCategory",
-                                    "@id": 1459852657
+                                    "@id": 1566208863
                                 }
                             }
                         ],
                         "@version": 1,
                         "name": "Tightening phase",
-                        "@id": 1109374364,
+                        "@id": 1091492092,
                         "justification": {
                             "@model": "justification",
                             "descripteme_list": [{
@@ -186,14 +228,14 @@
                                 "@model": "descripteme",
                                 "interviewText": {
                                     "@model": "interviewText",
-                                    "@id": 1466566836
+                                    "@id": 2088225739
                                 },
                                 "endIndex": 137,
                                 "@version": 1,
-                                "@id": 171529489
+                                "@id": 1192068152
                             }],
                             "@version": 1,
-                            "@id": 1491896123
+                            "@id": 1285770785
                         }
                     },
                     {
@@ -209,14 +251,14 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 1340628898
+                                        "@id": 16471637
                                     },
-                                    "@id": 1740055686,
+                                    "@id": 86090750,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [],
                                         "@version": 1,
-                                        "@id": 2114511641
+                                        "@id": 187677309
                                     },
                                     "value": "turtle-dove"
                                 },
@@ -225,19 +267,19 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 188702589
+                                        "@id": 166442109
                                     },
-                                    "@id": 1916760847,
+                                    "@id": 353032924,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [],
                                         "@version": 1,
-                                        "@id": 1311153674
+                                        "@id": 318645450
                                     },
                                     "value": "outside"
                                 }
                             ],
-                            "@id": 1230548067,
+                            "@id": 1206594078,
                             "justification": {
                                 "@model": "justification",
                                 "descripteme_list": [{
@@ -245,29 +287,29 @@
                                     "@model": "descripteme",
                                     "interviewText": {
                                         "@model": "interviewText",
-                                        "@id": 1466566836
+                                        "@id": 2088225739
                                     },
                                     "endIndex": 254,
                                     "@version": 1,
-                                    "@id": 175268293
+                                    "@id": 1022892047
                                 }],
                                 "@version": 1,
-                                "@id": 932279956
+                                "@id": 1963876264
                             },
                             "schemaCategory": {
                                 "@model": "schemaCategory",
-                                "@id": 1156403395
+                                "@id": 121874390
                             }
                         }],
                         "momentComment": "An outside event triggers the transition",
                         "@version": 1,
                         "name": "Transitional event",
-                        "@id": 1910776402,
+                        "@id": 2133982682,
                         "justification": {
                             "@model": "justification",
                             "descripteme_list": [],
                             "@version": 1,
-                            "@id": 1330302340
+                            "@id": 1632500142
                         }
                     },
                     {
@@ -283,9 +325,9 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 2043063322
+                                        "@id": 1203573301
                                     },
-                                    "@id": 308350562,
+                                    "@id": 347060042,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [{
@@ -293,14 +335,14 @@
                                             "@model": "descripteme",
                                             "interviewText": {
                                                 "@model": "interviewText",
-                                                "@id": 1466566836
+                                                "@id": 2088225739
                                             },
                                             "endIndex": 339,
                                             "@version": 1,
-                                            "@id": 1046943752
+                                            "@id": 402614252
                                         }],
                                         "@version": 1,
-                                        "@id": 718283884
+                                        "@id": 1873073031
                                     },
                                     "value": "Warm"
                                 },
@@ -309,14 +351,14 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 1960769999
+                                        "@id": 489602409
                                     },
-                                    "@id": 1853499153,
+                                    "@id": 685238094,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [],
                                         "@version": 1,
-                                        "@id": 805319284
+                                        "@id": 1365982141
                                     },
                                     "value": ""
                                 },
@@ -325,9 +367,9 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 90932382
+                                        "@id": 1236445933
                                     },
-                                    "@id": 705181704,
+                                    "@id": 949470013,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [{
@@ -335,14 +377,14 @@
                                             "@model": "descripteme",
                                             "interviewText": {
                                                 "@model": "interviewText",
-                                                "@id": 1466566836
+                                                "@id": 2088225739
                                             },
                                             "endIndex": 339,
                                             "@version": 1,
-                                            "@id": 298888717
+                                            "@id": 409298610
                                         }],
                                         "@version": 1,
-                                        "@id": 30444129
+                                        "@id": 1902511939
                                     },
                                     "value": "Body"
                                 },
@@ -351,9 +393,9 @@
                                     "@version": 1,
                                     "schemaProperty": {
                                         "@model": "schemaProperty",
-                                        "@id": 1309159775
+                                        "@id": 1207760911
                                     },
-                                    "@id": 1043163109,
+                                    "@id": 1721529270,
                                     "justification": {
                                         "@model": "justification",
                                         "descripteme_list": [{
@@ -361,38 +403,38 @@
                                             "@model": "descripteme",
                                             "interviewText": {
                                                 "@model": "interviewText",
-                                                "@id": 1466566836
+                                                "@id": 2088225739
                                             },
                                             "endIndex": 305,
                                             "@version": 1,
-                                            "@id": 931312626
+                                            "@id": 1012583405
                                         }],
                                         "@version": 1,
-                                        "@id": 261059014
+                                        "@id": 1847728651
                                     },
                                     "value": "Fluid"
                                 }
                             ],
-                            "@id": 543981663,
+                            "@id": 803020064,
                             "justification": {
                                 "@model": "justification",
                                 "descripteme_list": [],
                                 "@version": 1,
-                                "@id": 1514179734
+                                "@id": 1281795173
                             },
                             "schemaCategory": {
                                 "@model": "schemaCategory",
-                                "@id": 1459852657
+                                "@id": 1566208863
                             }
                         }],
                         "@version": 1,
                         "name": "Loosening phase",
-                        "@id": 275447900,
+                        "@id": 440949560,
                         "justification": {
                             "@model": "justification",
                             "descripteme_list": [],
                             "@version": 1,
-                            "@id": 700594531
+                            "@id": 1824716382
                         }
                     }
                 ],
@@ -401,7 +443,7 @@
                 "concreteCategory_list": [],
                 "@version": 1,
                 "name": "April morning",
-                "@id": 755107145,
+                "@id": 325063386,
                 "justification": {
                     "@model": "justification",
                     "descripteme_list": [{
@@ -409,38 +451,38 @@
                         "@model": "descripteme",
                         "interviewText": {
                             "@model": "interviewText",
-                            "@id": 1466566836
+                            "@id": 2088225739
                         },
                         "endIndex": 37,
                         "@version": 1,
-                        "@id": 565203425
+                        "@id": 93320983
                     }],
                     "@version": 1,
-                    "@id": 31869650
+                    "@id": 1409241661
                 }
             }],
             "@model": "rootMoment",
             "@version": 1,
-            "@id": 715822848
+            "@id": 945209042
         },
         "comment": "",
-        "@id": 1483163694,
+        "@id": 1558936793,
         "participantName": "demo"
     }],
     "@model": "project",
     "selectedInterview": {
         "@model": "interview",
-        "@id": 1483163694
+        "@id": 1558936793
     },
     "@version": 1,
     "name": "example",
-    "@id": 52249824,
+    "@id": 2024648829,
     "schemaTreeRoot": {
         "expanded": true,
         "@model": "schemaTreeRoot",
         "@version": 1,
         "name": "example",
-        "@id": 637907301,
+        "@id": 1418360501,
         "schemaFolder_list": [{
             "expanded": true,
             "@model": "schemaFolder",
@@ -456,33 +498,33 @@
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "temperature",
-                            "@id": 2043063322
+                            "@id": 1203573301
                         },
                         {
                             "expanded": true,
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "shape",
-                            "@id": 1960769999
+                            "@id": 489602409
                         },
                         {
                             "expanded": true,
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "location",
-                            "@id": 90932382
+                            "@id": 1236445933
                         },
                         {
                             "expanded": true,
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "density",
-                            "@id": 1309159775
+                            "@id": 1207760911
                         }
                     ],
                     "@version": 1,
                     "name": "Bodily Feeling",
-                    "@id": 1459852657
+                    "@id": 1566208863
                 },
                 {
                     "expanded": true,
@@ -492,14 +534,14 @@
                         "@model": "schemaProperty",
                         "@version": 1,
                         "name": "type",
-                        "@id": 24212458
+                        "@id": 5397500
                     }],
                     "@version": 1,
                     "name": "Emotion",
-                    "@id": 48427768
+                    "@id": 1761568383
                 }
             ],
-            "@id": 1388501560,
+            "@id": 289610572,
             "schemaFolder_list": [{
                 "expanded": true,
                 "@model": "schemaFolder",
@@ -514,21 +556,21 @@
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "source",
-                            "@id": 1340628898
+                            "@id": 16471637
                         },
                         {
                             "expanded": true,
                             "@model": "schemaProperty",
                             "@version": 1,
                             "name": "location",
-                            "@id": 188702589
+                            "@id": 166442109
                         }
                     ],
                     "@version": 1,
                     "name": "Auditory sensation",
-                    "@id": 1156403395
+                    "@id": 121874390
                 }],
-                "@id": 767441872,
+                "@id": 318297004,
                 "schemaFolder_list": []
             }]
         }]
