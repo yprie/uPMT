@@ -79,11 +79,6 @@ public class RichTextAreaController {
 
         // Initialize view annotation
         interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
-
-
-        area.caretPositionProperty().addListener(event -> {
-            System.out.println("caret position changed: " + area.caretPositionProperty().getValue());
-        });
     }
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {

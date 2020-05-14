@@ -1,9 +1,6 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
-import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
-import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
-import javafx.scene.Cursor;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;

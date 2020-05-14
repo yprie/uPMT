@@ -49,7 +49,6 @@ public class GlobalVariables {
     }
 
     public void setDescriptemeChanged(Descripteme descripteme) {
-        System.out.println("49 changed descripteme : " + descripteme);
         changedDescripteme.set(descripteme);
     }
     public ObservableObjectValue<Descripteme> getDescriptemeChangedProperty() {
