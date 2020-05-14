@@ -2,21 +2,11 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
-import javafx.scene.input.*;
-import javafx.scene.paint.Color;
-import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
-import models.ConcreteCategory;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
-import models.Moment;
-import models.SchemaCategory;
 import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,8 +18,15 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import models.ConcreteCategory;
+import models.Descripteme;
+import models.Moment;
+import models.SchemaCategory;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.dragAndDrop.DragStore;
@@ -49,11 +46,11 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ConcreteCategoryCommandFactory categoryCmdFactory;
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
-    private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
 
     @FXML private AnchorPane categoryDropper;
     @FXML private BorderPane momentContainer;
     @FXML private BorderPane momentBody;
+    @FXML private StackPane StackForJustification;
     @FXML private Label momentName;
     @FXML private Button btn;
     @FXML private MenuButton menuButton;
@@ -109,7 +106,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         commentArea.setText(moment.getComment());
 
         //Setup de la zone de DND des descriptemes
-        momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
+        StackForJustification.getChildren().add(JustificationController.createJustificationArea(justificationController));
         //Setup de la HBox pour les enfants
         momentsHBox = new ListView<>(
                 moment.momentsProperty(),
