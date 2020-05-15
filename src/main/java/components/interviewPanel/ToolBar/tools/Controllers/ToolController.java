@@ -5,7 +5,6 @@ import components.interviewPanel.ToolBar.tools.Tool;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,12 +39,12 @@ public abstract class ToolController extends Node {
     protected void initializeController() {
         label = new Label();
         vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
 
         String name = Configuration.langBundle.getString(this.name).substring(0, 1).toUpperCase() + Configuration.langBundle.getString(this.name).substring(1);
         label.setText(name);
         selectedProperty.addListener(change -> updateStyle());
         vbox.setOnMouseClicked(event -> {
+            System.out.println("vbox cliked " + name);
             if (!selectedProperty.get()) {
                 setIsSelected(true);
             }
@@ -56,7 +55,6 @@ public abstract class ToolController extends Node {
         vbox.getChildren().add(canvas);
         vbox.getChildren().add(label);
 
-        initializeGraphic();
         Platform.runLater(this::updateStyle);
     }
 
@@ -67,7 +65,6 @@ public abstract class ToolController extends Node {
         }
         else {
             label.setStyle("");
-            label.setText(label.getText().toLowerCase());
             initializeGraphic();
         }
     }
@@ -89,10 +86,8 @@ public abstract class ToolController extends Node {
     }
 
     abstract void initializeGraphic();
-
     void setSelectedGraphic() {
-        label.setText(label.getText().toUpperCase());
-        gc.setLineWidth(4);
+        gc.setLineWidth(3);
         gc.setStroke(Color.BLACK);
         gc.strokeLine(0, 0, 30, 0);
         gc.strokeLine(0, 20, 30, 20);
