@@ -2,10 +2,12 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Section;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -30,6 +32,8 @@ public abstract class SchemaTreeCellController implements Initializable {
     @FXML
     Label name;
 
+    @FXML Label complementaryInfo;
+
     AutoSuggestionsTextField renamingField;
 
     @FXML
@@ -41,9 +45,11 @@ public abstract class SchemaTreeCellController implements Initializable {
     protected SchemaTreePluggable element;
     private boolean renamingMode = false;
     private boolean shouldRemoveMenuButtonVisibility;
+    private SchemaTreeCommandFactory cmdFactory;
 
-    public SchemaTreeCellController(SchemaTreePluggable element) {
+    public SchemaTreeCellController(SchemaTreePluggable element, SchemaTreeCommandFactory cmdFactory) {
         this.element = element;
+        this.cmdFactory = cmdFactory;
     }
 
     protected abstract SuggestionStrategy getSuggestionStrategy();
@@ -53,7 +59,7 @@ public abstract class SchemaTreeCellController implements Initializable {
         pictureView.setImage(ResourceLoader.loadImage(element.getIconPath()));
 
         name.setText(element.nameProperty().get());
-        this.name.textProperty().bind(element.nameProperty());
+        name.textProperty().bind(element.nameProperty());
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
         renameButton.setOnAction(actionEvent -> {
@@ -89,8 +95,9 @@ public abstract class SchemaTreeCellController implements Initializable {
 
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
-                        if(renamingField.getLength() > 0)
-                            HistoryManager.addCommand(new RenameSchemaTreePluggable(element, renamingField.getText()), !element.mustBeRenamed());
+                        if(renamingField.getLength() > 0){
+                            cmdFactory.renameTreeElement(element, renamingField.getText());
+                        }
                         passInRenamingMode(false);
                     }
                 });

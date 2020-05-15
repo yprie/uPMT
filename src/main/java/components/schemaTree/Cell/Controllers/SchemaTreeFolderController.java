@@ -17,7 +17,7 @@ public class SchemaTreeFolderController extends SchemaTreeCellController {
     private SchemaTreeCommandFactory cmdFactory;
 
     public SchemaTreeFolderController(SchemaFolder folder, SchemaTreeCommandFactory cmdFactory) {
-        super(folder);
+        super(folder, cmdFactory);
         this.folder = folder;
         this.cmdFactory = cmdFactory;
     }

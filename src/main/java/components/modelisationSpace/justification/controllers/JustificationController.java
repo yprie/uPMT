@@ -26,8 +26,6 @@ public class JustificationController implements Initializable {
 
     //Graphics elements
     @FXML private VBox childrenBox;
-    /*@FXML private HBox descriptemeDndZone;
-    @FXML private ImageView descriptemeDndLogo;*/
 
 
     public JustificationController(Justification j) {
@@ -56,9 +54,6 @@ public class JustificationController implements Initializable {
                 JustificationCell::create,
                 childrenBox
         );
-
-        //Setting up drag and drop operation
-        setupDescriptemeDND();
     }
 
     public boolean acceptDescripteme(Descripteme d) {
@@ -67,41 +62,5 @@ public class JustificationController implements Initializable {
 
     public void addDescripteme(Descripteme d) {
         cmdFactory.addDescripteme(d).execute();
-    }
-
-    private void setupDescriptemeDND() {
-
-/*        descriptemeDndZone.setOnDragEntered(dragEvent -> {
-            if(
-                DragStore.getDraggable().isDraggable()
-                && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && justification.indexOf(DragStore.getDraggable()) == -1
-            ) {
-                descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
-            }
-        });*/
-
-        //First justification version
-       /* descriptemeDndZone.setOnDragOver(dragEvent -> {
-            if(
-                DragStore.getDraggable().isDraggable()
-                && DragStore.getDraggable().getDataFormat() == Descripteme.format
-                && justification.indexOf(DragStore.getDraggable()) == -1
-            ) {
-                descriptemeDndLogo.setImage(new Image("/images/addDescripteme.png"));
-                dragEvent.acceptTransferModes(TransferMode.MOVE);
-                dragEvent.consume();
-            }
-        });
-
-
-
-        descriptemeDndZone.setOnDragExited(dragEvent -> {
-            if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                descriptemeDndLogo.setImage(new Image("/images/addDescriptemeDisabled.png"));
-                dragEvent.consume();
-            }
-        });*/
-
     }
 }

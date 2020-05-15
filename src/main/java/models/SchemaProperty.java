@@ -13,9 +13,13 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
     public static final DataFormat format = new DataFormat("SchemaProperty");
     private SimpleBooleanProperty exists;
 
+    //Computed values, no need to store them
+    private SimpleIntegerProperty nbUsesInModelisation;
+
     public SchemaProperty(String name) {
         super(name);
         this.exists = new SimpleBooleanProperty(true);
+        this.nbUsesInModelisation = new SimpleIntegerProperty(0);
     }
 
     @Override
@@ -79,4 +83,6 @@ public class SchemaProperty extends SchemaElement implements IRemovable {
         return exists;
     }
 
+    public void setNumberOfUsesInModelisation(int nbUses) { this.nbUsesInModelisation.set(nbUses); }
+    public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
 }

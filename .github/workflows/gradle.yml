@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        java: [11, 13]
+        java: [11]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
@@ -34,5 +34,5 @@ jobs:
       - name: Upload runtime
         uses: actions/upload-artifact@v1
         with:
-          name: build-${{ runner.os }}-${{ matrix.java }}-runtime
+          name: uPMT-${{ runner.os }}-JAVA${{ matrix.java }}-runtime
           path: build/uPMT.zip

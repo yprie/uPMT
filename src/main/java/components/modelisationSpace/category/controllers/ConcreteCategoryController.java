@@ -1,7 +1,7 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
-import javafx.scene.Cursor;
+import javafx.geometry.Insets;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -54,7 +54,11 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         }
     };
 
-    public ConcreteCategoryController(ConcreteCategory c, ConcreteCategoryCommandFactory cmdFactory, ScrollPaneCommandFactory paneCommandFactory) {
+    public ConcreteCategoryController(
+            ConcreteCategory c,
+            ConcreteCategoryCommandFactory cmdFactory,
+            ScrollPaneCommandFactory paneCommandFactory
+    ) {
         this.category = c;
         this.cmdFactory = cmdFactory;
         this.paneCommandFactory = paneCommandFactory;
@@ -64,7 +68,9 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.textProperty().bind(category.nameProperty());
-        container.setCenter(JustificationController.createJustificationArea(justificationController));
+        VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
+        justif.setPadding(new Insets(0, 0, 0, 10));
+        container.setCenter(justif);
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
@@ -74,7 +80,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         properties = new ListView<>(
                 category.propertiesProperty(),
-                ConcretePropertyController::new,
+                (property) -> { return new ConcretePropertyController(cmdFactory.getHookNotifier(), property); },
                 ConcretePropertyController::create,
                 propertiesContainer
         );

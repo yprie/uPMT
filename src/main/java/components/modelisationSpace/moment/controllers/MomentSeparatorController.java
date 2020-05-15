@@ -48,7 +48,7 @@ public class MomentSeparatorController {
             if(
                 DragStore.getDraggable().isDraggable() && acceptDnDElementFormat() && active
             ) {
-                dragEvent.acceptTransferModes(TransferMode.MOVE);
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 dragEvent.consume();
             }
         });

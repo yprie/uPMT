@@ -68,7 +68,7 @@ public class ProjectExporter {
     }
 
     protected static String encodeValue(String value) {
-        return  value==null? "" : value + "\"";
+        return  value==null? "" : value;
     }
     private static void showExportResult(boolean succeed){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
