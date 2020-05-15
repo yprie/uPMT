@@ -74,6 +74,11 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private TextField renamingField;
 
+    private ChangeListener<Boolean>commentVisibleListener;
+    private ChangeListener<Boolean>commentFocusListener;
+    private ChangeListener<String>commentTextListener;
+    private ChangeListener<Boolean>momentEmphasizeListener;
+
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.cmdFactory = cmdFactory;
@@ -107,6 +112,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         commentArea.setVisible(moment.isCommentVisible());
         commentArea.managedProperty().bind(commentArea.visibleProperty());
         commentArea.setText(moment.getComment());
+
+        bind();
 
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
@@ -183,21 +190,24 @@ public class MomentController extends ListViewController<Moment> implements Init
                 }
             }
         });
+    }
+    public void bind(){
+        commentVisibleListener = (observableValue, oldValue, visible) -> {
+            moment.setCommentVisible(visible);
+        };
 
-        //comment
-        commentArea.visibleProperty().addListener((observableValue, aBoolean, t1) -> moment.setCommentVisible(t1));
         //Add the comment; When the moment has no comment the textArea disappears
-        commentArea.focusedProperty().addListener((observableValue, oldValue, focused) -> {
+        commentFocusListener = (observableValue, oldValue, focused) -> {
             if(!focused){
                 cmdFactory.addCommentCommand(moment, commentArea.getText()).execute();
                 if (commentArea.getText().isEmpty()){
                     commentArea.setVisible(false);
                 }
             }
-        });
+        };
 
         //in case of redo
-        moment.commentProperty().addListener((observableValue, oldValue, newValue) -> {
+        commentTextListener = (observableValue, oldValue, newValue) -> {
             if (!commentArea.isVisible() && !newValue.isEmpty()) {
                 commentArea.setVisible(true);
             }
@@ -206,19 +216,38 @@ public class MomentController extends ListViewController<Moment> implements Init
             if(newValue == null || newValue.isEmpty()){
                 commentArea.setVisible(false);
             }
-        });
-
+        };
 
         // Emphasize
-        moment.getEmphasizeProperty().addListener((observableValue, eventEventHandler, value) -> {
+        momentEmphasizeListener = (observableValue, eventEventHandler, value) -> {
             if(value) {
                 momentBody.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.MEDIUM)));
             }
             else {
                 momentBody.setBorder(null);
             }
-        });
+        };
+
+        commentArea.visibleProperty().addListener(commentVisibleListener);
+        commentArea.focusedProperty().addListener(commentFocusListener);
+        moment.commentProperty().addListener(commentTextListener);
+        moment.getEmphasizeProperty().addListener(momentEmphasizeListener);
+
     }
+
+
+    public void unbind(){
+        if (commentVisibleListener!=null)
+            commentArea.visibleProperty().removeListener(commentVisibleListener);
+        if (commentFocusListener!=null)
+            commentArea.focusedProperty().removeListener(commentFocusListener);
+        if (commentTextListener!=null)
+            moment.commentProperty().removeListener(commentTextListener);
+        if (momentEmphasizeListener!=null)
+            moment.getEmphasizeProperty().removeListener(momentEmphasizeListener);
+
+    }
+
     public void passInRenamingMode(boolean YoN) {
         if(YoN != renamingMode) {
             if(YoN){
@@ -277,6 +306,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     public void onUnmount() {
         momentsHBox.onUnmount();
         categories.onUnmount();
+        unbind();
     }
 
     private void updateBorders(int index, int siblingsCount) {
