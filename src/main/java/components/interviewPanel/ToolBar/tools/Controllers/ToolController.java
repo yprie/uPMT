@@ -57,7 +57,6 @@ public abstract class ToolController extends Node {
         vbox.getChildren().add(canvas);
         vbox.getChildren().add(label);
 
-        initializeGraphic();
         Platform.runLater(this::updateStyle);
     }
 
@@ -65,10 +64,12 @@ public abstract class ToolController extends Node {
         if (selectedProperty.get()) {
             label.setStyle("-fx-font-weight: bold");
             vbox.setStyle("-fx-border-color: black ; -fx-border-width: 1 ;");
+            SetGraphicsSelected();
         }
         else {
             label.setStyle("");
             vbox.setStyle("");
+            initializeGraphic();
         }
     }
 
@@ -89,4 +90,8 @@ public abstract class ToolController extends Node {
     }
 
     abstract void initializeGraphic();
+
+    protected void SetGraphicsSelected() {
+
+    }
 }

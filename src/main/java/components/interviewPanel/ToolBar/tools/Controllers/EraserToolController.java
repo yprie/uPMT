@@ -13,6 +13,15 @@ public class EraserToolController extends ToolController {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, 30, 20);
         gc.setStroke(Color.RED);
+        gc.setLineWidth(1);
+        gc.strokeLine(0, 20, 30, 0);
+    }
+
+    @Override
+    protected void SetGraphicsSelected() {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, 30, 20);
+        gc.setStroke(Color.RED);
         gc.setLineWidth(2);
         gc.strokeLine(0, 20, 30, 0);
     }
