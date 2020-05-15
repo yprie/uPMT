@@ -1,6 +1,7 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import javafx.geometry.Insets;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -67,7 +68,9 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.textProperty().bind(category.nameProperty());
-        container.setCenter(JustificationController.createJustificationArea(justificationController));
+        VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
+        justif.setPadding(new Insets(0, 0, 0, 10));
+        container.setCenter(justif);
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
