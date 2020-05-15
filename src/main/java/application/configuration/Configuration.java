@@ -1,6 +1,10 @@
 package application.configuration;
 
+import application.UPMTApp;
+
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -10,7 +14,8 @@ public class Configuration {
     private static String HOME_DIRECTORY = System.getProperty("user.home")+"/.upmt/";
     private static String properties_file = "upmt.properties";
     private static String projects_paths_file = "projects_paths";
-
+    private static String example_project_path = "example.upmt";
+    private static String example_project_in_jar = "/save/example.upmt";
 
     private static RecentFirstList<String> projects_paths;
     public static Locale locale;
@@ -143,5 +148,16 @@ public class Configuration {
             paths[i] = String.valueOf(projects_paths.get(i));
         }
         return paths;
+    }
+
+    public static void SetUpExampleProject(Class<? extends UPMTApp> app) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(app.getResourceAsStream(example_project_in_jar)));
+        StringBuilder builder = new StringBuilder();
+        int ch = 0;
+        while ((ch = reader.read()) != -1) {
+            builder.append((char) ch);
+        }
+        Files.write(Paths.get(HOME_DIRECTORY + example_project_path), builder.toString().getBytes());
+        addToProjects(HOME_DIRECTORY + example_project_path);
     }
 }

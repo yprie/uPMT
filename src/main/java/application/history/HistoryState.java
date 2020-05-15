@@ -84,15 +84,20 @@ public class HistoryState {
 
     private void executeSingleAction() {
         ModelUserActionCommand c = next.pop();
+        //System.out.println("ExecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
+        c.hooks().runHook(ModelUserActionCommandHooks.HookMoment.BeforeExecute);
         c.execute();
+        c.hooks().runHook(ModelUserActionCommandHooks.HookMoment.AfterExecute);
         previous.push(c);
         canGoBack.set(userMadeAnAction);
     }
 
     private void unexecuteSingleAction() {
         ModelUserActionCommand c = previous.pop();
-        System.out.println("unexecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
+        //System.out.println("unexecuteSingleAction" + " " + c + " " + c.getUserActionIdentifier());
+        c.hooks().runHook(ModelUserActionCommandHooks.HookMoment.BeforeUndo);
         c.undo();
+        c.hooks().runHook(ModelUserActionCommandHooks.HookMoment.AfterUndo);
         next.push(c);
         canGoForward.set(true);
     }

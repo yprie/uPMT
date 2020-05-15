@@ -21,8 +21,9 @@
         </HBox>
         <GridPane prefHeight="553.0" prefWidth="706.0" vgap="20.0">
             <columnConstraints>
+                <ColumnConstraints />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="564.0" minWidth="10.0" prefWidth="135.6" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="185.20000000000002" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="185.20000000000002" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="697.0" minWidth="10.0" prefWidth="290.80000000000007" />
             <ColumnConstraints />
             </columnConstraints>
@@ -30,9 +31,9 @@
                 <RowConstraints maxHeight="48.4" minHeight="10.0" prefHeight="48.4" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="48.79999999999999" minHeight="10.0" prefHeight="28.39999999999999" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="40.19999999999999" minHeight="10.0" prefHeight="28.80000000000001" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="91.19999999999999" minHeight="10.0" prefHeight="77.4" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="34.60000000000002" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="228.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="82.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
 
             </rowConstraints>
             <VBox.margin>
@@ -41,14 +42,14 @@
             <padding>
                 <Insets left="50.0" right="50.0" />
             </padding>
-            <Label id="nom" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="385.0" text="%name(ID)" textAlignment="RIGHT">
+            <Label id="nom" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="385.0" text="%name(ID)" textAlignment="RIGHT" GridPane.columnIndex="1">
                 <font>
                     <Font size="16.0" />
                 </font>
                 
             </Label>
 <!--            disable="true" editable="false"-->
-            <TextField fx:id="interviewTitle" disable="true" editable="false" prefHeight="34.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+            <TextField fx:id="interviewTitle" disable="true" editable="false" prefHeight="34.0" prefWidth="176.0" GridPane.columnIndex="2" GridPane.columnSpan="2">
                 <GridPane.margin>
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
@@ -56,69 +57,69 @@
                     <Font size="16.0" />
                 </font>
             </TextField>
-            <Label id="particip" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="151.0" text="%participants" textAlignment="RIGHT" GridPane.rowIndex="1">
+            <Label id="particip" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="151.0" text="%participants" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Label>
-            <TextField id="partiEnt" fx:id="participantName" onKeyReleased="#participantNameOnKeyReleased" prefHeight="30.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField id="partiEnt" fx:id="participantName" onKeyReleased="#participantNameOnKeyReleased" prefHeight="30.0" prefWidth="174.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                 <GridPane.margin>
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </TextField>
-            <Label id="dateEnt" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="164.0" text="%date" textAlignment="RIGHT" GridPane.rowIndex="2">
+            <Label id="dateEnt" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="164.0" text="%date" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Label>
-            <DatePicker id="date" fx:id="interviewDate" onAction="#interviewDateOnAction" onKeyReleased="#interviewDateOnKeyReleased" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <DatePicker id="date" fx:id="interviewDate" onAction="#interviewDateOnAction" onKeyReleased="#interviewDateOnKeyReleased" prefHeight="48.0" prefWidth="509.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                 <GridPane.margin>
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </DatePicker>
-            <Label id="addFile" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="160.0" text="%add_file" textAlignment="RIGHT" GridPane.rowIndex="4">
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="36.0" prefWidth="3000" text="%interview" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Label>
-             <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="142.0">
+             <HBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="142.0" GridPane.columnIndex="1">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
              </HBox>
-            <Label id="comm" alignment="TOP_RIGHT" prefHeight="87.0" prefWidth="142.0" text="%commentaire" textAlignment="RIGHT" GridPane.rowIndex="3">
+            <Label id="comm" alignment="TOP_RIGHT" prefHeight="87.0" prefWidth="142.0" text="%commentaire" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Label>
-            <TextArea id="commentaire" fx:id="interviewComment" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <TextArea id="commentaire" fx:id="interviewComment" prefHeight="73.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3">
                 <GridPane.margin>
                     <Insets left="20.0" right="20.0" />
                 </GridPane.margin>
             </TextArea>
-            <Label alignment="TOP_RIGHT" prefHeight="229.0" prefWidth="215.0" text="%interview" textAlignment="RIGHT" GridPane.rowIndex="5">
+            <!--<Label alignment="TOP_RIGHT" prefHeight="229.0" prefWidth="215.0" text="%interview" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
                 <font>
                     <Font size="16.0" />
                 </font>
-            </Label>
-              <Label fx:id="interviewTextExtract" prefHeight="48.0" prefWidth="136.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            </Label>-->
+              <Label fx:id="interviewTextExtract" prefHeight="48.0" prefWidth="136.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4">
                   <opaqueInsets>
                       <Insets left="10.0" />
                   </opaqueInsets>
               </Label>
-         <TextArea fx:id="textPreview" prefHeight="230.0" prefWidth="561.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+         <TextArea fx:id="textPreview" prefHeight="230.0" prefWidth="561.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
             <GridPane.margin>
                <Insets left="20.0" right="20.0" />
             </GridPane.margin></TextArea>
-         <Label prefHeight="75.0" prefWidth="283.0" text="Or paste below" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <Label prefHeight="75.0" prefWidth="283.0" text="%or_paste_below" GridPane.columnIndex="3" GridPane.rowIndex="4">
             <font>
                <Font size="14.0" />
             </font>
          </Label>
-              <Button id="btnSelectFile" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="32.0" prefWidth="106.0" styleClass="button-gray" stylesheets="/css/application.css" text="%select_file" GridPane.columnIndex="1" GridPane.rowIndex="4">
+              <Button id="btnSelectFile" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="32.0" prefWidth="106.0" styleClass="button-gray" stylesheets="/css/application.css" text="%select_file" GridPane.columnIndex="2" GridPane.rowIndex="4">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>

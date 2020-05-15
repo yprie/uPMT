@@ -191,6 +191,16 @@
     -fx-border-radius:3;
 }
 
+.momentComment{
+    -fx-control-inner-background:#F5F5F5;
+    -fx-border-color: transparent;
+        -fx-background-insets: 3px;
+        -fx-background-radius: 3;
+        -fx-border-radius:3;
+        -fx-text-inner-color: #696969;
+        -fx-font-size: 11;
+}
+
 /*.momentCard:hover {
     -fx-cursor: move;
 }*/
@@ -371,6 +381,7 @@ moment-no-left-padding {
     -fx-border-radius:3;
 	-fx-border-width: 1;
 	-fx-border-color: black;
+	-fx-background-color: white;
 }
 
 .button-tool-annotation:selected {

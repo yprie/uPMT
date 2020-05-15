@@ -8,10 +8,11 @@ on:
     branches:
       - master
       - dev
-      - ci          
+      - ci
   pull_request:
     branches:
       - dev
+      - master
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        java: [11, 13]
+        java: [11]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK
@@ -29,14 +30,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew -b build.gradle runtimeZip
+        run: ./gradlew runtimeZip
       - name: Upload runtime
         uses: actions/upload-artifact@v1
         with:
-          name: build-${{ runner.os }}-${{ matrix.java }}-runtime
+          name: uPMT-${{ runner.os }}-runtime
           path: build/uPMT.zip
-      - name: Upload jar
-        uses: actions/upload-artifact@v1
-        with:
-          name: build-${{ runner.os }}-${{ matrix.java }}-jar
-          path: build/libs/uPMT.jar

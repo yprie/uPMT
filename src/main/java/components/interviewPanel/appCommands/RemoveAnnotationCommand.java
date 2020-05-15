@@ -1,26 +1,25 @@
 package components.interviewPanel.appCommands;
 
+import application.history.HistoryManager;
 import components.interviewPanel.ModelCommands.RemoveAnnotation;
 import models.Annotation;
 import models.InterviewText;
 import utils.command.Executable;
 
 public class RemoveAnnotationCommand implements Executable<Void> {
-    private Annotation annotation;
-    private InterviewText interviewText;
+    private final Annotation annotation;
+    private final InterviewText interviewText;
+    private final boolean newModelUserActionCommand;
 
-    public RemoveAnnotationCommand(InterviewText i, Annotation a) {
+    public RemoveAnnotationCommand(InterviewText i, Annotation a, boolean newModelUserActionCommand) {
         interviewText = i;
         annotation = a;
+        this.newModelUserActionCommand = newModelUserActionCommand;
     }
 
     @Override
     public Void execute() {
-        RemoveAnnotation cmd = new RemoveAnnotation(interviewText, annotation);
-
-        //HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
-        cmd.execute();
-
+        HistoryManager.addCommand(new RemoveAnnotation(interviewText, annotation), newModelUserActionCommand);
         return null;
     }
 }

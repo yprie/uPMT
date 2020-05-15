@@ -2,7 +2,10 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import javafx.scene.Cursor;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import models.Descripteme;
@@ -25,11 +28,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import utils.autoSuggestion.AutoSuggestionsTextField;
@@ -51,6 +49,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ConcreteCategoryCommandFactory categoryCmdFactory;
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
+    private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
 
     @FXML private AnchorPane categoryDropper;
     @FXML private BorderPane momentContainer;
@@ -61,6 +60,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
     @FXML private AnchorPane momentBoundingBox;
+    @FXML private TextArea commentArea;
     @FXML HBox nameBox;
 
     //Importants elements of a moment
@@ -74,11 +74,16 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private TextField renamingField;
 
+    private ChangeListener<Boolean>commentVisibleListener;
+    private ChangeListener<Boolean>commentFocusListener;
+    private ChangeListener<String>commentTextListener;
+    private ChangeListener<Boolean>momentEmphasizeListener;
+
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
         this.cmdFactory = cmdFactory;
-        this.categoryCmdFactory = new ConcreteCategoryCommandFactory(moment);
-        this.childCmdFactory = new MomentCommandFactory(moment);
+        this.categoryCmdFactory = new ConcreteCategoryCommandFactory(cmdFactory.getHookNotifier(), moment);
+        this.childCmdFactory = new MomentCommandFactory(cmdFactory.getHookNotifier(), moment);
         this.paneCmdFactory = paneCmdFactory;
         this.justificationController = new JustificationController(m.getJustification());
 
@@ -104,6 +109,11 @@ public class MomentController extends ListViewController<Moment> implements Init
     public void initialize(URL url, ResourceBundle resourceBundle) {
         grid.add(separatorBottom.getNode(), 1, 1);
         momentName.textProperty().bind(moment.nameProperty());
+        commentArea.setVisible(moment.isCommentVisible());
+        commentArea.managedProperty().bind(commentArea.visibleProperty());
+        commentArea.setText(moment.getComment());
+
+        bind();
 
         //Setup de la zone de DND des descriptemes
         momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
@@ -149,6 +159,13 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
+        MenuItem commentButton = new MenuItem(Configuration.langBundle.getString("show_hide_comment"));
+        commentButton.setOnAction(actionEvent -> {
+            commentArea.setVisible(!commentArea.isVisible());
+            moment.setCommentVisible(commentArea.isVisible());
+        });
+        menuButton.getItems().add(commentButton);
+
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             cmdFactory.deleteCommand(moment).execute();
@@ -165,26 +182,72 @@ public class MomentController extends ListViewController<Moment> implements Init
         //DND
         setupDragAndDrop();
 
+        //Rename moment
         momentName.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    System.out.println("Double clicked");
                     passInRenamingMode(true);
                 }
             }
         });
+    }
+    public void bind(){
+        commentVisibleListener = (observableValue, oldValue, visible) -> {
+            moment.setCommentVisible(visible);
+        };
 
+        //Add the comment; When the moment has no comment the textArea disappears
+        commentFocusListener = (observableValue, oldValue, focused) -> {
+            if(!focused){
+                cmdFactory.addCommentCommand(moment, commentArea.getText()).execute();
+                if (commentArea.getText().isEmpty()){
+                    commentArea.setVisible(false);
+                }
+            }
+        };
+
+        //in case of redo
+        commentTextListener = (observableValue, oldValue, newValue) -> {
+            if (!commentArea.isVisible() && !newValue.isEmpty()) {
+                commentArea.setVisible(true);
+            }
+            commentArea.setText(newValue);
+            //delete comments
+            if(newValue == null || newValue.isEmpty()){
+                commentArea.setVisible(false);
+            }
+        };
 
         // Emphasize
-        moment.getEmphasizeProperty().addListener((observableValue, eventEventHandler, value) -> {
+        momentEmphasizeListener = (observableValue, eventEventHandler, value) -> {
             if(value) {
                 momentBody.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.MEDIUM)));
             }
             else {
                 momentBody.setBorder(null);
             }
-        });
+        };
+
+        commentArea.visibleProperty().addListener(commentVisibleListener);
+        commentArea.focusedProperty().addListener(commentFocusListener);
+        moment.commentProperty().addListener(commentTextListener);
+        moment.getEmphasizeProperty().addListener(momentEmphasizeListener);
+
     }
+
+
+    public void unbind(){
+        if (commentVisibleListener!=null)
+            commentArea.visibleProperty().removeListener(commentVisibleListener);
+        if (commentFocusListener!=null)
+            commentArea.focusedProperty().removeListener(commentFocusListener);
+        if (commentTextListener!=null)
+            moment.commentProperty().removeListener(commentTextListener);
+        if (momentEmphasizeListener!=null)
+            moment.getEmphasizeProperty().removeListener(momentEmphasizeListener);
+
+    }
+
     public void passInRenamingMode(boolean YoN) {
         if(YoN != renamingMode) {
             if(YoN){
@@ -243,6 +306,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     public void onUnmount() {
         momentsHBox.onUnmount();
         categories.onUnmount();
+        unbind();
     }
 
     private void updateBorders(int index, int siblingsCount) {
@@ -354,7 +418,7 @@ public class MomentController extends ListViewController<Moment> implements Init
                 dragEvent.consume();
             }
             else if(DragStore.getDraggable().getDataFormat() == SchemaCategory.format){
-                categoryCmdFactory.addConcreteCategoryCommand(new ConcreteCategory(DragStore.getDraggable()), true).execute();
+                categoryCmdFactory.addSchemaCategoryCommand(DragStore.getDraggable(), true).execute();
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
             }

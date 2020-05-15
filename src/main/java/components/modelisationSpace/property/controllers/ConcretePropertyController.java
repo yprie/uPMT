@@ -2,6 +2,9 @@ package components.modelisationSpace.property.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import application.history.ModelUserActionCommandHooks;
+import components.modelisationSpace.hooks.ModelisationSpaceHook;
+import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import models.Descripteme;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import models.ConcreteProperty;
@@ -31,6 +34,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
 
     private ConcreteProperty property;
     private JustificationController justificationController;
+    private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
 
     @FXML private BorderPane container;
     @FXML private Label name;
@@ -38,7 +42,8 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
     @FXML private HBox justificationZone;
     @FXML private HBox head;
 
-    public ConcretePropertyController(ConcreteProperty p) {
+    public ConcretePropertyController(ModelisationSpaceHookNotifier modelisationSpaceHookNotifier, ConcreteProperty p) {
+        this.modelisationSpaceHookNotifier = modelisationSpaceHookNotifier;
         property = p;
         justificationController = new JustificationController(property.getJustification());
     }
@@ -73,7 +78,12 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
             );
             //c.setStrategy();
             if(c.getState() == DialogState.SUCCESS){
-                HistoryManager.addCommand(new EditConcretePropertyValue(property, c.getValue()), true);
+                EditConcretePropertyValue cmd = new EditConcretePropertyValue(property, c.getValue());
+                String oldValue = property.getValue();
+                String newValue = c.getValue();
+                cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterExecute, () -> { modelisationSpaceHookNotifier.notifyConcretePropertyValueChanged(oldValue, property); });
+                cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterUndo, () -> { modelisationSpaceHookNotifier.notifyConcretePropertyValueChanged(newValue, property);});
+                HistoryManager.addCommand(cmd, true);
             }
         });
 

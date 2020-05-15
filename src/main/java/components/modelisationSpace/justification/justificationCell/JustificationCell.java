@@ -91,11 +91,18 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         //Duplicate shortcut
         text.setOnMouseClicked(mouseEvent -> {
             if(mouseEvent.isShiftDown()) {
-                if(mouseEvent.getButton() == MouseButton.PRIMARY)
-                    factory.duplicateDescripteme(descripteme).execute();
-                else if(mouseEvent.getButton() == MouseButton.SECONDARY)
+                if(mouseEvent.getButton() == MouseButton.SECONDARY || mouseEvent.isControlDown())
                     factory.removeDescripteme(descripteme).execute();
+                else if(mouseEvent.getButton() == MouseButton.PRIMARY)
+                    factory.duplicateDescripteme(descripteme).execute();
             }
+        });
+
+        text.setOnMouseEntered(event -> {
+            descripteme.setRevealed(true);
+        });
+        text.setOnMouseExited(event -> {
+            descripteme.setRevealed(false);
         });
 
         setupDnd();

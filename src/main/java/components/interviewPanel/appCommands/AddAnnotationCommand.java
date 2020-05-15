@@ -1,13 +1,14 @@
 package components.interviewPanel.appCommands;
 
+import application.history.HistoryManager;
 import components.interviewPanel.ModelCommands.AddAnnotation;
 import models.Annotation;
 import models.InterviewText;
 import utils.command.Executable;
 
 public class AddAnnotationCommand implements Executable<Void> {
-    private Annotation annotation;
-    private InterviewText interviewText;
+    private final Annotation annotation;
+    private final InterviewText interviewText;
 
     public AddAnnotationCommand(InterviewText i, Annotation a) {
         interviewText = i;
@@ -16,11 +17,8 @@ public class AddAnnotationCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        AddAnnotation cmd = new AddAnnotation(interviewText, annotation);
-
-        //HistoryManager.addCommand(cmd, true); // add cmd in history and execute cmd
-        cmd.execute();
-
+        Boolean newModelUserActionCommandExecuted = new EraseAnnotationCommand(interviewText, annotation.getIndexRange()).execute();
+        HistoryManager.addCommand(new AddAnnotation(interviewText, annotation), !newModelUserActionCommandExecuted);
         return null;
     }
 }

@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import models.*;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.function.BiFunction;
 
 public class GlobalVariables {
@@ -21,10 +21,10 @@ public class GlobalVariables {
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
 
 
-    private GlobalVariables() {} // private constructor
+    private GlobalVariables() {}
 
-    private void iterateOverSubMoment(Moment moment, ArrayList result, BiFunction<Moment, ArrayList, Void> computeMoment) {
-        for(Moment subMoment: moment.momentsProperty()) {
+    private void iterateOverSubMoment(Moment moment, HashSet result, BiFunction<Moment, HashSet, Void> computeMoment) {
+        for (Moment subMoment: moment.momentsProperty()) {
             computeMoment.apply(subMoment, result);
             iterateOverSubMoment(subMoment, result, computeMoment);
         }
@@ -49,15 +49,14 @@ public class GlobalVariables {
     }
 
     public void setDescriptemeChanged(Descripteme descripteme) {
-        System.out.println("49 changed descripteme : " + descripteme);
         changedDescripteme.set(descripteme);
     }
     public ObservableObjectValue<Descripteme> getDescriptemeChangedProperty() {
         return changedDescripteme;
     }
 
-    public ArrayList<Descripteme> getAllDescripteme() {
-        BiFunction<Moment, ArrayList, Void> computeMoment = (Moment moment, ArrayList result) -> {
+    public HashSet<Descripteme> getAllDescripteme() {
+        BiFunction<Moment, HashSet, Void> computeMoment = (Moment moment, HashSet result) -> {
             // Add the descriptems of the moment
             result.addAll(moment.getJustification().descriptemesProperty());
 
@@ -70,7 +69,7 @@ public class GlobalVariables {
             return null;
         };
 
-        ArrayList<Descripteme> result = new ArrayList<Descripteme>();
+        HashSet<Descripteme> result = new HashSet();
         for (Moment subMoment : rootMoment.momentsProperty()) {
             computeMoment.apply(subMoment, result);
             iterateOverSubMoment(subMoment, result, computeMoment);
@@ -78,8 +77,8 @@ public class GlobalVariables {
         return result;
     }
 
-    public ArrayList<Moment> getMomentsByDescripteme(Descripteme descripteme) {
-        BiFunction<Moment, ArrayList, Void> computeMoment = (Moment moment, ArrayList result) -> {
+    public HashSet<Moment> getMomentsByDescripteme(Descripteme descripteme) {
+        BiFunction<Moment, HashSet, Void> computeMoment = (Moment moment, HashSet result) -> {
             if(moment.getJustification().descriptemesProperty().contains(descripteme)) {
                 result.add(moment);
             }
@@ -95,7 +94,7 @@ public class GlobalVariables {
             }
             return null;
         };
-        ArrayList<Moment> result = new ArrayList();
+        HashSet<Moment> result = new HashSet();
         for (Moment subMoment : rootMoment.momentsProperty()) {
             computeMoment.apply(subMoment, result);
             iterateOverSubMoment(subMoment, result, computeMoment);

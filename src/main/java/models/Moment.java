@@ -1,9 +1,8 @@
 package models;
 
-import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
+import application.history.HistoryManager;
+import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,27 +22,34 @@ public class Moment extends RootMoment implements IDraggable {
 
     private ListProperty<ConcreteCategory> categories;
 
+    private SimpleStringProperty comment;
+    private SimpleBooleanProperty commentVisible;
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
         this.justification = new Justification();
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(false);
     }
 
-    public Moment(String name, Justification j) {
+    public Moment(String name, String comment, boolean commentVisible, Justification j) {
         super();
         this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
         this.justification = j;
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(commentVisible);
     }
 
     public Moment(String name, Descripteme d) {
         super();
         this.name = new SimpleStringProperty(name);
-
+        this.comment = new SimpleStringProperty();
         this.justification = new Justification();
         this.justification.addDescripteme(d);
-
+        this.commentVisible = new SimpleBooleanProperty(false);
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
@@ -53,12 +59,27 @@ public class Moment extends RootMoment implements IDraggable {
     public String getName() { return this.name.get(); }
     public ObservableValue<String> nameProperty() { return name; }
 
+    public String getComment() { return comment.get(); }
+
+    public SimpleStringProperty commentProperty() { return comment; }
+
+    public void setComment(String comment) { this.comment.set(comment); }
+
     public Justification getJustification() { return justification; }
+
+    public boolean isCommentVisible() { return commentVisible.get(); }
+
+    public SimpleBooleanProperty commentVisibleProperty(){
+        return commentVisible;
+    }
+
+    public void setCommentVisible(boolean commentVisible) { this.commentVisible.set(commentVisible); }
 
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);
         bindListener(cc);
     }
+
     public void addCategory(int index, ConcreteCategory cc) {
         if(index == categories.size()) {
             addCategory(cc);
@@ -93,8 +114,7 @@ public class Moment extends RootMoment implements IDraggable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
-                    new RemoveConcreteCategoryCommand(m, category, false).execute();
-                    System.out.println("removed");
+                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category), false);
                     category.existsProperty().removeListener(this);
                 }
             }
