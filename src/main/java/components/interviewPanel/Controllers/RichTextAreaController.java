@@ -19,6 +19,7 @@ import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static utils.GlobalVariables.getGlobalVariables;
@@ -29,7 +30,7 @@ public class RichTextAreaController {
     private final InterviewText interviewText;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
-    private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
+    private final HashSet<Moment> emphasizedMoments = new HashSet(); // used temporary when over a descripteme
     private ContextMenuFactory contextMenuFactory;
     private final List<AnnotationColor> annotationColorList;
 
@@ -138,7 +139,7 @@ public class RichTextAreaController {
             // emphasize descripteme in modeling space
             emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
             if (!emphasizedDescriptemes.isEmpty()) {
-                String message = emphasizedDescriptemes.size() + " descripteme(s)";
+                String message = emphasizedDescriptemes.size() + " descripteme(s): ";
                 popup.show(area, pos.getX(), pos.getY() + 10);
 
                 emphasizedMoments.clear();
@@ -149,7 +150,7 @@ public class RichTextAreaController {
                 for(Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(true);
                 }
-                message += " dans " + emphasizedMoments.size() + " moment(s)";
+                message += + emphasizedMoments.size() + " moment(s)";
 
                 popupMsg.setText(message);
                 popup.show(area, pos.getX(), pos.getY() + 10);
