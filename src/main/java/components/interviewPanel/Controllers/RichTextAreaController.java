@@ -191,12 +191,24 @@ public class RichTextAreaController {
                 }
             }
             ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
-            if (descriptemes.size() == 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
+            if (descriptemes.size() >= 1) {
+                int size = 1;
+                if (descriptemes.size() >= 2) {
+                    size = 2;
+                }
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: " + size + ";";
+                boolean isRevealed = false;
+                for (Descripteme descripteme: descriptemes) {
+                    if (descripteme.getRevealedProperty().get()) {
+                        isRevealed = true;
+                        break;
+                    }
+                }
+                if (isRevealed) {
+                    css += "-rtfx-border-stroke-dash-array: 5;-rtfx-border-stroke-color: black;-rtfx-border-stroke-width: 1;";
+                }
             }
-            else if (descriptemes.size() > 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
-            }
+
             area.setStyle(i, i+1, css);
         }
     }
@@ -229,6 +241,9 @@ public class RichTextAreaController {
             applyStyle(temp.getStartIndex(), temp.getEndIndex());
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         });
+        descripteme.getRevealedProperty().addListener((observable, oldValue, newValue) -> {
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
+        });
     }
 
     public void select(IndexRange selection) {
@@ -251,5 +266,9 @@ public class RichTextAreaController {
         else if (!area.getSelectedText().isEmpty()) {
             area.setContextMenu(contextMenuFactory.getContextMenuSelection(area.getSelection()));
         }
+    }
+
+    public void revealDescripteme(Descripteme descripteme) {
+
     }
 }

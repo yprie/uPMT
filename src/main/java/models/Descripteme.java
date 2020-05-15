@@ -1,5 +1,6 @@
 package models;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableObjectValue;
@@ -22,6 +23,8 @@ public class Descripteme extends Fragment {
     public static final DataFormat format = new DataFormat("Descripteme");
 
     private final SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
+
+    private SimpleBooleanProperty isRevealed = new SimpleBooleanProperty(false);
 
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
         super(interviewText, startIndex, endIndex);
@@ -68,5 +71,13 @@ public class Descripteme extends Fragment {
 
     public ObservableObjectValue<Descripteme> getDuplicatedDescriptemeProperty() {
         return duplicatedFormMeDescripteme;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.isRevealed.set(revealed);
+    }
+
+    public SimpleBooleanProperty getRevealedProperty() {
+        return isRevealed;
     }
 }
