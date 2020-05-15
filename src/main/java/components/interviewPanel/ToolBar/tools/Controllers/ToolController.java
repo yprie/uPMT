@@ -5,12 +5,13 @@ import components.interviewPanel.ToolBar.tools.Tool;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public abstract class ToolController extends Node {
     protected final String name;
@@ -39,12 +40,13 @@ public abstract class ToolController extends Node {
     protected void initializeController() {
         label = new Label();
         vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(3));
 
         String name = Configuration.langBundle.getString(this.name).substring(0, 1).toUpperCase() + Configuration.langBundle.getString(this.name).substring(1);
         label.setText(name);
         selectedProperty.addListener(change -> updateStyle());
         vbox.setOnMouseClicked(event -> {
-            System.out.println("vbox cliked " + name);
             if (!selectedProperty.get()) {
                 setIsSelected(true);
             }
@@ -61,10 +63,12 @@ public abstract class ToolController extends Node {
     protected void updateStyle() {
         if (selectedProperty.get()) {
             label.setStyle("-fx-font-weight: bold");
-            setSelectedGraphic();
+            vbox.setStyle("-fx-border-color: black ; -fx-border-width: 1 ;");
+            SetGraphicsSelected();
         }
         else {
             label.setStyle("");
+            vbox.setStyle("");
             initializeGraphic();
         }
     }
@@ -86,12 +90,8 @@ public abstract class ToolController extends Node {
     }
 
     abstract void initializeGraphic();
-    void setSelectedGraphic() {
-        gc.setLineWidth(3);
-        gc.setStroke(Color.BLACK);
-        gc.strokeLine(0, 0, 30, 0);
-        gc.strokeLine(0, 20, 30, 20);
-        gc.strokeLine(0, 0, 0, 20);
-        gc.strokeLine(30, 0, 30, 20);
+
+    protected void SetGraphicsSelected() {
+
     }
 }

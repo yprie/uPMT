@@ -14,6 +14,13 @@ public class SelectionToolController extends ToolController {
     void initializeGraphic() {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, 30, 20);
+        gc.drawImage(new Image("/images/cursor-select-2.png"), 0, 0, 30, 20);
+    }
+
+    @Override
+    protected void SetGraphicsSelected() {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, 30, 20);
         gc.drawImage(new Image("/images/cursor-select.png"), 0, 0, 30, 20);
     }
 }
