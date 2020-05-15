@@ -3,6 +3,8 @@ package components.interviewPanel.Controllers;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
@@ -17,6 +19,7 @@ import org.fxmisc.richtext.event.MouseOverTextEvent;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static utils.GlobalVariables.getGlobalVariables;
@@ -27,7 +30,7 @@ public class RichTextAreaController {
     private final InterviewText interviewText;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
-    private final ArrayList<Moment> emphasizedMoments = new ArrayList<>(); // used temporary when over a descripteme
+    private final HashSet<Moment> emphasizedMoments = new HashSet(); // used temporary when over a descripteme
     private ContextMenuFactory contextMenuFactory;
     private final List<AnnotationColor> annotationColorList;
 
@@ -62,10 +65,12 @@ public class RichTextAreaController {
         this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
             while (c.next()) {
                 for (Descripteme removed : c.getRemoved()) {
+                    bindDescripteme(removed, false);
                     applyStyle(removed.getStartIndex(), removed.getEndIndex());
                     area.deselect();
                 }
                 for (Descripteme added : c.getAddedSubList()) {
+                    bindDescripteme(added, true);
                     applyStyle(added.getStartIndex(), added.getEndIndex());
                     area.deselect();
                 }
@@ -134,7 +139,7 @@ public class RichTextAreaController {
             // emphasize descripteme in modeling space
             emphasizedDescriptemes = interviewText.getDescriptemesByIndex(event.getCharacterIndex());
             if (!emphasizedDescriptemes.isEmpty()) {
-                String message = emphasizedDescriptemes.size() + " descripteme(s)";
+                String message = emphasizedDescriptemes.size() + " descripteme(s): ";
                 popup.show(area, pos.getX(), pos.getY() + 10);
 
                 emphasizedMoments.clear();
@@ -145,7 +150,7 @@ public class RichTextAreaController {
                 for(Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(true);
                 }
-                message += " dans " + emphasizedMoments.size() + " moment(s)";
+                message += + emphasizedMoments.size() + " moment(s)";
 
                 popupMsg.setText(message);
                 popup.show(area, pos.getX(), pos.getY() + 10);
@@ -191,13 +196,64 @@ public class RichTextAreaController {
                 }
             }
             ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
-            if (descriptemes.size() == 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 1;";
+            if (descriptemes.size() >= 1) {
+                int size = 1;
+                if (descriptemes.size() >= 2) {
+                    size = 2;
+                }
+                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: " + size + ";";
+                boolean isRevealed = false;
+                for (Descripteme descripteme: descriptemes) {
+                    if (descripteme.getRevealedProperty().get()) {
+                        isRevealed = true;
+                        break;
+                    }
+                }
+                if (isRevealed) {
+                    css += "-rtfx-border-stroke-dash-array: 5;-rtfx-border-stroke-color: black;-rtfx-border-stroke-width: 1;";
+                }
             }
-            else if (descriptemes.size() > 1) {
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: 2;";
-            }
+
             area.setStyle(i, i+1, css);
+        }
+    }
+
+    private void bindDescripteme(Descripteme descripteme, boolean bind) {
+        ChangeListener listenerStartIndex = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // create a temporary descripteme with the shape of the previous descripteme...
+                Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
+                // ... in order to be able to delete the underline
+                applyStyle(temp.getStartIndex(), temp.getEndIndex());
+                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
+            }
+        };
+        ChangeListener listenerEndIndex = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // create a temporary descripteme with the shape avec the previous descripteme...
+                Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
+                // ... in order to be able to delete the underline
+                applyStyle(temp.getStartIndex(), temp.getEndIndex());
+                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
+            }
+        };
+        ChangeListener listenerRevealed = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
+            }
+        };
+        if (bind) {
+            descripteme.startIndexProperty().addListener(listenerStartIndex);
+            descripteme.endIndexProperty().addListener(listenerEndIndex);
+            descripteme.getRevealedProperty().addListener(listenerRevealed);
+        }
+        else {
+            descripteme.getRevealedProperty().removeListener(listenerStartIndex);
+            descripteme.getRevealedProperty().removeListener(listenerEndIndex);
+            descripteme.getRevealedProperty().removeListener(listenerRevealed);
         }
     }
 
@@ -215,20 +271,6 @@ public class RichTextAreaController {
 
     public void addDescripteme(Descripteme descripteme) {
         interviewText.addDescripteme(descripteme);
-        descripteme.startIndexProperty().addListener((observable, oldValue, newValue) -> {
-            // create a temporary descripteme with the shape of the previous descripteme...
-            Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
-            // ... in order to be able to delete the underline
-            applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
-        });
-        descripteme.endIndexProperty().addListener((observable, oldValue, newValue) -> {
-            // create a temporary descripteme with the shape avec the previous descripteme...
-            Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
-            // ... in order to be able to delete the underline
-            applyStyle(temp.getStartIndex(), temp.getEndIndex());
-            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
-        });
     }
 
     public void select(IndexRange selection) {
