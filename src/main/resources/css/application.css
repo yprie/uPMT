@@ -197,6 +197,8 @@
         -fx-background-insets: 3px;
         -fx-background-radius: 3;
         -fx-border-radius:3;
+        -fx-text-inner-color: #696969;
+        -fx-font-size: 11;
 }
 
 /*.momentCard:hover {
