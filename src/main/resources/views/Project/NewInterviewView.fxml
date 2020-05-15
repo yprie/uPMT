@@ -114,7 +114,7 @@
             <GridPane.margin>
                <Insets left="20.0" right="20.0" />
             </GridPane.margin></TextArea>
-         <Label prefHeight="75.0" prefWidth="283.0" text="Or paste below" GridPane.columnIndex="3" GridPane.rowIndex="4">
+         <Label prefHeight="75.0" prefWidth="283.0" text="%or_paste_below" GridPane.columnIndex="3" GridPane.rowIndex="4">
             <font>
                <Font size="14.0" />
             </font>
