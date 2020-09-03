@@ -30,7 +30,7 @@ public class RichTextAreaController {
     private final InterviewText interviewText;
     private final SimpleObjectProperty<IndexRange> userSelection;
     private ArrayList<Descripteme> emphasizedDescriptemes = new ArrayList<>(); // used temporary when over a descripteme
-    private final HashSet<Moment> emphasizedMoments = new HashSet(); // used temporary when over a descripteme
+    private final HashSet<Moment> emphasizedMoments = new HashSet<>(); // used temporary when over a descripteme
     private ContextMenuFactory contextMenuFactory;
     private final List<AnnotationColor> annotationColorList;
 
@@ -219,31 +219,28 @@ public class RichTextAreaController {
     }
 
     private void bindDescripteme(Descripteme descripteme, boolean bind) {
-        ChangeListener listenerStartIndex = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // create a temporary descripteme with the shape of the previous descripteme...
-                Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
-                // ... in order to be able to delete the underline
-                applyStyle(temp.getStartIndex(), temp.getEndIndex());
-                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
-            }
+        ChangeListener listenerStartIndex = (ChangeListener<Number>) (observable, oldValue, newValue) -> {
+            // create a temporary descripteme with the shape of the previous descripteme...
+            Descripteme temp = new Descripteme(interviewText, oldValue.intValue(), descripteme.getEndIndex());
+            // ... in order to be able to delete the underline
+            applyStyle(temp.getStartIndex(), temp.getEndIndex());
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
-        ChangeListener listenerEndIndex = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // create a temporary descripteme with the shape avec the previous descripteme...
-                Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
-                // ... in order to be able to delete the underline
-                applyStyle(temp.getStartIndex(), temp.getEndIndex());
-                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
-            }
+        ChangeListener listenerEndIndex = (ChangeListener<Number>) (observable, oldValue, newValue) -> {
+            // create a temporary descripteme with the shape avec the previous descripteme...
+            Descripteme temp = new Descripteme(interviewText, descripteme.getStartIndex(), oldValue.intValue());
+            // ... in order to be able to delete the underline
+            applyStyle(temp.getStartIndex(), temp.getEndIndex());
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
-        ChangeListener listenerRevealed = new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
+        ChangeListener listenerRevealed = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            if (descripteme.getRevealedProperty().getValue()) {
+                area.moveTo(descripteme.getStartIndex());
+                area.requestFollowCaret();
             }
+
+            // Surround the descripteme in the interview
+            applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
         if (bind) {
             descripteme.startIndexProperty().addListener(listenerStartIndex);
