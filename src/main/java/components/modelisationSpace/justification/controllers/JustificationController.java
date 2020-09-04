@@ -36,7 +36,9 @@ public class JustificationController implements Initializable {
     public static Node createJustificationArea(JustificationController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/modelisationSpace/Justification/Justification2.fxml"));
+            loader.setLocation(controller.getClass().getResource(
+                    "/views/modelisationSpace/Justification/Justification.fxml"
+            ));
             loader.setController(controller);
             loader.setResources(Configuration.langBundle);
             return loader.load();
