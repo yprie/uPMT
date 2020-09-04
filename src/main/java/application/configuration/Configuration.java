@@ -64,6 +64,9 @@ public class Configuration {
         Locale.setDefault(locale);
 
         langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
+
+        // Load App settings
+        AppSettings.autoScrollWhenReveal = properties.getProperty("autoScrollWhenReveal").equals("true");
     }
 
     private static void loadProjectsPath() throws IOException {
@@ -101,8 +104,10 @@ public class Configuration {
             if(!upmtProperties.createNewFile())
                 return false;
 
+            // Write the default values to the file
             Properties props = new Properties();
             props.setProperty("locale", Locale.ENGLISH.toString());
+            props.setProperty("autoScrollWhenReveal", "false");
             props.store(new FileOutputStream(upmtProperties), null);
         }
         return true;
@@ -128,17 +133,19 @@ public class Configuration {
         writer.close();
     }
 
-    private static boolean savePropertiesFile() throws IOException {
+    public static boolean savePropertiesFile() throws IOException {
         File upmtProperties = new File(HOME_DIRECTORY + properties_file);
-        //Create property file if not exists.
-        if(!upmtProperties.exists()){
-            if(!upmtProperties.createNewFile())
+        // Create property file if not exists.
+        if (!upmtProperties.exists()) {
+            if (!upmtProperties.createNewFile())
                 return false;
-
-            Properties props = new Properties();
-            props.setProperty("locale", langBundle.getLocale().toString());
-            props.store(new FileOutputStream(upmtProperties), null);
         }
+
+        Properties props = new Properties();
+        props.setProperty("locale", langBundle.getLocale().toString());
+        props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal));
+        props.store(new FileOutputStream(upmtProperties), null);
+
         return true;
     }
 

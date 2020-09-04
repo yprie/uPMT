@@ -1,5 +1,6 @@
 package components.interviewPanel.Controllers;
 
+import application.configuration.AppSettings;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -217,6 +218,11 @@ public class RichTextAreaController {
         }
     }
 
+    private void scrollToDescripteme(Descripteme descripteme) {
+        area.moveTo(descripteme.getStartIndex());
+        area.requestFollowCaret();
+    }
+
     private void bindDescripteme(Descripteme descripteme, boolean bind) {
         ChangeListener listenerStartIndex = (ChangeListener<Number>) (observable, oldValue, newValue) -> {
             // create a temporary descripteme with the shape of the previous descripteme...
@@ -233,14 +239,17 @@ public class RichTextAreaController {
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
         ChangeListener listenerRevealed = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            // Scroll the interview to reveal the descripteme
+            if (descripteme.getRevealedProperty().getValue() && AppSettings.autoScrollWhenReveal) {
+                scrollToDescripteme(descripteme);
+            }
             // Surround the descripteme in the interview
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
 
         ChangeListener listenerScrollToTrigger = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
             if (descripteme.getTriggerScrollReveal().getValue()) {
-                area.moveTo(descripteme.getStartIndex());
-                area.requestFollowCaret();
+                scrollToDescripteme(descripteme);
             }
             descripteme.setTriggerScrollReveal(false);
         };
