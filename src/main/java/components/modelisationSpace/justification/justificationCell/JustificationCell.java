@@ -32,9 +32,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
 
-    private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> {
-        updateToolTip();
-    };
+    private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> updateToolTip();
 
     public JustificationCell(Descripteme d, JustificationCommandFactory factory) {
         this.descripteme = d;
@@ -80,10 +78,12 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         menuButton.getItems().add(duplicateButton);
 
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        removeButton.setOnAction(actionEvent -> {
-            factory.removeDescripteme(descripteme).execute();
-        });
+        removeButton.setOnAction(actionEvent -> factory.removeDescripteme(descripteme).execute());
         menuButton.getItems().add(removeButton);
+
+        MenuItem revealButton = new MenuItem(Configuration.langBundle.getString("reveal"));
+        revealButton.setOnAction(actionEvent -> descripteme.setTriggerScrollReveal(true));
+        menuButton.getItems().add(revealButton);
 
         //Descripteme tooltip
         updateToolTip();
@@ -98,12 +98,8 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             }
         });
 
-        text.setOnMouseEntered(event -> {
-            descripteme.setRevealed(true);
-        });
-        text.setOnMouseExited(event -> {
-            descripteme.setRevealed(false);
-        });
+        text.setOnMouseEntered(event -> descripteme.setRevealed(true));
+        text.setOnMouseExited(event -> descripteme.setRevealed(false));
 
         setupDnd();
 

@@ -4,7 +4,6 @@ import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Point2D;
 import javafx.scene.control.IndexRange;
@@ -234,23 +233,30 @@ public class RichTextAreaController {
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
         ChangeListener listenerRevealed = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
-            if (descripteme.getRevealedProperty().getValue()) {
-                area.moveTo(descripteme.getStartIndex());
-                area.requestFollowCaret();
-            }
-
             // Surround the descripteme in the interview
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
+
+        ChangeListener listenerScrollToTrigger = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            if (descripteme.getTriggerScrollReveal().getValue()) {
+                area.moveTo(descripteme.getStartIndex());
+                area.requestFollowCaret();
+            }
+            descripteme.setTriggerScrollReveal(false);
+        };
+
+
         if (bind) {
             descripteme.startIndexProperty().addListener(listenerStartIndex);
             descripteme.endIndexProperty().addListener(listenerEndIndex);
             descripteme.getRevealedProperty().addListener(listenerRevealed);
+            descripteme.getTriggerScrollReveal().addListener(listenerScrollToTrigger);
         }
         else {
             descripteme.getRevealedProperty().removeListener(listenerStartIndex);
             descripteme.getRevealedProperty().removeListener(listenerEndIndex);
             descripteme.getRevealedProperty().removeListener(listenerRevealed);
+            descripteme.getTriggerScrollReveal().removeListener(listenerScrollToTrigger);
         }
     }
 
@@ -259,7 +265,7 @@ public class RichTextAreaController {
     }
 
     public VirtualizedScrollPane<InlineCssTextArea> getNode() {
-        return new VirtualizedScrollPane(area);
+        return new VirtualizedScrollPane<>(area);
     }
 
     public SimpleObjectProperty<IndexRange> getUserSelection() {

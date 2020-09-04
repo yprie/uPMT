@@ -22,9 +22,14 @@ public class Descripteme extends Fragment {
 
     public static final DataFormat format = new DataFormat("Descripteme");
 
-    private final SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
+    // this is the selection (getSelection), the substring of the interview text
+    private final SimpleStringProperty descripteme;
 
+    // Whether or not the descripteme is highlighted is the interview
     private SimpleBooleanProperty isRevealed = new SimpleBooleanProperty(false);
+
+    // When set to true, scroll the interview to the descripteme
+    private SimpleBooleanProperty triggerScrollReveal = new SimpleBooleanProperty(false);
 
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
         super(interviewText, startIndex, endIndex);
@@ -79,5 +84,13 @@ public class Descripteme extends Fragment {
 
     public SimpleBooleanProperty getRevealedProperty() {
         return isRevealed;
+    }
+
+    public void setTriggerScrollReveal(boolean triggerScrollReveal) {
+        this.triggerScrollReveal.set(triggerScrollReveal);
+    }
+
+    public SimpleBooleanProperty getTriggerScrollReveal() {
+        return triggerScrollReveal;
     }
 }
