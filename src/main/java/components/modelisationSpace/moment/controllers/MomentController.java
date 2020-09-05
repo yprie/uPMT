@@ -4,8 +4,9 @@ import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import models.Descripteme;
@@ -52,22 +53,25 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
 
     @FXML private AnchorPane categoryDropper;
+    @FXML private BorderPane childrenMomentContainer;
     @FXML private BorderPane momentContainer;
-    @FXML private BorderPane momentBody;
     @FXML private Label momentName;
-    @FXML private Button btn;
     @FXML private MenuButton menuButton;
     @FXML private HBox childrenBox;
     @FXML private VBox categoryContainer;
     @FXML private AnchorPane momentBoundingBox;
     @FXML private TextArea commentArea;
     @FXML HBox nameBox;
+    @FXML private Pane justificationPane;
+    @FXML private VBox momentBody;
+    @FXML private ImageView collapseIcon;
 
     //Importants elements of a moment
     private JustificationController justificationController;
     private ListView<Moment, MomentController> momentsHBox;
     private ListView<ConcreteCategory, ConcreteCategoryController> categories;
     private boolean renamingMode = false;
+    private boolean momentBodyVisible = true;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
@@ -115,27 +119,18 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         bind();
 
-        //Setup de la zone de DND des descriptemes
-        momentBody.setCenter(JustificationController.createJustificationArea(justificationController));
-        //Setup de la HBox pour les enfants
         momentsHBox = new ListView<>(
                 moment.momentsProperty(),
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment,
                 childrenBox);
         momentsHBox.setOnListUpdate(change -> {
-            if(change.getList().size() == 0)
-                separatorBottom.setActive(true);
-            else
-                separatorBottom.setActive(false);
+            separatorBottom.setActive(change.getList().size() == 0);
         });
 
-        categories = new ListView<>(
-                moment.concreteCategoriesProperty(),
-                (cc -> new ConcreteCategoryController(cc, categoryCmdFactory, paneCmdFactory)),
-                ConcreteCategoryController::create,
-                categoryContainer
-        );
+        addJustifications();
+
+        addCategories();
 
 
         //Listeners SETUP
@@ -178,6 +173,22 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
         menuButton.getItems().add(renameButton);
 
+        // Show/Hide moment body (comment, justifications, categories)
+        collapseIcon.setOnMouseClicked(actionEvent -> {
+            momentBodyVisible = !momentBodyVisible;
+            if (momentBodyVisible) {
+                momentBody.getChildren().add(commentArea);
+                momentBody.getChildren().add(justificationPane);
+                momentBody.getChildren().add(categoryContainer);
+                addCategories();
+                addJustifications();
+                collapseIcon.setImage(new Image("/images/collapse_up.png"));
+            } else {
+                collapseIcon.setImage(new Image("/images/collapse_down.png"));
+                momentBody.getChildren().clear();
+            }
+        });
+
 
         //DND
         setupDragAndDrop();
@@ -191,6 +202,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         });
     }
+
     public void bind(){
         commentVisibleListener = (observableValue, oldValue, visible) -> {
             moment.setCommentVisible(visible);
@@ -221,10 +233,10 @@ public class MomentController extends ListViewController<Moment> implements Init
         // Emphasize
         momentEmphasizeListener = (observableValue, eventEventHandler, value) -> {
             if(value) {
-                momentBody.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.MEDIUM)));
+                momentContainer.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.MEDIUM)));
             }
             else {
-                momentBody.setBorder(null);
+                momentContainer.setBorder(null);
             }
         };
 
@@ -246,6 +258,21 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (momentEmphasizeListener!=null)
             moment.getEmphasizeProperty().removeListener(momentEmphasizeListener);
 
+    }
+
+    private void addJustifications() {
+        justificationPane.getChildren().clear();
+        justificationPane.getChildren().add(JustificationController.createJustificationArea(justificationController));
+    }
+
+    private void addCategories() {
+        categoryContainer.getChildren().clear();
+        categories = new ListView<>(
+                moment.concreteCategoriesProperty(),
+                (cc -> new ConcreteCategoryController(cc, categoryCmdFactory, paneCmdFactory)),
+                ConcreteCategoryController::create,
+                categoryContainer
+        );
     }
 
     public void passInRenamingMode(boolean YoN) {
@@ -291,9 +318,9 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void onMount() {
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
-            (EventHandler<ActionEvent>) event -> {
-                paneCmdFactory.scrollToNode(momentContainer).execute();
-        }));
+                event -> {
+                    paneCmdFactory.scrollToNode(childrenMomentContainer).execute();
+            }));
         viewFocus.play();
     }
 
@@ -322,9 +349,9 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         if(index == 0) {
             //Hide an show the separators
-            if(grid.getChildren().indexOf(separatorLeft.getNode()) == -1)
+            if(!grid.getChildren().contains(separatorLeft.getNode()))
                 grid.add(separatorLeft.getNode(), 0, 0);
-            if(grid.getChildren().indexOf(separatorRight.getNode()) == -1)
+            if(!grid.getChildren().contains(separatorRight.getNode()))
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //set operation on descripteme DND over borders
@@ -343,14 +370,14 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
 
             //Make moment aligned, no need to understand that !
-            Insets ins = momentContainer.getPadding();
-            momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
+            Insets ins = childrenMomentContainer.getPadding();
+            childrenMomentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), ins.getRight()));
         }
         else {
             //Hide an show the separators
-            if(grid.getChildren().indexOf(separatorLeft.getNode()) != -1)
+            if(grid.getChildren().contains(separatorLeft.getNode()))
                 grid.getChildren().remove(separatorLeft.getNode());
-            if(grid.getChildren().indexOf(separatorRight.getNode()) == -1)
+            if(!grid.getChildren().contains(separatorRight.getNode()))
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //Do nothing with the left separator
@@ -369,14 +396,14 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
 
             //Make moment aligned, no need to understand that !
-            Insets ins = momentContainer.getPadding();
-            momentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
+            Insets ins = childrenMomentContainer.getPadding();
+            childrenMomentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
     }
 
     private void setupDragAndDrop() {
 
-        momentBody.setOnDragOver(dragEvent -> {
+        momentContainer.setOnDragOver(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
             if(DragStore.getDraggable().isDraggable()) {
                 //Descripteme
@@ -408,7 +435,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         });
 
-        momentBody.setOnDragDropped(dragEvent -> {
+        momentContainer.setOnDragDropped(dragEvent -> {
             if(
                 DragStore.getDraggable().getDataFormat() == Descripteme.format
                 && dragEvent.isAccepted()
@@ -429,28 +456,28 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         });
 
-        momentBody.setOnDragExited(dragEvent -> {
+        momentContainer.setOnDragExited(dragEvent -> {
             categoryDropper.setStyle("-fx-opacity: 1;");
         });
 
-        momentBody.setOnDragDetected(event -> {
+        momentContainer.setOnDragDetected(event -> {
             System.out.println(" moment drag detected");
-            Dragboard db = momentBody.startDragAndDrop(TransferMode.MOVE);
+            Dragboard db = momentContainer.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             content.put(moment.getDataFormat(), 0);
             DragStore.setDraggable(moment);
             DragStore.setDoubleObject(cmdFactory.getParentMoment()); //allows deleting the original one once drag is finished
             db.setContent(content);
 
-            momentBody.setOpacity(0.5);
+            momentContainer.setOpacity(0.5);
             separatorLeft.setActive(false);
             separatorRight.setActive(false);
             separatorBottom.setActive(false);
         });
 
-        momentBody.setOnDragDone(event -> {
+        momentContainer.setOnDragDone(event -> {
             event.consume();
-            momentBody.setOpacity(1);
+            momentContainer.setOpacity(1);
             separatorLeft.setActive(true);
             separatorRight.setActive(true);
             separatorBottom.setActive(true);

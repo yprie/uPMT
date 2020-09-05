@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="container" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <center>
-        <HBox alignment="TOP_LEFT" BorderPane.alignment="TOP_LEFT">
+        <HBox BorderPane.alignment="TOP_LEFT">
          <Label fx:id="text" minWidth="150.0" style="-fx-text-overrun: ellipsis;" text="Un exemple de descripteme">
             <font>
                <Font name="Arial Italic" size="12.0" />
@@ -23,14 +23,13 @@
 
     </center>
    <left>
-      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="TOP_CENTER">
-         <image>
-            <Image url="@../../../../images/hasExtractIconDisabled-2.png" />
-         </image>
-         <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-      </ImageView>
+       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
+                  BorderPane.alignment="TOP_CENTER">
+           <BorderPane.margin>
+               <Insets bottom="5.0" right="5.0" top="5.0"/>
+           </BorderPane.margin>
+           <Image url="@../../../../images/hasExtractIconDisabled-2.png"/>
+       </ImageView>
    </left>
    <right>
          <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../../css/application.css" BorderPane.alignment="TOP_CENTER">
