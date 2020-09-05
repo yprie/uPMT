@@ -241,7 +241,7 @@ public class RichTextAreaController {
         ChangeListener listenerRevealed = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
             // Scroll the interview to reveal the descripteme
             if (descripteme.getRevealedProperty().getValue() && AppSettings.autoScrollWhenReveal) {
-                scrollToDescripteme(descripteme);
+                //scrollToDescripteme(descripteme); // see https://github.com/Thykof/uPMT/pull/40/commits/3dac35eae43f3957746f46e9489cc7b3377b8d9e
             }
             // Surround the descripteme in the interview
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());

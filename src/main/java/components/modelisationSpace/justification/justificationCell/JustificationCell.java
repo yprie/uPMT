@@ -14,12 +14,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
+import org.fxmisc.richtext.event.MouseStationaryEvent;
+import org.fxmisc.richtext.event.MouseStationaryHelper;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
@@ -72,9 +75,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         menuButton.getItems().add(modifyButton);
 
         MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
-        duplicateButton.setOnAction(actionEvent -> {
-            factory.duplicateDescripteme(descripteme).execute();
-        });
+        duplicateButton.setOnAction(actionEvent -> factory.duplicateDescripteme(descripteme).execute());
         menuButton.getItems().add(duplicateButton);
 
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
@@ -99,6 +100,13 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         });
 
         text.setOnMouseEntered(event -> descripteme.setRevealed(true));
+
+        MouseStationaryHelper mouseStationaryHelper = new MouseStationaryHelper(text);
+        mouseStationaryHelper.install(Duration.ofMillis(500)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        text.addEventHandler(MouseStationaryEvent.MOUSE_STATIONARY_BEGIN, event -> {
+            descripteme.setTriggerScrollReveal(true);
+        });
+
         text.setOnMouseExited(event -> descripteme.setRevealed(false));
 
         setupDnd();
