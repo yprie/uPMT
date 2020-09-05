@@ -15,6 +15,22 @@ on:
       - master
 
 jobs:
+  create_release:
+    name: Create release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          prerelease: true
+
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -36,12 +52,12 @@ jobs:
         with:
           name: uPMT-${{ runner.os }}-runtime
           path: build/uPMT.zip
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Upload
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          prerelease: true
+          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          asset_path: build/uPMT.zip
+          asset_name: uPMT-${{ runner.os }}-runtime-${{ github.ref }}
+          asset_content_type: application/zip
