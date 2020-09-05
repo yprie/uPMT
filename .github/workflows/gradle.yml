@@ -27,8 +27,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: $(echo ${ github.sha } | cut -c1-8)
-          release_name: $(echo ${ github.sha } | cut -c1-8)
+          tag_name: $(echo ${{ github.sha }} | cut -c1-8)
+          release_name: $(echo ${{ github.sha }} | cut -c1-8)
           prerelease: true
 
   build:
