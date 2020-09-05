@@ -1,6 +1,7 @@
 package application.configuration;
 
 import application.UPMTApp;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -66,7 +67,21 @@ public class Configuration {
         langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
 
         // Load App settings
-        AppSettings.autoScrollWhenReveal = properties.getProperty("autoScrollWhenReveal").equals("true");
+        AppSettings.autoScrollWhenReveal = loadOneProperty(properties, "autoScrollWhenReveal").equals("true");
+
+    }
+
+    private static String loadOneProperty(Properties properties, String propertyName) {
+        String value = properties.getProperty(propertyName);
+        if (value != null) {
+            return value;
+        } else {
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                    "Invalid properties file. Please delete the file" + HOME_DIRECTORY + properties_file);
+            alert.showAndWait();
+            return "";
+        }
     }
 
     private static void loadProjectsPath() throws IOException {
