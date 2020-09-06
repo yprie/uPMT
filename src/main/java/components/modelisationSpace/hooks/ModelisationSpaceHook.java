@@ -3,7 +3,6 @@ package components.modelisationSpace.hooks;
 import models.ConcreteCategory;
 import models.ConcreteProperty;
 import models.Moment;
-import models.SchemaCategory;
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -17,8 +16,6 @@ public class ModelisationSpaceHook {
     ArrayList<Consumer<Moment>> onMomentRemovedListeners = new ArrayList<>();
 
     ArrayList<BiConsumer<String, ConcreteProperty>> onConcretePropertyValueChanged = new ArrayList<>();
-
-    public ModelisationSpaceHook() { }
 
     public void addOnConcreteCategoryAdded(Consumer<ConcreteCategory> consumer) {
         this.onConcreteCategoryAddedListeners.add(consumer);
@@ -34,11 +31,11 @@ public class ModelisationSpaceHook {
 
     public void addOnConcretePropertyValueChanged(BiConsumer<String, ConcreteProperty> consumer) { this.onConcretePropertyValueChanged.add(consumer); }
 
-    public void resetListeners() {
+    /*public void resetListeners() {
         onConcreteCategoryAddedListeners.clear();
         onConcreteCategoryRemovedListeners.clear();
         onMomentAddedListeners.clear();
         onMomentRemovedListeners.clear();
         onConcretePropertyValueChanged.clear();
-    }
+    }*/
 }

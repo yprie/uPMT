@@ -135,7 +135,6 @@ public class AutoSuggestionsTextField extends TextField {
         positionCaret(result.length());
         hide();
         Object selectedElement = suggestions.get(result);
-        System.out.println(selectedElement);
     }
 
     private void onEnter() {
