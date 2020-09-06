@@ -6,7 +6,6 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<?import javafx.scene.control.RadioMenuItem?>
 <BorderPane fx:id="rootLayout" prefHeight="572.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <top>
        <MenuBar BorderPane.alignment="CENTER">
@@ -27,7 +26,6 @@
            <Menu mnemonicParsing="false" text="%edit">
                <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
                <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>
-               <RadioMenuItem fx:id="scrollOnReveal" mnemonicParsing="false"  text="%scroll_on_reveal"/>
            </Menu>
            <Menu mnemonicParsing="false" text="%language">
                <MenuItem fx:id="anglais" mnemonicParsing="false" onAction="#openEnglishVersion" text="English"/>

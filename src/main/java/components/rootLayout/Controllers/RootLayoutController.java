@@ -65,7 +65,6 @@ public class RootLayoutController implements Initializable {
 
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
-	public @FXML RadioMenuItem scrollOnReveal;
 
 	public @FXML MenuItem espanol;
 	public @FXML MenuItem italiano;
@@ -324,11 +323,6 @@ public class RootLayoutController implements Initializable {
 			saveProject.setAccelerator(keyCombSAVE);
 			newInterview.setAccelerator(keyCombNEW);
 		}
-
-		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal);
-		scrollOnReveal.setOnAction((event -> {
-			appCommandFactory.SetAutoScrollWhenReveal(scrollOnReveal.isSelected()).execute();
-		}));
 
 		setupRecentProjectUpdate();
 		setProjectRelatedControlsDisable(true);

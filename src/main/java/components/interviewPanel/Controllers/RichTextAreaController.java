@@ -1,6 +1,5 @@
 package components.interviewPanel.Controllers;
 
-import application.configuration.AppSettings;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -239,15 +238,12 @@ public class RichTextAreaController {
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
         ChangeListener listenerRevealed = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
-            // Scroll the interview to reveal the descripteme
-            if (descripteme.getRevealedProperty().getValue() && AppSettings.autoScrollWhenReveal) {
-                //scrollToDescripteme(descripteme); // see https://github.com/Thykof/uPMT/pull/40/commits/3dac35eae43f3957746f46e9489cc7b3377b8d9e
-            }
             // Surround the descripteme in the interview
             applyStyle(descripteme.getStartIndex(), descripteme.getEndIndex());
         };
 
         ChangeListener listenerScrollToTrigger = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            // Scroll the interview to reveal the descripteme
             if (descripteme.getTriggerScrollReveal().getValue()) {
                 scrollToDescripteme(descripteme);
             }
