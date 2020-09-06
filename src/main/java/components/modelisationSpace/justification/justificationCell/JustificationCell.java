@@ -1,5 +1,6 @@
 package components.modelisationSpace.justification.justificationCell;
 
+import application.configuration.AppSettings;
 import application.configuration.Configuration;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -102,7 +103,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         text.setOnMouseEntered(event -> descripteme.setRevealed(true));
 
         MouseStationaryHelper mouseStationaryHelper = new MouseStationaryHelper(text);
-        mouseStationaryHelper.install(Duration.ofMillis(500)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
         text.addEventHandler(MouseStationaryEvent.MOUSE_STATIONARY_BEGIN, event -> {
             descripteme.setTriggerScrollReveal(true);
         });

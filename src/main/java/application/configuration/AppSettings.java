@@ -4,4 +4,5 @@ package application.configuration;
 // Theses settings are stored in the property file. See `Configuration.savePropertiesFile()`.
 public class AppSettings {
     public static boolean autoScrollWhenReveal;
+    public static int delayRevealDescripteme;
 }

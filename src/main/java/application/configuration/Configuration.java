@@ -10,6 +10,8 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import static java.lang.Integer.*;
+
 public class Configuration {
 
     private static String HOME_DIRECTORY = System.getProperty("user.home")+"/.upmt/";
@@ -68,7 +70,8 @@ public class Configuration {
 
         // Load App settings
         AppSettings.autoScrollWhenReveal = loadOneProperty(properties, "autoScrollWhenReveal").equals("true");
-
+        String delayRevealDescriptemeString = loadOneProperty(properties, "delayRevealDescripteme");
+        AppSettings.delayRevealDescripteme = parseInt(delayRevealDescriptemeString);
     }
 
     private static String loadOneProperty(Properties properties, String propertyName) {
@@ -123,6 +126,7 @@ public class Configuration {
             Properties props = new Properties();
             props.setProperty("locale", Locale.ENGLISH.toString());
             props.setProperty("autoScrollWhenReveal", "false");
+            props.setProperty("delayRevealDescripteme", "500");
             props.store(new FileOutputStream(upmtProperties), null);
         }
         return true;
@@ -159,6 +163,7 @@ public class Configuration {
         Properties props = new Properties();
         props.setProperty("locale", langBundle.getLocale().toString());
         props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal));
+        props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.autoScrollWhenReveal));
         props.store(new FileOutputStream(upmtProperties), null);
 
         return true;
