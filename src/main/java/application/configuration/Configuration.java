@@ -163,7 +163,7 @@ public class Configuration {
         Properties props = new Properties();
         props.setProperty("locale", langBundle.getLocale().toString());
         props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal));
-        props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.autoScrollWhenReveal));
+        props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.delayRevealDescripteme));
         props.store(new FileOutputStream(upmtProperties), null);
 
         return true;
