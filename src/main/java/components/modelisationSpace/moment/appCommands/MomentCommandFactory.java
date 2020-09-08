@@ -5,6 +5,7 @@ import models.ConcreteCategory;
 import models.Moment;
 import models.RootMoment;
 import models.SchemaCategory;
+import models.Descripteme;
 
 public class MomentCommandFactory {
 
@@ -52,4 +53,12 @@ public class MomentCommandFactory {
         return parent;
     }
     public ModelisationSpaceHookNotifier getHookNotifier() { return hookNotifier; }
+
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, Descripteme descripteme) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, descripteme);
+    }
+
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, Descripteme descripteme, int index) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, descripteme, index);
+    }
 }
