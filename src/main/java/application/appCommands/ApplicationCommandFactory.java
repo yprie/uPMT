@@ -26,4 +26,5 @@ public class ApplicationCommandFactory {
     public ProjectSavingStatusChangedCommand projectSavingStatusChanged() { return new ProjectSavingStatusChangedCommand(application); }
     public AddInterviewCommand addInterview(Interview interview) { return new AddInterviewCommand(application.getCurrentProject(), interview); }
     public ExportToCSVCommand exportToCSV() {return new ExportToCSVCommand(application);}
+    public SetAutoScrollWhenRevealCommand SetAutoScrollWhenReveal(boolean autoScrollWhenReveal) {return new SetAutoScrollWhenRevealCommand(application, autoScrollWhenReveal);}
 }
