@@ -15,7 +15,7 @@ on:
       - master
 
 jobs:
-  create_release:
+  create_release_job:
     name: Create release
     runs-on: ubuntu-latest
     outputs:
@@ -25,7 +25,7 @@ jobs:
         id: tag_name_step
         run: echo ::set-output name=tag_name::$(echo ${GITHUB_SHA} | cut -c1-8)
       - name: Create release
-        id: create_release
+        id: create_release_step
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +35,7 @@ jobs:
           prerelease: true
       - name: Output Release URL File
         id: upload_url_out
-        run: echo ::set-output name=upload_url::${{ steps.create_release.outputs.upload_url }}
+        run: echo ::set-output name=upload_url::${{ steps.create_release_step.outputs.upload_url }}
 
   build:
     runs-on: ${{ matrix.os }}
@@ -63,7 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.create_release_job.outputs.upload_url }}
           asset_path: build/uPMT.zip
           asset_name: uPMT-${{ runner.os }}-${{ github.sha }}
           asset_content_type: application/zip
