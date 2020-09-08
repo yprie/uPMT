@@ -17,7 +17,7 @@ public class SetAutoScrollWhenRevealCommand extends ApplicationCommand<Void> {
 
     @Override
     public Void execute() {
-        AppSettings.autoScrollWhenReveal = this.newAutoScrollWhenReveal;
+        AppSettings.autoScrollWhenReveal.set(this.newAutoScrollWhenReveal);
         try {
             Configuration.savePropertiesFile();
         } catch (IOException e) {

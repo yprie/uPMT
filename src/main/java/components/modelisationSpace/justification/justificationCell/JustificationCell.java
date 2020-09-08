@@ -36,7 +36,20 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
 
+    private MenuItem revealButton;
+    MouseStationaryHelper mouseStationaryHelper;
+
     private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> updateToolTip();
+
+    private ChangeListener autoScrollWhenRevealListener = (observableValue, oldValue, newValue) -> {
+        if (AppSettings.autoScrollWhenReveal.get()) {
+            mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        } else {
+            mouseStationaryHelper.uninstall();
+        }
+
+        revealButton.setVisible(!AppSettings.autoScrollWhenReveal.get());
+    };
 
     public JustificationCell(Descripteme d, JustificationCommandFactory factory) {
         this.descripteme = d;
@@ -83,8 +96,9 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         removeButton.setOnAction(actionEvent -> factory.removeDescripteme(descripteme).execute());
         menuButton.getItems().add(removeButton);
 
-        MenuItem revealButton = new MenuItem(Configuration.langBundle.getString("reveal"));
+        revealButton = new MenuItem(Configuration.langBundle.getString("reveal"));
         revealButton.setOnAction(actionEvent -> descripteme.setTriggerScrollReveal(true));
+        revealButton.setVisible(!AppSettings.autoScrollWhenReveal.get());
         menuButton.getItems().add(revealButton);
 
         //Descripteme tooltip
@@ -102,11 +116,13 @@ public class JustificationCell extends ListViewController<Descripteme> implement
 
         text.setOnMouseEntered(event -> descripteme.setRevealed(true));
 
-        MouseStationaryHelper mouseStationaryHelper = new MouseStationaryHelper(text);
-        mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
         text.addEventHandler(MouseStationaryEvent.MOUSE_STATIONARY_BEGIN, event -> {
             descripteme.setTriggerScrollReveal(true);
         });
+        mouseStationaryHelper = new MouseStationaryHelper(text);
+        if (AppSettings.autoScrollWhenReveal.get()) {
+            mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        }
 
         text.setOnMouseExited(event -> descripteme.setRevealed(false));
 
@@ -156,6 +172,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @Override
     public void onMount() {
         descripteme.getSelectionProperty().addListener(onDescriptemeChange);
+        AppSettings.autoScrollWhenReveal.addListener(autoScrollWhenRevealListener);
     }
 
     @Override
@@ -166,6 +183,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @Override
     public void onUnmount() {
         descripteme.getSelectionProperty().removeListener(onDescriptemeChange);
+        AppSettings.autoScrollWhenReveal.removeListener(autoScrollWhenRevealListener);
     }
 
     /*

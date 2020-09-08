@@ -69,7 +69,7 @@ public class Configuration {
         langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
 
         // Load App settings
-        AppSettings.autoScrollWhenReveal = loadOneProperty(properties, "autoScrollWhenReveal").equals("true");
+        AppSettings.autoScrollWhenReveal.set(loadOneProperty(properties, "autoScrollWhenReveal").equals("true"));
         String delayRevealDescriptemeString = loadOneProperty(properties, "delayRevealDescripteme");
         AppSettings.delayRevealDescripteme = parseInt(delayRevealDescriptemeString);
     }
@@ -162,7 +162,7 @@ public class Configuration {
 
         Properties props = new Properties();
         props.setProperty("locale", langBundle.getLocale().toString());
-        props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal));
+        props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal.get()));
         props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.delayRevealDescripteme));
         props.store(new FileOutputStream(upmtProperties), null);
 

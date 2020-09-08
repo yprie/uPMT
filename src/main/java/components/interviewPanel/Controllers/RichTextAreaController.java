@@ -244,7 +244,7 @@ public class RichTextAreaController {
         };
 
         ChangeListener listenerScrollToTrigger = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
-            if (descripteme.getTriggerScrollReveal().getValue() && AppSettings.autoScrollWhenReveal) {
+            if (descripteme.getTriggerScrollReveal().getValue()) {
                 scrollToDescripteme(descripteme);
             }
             descripteme.setTriggerScrollReveal(false);

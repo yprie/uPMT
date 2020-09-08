@@ -325,7 +325,7 @@ public class RootLayoutController implements Initializable {
 			newInterview.setAccelerator(keyCombNEW);
 		}
 
-		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal);
+		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal.get());
 		scrollOnReveal.setOnAction((event -> {
 			appCommandFactory.SetAutoScrollWhenReveal(scrollOnReveal.isSelected()).execute();
 		}));
