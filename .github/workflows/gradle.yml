@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set tag var
-        id: vars
+        id: tag_name_step
         run: echo ::set-output name=tag_name::$(echo ${GITHUB_SHA} | cut -c1-8)
       - name: Create release
         id: create_release
@@ -28,16 +28,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.vars.outputs.tag_name }}
-          release_name: Pre-Release ${{ steps.vars.outputs.tag_name }}
+          tag_name: ${{ steps.tag_name_step.outputs.tag_name }}
+          release_name: Pre-Release ${{ steps.tag_name_step.outputs.tag_name }}
           prerelease: true
       - name: Output Release URL File
-        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
-      - name: Save Release URL File for publish
-        uses: actions/upload-artifact@v1
-        with:
-          name: release_url
-          path: release_url.txt
+        id: release_url_step
+        run: echo ::set-output name=release_url::${{ steps.create_release.outputs.upload_url }}
 
   build:
     runs-on: ${{ matrix.os }}
@@ -64,11 +60,6 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: release_url
-      - name: Get Release Upload URL
-        id: get_release_info
-        run: |
-          value=`cat release_url/release_url.txt`
-          echo ::set-output name=upload_url::$value
       - name: Upload
         uses: actions/upload-release-asset@v1
         env:
