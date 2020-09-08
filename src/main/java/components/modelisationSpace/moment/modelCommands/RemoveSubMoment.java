@@ -20,14 +20,28 @@ public class RemoveSubMoment extends ModelUserActionCommand {
     public Void execute() {
         oldIndex = parent.indexOf(moment);
         parent.removeMoment(moment);
+        moment.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().removeDescripteme(descripteme);
+        });
+        moment.momentsProperty().forEach(subMoment -> {
+            subMoment.getJustification().descriptemesProperty().forEach(descripteme -> {
+                descripteme.getInterviewText().removeDescripteme(descripteme);
+            });
+        });
         return null;
     }
 
     @Override
     public Void undo() {
         parent.addMoment(oldIndex, moment);
+        moment.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().addDescripteme(descripteme);
+        });
+        moment.momentsProperty().forEach(subMoment -> {
+            subMoment.getJustification().descriptemesProperty().forEach(descripteme -> {
+                descripteme.getInterviewText().addDescripteme(descripteme);
+            });
+        });
         return null;
     }
-
-
 }

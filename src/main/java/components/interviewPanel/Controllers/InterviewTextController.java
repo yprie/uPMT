@@ -145,7 +145,6 @@ public class InterviewTextController implements Initializable {
 
         paneDragText.setOnDragDone(event -> {
             if (event.isAccepted()) {
-                richTextAreaController.addDescripteme(DragStore.getDraggable());
                 hideDnDPane();
             }
         });

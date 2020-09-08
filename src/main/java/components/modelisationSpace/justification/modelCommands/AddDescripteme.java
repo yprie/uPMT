@@ -27,12 +27,14 @@ public class AddDescripteme extends ModelUserActionCommand<Void, Void> {
             this.justification.addDescripteme(descripteme);
         else
             this.justification.addDescripteme(descripteme, index);
+        this.descripteme.getInterviewText().addDescripteme(descripteme);
         return null;
     }
 
     @Override
     public Void undo() {
         this.justification.removeDescripteme(descripteme);
+        this.descripteme.getInterviewText().removeDescripteme(descripteme);
         return null;
     }
 }

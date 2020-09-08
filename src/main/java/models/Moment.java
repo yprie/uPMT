@@ -15,7 +15,7 @@ import java.util.LinkedList;
 public class Moment extends RootMoment implements IDraggable {
 
     public static final DataFormat format = new DataFormat("Moment");
-    public static final Integer maxMomentNameLength = 40;
+    //public static final Integer maxMomentNameLength = 40;
 
     private SimpleStringProperty name;
     private Justification justification;
@@ -48,7 +48,6 @@ public class Moment extends RootMoment implements IDraggable {
         this.name = new SimpleStringProperty(name);
         this.comment = new SimpleStringProperty();
         this.justification = new Justification();
-        this.justification.addDescripteme(d);
         this.commentVisible = new SimpleBooleanProperty(false);
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
@@ -110,7 +109,7 @@ public class Moment extends RootMoment implements IDraggable {
 
     private void bindListener(ConcreteCategory category) {
         Moment m = this;
-        category.existsProperty().addListener(new ChangeListener<Boolean>() {
+        category.existsProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
@@ -123,9 +122,10 @@ public class Moment extends RootMoment implements IDraggable {
 
     public boolean hadThisCategory(ConcreteCategory category) {
         boolean had = false;
-        for(int i = 0; i < categories.size(); i++) {
-            if (category.getSchemaCategory() == categories.get(i).getSchemaCategory()) {
+        for (ConcreteCategory concreteCategory : categories) {
+            if (category.getSchemaCategory() == concreteCategory.getSchemaCategory()) {
                 had = true;
+                break;
             }
         }
         return had;

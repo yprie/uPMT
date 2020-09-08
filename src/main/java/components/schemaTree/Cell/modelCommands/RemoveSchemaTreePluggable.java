@@ -17,7 +17,6 @@ public class RemoveSchemaTreePluggable<E extends SchemaTreePluggable&IRemovable>
 
     @Override
     public Void execute() {
-        System.out.println("Removed : " + element.getDataFormat());
         element_index = parent.getChildIndex(element);
         parent.removeChild(element);
         element.setExists(false);

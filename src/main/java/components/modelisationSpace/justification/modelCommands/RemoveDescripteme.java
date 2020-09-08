@@ -20,6 +20,7 @@ public class RemoveDescripteme extends ModelUserActionCommand<Void, Void> {
     public Void execute() {
         index = this.justification.indexOf(descripteme);
         this.justification.removeDescripteme(descripteme);
+        this.descripteme.getInterviewText().removeDescripteme(descripteme);
         GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }
@@ -27,6 +28,7 @@ public class RemoveDescripteme extends ModelUserActionCommand<Void, Void> {
     @Override
     public Void undo() {
         this.justification.addDescripteme(descripteme, index);
+        this.descripteme.getInterviewText().addDescripteme(descripteme);
         GlobalVariables.getGlobalVariables().setDescriptemeChanged(descripteme);
         return null;
     }

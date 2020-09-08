@@ -124,9 +124,8 @@ public class MomentController extends ListViewController<Moment> implements Init
                 (m -> new MomentController(m, childCmdFactory, paneCmdFactory)),
                 MomentController::createMoment,
                 childrenBox);
-        momentsHBox.setOnListUpdate(change -> {
-            separatorBottom.setActive(change.getList().size() == 0);
-        });
+
+        momentsHBox.setOnListUpdate(change -> separatorBottom.setActive(change.getList().size() == 0));
 
         addJustifications();
 
@@ -135,22 +134,12 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
-        separatorBottom.setOnDragDoneDescripteme(descripteme -> {
-            childCmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute();
-        });
-        separatorBottom.setOnDragDoneCategory(category -> {
-            childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute();
-        });
-        separatorBottom.setOnDragDoneShemaCategory(category -> {
-            childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute();
-        });
+        separatorBottom.setOnDragDoneDescripteme(descripteme -> childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
+        separatorBottom.setOnDragDoneCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
+        separatorBottom.setOnDragDoneShemaCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute());
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
-        separatorBottom.setOnDragMomentDone((moment, originParent) -> {
-            childCmdFactory.moveMomentCommand(moment, originParent).execute();
-        });
-        separatorBottom.setOnDragTemplateMomentDone(templateMoment -> {
-            childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute();
-        });
+        separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
+        separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
         separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
@@ -162,15 +151,11 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(commentButton);
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        deleteButton.setOnAction(actionEvent -> {
-            cmdFactory.deleteCommand(moment).execute();
-        });
+        deleteButton.setOnAction(actionEvent -> cmdFactory.deleteCommand(moment).execute());
         menuButton.getItems().add(deleteButton);
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
-        renameButton.setOnAction(actionEvent -> {
-            cmdFactory.renameCommand(moment).execute();
-        });
+        renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
         menuButton.getItems().add(renameButton);
 
         // Show/Hide moment body (comment, justifications, categories)
@@ -337,15 +322,11 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void updateBorders(int index, int siblingsCount) {
-        separatorLeft.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); });
-        separatorRight.setOnDragDoneCategory(category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, index+1).execute(); });
+        separatorLeft.setOnDragDoneCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute());
+        separatorRight.setOnDragDoneCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, index+1).execute());
 
-        separatorLeft.setOnDragDoneShemaCategory(category -> {
-            cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute();
-        });
-        separatorRight.setOnDragDoneShemaCategory(category -> {
-            cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute();
-        });
+        separatorLeft.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute());
+        separatorRight.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute());
 
         if(index == 0) {
             //Hide an show the separators
@@ -355,19 +336,15 @@ public class MomentController extends ListViewController<Moment> implements Init
                 grid.add(separatorRight.getNode(), 2, 0);
 
             //set operation on descripteme DND over borders
-            separatorLeft.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), 0).execute(); });
-            separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
+            separatorLeft.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme, 0).execute());
+            separatorRight.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme, index+1).execute());
 
             //set operation on moment DND over borders
-            separatorLeft.setOnDragMomentDone((m, originParent) -> {
-                cmdFactory.moveMomentCommand(m, originParent, 0).execute();
-            });
-            separatorRight.setOnDragMomentDone((m, originParent) -> {
-                cmdFactory.moveMomentCommand(m, originParent,index + 1).execute();
-            });
+            separatorLeft.setOnDragMomentDone((m, originParent) -> cmdFactory.moveMomentCommand(m, originParent, 0).execute());
+            separatorRight.setOnDragMomentDone((m, originParent) -> cmdFactory.moveMomentCommand(m, originParent,index + 1).execute());
 
-            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), 0).execute(); });
-            separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
+            separatorLeft.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), 0).execute());
+            separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute());
 
             //Make moment aligned, no need to understand that !
             Insets ins = childrenMomentContainer.getPadding();
@@ -385,14 +362,14 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorLeft.setOnDragMomentDone((m, factory) -> {});
             separatorLeft.setOnDragTemplateMomentDone(templateMoment -> {});
             if(index == siblingsCount - 1) {
-                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme)).execute(); });
-                separatorRight.setOnDragMomentDone((m, originParent) -> {cmdFactory.moveMomentCommand(m, originParent).execute();});
-                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
+                separatorRight.setOnDragMomentDone((m, originParent) -> cmdFactory.moveMomentCommand(m, originParent).execute());
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
             }
             else {
-                separatorRight.setOnDragDoneDescripteme(descripteme -> { cmdFactory.addSiblingCommand(new Moment("Moment", descripteme), index+1).execute(); });
-                separatorRight.setOnDragMomentDone((m,originParent) -> {cmdFactory.moveMomentCommand(m, originParent, index + 1).execute();});
-                separatorRight.setOnDragTemplateMomentDone(templateMoment -> { cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute(); });
+                separatorRight.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme, index+1).execute());
+                separatorRight.setOnDragMomentDone((m,originParent) -> cmdFactory.moveMomentCommand(m, originParent, index + 1).execute());
+                separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute());
             }
 
             //Make moment aligned, no need to understand that !
@@ -456,9 +433,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         });
 
-        momentContainer.setOnDragExited(dragEvent -> {
-            categoryDropper.setStyle("-fx-opacity: 1;");
-        });
+        momentContainer.setOnDragExited(dragEvent -> categoryDropper.setStyle("-fx-opacity: 1;"));
 
         momentContainer.setOnDragDetected(event -> {
             System.out.println(" moment drag detected");
