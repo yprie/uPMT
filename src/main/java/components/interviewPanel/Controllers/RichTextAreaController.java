@@ -219,8 +219,15 @@ public class RichTextAreaController {
     }
 
     private void scrollToDescripteme(Descripteme descripteme) {
-        area.moveTo(descripteme.getStartIndex());
+        area.moveTo(0);
         area.requestFollowCaret();
+        Platform.runLater(() -> {
+            area.moveTo(descripteme.getStartIndex());
+            area.requestFollowCaret();
+            Platform.runLater(() -> {
+                area.scrollYBy(area.getHeight() / 2);
+            });
+        });
     }
 
     private void bindDescripteme(Descripteme descripteme, boolean bind) {
