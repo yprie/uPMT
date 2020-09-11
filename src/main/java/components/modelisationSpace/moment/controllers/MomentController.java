@@ -62,8 +62,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private AnchorPane momentBoundingBox;
     @FXML private TextArea commentArea;
     @FXML HBox nameBox;
-    @FXML private Pane justificationPane;
-    @FXML private VBox momentBody;
+    @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
 
     //Importants elements of a moment
@@ -77,6 +76,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
 
     private TextField renamingField;
+
+    Node justificationArea;
 
     private ChangeListener<Boolean>commentVisibleListener;
     private ChangeListener<Boolean>commentFocusListener;
@@ -127,6 +128,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         momentsHBox.setOnListUpdate(change -> separatorBottom.setActive(change.getList().size() == 0));
 
+        justificationArea = JustificationController.createJustificationArea(justificationController);
         addJustifications();
 
         addCategories();
@@ -162,15 +164,15 @@ public class MomentController extends ListViewController<Moment> implements Init
         collapseIcon.setOnMouseClicked(actionEvent -> {
             momentBodyVisible = !momentBodyVisible;
             if (momentBodyVisible) {
-                momentBody.getChildren().add(commentArea);
-                momentBody.getChildren().add(justificationPane);
-                momentBody.getChildren().add(categoryContainer);
-                addCategories();
-                addJustifications();
                 collapseIcon.setImage(new Image("/images/collapse_up.png"));
+                momentBody.setCenter(commentArea);
+                addJustifications();
+                momentContainer.setBottom(categoryContainer);
             } else {
                 collapseIcon.setImage(new Image("/images/collapse_down.png"));
-                momentBody.getChildren().clear();
+                momentBody.setCenter(null);
+                momentContainer.setCenter(null); // hide justifications
+                momentContainer.setBottom(null); // hide categories
             }
         });
 
@@ -246,12 +248,10 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void addJustifications() {
-        justificationPane.getChildren().clear();
-        justificationPane.getChildren().add(JustificationController.createJustificationArea(justificationController));
+        momentContainer.setCenter(justificationArea);
     }
 
     private void addCategories() {
-        categoryContainer.getChildren().clear();
         categories = new ListView<>(
                 moment.concreteCategoriesProperty(),
                 (cc -> new ConcreteCategoryController(cc, categoryCmdFactory, paneCmdFactory)),
