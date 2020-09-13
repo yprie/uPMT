@@ -181,7 +181,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         commentFocusListener = (observableValue, oldValue, focused) -> {
             if(!focused){
                 cmdFactory.addCommentCommand(moment, commentArea.getText()).execute();
-                if (commentArea.getText().isEmpty()){
+                if (commentArea.getText() == null || commentArea.getText().isEmpty()){
                     commentArea.setVisible(false);
                 }
             }
