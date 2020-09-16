@@ -42,6 +42,7 @@ public class InterviewPanelController implements Initializable {
         this.interview = interview;
 
         this.interviewChangeListener = (observable, oldValue, newValue) -> {
+            if (newValue != null) {
                 interview.getValue().commentProperty().addListener(commentChangeListener);
                 interview.getValue().titleProperty().addListener(titleChangeListener);
                 if (oldValue != null) {
@@ -49,6 +50,7 @@ public class InterviewPanelController implements Initializable {
                     oldValue.titleProperty().removeListener(titleChangeListener);
                 }
                 refreshContent(newValue);
+            }
         };
 
         this.commentChangeListener = (observableValue, oldValue, newValue) -> textInterviewComment.setText(newValue);

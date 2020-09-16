@@ -1,5 +1,6 @@
 package components.modelisationSpace.justification.justificationCell;
 
+import application.configuration.AppSettings;
 import application.configuration.Configuration;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -14,12 +15,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
+import org.fxmisc.richtext.event.MouseStationaryEvent;
+import org.fxmisc.richtext.event.MouseStationaryHelper;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class JustificationCell extends ListViewController<Descripteme> implements Initializable {
@@ -32,8 +36,19 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     private JustificationCommandFactory factory;
     private Descripteme descripteme;
 
-    private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> {
-        updateToolTip();
+    private MenuItem revealButton;
+    MouseStationaryHelper mouseStationaryHelper;
+
+    private ChangeListener<String> onDescriptemeChange = (observableValue, o, t1) -> updateToolTip();
+
+    private ChangeListener autoScrollWhenRevealListener = (observableValue, oldValue, newValue) -> {
+        if (AppSettings.autoScrollWhenReveal.get()) {
+            mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        } else {
+            mouseStationaryHelper.uninstall();
+        }
+
+        revealButton.setVisible(!AppSettings.autoScrollWhenReveal.get());
     };
 
     public JustificationCell(Descripteme d, JustificationCommandFactory factory) {
@@ -74,16 +89,17 @@ public class JustificationCell extends ListViewController<Descripteme> implement
         menuButton.getItems().add(modifyButton);
 
         MenuItem duplicateButton = new MenuItem(Configuration.langBundle.getString("duplicate"));
-        duplicateButton.setOnAction(actionEvent -> {
-            factory.duplicateDescripteme(descripteme).execute();
-        });
+        duplicateButton.setOnAction(actionEvent -> factory.duplicateDescripteme(descripteme).execute());
         menuButton.getItems().add(duplicateButton);
 
         MenuItem removeButton = new MenuItem(Configuration.langBundle.getString("delete"));
-        removeButton.setOnAction(actionEvent -> {
-            factory.removeDescripteme(descripteme).execute();
-        });
+        removeButton.setOnAction(actionEvent -> factory.removeDescripteme(descripteme).execute());
         menuButton.getItems().add(removeButton);
+
+        revealButton = new MenuItem(Configuration.langBundle.getString("reveal"));
+        revealButton.setOnAction(actionEvent -> descripteme.setTriggerScrollReveal(true));
+        revealButton.setVisible(!AppSettings.autoScrollWhenReveal.get());
+        menuButton.getItems().add(revealButton);
 
         //Descripteme tooltip
         updateToolTip();
@@ -98,12 +114,17 @@ public class JustificationCell extends ListViewController<Descripteme> implement
             }
         });
 
-        text.setOnMouseEntered(event -> {
-            descripteme.setRevealed(true);
+        text.setOnMouseEntered(event -> descripteme.setRevealed(true));
+
+        text.addEventHandler(MouseStationaryEvent.MOUSE_STATIONARY_BEGIN, event -> {
+            descripteme.setTriggerScrollReveal(true);
         });
-        text.setOnMouseExited(event -> {
-            descripteme.setRevealed(false);
-        });
+        mouseStationaryHelper = new MouseStationaryHelper(text);
+        if (AppSettings.autoScrollWhenReveal.get()) {
+            mouseStationaryHelper.install(Duration.ofMillis(AppSettings.delayRevealDescripteme)); // set here the duration to wait before it scrolls to the descripteme in the interview
+        }
+
+        text.setOnMouseExited(event -> descripteme.setRevealed(false));
 
         setupDnd();
 
@@ -151,6 +172,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @Override
     public void onMount() {
         descripteme.getSelectionProperty().addListener(onDescriptemeChange);
+        AppSettings.autoScrollWhenReveal.addListener(autoScrollWhenRevealListener);
     }
 
     @Override
@@ -161,6 +183,7 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @Override
     public void onUnmount() {
         descripteme.getSelectionProperty().removeListener(onDescriptemeChange);
+        AppSettings.autoScrollWhenReveal.removeListener(autoScrollWhenRevealListener);
     }
 
     /*

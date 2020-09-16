@@ -21,8 +21,10 @@
 
 package components.rootLayout.Controllers;
 
+import application.configuration.AppSettings;
 import components.aboutUs.Controllers.AboutUsController;
 import application.history.HistoryManager;
+import javafx.scene.control.RadioMenuItem;
 import models.Project;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
@@ -63,6 +65,7 @@ public class RootLayoutController implements Initializable {
 
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
+	public @FXML RadioMenuItem scrollOnReveal;
 
 	public @FXML MenuItem espanol;
 	public @FXML MenuItem italiano;
@@ -125,12 +128,12 @@ public class RootLayoutController implements Initializable {
 		//TODO
 		appCommandFactory.exportToCSV().execute();
 	}
-	
+
 	@FXML
 	public void undo(){
 		HistoryManager.goBack();
 	}
-	
+
 	@FXML
 	public void redo(){
 		HistoryManager.goForward();
@@ -291,14 +294,14 @@ public class RootLayoutController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		final KeyCodeCombination keyCombREDO=new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
-		final KeyCodeCombination keyCombSAVE=new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
-		final KeyCodeCombination keyCombNEW=new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombREDO= new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombSAVE = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombNEW = new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
 		InputContext context = InputContext.getInstance(); 
 		String loc = context.getLocale().toString();
 		System.out.println(loc);  
 		// javafx keyboard layout bug management 
-		if(OS.current == OS.mac) {
+		if (OS.current == OS.mac) {
 			if (loc.equals("fr")){
 				Locale.setDefault(Locale.FRANCE);
 			    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
@@ -314,13 +317,18 @@ public class RootLayoutController implements Initializable {
 				saveProject.setAccelerator(keyCombSAVE);
 				newInterview.setAccelerator(keyCombNEW);
 			}
-		}else {
+		} else {
 		    KeyCodeCombination keyCombUNDO=new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
 			undo.setAccelerator(keyCombUNDO);
 			redo.setAccelerator(keyCombREDO);
 			saveProject.setAccelerator(keyCombSAVE);
 			newInterview.setAccelerator(keyCombNEW);
 		}
+
+		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal.get());
+		scrollOnReveal.setOnAction((event -> {
+			appCommandFactory.SetAutoScrollWhenReveal(scrollOnReveal.isSelected()).execute();
+		}));
 
 		setupRecentProjectUpdate();
 		setProjectRelatedControlsDisable(true);
