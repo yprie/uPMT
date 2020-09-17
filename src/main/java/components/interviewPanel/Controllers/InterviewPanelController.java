@@ -21,12 +21,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InterviewPanelController implements Initializable {
+    @FXML private BorderPane container;
     @FXML private Text textInterviewTitle;
     @FXML private Label textInterviewComment;
     @FXML private ImageView buttonCollapseInterviewPanel;
     @FXML private BorderPane headerGrid;
     @FXML private BorderPane topBarContainerTextInterview;
-    @FXML private StackPane stackPaneInterview;
 
     private boolean collapsed = false;
     private double panePosition;
@@ -93,26 +93,22 @@ public class InterviewPanelController implements Initializable {
                 mainSplitPane.setDividerPosition(1, panePosition);
             }
             collapsed = !collapsed;
+            refreshContent(interview.getValue());
         });
     }
 
     private void bind() {
         interview.addListener(interviewChangeListener);
-        /*System.out.println(interview);
-        System.out.println(interview.getValue());
-        System.out.println(interview.getValue().commentProperty());
-        interview.getValue().commentProperty().addListener(commentChangeListener);
-        interview.getValue().titleProperty().addListener(titleChangeListener);
-
-         */
+        if (interview.getValue() != null) {
+            interview.getValue().commentProperty().addListener(commentChangeListener);
+            interview.getValue().titleProperty().addListener(titleChangeListener);
+        }
     }
 
     public void unbind() {
         interview.removeListener(interviewChangeListener);
-        /*interview.getValue().commentProperty().removeListener(commentChangeListener);
+        interview.getValue().commentProperty().removeListener(commentChangeListener);
         interview.getValue().titleProperty().removeListener(titleChangeListener);
-
-         */
     }
     
     private void refreshContent(Interview newInterview) {
@@ -132,10 +128,10 @@ public class InterviewPanelController implements Initializable {
     }
 
     private void showTextInterview(Interview newInterview) {
-        stackPaneInterview.getChildren().add(InterviewTextController.createInterviewTextController(newInterview));
+        container.setCenter(InterviewTextController.createInterviewTextController(newInterview));
     }
 
     private void hideTextInterview() {
-        stackPaneInterview.getChildren().clear();
+        container.setCenter(null);
     }
 }

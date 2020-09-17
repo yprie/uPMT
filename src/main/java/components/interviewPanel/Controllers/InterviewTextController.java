@@ -109,6 +109,7 @@ public class InterviewTextController implements Initializable {
     }
 
     private void initializeDescripteme() {
+        interview.getInterviewText().getDescriptemesProperty().clear();
         GlobalVariables.getGlobalVariables().getAllDescripteme()
                 .forEach(descripteme -> richTextAreaController.addDescripteme(descripteme));
     }

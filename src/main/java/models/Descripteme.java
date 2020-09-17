@@ -1,9 +1,7 @@
 package models;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.scene.input.DataFormat;
 
 public class Descripteme extends Fragment {
