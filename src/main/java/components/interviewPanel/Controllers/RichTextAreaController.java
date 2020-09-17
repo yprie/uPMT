@@ -82,8 +82,7 @@ public class RichTextAreaController {
                 .addListener(newValue -> this.updateDescripteme());
 
         // Initialize view annotation
-        //interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
-        interviewText.getAnnotationsProperty().forEach(annotation -> applyStyleInit(annotation));
+        interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
     }
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
@@ -191,7 +190,8 @@ public class RichTextAreaController {
             if (annotation != null) {
                 css += "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
                 if (annotation.isSelected()) {
-                    css += "-rtfx-border-stroke-color: black; -rtfx-border-stroke-width: 1;";
+                    css += "-rtfx-border-stroke-color: black; " +
+                            "-rtfx-border-stroke-width: 1;";
                 }
             }
             ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
@@ -212,24 +212,8 @@ public class RichTextAreaController {
                     css += "-rtfx-border-stroke-dash-array: 5;-rtfx-border-stroke-color: black;-rtfx-border-stroke-width: 1;";
                 }
             }
-            area.setStyle(i, i+1, css);
-        }
-    }
 
-    private void applyStyleInit(Descripteme descripteme) {
-        for (int i = descripteme.getStartIndex() ; i < descripteme.getEndIndex() ; i++) {
-            String css = area.getStyleAtPosition(i);
-            String oneDescripteme = "-rtfx-underline-color: black; -rtfx-underline-width: 1;";
-            if (css.contains(oneDescripteme)) {
-                css.replace(oneDescripteme, "-rtfx-underline-color: black; -rtfx-underline-width: 2;");
-            }
             area.setStyle(i, i+1, css);
-        }
-    }
-
-    private void applyStyleInit(Annotation annotation) {
-        for (int i = annotation.getStartIndex() ; i < annotation.getEndIndex() ; i++) {
-            area.setStyle(i, i+1, "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";");
         }
     }
 

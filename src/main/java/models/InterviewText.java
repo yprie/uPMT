@@ -19,8 +19,6 @@ public class InterviewText implements Serializable {
                     descripteme.startIndex,
                     descripteme.endIndex,
             });
-    private HashMap<Integer, ArrayList<Descripteme>> indexDescriptemes = new HashMap<>();
-    private HashMap<Integer, Annotation> indexAnnotation = new HashMap<>();
 
     public InterviewText(String text) {
         this.text = text;
@@ -44,35 +42,29 @@ public class InterviewText implements Serializable {
     }
 
     public void addAnnotation(Annotation annotation) {
-        for (int i = annotation.getStartIndex() ; i < annotation.getEndIndex() ; i++) {
-            indexAnnotation.put(i, annotation);
-        }
         annotations.add(annotation);
     }
 
-    public Annotation getAnnotationByIndex(int i) {
-        return indexAnnotation.get(i);
+    public Annotation getAnnotationByIndex(int index) {
+        for (Annotation annotation : this.annotations) {
+            if (annotation.getStartIndex() <= index && index < annotation.getEndIndex()) {
+                return annotation;
+            }
+        }
+        return null;
     }
 
-    public ArrayList<Descripteme> getDescriptemesByIndex(int i) {
-        ArrayList<Descripteme> descriptemes = indexDescriptemes.get(i);
-        if (descriptemes == null) {
-            descriptemes = new ArrayList<>();
-            indexDescriptemes.put(i, descriptemes);
+    public ArrayList<Descripteme> getDescriptemesByIndex(int index) {
+        ArrayList<Descripteme> foundDescriptemes = new ArrayList<>();
+        for (Descripteme descripteme : this.descriptemes) {
+            if (descripteme.getStartIndex() <= index && index < descripteme.getEndIndex()) {
+                foundDescriptemes.add(descripteme);
+            }
         }
-        return descriptemes;
+        return foundDescriptemes;
     }
 
     public void addDescripteme(Descripteme descripteme) {
-        // called when initializing rich text area
-        for (int i = descripteme.getStartIndex() ; i < descripteme.getEndIndex() ; i++) {
-            ArrayList<Descripteme> current = indexDescriptemes.get(i);
-            if (current == null) {
-                current = new ArrayList<>();
-            }
-            current.add(descripteme);
-            indexDescriptemes.put(i, current);
-        }
         descriptemes.add(descripteme);
     }
 
