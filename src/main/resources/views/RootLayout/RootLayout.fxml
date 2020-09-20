@@ -24,7 +24,9 @@
                <SeparatorMenuItem mnemonicParsing="false"/>
                <MenuItem fx:id="quitterBouton" mnemonicParsing="false" onAction="#close" text="%quit"/>
            </Menu>
-           <Menu fx:id="viewMenu" mnemonicParsing="false" text="%view" />
+           <Menu fx:id="viewMenu" mnemonicParsing="false" text="%view">
+               <MenuItem fx:id="collapseAllMoments" mnemonicParsing="false" text="%collapse_all_moments"/>
+           </Menu>
            <Menu mnemonicParsing="false" text="%edit">
                <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
                <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>

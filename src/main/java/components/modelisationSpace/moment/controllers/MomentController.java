@@ -76,10 +76,11 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     Node justificationArea;
 
-    private ChangeListener<Boolean>commentVisibleListener;
-    private ChangeListener<Boolean>commentFocusListener;
-    private ChangeListener<String>commentTextListener;
-    private ChangeListener<Boolean>momentEmphasizeListener;
+    private ChangeListener<Boolean> commentVisibleListener;
+    private ChangeListener<Boolean> commentFocusListener;
+    private ChangeListener<String> commentTextListener;
+    private ChangeListener<Boolean> momentEmphasizeListener;
+    private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -233,6 +234,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         moment.commentProperty().addListener(commentTextListener);
         moment.getEmphasizeProperty().addListener(momentEmphasizeListener);
 
+        moment.collapsedProperty().addListener(collapsedListener);
     }
 
 
@@ -246,6 +248,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (momentEmphasizeListener!=null)
             moment.getEmphasizeProperty().removeListener(momentEmphasizeListener);
 
+        moment.collapsedProperty().removeListener(collapsedListener);
     }
 
     private void addJustifications() {

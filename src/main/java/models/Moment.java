@@ -82,6 +82,8 @@ public class Moment extends RootMoment implements IDraggable {
 
     public void setCommentVisible(boolean commentVisible) { this.commentVisible.set(commentVisible); }
 
+    public SimpleBooleanProperty collapsedProperty() { return collapsed; }
+
     public boolean isCollapsed() { return collapsed.get(); }
 
     public void setCollapsed(boolean collapsed) { this.collapsed.set(collapsed); }
