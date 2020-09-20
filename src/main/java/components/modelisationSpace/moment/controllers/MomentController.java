@@ -68,7 +68,6 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ListView<Moment, MomentController> momentsHBox;
     private ListView<ConcreteCategory, ConcreteCategoryController> categories;
     private boolean renamingMode = false;
-    private boolean momentBodyVisible = true;
 
     @FXML private GridPane grid;
     MomentSeparatorController separatorLeft, separatorRight, separatorBottom;
@@ -160,20 +159,10 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         // Show/Hide moment body (comment, justifications, categories)
         collapseIcon.setOnMouseClicked(actionEvent -> {
-            momentBodyVisible = !momentBodyVisible;
-            if (momentBodyVisible) {
-                collapseIcon.setImage(new Image("/images/collapse_up.png"));
-                momentBody.setCenter(commentArea);
-                addJustifications();
-                momentContainer.setBottom(categoryContainer);
-            } else {
-                collapseIcon.setImage(new Image("/images/collapse_down.png"));
-                momentBody.setCenter(null);
-                momentContainer.setCenter(null); // hide justifications
-                momentContainer.setBottom(null); // hide categories
-            }
+            moment.setCollapsed(!moment.isCollapsed());
+            collapseOrNot();
         });
-
+        collapseOrNot();
 
         //DND
         setupDragAndDrop();
@@ -186,6 +175,20 @@ public class MomentController extends ListViewController<Moment> implements Init
                 }
             }
         });
+    }
+
+    private void collapseOrNot() {
+        if (!moment.isCollapsed()) {
+            collapseIcon.setImage(new Image("/images/collapse_up.png"));
+            momentBody.setCenter(commentArea);
+            addJustifications();
+            momentContainer.setBottom(categoryContainer);
+        } else {
+            collapseIcon.setImage(new Image("/images/collapse_down.png"));
+            momentBody.setCenter(null);
+            momentContainer.setCenter(null); // hide justifications
+            momentContainer.setBottom(null); // hide categories
+        }
     }
 
     public void bind(){
