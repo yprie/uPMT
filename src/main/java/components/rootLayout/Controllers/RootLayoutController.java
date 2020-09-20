@@ -21,8 +21,10 @@
 
 package components.rootLayout.Controllers;
 
+import application.configuration.AppSettings;
 import components.aboutUs.Controllers.AboutUsController;
 import application.history.HistoryManager;
+import javafx.scene.control.RadioMenuItem;
 import models.Project;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
@@ -66,6 +68,7 @@ public class RootLayoutController implements Initializable {
 
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
+	public @FXML RadioMenuItem scrollOnReveal;
 
 	public @FXML MenuItem espanol;
 	public @FXML MenuItem italiano;
@@ -317,6 +320,11 @@ public class RootLayoutController implements Initializable {
 		newInterview.setAccelerator(keyCombNEW);
 
 		viewMenu.getItems().add(new ZoomMenuItem());
+
+		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal.get());
+		scrollOnReveal.setOnAction((event -> {
+			appCommandFactory.SetAutoScrollWhenReveal(scrollOnReveal.isSelected()).execute();
+		}));
 
 		setupRecentProjectUpdate();
 		setProjectRelatedControlsDisable(true);
