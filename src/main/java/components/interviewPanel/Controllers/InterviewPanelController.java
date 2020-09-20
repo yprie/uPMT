@@ -12,7 +12,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import models.Interview;
 
@@ -21,12 +20,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class InterviewPanelController implements Initializable {
+    @FXML private BorderPane container;
     @FXML private Text textInterviewTitle;
     @FXML private Label textInterviewComment;
     @FXML private ImageView buttonCollapseInterviewPanel;
     @FXML private BorderPane headerGrid;
     @FXML private BorderPane topBarContainerTextInterview;
-    @FXML private StackPane stackPaneInterview;
 
     private boolean collapsed = false;
     private double panePosition;
@@ -36,6 +35,7 @@ public class InterviewPanelController implements Initializable {
     private final ChangeListener<Interview> interviewChangeListener;
     private ChangeListener<String> titleChangeListener;
     private ChangeListener<String> commentChangeListener;
+    private Node interviewTextController;
 
     public InterviewPanelController(ObservableValue<Interview> interview, SplitPane mainSplitPane) {
         this.mainSplitPane = mainSplitPane;
@@ -81,15 +81,19 @@ public class InterviewPanelController implements Initializable {
                 // close
                 buttonCollapseInterviewPanel.setImage(new Image("/images/openMenuBlack.png"));
                 topBarContainerTextInterview.setCenter(null);
-                hideTextInterview();
+                container.setCenter(null);
+                textInterviewComment.setVisible(false);
                 mainSplitPane.setDividerPosition(1, 1.0);
             } else {
                 // open
                 buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
                 topBarContainerTextInterview.setCenter(headerGrid);
                 if (interview.getValue() != null) {
-                    showTextInterview(interview.getValue());
+                    container.setCenter(interviewTextController);
+                    textInterviewTitle.setText(interview.getValue().getTitle());
+                    //textInterviewComment.setText(interview.getValue().getComment());
                 }
+                textInterviewComment.setVisible(true);
                 mainSplitPane.setDividerPosition(1, panePosition);
             }
             collapsed = !collapsed;
@@ -98,44 +102,32 @@ public class InterviewPanelController implements Initializable {
 
     private void bind() {
         interview.addListener(interviewChangeListener);
-        /*System.out.println(interview);
-        System.out.println(interview.getValue());
-        System.out.println(interview.getValue().commentProperty());
-        interview.getValue().commentProperty().addListener(commentChangeListener);
-        interview.getValue().titleProperty().addListener(titleChangeListener);
-
-         */
+        if (interview.getValue() != null) {
+            interview.getValue().commentProperty().addListener(commentChangeListener);
+            interview.getValue().titleProperty().addListener(titleChangeListener);
+        }
     }
 
     public void unbind() {
         interview.removeListener(interviewChangeListener);
-        /*interview.getValue().commentProperty().removeListener(commentChangeListener);
+        interview.getValue().commentProperty().removeListener(commentChangeListener);
         interview.getValue().titleProperty().removeListener(titleChangeListener);
-
-         */
     }
-    
+
     private void refreshContent(Interview newInterview) {
         if (!collapsed) {
             if(newInterview != null) {
                 textInterviewTitle.setText(newInterview.getTitle());
                 textInterviewComment.setText(newInterview.getComment());
                 textInterviewComment.setVisible(true);
-                showTextInterview(newInterview);
+                interviewTextController = InterviewTextController.createInterviewTextController(interview.getValue());
+                container.setCenter(interviewTextController);
             }
             else {
                 textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
                 textInterviewComment.setVisible(false);
-                hideTextInterview();
+                container.setCenter(null);
             }
         }
-    }
-
-    private void showTextInterview(Interview newInterview) {
-        stackPaneInterview.getChildren().add(InterviewTextController.createInterviewTextController(newInterview));
-    }
-
-    private void hideTextInterview() {
-        stackPaneInterview.getChildren().clear();
     }
 }
