@@ -84,6 +84,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: build/uPMT.zip
+          asset_path: uPMT.zip
           asset_name: uPMT-${{ runner.os }}-${{ github.sha }}
           asset_content_type: application/zip
