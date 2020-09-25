@@ -65,7 +65,7 @@ jobs:
         os: [ macos-latest, ubuntu-latest ]
     steps:
       - name: Load artifact
-        use: actions/download-artifact@v1
+        uses: actions/download-artifact@v1
         with:
           name: uPMT-${{ runner.os }}-runtime
       - name: Load Release URL File from release job
