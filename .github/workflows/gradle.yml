@@ -58,7 +58,7 @@ jobs:
           name: uPMT-${{ runner.os }}-runtime
           path: build/uPMT.zip
 
-  assets-unix:
+  assets:
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -68,7 +68,7 @@ jobs:
       - name: Load artifact
         uses: actions/download-artifact@v1
         with:
-          name: uPMT-${{ runner.os }}-runtime
+          name: uPMT-${{ matrix.os }}-runtime
       - name: Load Release URL File from release job
         uses: actions/download-artifact@v1
         with:
