@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macOS, Windows, Linux]
     steps:
       - name: Load artifact
         uses: actions/download-artifact@v1
