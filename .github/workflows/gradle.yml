@@ -59,6 +59,7 @@ jobs:
           path: build/uPMT.zip
 
   assets:
+    needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
