@@ -188,7 +188,19 @@ public class MomentController extends ListViewController<Moment> implements Init
             collapseIcon.setImage(new Image("/images/collapse_down.png"));
             momentBody.setCenter(null);
             momentContainer.setCenter(null); // hide justifications
-            momentContainer.setBottom(null); // hide categories
+
+            // hide categories
+            // when the moment is collapsed, there is only the moment names displayed
+            VBox categoryNames = new VBox();
+            categoryNames.setStyle("-fx-background-color: #ffeaa7;\n" +
+                    "-fx-border-color: transparent;\n" +
+                    "-fx-background-insets: 1px;\n" +
+                    "-fx-background-radius: 3;\n" +
+                    "-fx-border-radius:3;");
+            moment.concreteCategoriesProperty().forEach((category) -> {
+                categoryNames.getChildren().add(new Label(category.getName()));
+            });
+            momentContainer.setBottom(categoryNames);
         }
     }
 
