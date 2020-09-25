@@ -58,7 +58,7 @@ jobs:
           name: uPMT-${{ runner.os }}-runtime
           path: build/uPMT.zip
 
-  assets:
+  assets-unix:
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -77,6 +77,33 @@ jobs:
         id: get_release_info
         run: |
           value=`cat release_url/release_url.txt`
+          echo ::set-output name=upload_url::$value
+      - name: Upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+          asset_path: uPMT-${{ runner.os }}-runtime/uPMT.zip
+          asset_name: uPMT-${{ runner.os }}-${{ github.sha }}
+          asset_content_type: application/zip
+
+  assets-win:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Load artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: uPMT-${{ runner.os }}-runtime
+      - name: Load Release URL File from release job
+        uses: actions/download-artifact@v1
+        with:
+          name: release_url
+      - name: Get Release Upload URL
+        id: get_release_info
+        run: |
+          value=`type release_url/release_url.txt`
           echo ::set-output name=upload_url::$value
       - name: Upload
         uses: actions/upload-release-asset@v1
