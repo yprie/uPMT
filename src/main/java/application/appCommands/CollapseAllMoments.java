@@ -7,15 +7,18 @@ import utils.GlobalVariables;
 
 public class CollapseAllMoments extends ApplicationCommand<Void> {
 
-    public CollapseAllMoments(UPMTApp application) {
+    private boolean collapse;
+
+    public CollapseAllMoments(UPMTApp application, boolean collapse) {
         super(application);
+        this.collapse = collapse;
     }
 
     @Override
     public Void execute() {
         RootMoment rootMoment = GlobalVariables.getRootMoment();
         for (Moment subMoment: rootMoment.momentsProperty()) {
-            subMoment.setCollapsed(true);
+            subMoment.setCollapsed(collapse);
             iterateOverSubMoment(subMoment);
         }
         return null;
@@ -23,7 +26,7 @@ public class CollapseAllMoments extends ApplicationCommand<Void> {
 
     private void iterateOverSubMoment(Moment moment) {
         for (Moment subMoment: moment.momentsProperty()) {
-            subMoment.setCollapsed(true);
+            subMoment.setCollapsed(collapse);
             iterateOverSubMoment(subMoment);
         }
     }

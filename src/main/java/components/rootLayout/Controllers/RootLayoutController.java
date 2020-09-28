@@ -78,6 +78,7 @@ public class RootLayoutController implements Initializable {
 
 	private ApplicationCommandFactory appCommandFactory;
 
+	boolean allCollapsed = true; // for collapse/open all moments
 
 	public static BorderPane createRootLayout(RootLayoutController controller) {
 		try {
@@ -328,7 +329,12 @@ public class RootLayoutController implements Initializable {
 		}));
 
 		collapseAllMoments.setOnAction((event -> {
-			appCommandFactory.collapseAllMoments().execute();
+			appCommandFactory.collapseAllMoments(allCollapsed).execute();
+			String label = allCollapsed
+					? Configuration.langBundle.getString("open_all_moments")
+					: Configuration.langBundle.getString("collapse_all_moments");
+			collapseAllMoments.setText(label);
+			allCollapsed = !allCollapsed;
 		}));
 
 		setupRecentProjectUpdate();
