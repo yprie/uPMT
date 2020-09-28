@@ -126,7 +126,7 @@ public class Configuration {
             // Write the default values to the file
             Properties props = new Properties();
             props.setProperty("locale", Locale.ENGLISH.toString());
-            props.setProperty("autoScrollWhenReveal", "false");
+            props.setProperty("autoScrollWhenReveal", "true");
             props.setProperty("delayRevealDescripteme", "500");
             props.setProperty("zoomLevel", "100");
             props.store(new FileOutputStream(upmtProperties), null);
