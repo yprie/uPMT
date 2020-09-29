@@ -69,6 +69,7 @@ public class RootLayoutController implements Initializable {
 	public @FXML MenuItem undo;
 	public @FXML MenuItem redo;
 	public @FXML RadioMenuItem scrollOnReveal;
+	public @FXML MenuItem collapseAllMoments;
 
 	public @FXML MenuItem espanol;
 	public @FXML MenuItem italiano;
@@ -77,6 +78,7 @@ public class RootLayoutController implements Initializable {
 
 	private ApplicationCommandFactory appCommandFactory;
 
+	boolean allCollapsed = true; // for collapse/open all moments
 
 	public static BorderPane createRootLayout(RootLayoutController controller) {
 		try {
@@ -324,6 +326,15 @@ public class RootLayoutController implements Initializable {
 		scrollOnReveal.setSelected(AppSettings.autoScrollWhenReveal.get());
 		scrollOnReveal.setOnAction((event -> {
 			appCommandFactory.SetAutoScrollWhenReveal(scrollOnReveal.isSelected()).execute();
+		}));
+
+		collapseAllMoments.setOnAction((event -> {
+			appCommandFactory.collapseAllMoments(allCollapsed).execute();
+			String label = allCollapsed
+					? Configuration.langBundle.getString("open_all_moments")
+					: Configuration.langBundle.getString("collapse_all_moments");
+			collapseAllMoments.setText(label);
+			allCollapsed = !allCollapsed;
 		}));
 
 		setupRecentProjectUpdate();

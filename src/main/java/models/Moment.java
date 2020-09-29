@@ -25,6 +25,8 @@ public class Moment extends RootMoment implements IDraggable {
     private SimpleStringProperty comment;
     private SimpleBooleanProperty commentVisible;
 
+    private SimpleBooleanProperty collapsed;
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
@@ -52,6 +54,16 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
+        this.justification = j;
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(commentVisible);
+        this.collapsed = new SimpleBooleanProperty(collapsed);
+    }
+
     public void setName(String name) {
         this.name.set(name);
     }
@@ -68,11 +80,13 @@ public class Moment extends RootMoment implements IDraggable {
 
     public boolean isCommentVisible() { return commentVisible.get(); }
 
-    public SimpleBooleanProperty commentVisibleProperty(){
-        return commentVisible;
-    }
-
     public void setCommentVisible(boolean commentVisible) { this.commentVisible.set(commentVisible); }
+
+    public SimpleBooleanProperty collapsedProperty() { return collapsed; }
+
+    public boolean isCollapsed() { return collapsed.get(); }
+
+    public void setCollapsed(boolean collapsed) { this.collapsed.set(collapsed); }
 
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);

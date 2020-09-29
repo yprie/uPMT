@@ -27,4 +27,5 @@ public class ApplicationCommandFactory {
     public AddInterviewCommand addInterview(Interview interview) { return new AddInterviewCommand(application.getCurrentProject(), interview); }
     public ExportToCSVCommand exportToCSV() {return new ExportToCSVCommand(application);}
     public SetAutoScrollWhenRevealCommand SetAutoScrollWhenReveal(boolean autoScrollWhenReveal) {return new SetAutoScrollWhenRevealCommand(application, autoScrollWhenReveal);}
+    public CollapseAllMoments collapseAllMoments(boolean collapse) { return new CollapseAllMoments(application, collapse); }
 }
