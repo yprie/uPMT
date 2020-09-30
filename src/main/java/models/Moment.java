@@ -34,6 +34,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.justification = new Justification();
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
     }
 
     public Moment(String name, String comment, boolean commentVisible, Justification j) {
@@ -43,6 +44,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.justification = j;
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
+        this.collapsed = new SimpleBooleanProperty();
     }
 
     public Moment(String name, Descripteme d) {
@@ -52,6 +54,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.justification = new Justification();
         this.commentVisible = new SimpleBooleanProperty(false);
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.collapsed = new SimpleBooleanProperty();
     }
 
     public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed) {
