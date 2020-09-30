@@ -2,6 +2,7 @@ package persistency.newSaveSystem;
 
 import models.ConcreteCategory;
 import models.Moment;
+import org.json.JSONException;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
@@ -17,6 +18,7 @@ public class SMoment extends Serializable<Moment> {
     public String name;
     public String comment;
     public boolean isCommentVisible;
+    public boolean isCollapsed;
     public SJustification justification;
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
@@ -34,6 +36,7 @@ public class SMoment extends Serializable<Moment> {
         this.name = modelReference.getName();
         this.comment = modelReference.getComment();
         this.isCommentVisible = modelReference.isCommentVisible();
+        this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
 
         this.categories = new ArrayList<>();
@@ -55,6 +58,11 @@ public class SMoment extends Serializable<Moment> {
         name = serializer.getString("name");
         comment = serializer.getFacultativeString("momentComment",null);
         isCommentVisible = serializer.getBoolean("isCommentVisible");
+        try {
+            isCollapsed = serializer.getBoolean("isCollapsed");
+        } catch (JSONException error) {
+            isCollapsed = false;
+        }
         justification = serializer.getObject("justification", SJustification::new);
         categories = serializer.getArray(serializer.setListSuffix(SConcreteCategory.modelName), SConcreteCategory::new);
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
@@ -65,6 +73,7 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeString("name", name);
         serializer.writeFacultativeString("momentComment",comment);
         serializer.writeBoolean("isCommentVisible", isCommentVisible);
+        serializer.writeBoolean("isCollapsed", isCollapsed);
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
@@ -72,7 +81,7 @@ public class SMoment extends Serializable<Moment> {
 
     @Override
     protected Moment createModel() {
-        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel());
+        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
         for(SConcreteCategory cc: categories)

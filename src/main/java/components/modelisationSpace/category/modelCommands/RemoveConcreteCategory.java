@@ -19,12 +19,32 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
     @Override
     public Void execute() {
         moment.removeCategory(concreteCategory);
+
+        // Remove the underlining of the descripteme deleted
+        concreteCategory.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().removeDescripteme(descripteme);
+        });
+        concreteCategory.propertiesProperty().forEach(concreteProperty -> {
+            concreteProperty.getJustification().descriptemesProperty().forEach(descripteme -> {
+                descripteme.getInterviewText().removeDescripteme(descripteme);
+            });
+        });
         return null;
     }
 
     @Override
     public Void undo() {
         moment.addCategory(prevIndex, concreteCategory);
+
+        // Add the underlining of the descripteme deleted
+        concreteCategory.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().addDescripteme(descripteme);
+        });
+        concreteCategory.propertiesProperty().forEach(concreteProperty -> {
+            concreteProperty.getJustification().descriptemesProperty().forEach(descripteme -> {
+                descripteme.getInterviewText().addDescripteme(descripteme);
+            });
+        });
         return null;
     }
 }

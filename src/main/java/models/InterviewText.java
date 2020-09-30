@@ -22,14 +22,13 @@ public class InterviewText implements Serializable {
 
     public InterviewText(String text) {
         this.text = text;
-        this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
+        this.annotations = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
     public InterviewText(String text, ArrayList<Annotation> annotations) {
         this.text = text;
-        this.annotations = new SimpleListProperty<Annotation>(FXCollections.observableList(new LinkedList<Annotation>()));
+        this.annotations = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         annotations.addAll(annotations);
-        System.out.println("dans interview test on a pleins d'annationations : " + annotations);
     }
 
     public String getText() { return text; }
@@ -56,7 +55,7 @@ public class InterviewText implements Serializable {
     }
 
     public ArrayList<Descripteme> getDescriptemesByIndex(int index) {
-        ArrayList<Descripteme> foundDescriptemes = new ArrayList<Descripteme>();
+        ArrayList<Descripteme> foundDescriptemes = new ArrayList<>();
         for (Descripteme descripteme : this.descriptemes) {
             if (descripteme.getStartIndex() <= index && index < descripteme.getEndIndex()) {
                 foundDescriptemes.add(descripteme);
@@ -67,9 +66,10 @@ public class InterviewText implements Serializable {
 
     public void addDescripteme(Descripteme descripteme) {
         descriptemes.add(descripteme);
-        descripteme.getDuplicatedDescriptemeProperty().addListener(value -> {
-            addDescripteme(descripteme.getDuplicatedDescriptemeProperty().getValue());
-        });
+    }
+
+    public void removeDescripteme(Descripteme descripteme) {
+        descriptemes.remove(descripteme);
     }
 
     public List<Annotation> getSortedAnnotation() {

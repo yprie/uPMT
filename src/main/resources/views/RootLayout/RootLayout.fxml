@@ -24,10 +24,13 @@
                <SeparatorMenuItem mnemonicParsing="false"/>
                <MenuItem fx:id="quitterBouton" mnemonicParsing="false" onAction="#close" text="%quit"/>
            </Menu>
+           <Menu fx:id="viewMenu" mnemonicParsing="false" text="%view">
+               <MenuItem fx:id="collapseAllMoments" mnemonicParsing="false" text="%collapse_all_moments"/>
+           </Menu>
            <Menu mnemonicParsing="false" text="%edit">
                <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
                <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>
-               <RadioMenuItem fx:id="scrollOnReveal" mnemonicParsing="false"  text="%scroll_on_reveal"/>
+               <RadioMenuItem fx:id="scrollOnReveal" mnemonicParsing="false" text="%scroll_on_reveal"/>
            </Menu>
            <Menu mnemonicParsing="false" text="%language">
                <MenuItem fx:id="anglais" mnemonicParsing="false" onAction="#openEnglishVersion" text="English"/>
@@ -39,10 +42,12 @@
                <MenuItem fx:id="aboutUs" mnemonicParsing="false" onAction="#aboutUs" text="%about_us"/>
                <MenuItem fx:id="userGuide" mnemonicParsing="false" onAction="#openALink" text="%userGuide"/>
            </Menu>
-           <!--<Menu mnemonicParsing="false" text="%tools">
-               <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category"/>
-               <MenuItem mnemonicParsing="false" onAction="#momentsComparaison" text="%moments_comparaison"/>
-           </Menu>-->
+           <!--            <Menu mnemonicParsing="false" text="%tools">
+                         <items>
+                           <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category" />
+                           <MenuItem mnemonicParsing="false" onAction="#momentsComparaison" text="%moments_comparaison" />
+                         </items>
+                       </Menu>-->
        </MenuBar>
    </top>
 </BorderPane>

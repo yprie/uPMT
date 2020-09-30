@@ -31,7 +31,6 @@ public class JustificationCell extends ListViewController<Descripteme> implement
     @FXML private Label text;
     @FXML private MenuButton menuButton;
     @FXML BorderPane container;
-    @FXML ImageView descriptemeDndLogo;
 
     private JustificationCommandFactory factory;
     private Descripteme descripteme;

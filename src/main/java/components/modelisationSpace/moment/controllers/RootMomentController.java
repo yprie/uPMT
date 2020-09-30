@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import utils.modelControllers.ListView.ListView;
 
@@ -25,7 +24,6 @@ public class RootMomentController implements Initializable {
     private MomentCommandFactory childCmdFactory;
     private ScrollPaneCommandFactory paneCmdFactory;
 
-    private @FXML BorderPane momentsSpace;
     private @FXML HBox childrenBox;
     private ListView<Moment, MomentController> momentsHBox;
 

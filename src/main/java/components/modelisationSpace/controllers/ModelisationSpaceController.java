@@ -1,11 +1,12 @@
 package components.modelisationSpace.controllers;
 
+import application.configuration.AppSettings;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.hooks.ModelisationSpaceHook;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.moment.controllers.RootMomentController;
 import javafx.scene.input.TransferMode;
-import models.Descripteme;
+import javafx.scene.transform.Scale;
 import models.RootMoment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +14,6 @@ import javafx.fxml.Initializable;
 import java.io.IOException;
 import java.net.URL;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import models.TemplateMoment;
 import utils.dragAndDrop.DragStore;
@@ -28,6 +27,8 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
 
     private  @FXML AnchorPane pane;
     private @FXML ScrollOnDragPane superPane;
+
+    AnchorPane anchorPane = new AnchorPane(); // Container
 
     private ModelisationSpaceHook hooks;
     private ModelisationSpaceHookNotifier hooksNotifier;
@@ -59,7 +60,15 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         clearSpace();
         if(m != null) {
             rmController = new RootMomentController(m, paneCmdFactory, hooksNotifier);
-            superPane.setContent(RootMomentController.createRootMoment(rmController));
+            anchorPane.getChildren().clear();
+            anchorPane.getChildren().add(RootMomentController.createRootMoment(rmController));
+            superPane.setContent(anchorPane);
+            double r = AppSettings.zoomLevelProperty.getValue() * 0.01;
+            anchorPane.getTransforms().setAll(new Scale(r, r,0, 0));
+            AppSettings.zoomLevelProperty.addListener((l) -> {
+                double ratio = AppSettings.zoomLevelProperty.getValue() * 0.01;
+                anchorPane.getTransforms().setAll(new Scale(ratio, ratio,0, 0));
+            });
         }
     }
 

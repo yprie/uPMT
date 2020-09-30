@@ -1,6 +1,5 @@
 package components.interviewPanel.Controllers;
 
-import application.configuration.AppSettings;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -48,34 +47,7 @@ public class RichTextAreaController {
         setUpClick();
         setUpPopUp();
 
-        // Two listeners that update the view (highlight and underline)
-        this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
-            while (c.next()) {
-                for (Annotation removed : c.getRemoved()) {
-                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
-                    area.deselect();
-                }
-                for (Annotation added : c.getAddedSubList()) {
-                    applyStyle(added.getStartIndex(), added.getEndIndex());
-                    area.deselect();
-                }
-            }
-        });
-
-        this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
-            while (c.next()) {
-                for (Descripteme removed : c.getRemoved()) {
-                    bindDescripteme(removed, false);
-                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
-                    area.deselect();
-                }
-                for (Descripteme added : c.getAddedSubList()) {
-                    bindDescripteme(added, true);
-                    applyStyle(added.getStartIndex(), added.getEndIndex());
-                    area.deselect();
-                }
-            }
-        });
+        bind();
 
         // Watch for new descriptemes
         getGlobalVariables()
@@ -83,7 +55,8 @@ public class RichTextAreaController {
                 .addListener(newValue -> this.updateDescripteme());
 
         // Initialize view annotation
-        interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
+        //interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
+        applyStyleInitialize();
     }
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
@@ -120,6 +93,38 @@ public class RichTextAreaController {
                 area.getSelection().getStart(),
                 area.getSelection().getEnd()
         )));
+    }
+
+    public void bind() {
+        System.out.println(100);
+        // Two listeners that update the view (highlight and underline)
+        this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
+            while (c.next()) {
+                for (Annotation removed : c.getRemoved()) {
+                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
+                    area.deselect();
+                }
+                for (Annotation added : c.getAddedSubList()) {
+                    applyStyle(added.getStartIndex(), added.getEndIndex());
+                    area.deselect();
+                }
+            }
+        });
+
+        this.interviewText.getDescriptemesProperty().addListener((ListChangeListener.Change<? extends Descripteme> c) -> {
+            while (c.next()) {
+                for (Descripteme removed : c.getRemoved()) {
+                    bindDescripteme(removed, false);
+                    applyStyle(removed.getStartIndex(), removed.getEndIndex());
+                    area.deselect();
+                }
+                for (Descripteme added : c.getAddedSubList()) {
+                    bindDescripteme(added, true);
+                    applyStyle(added.getStartIndex(), added.getEndIndex());
+                    area.deselect();
+                }
+            }
+        });
     }
 
     private void setUpPopUp() {
@@ -184,50 +189,57 @@ public class RichTextAreaController {
         }
     }
 
+    private void applyStyleInitialize() {
+        interviewText.getAnnotationsProperty().forEach(annotation -> {
+            area.setStyle(
+                    annotation.getStartIndex(),
+                    annotation.getEndIndex(),
+                    "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";"
+            );
+        });
+        /*HashMap<Integer, String> styles = new HashMap<>();
+        List<Integer> changes = new ArrayList<>();
+        interviewText.getDescriptemesProperty().forEach(descripteme -> {
+            changes.add(descripteme.getStartIndex());
+            changes.add(descripteme.getEndIndex());
+        });*/
+    }
+
     private void applyStyle(int start, int end) {
         for (int i = start ; i < end ; i++) {
-            String css = "";
-            Annotation annotation = interviewText.getAnnotationByIndex(i);
-            if (annotation != null) {
-                css += "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
-                if (annotation.isSelected()) {
-                    css += "-rtfx-border-stroke-color: black; " +
-                            "-rtfx-border-stroke-width: 1;";
-                }
-            }
-            ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
-            if (descriptemes.size() >= 1) {
-                int size = 1;
-                if (descriptemes.size() >= 2) {
-                    size = 2;
-                }
-                css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: " + size + ";";
-                boolean isRevealed = false;
-                for (Descripteme descripteme: descriptemes) {
-                    if (descripteme.getRevealedProperty().get()) {
-                        isRevealed = true;
-                        break;
-                    }
-                }
-                if (isRevealed) {
-                    css += "-rtfx-border-stroke-dash-array: 5;-rtfx-border-stroke-color: black;-rtfx-border-stroke-width: 1;";
-                }
-            }
-
-            area.setStyle(i, i+1, css);
+            area.setStyle(i, i+1, getCSS(i));
         }
     }
 
-    private void scrollToDescripteme(Descripteme descripteme) {
-        area.moveTo(0);
-        area.requestFollowCaret();
-        Platform.runLater(() -> {
-            area.moveTo(descripteme.getStartIndex());
-            area.requestFollowCaret();
-            Platform.runLater(() -> {
-                area.scrollYBy(area.getHeight() / 2);
-            });
-        });
+    private String getCSS(int i) {
+        String css = "";
+        Annotation annotation = interviewText.getAnnotationByIndex(i);
+        if (annotation != null) {
+            css += "-rtfx-background-color: " + annotation.getColor().toString().replace("0x", "#") + ";";
+            if (annotation.isSelected()) {
+                css += "-rtfx-border-stroke-color: black; " +
+                        "-rtfx-border-stroke-width: 1;";
+            }
+        }
+        ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(i);
+        if (descriptemes.size() >= 1) {
+            int size = 1;
+            if (descriptemes.size() >= 2) {
+                size = 2;
+            }
+            css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: " + size + ";";
+            boolean isRevealed = false;
+            for (Descripteme descripteme: descriptemes) {
+                if (descripteme.getRevealedProperty().get()) {
+                    isRevealed = true;
+                    break;
+                }
+            }
+            if (isRevealed) {
+                css += "-rtfx-border-stroke-dash-array: 5;-rtfx-border-stroke-color: black;-rtfx-border-stroke-width: 1;";
+            }
+        }
+        return css;
     }
 
     private void bindDescripteme(Descripteme descripteme, boolean bind) {
@@ -252,7 +264,15 @@ public class RichTextAreaController {
 
         ChangeListener listenerScrollToTrigger = (ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
             if (descripteme.getTriggerScrollReveal().getValue()) {
-                scrollToDescripteme(descripteme);
+                area.moveTo(0);
+                area.requestFollowCaret();
+                Platform.runLater(() -> {
+                    area.moveTo(descripteme.getStartIndex());
+                    area.requestFollowCaret();
+                    Platform.runLater(() -> {
+                        area.scrollYBy(area.getHeight() / 2);
+                    });
+                });
             }
             descripteme.setTriggerScrollReveal(false);
         };
@@ -282,10 +302,6 @@ public class RichTextAreaController {
 
     public SimpleObjectProperty<IndexRange> getUserSelection() {
         return userSelection;
-    }
-
-    public void addDescripteme(Descripteme descripteme) {
-        interviewText.addDescripteme(descripteme);
     }
 
     public void select(IndexRange selection) {

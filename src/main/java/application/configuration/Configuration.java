@@ -72,6 +72,7 @@ public class Configuration {
         AppSettings.autoScrollWhenReveal.set(loadOneProperty(properties, "autoScrollWhenReveal").equals("true"));
         String delayRevealDescriptemeString = loadOneProperty(properties, "delayRevealDescripteme");
         AppSettings.delayRevealDescripteme = parseInt(delayRevealDescriptemeString);
+        AppSettings.zoomLevelProperty.set(parseInt(loadOneProperty(properties, "zoomLevel")));
     }
 
     private static String loadOneProperty(Properties properties, String propertyName) {
@@ -125,8 +126,9 @@ public class Configuration {
             // Write the default values to the file
             Properties props = new Properties();
             props.setProperty("locale", Locale.ENGLISH.toString());
-            props.setProperty("autoScrollWhenReveal", "false");
+            props.setProperty("autoScrollWhenReveal", "true");
             props.setProperty("delayRevealDescripteme", "500");
+            props.setProperty("zoomLevel", "100");
             props.store(new FileOutputStream(upmtProperties), null);
         }
         return true;
@@ -164,6 +166,7 @@ public class Configuration {
         props.setProperty("locale", langBundle.getLocale().toString());
         props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal.get()));
         props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.delayRevealDescripteme));
+        props.setProperty("zoomLevel", String.valueOf(AppSettings.zoomLevelProperty.get()));
         props.store(new FileOutputStream(upmtProperties), null);
 
         return true;
