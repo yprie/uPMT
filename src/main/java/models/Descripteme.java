@@ -1,45 +1,31 @@
 package models;
 
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.scene.input.DataFormat;
 
 public class Descripteme extends Fragment {
-
-    // Don't save this on disk, used for linking interview and modeling space (emphasized)
-    /*
-    On creating a descripteme by Drag and Drop, the InterViewText get the created descripteme
-    with the event OnDragDone. When the InterviewText add the reference to this descripteme, it add
-    a listener on the duplicatedFormMeDescripteme.
-    Then, when this descriptemeis duplicated, the duplicatedFormMeDescripteme change and the InterviewText
-    can react to this event by adding the duplicated descripteme to the descripteme list.
-    The goal is to be able to know every descripteme in the InterviewText in order to
-    emphasis them in the modeling space.
-     */
-    private SimpleObjectProperty<Descripteme> duplicatedFormMeDescripteme;
-
     public static final DataFormat format = new DataFormat("Descripteme");
 
-    private final SimpleStringProperty descripteme; // this is the selection (getSelection), the substring of the interview text
+    // this is the selection (getSelection), the substring of the interview text
+    private final SimpleStringProperty descripteme;
 
+    // Whether or not the descripteme is highlighted is the interview
     private SimpleBooleanProperty isRevealed = new SimpleBooleanProperty(false);
+
+    // When set to true, scroll the interview to the descripteme
+    private SimpleBooleanProperty triggerScrollReveal = new SimpleBooleanProperty(false);
 
     public Descripteme(InterviewText interviewText, int startIndex, int endIndex){
         super(interviewText, startIndex, endIndex);
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
-
-        duplicatedFormMeDescripteme = new SimpleObjectProperty<>();
     }
 
     public Descripteme(Annotation a) {
         super(a.getInterviewText(), a.getStartIndex(),a.getEndIndex());
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
-
-        duplicatedFormMeDescripteme = new SimpleObjectProperty<>();
     }
 
     public InterviewText getInterviewText() { return interviewText; }
@@ -53,9 +39,7 @@ public class Descripteme extends Fragment {
     }
 
     public Descripteme duplicate() {
-        Descripteme newDescripteme = new Descripteme(interviewText, startIndex.get(), endIndex.get());
-        duplicatedFormMeDescripteme.set(newDescripteme);
-        return newDescripteme;
+        return new Descripteme(interviewText, startIndex.get(), endIndex.get());
     }
 
     public void modifyIndex(int start, int end) {
@@ -69,15 +53,19 @@ public class Descripteme extends Fragment {
         return format;
     }
 
-    public ObservableObjectValue<Descripteme> getDuplicatedDescriptemeProperty() {
-        return duplicatedFormMeDescripteme;
-    }
-
     public void setRevealed(boolean revealed) {
         this.isRevealed.set(revealed);
     }
 
     public SimpleBooleanProperty getRevealedProperty() {
         return isRevealed;
+    }
+
+    public void setTriggerScrollReveal(boolean triggerScrollReveal) {
+        this.triggerScrollReveal.set(triggerScrollReveal);
+    }
+
+    public SimpleBooleanProperty getTriggerScrollReveal() {
+        return triggerScrollReveal;
     }
 }

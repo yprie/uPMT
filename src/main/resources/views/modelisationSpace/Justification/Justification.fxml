@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<!--<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>-->
 
-<!-- File not used -->
+
 <VBox fx:id="container" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox fx:id="childrenBox" />
-      <HBox fx:id="descriptemeDndZone" alignment="CENTER" prefHeight="34.0" prefWidth="100.0">
-         <children>
-            <ImageView fx:id="descriptemeDndLogo" fitHeight="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../images/addDescriptemeDisabled.png" />
-               </image>
-            </ImageView>
-         </children>
-      </HBox>
-   </children>
+   <VBox fx:id="childrenBox"/>
+   <!--<HBox fx:id="descriptemeDndZone" alignment="CENTER" prefHeight="34.0" prefWidth="100.0">
+      <ImageView fx:id="descriptemeDndLogo" fitHeight="20.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@../../../images/addDescriptemeDisabled.png"/>
+      </ImageView>
+   </HBox>-->
 </VBox>

@@ -21,7 +21,12 @@ public class DeleteInterviewCommand extends ModelUserActionCommand<Void, Void> {
     public Void execute() {
         project.removeInterview(interview);
         if(previousInterview == interview)
-            new SelectCurrentInterviewCommand(project, project.interviewsProperty().size() > 0 ? project.interviewsProperty().get(0) : null).execute();
+            new SelectCurrentInterviewCommand(
+                    project,
+                    project.interviewsProperty().size() > 0
+                            ? project.interviewsProperty().get(0)
+                            : null
+            ).execute();
         return null;
     }
 

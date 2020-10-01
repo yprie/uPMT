@@ -1,6 +1,7 @@
 package application.configuration;
 
 import application.UPMTApp;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,6 +9,8 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
+import static java.lang.Integer.*;
 
 public class Configuration {
 
@@ -64,6 +67,25 @@ public class Configuration {
         Locale.setDefault(locale);
 
         langBundle = ResourceBundle.getBundle("bundles.Lang", locale);
+
+        // Load App settings
+        AppSettings.autoScrollWhenReveal.set(loadOneProperty(properties, "autoScrollWhenReveal").equals("true"));
+        String delayRevealDescriptemeString = loadOneProperty(properties, "delayRevealDescripteme");
+        AppSettings.delayRevealDescripteme = parseInt(delayRevealDescriptemeString);
+        AppSettings.zoomLevelProperty.set(parseInt(loadOneProperty(properties, "zoomLevel")));
+    }
+
+    private static String loadOneProperty(Properties properties, String propertyName) {
+        String value = properties.getProperty(propertyName);
+        if (value != null) {
+            return value;
+        } else {
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                    "Invalid properties file. Please delete the file" + HOME_DIRECTORY + properties_file);
+            alert.showAndWait();
+            return "";
+        }
     }
 
     private static void loadProjectsPath() throws IOException {
@@ -101,8 +123,12 @@ public class Configuration {
             if(!upmtProperties.createNewFile())
                 return false;
 
+            // Write the default values to the file
             Properties props = new Properties();
             props.setProperty("locale", Locale.ENGLISH.toString());
+            props.setProperty("autoScrollWhenReveal", "true");
+            props.setProperty("delayRevealDescripteme", "500");
+            props.setProperty("zoomLevel", "100");
             props.store(new FileOutputStream(upmtProperties), null);
         }
         return true;
@@ -128,17 +154,21 @@ public class Configuration {
         writer.close();
     }
 
-    private static boolean savePropertiesFile() throws IOException {
+    public static boolean savePropertiesFile() throws IOException {
         File upmtProperties = new File(HOME_DIRECTORY + properties_file);
-        //Create property file if not exists.
-        if(!upmtProperties.exists()){
-            if(!upmtProperties.createNewFile())
+        // Create property file if not exists.
+        if (!upmtProperties.exists()) {
+            if (!upmtProperties.createNewFile())
                 return false;
-
-            Properties props = new Properties();
-            props.setProperty("locale", langBundle.getLocale().toString());
-            props.store(new FileOutputStream(upmtProperties), null);
         }
+
+        Properties props = new Properties();
+        props.setProperty("locale", langBundle.getLocale().toString());
+        props.setProperty("autoScrollWhenReveal", String.valueOf(AppSettings.autoScrollWhenReveal.get()));
+        props.setProperty("delayRevealDescripteme", String.valueOf(AppSettings.delayRevealDescripteme));
+        props.setProperty("zoomLevel", String.valueOf(AppSettings.zoomLevelProperty.get()));
+        props.store(new FileOutputStream(upmtProperties), null);
+
         return true;
     }
 

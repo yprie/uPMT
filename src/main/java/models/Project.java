@@ -23,7 +23,7 @@ public class Project implements Serializable {
 
     public Project(String name, SchemaTreeRoot baseScheme) {
         this.name = new SimpleStringProperty(name);
-        this.schemaTreeRoot = new SimpleObjectProperty<SchemaTreeRoot>(baseScheme);
+        this.schemaTreeRoot = new SimpleObjectProperty<>(baseScheme);
 
         this.interviews = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.readOnlyInterviews = new ReadOnlyListWrapper<>(this.interviews);
@@ -31,11 +31,11 @@ public class Project implements Serializable {
         this.selectedInterview = new SimpleObjectProperty<>();
     }
 
-    public String getName() { return this.name.get(); };
+    public String getName() { return this.name.get(); }
     public StringProperty nameProperty() { return this.name; }
 
-    public SchemaTreeRoot getSchemaTreeRoot() { return schemaTreeRoot.get(); };
-    public SimpleObjectProperty<SchemaTreeRoot> schemaTreeRootProperty() {return schemaTreeRoot;};
+    public SchemaTreeRoot getSchemaTreeRoot() { return schemaTreeRoot.get(); }
+    public SimpleObjectProperty<SchemaTreeRoot> schemaTreeRootProperty() {return schemaTreeRoot;}
 
     public void addInterview(Interview i) {
         interviews.add(i);
@@ -51,7 +51,7 @@ public class Project implements Serializable {
             selectedInterview.set(interview);
         }
         else
-            throw new IllegalArgumentException("The selected interview is not contained in the current project !");
+            throw new IllegalArgumentException("The selected interview is not contained in the current project!");
     }
     public ObservableValue<Interview> selectedInterviewProperty() { return selectedInterview; }
 

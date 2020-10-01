@@ -105,12 +105,15 @@ public class InterviewTextController implements Initializable {
         richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
                 .getTool().handle(richTextAreaController.getUserSelection().getValue()));
 
-        Platform.runLater(this::initializeDescripteme);
-    }
+        Platform.runLater(() -> {
+            // Initialize descriptemes
+            interview.getInterviewText().getDescriptemesProperty().clear();
+            GlobalVariables.getGlobalVariables().getAllDescripteme()
+                    .forEach(descripteme -> {
+                        interview.getInterviewText().addDescripteme(descripteme);
+                    });
+        });
 
-    private void initializeDescripteme() {
-        GlobalVariables.getGlobalVariables().getAllDescripteme()
-                .forEach(descripteme -> richTextAreaController.addDescripteme(descripteme));
     }
 
     private void setupDragAndDrop() {
@@ -145,7 +148,6 @@ public class InterviewTextController implements Initializable {
 
         paneDragText.setOnDragDone(event -> {
             if (event.isAccepted()) {
-                richTextAreaController.addDescripteme(DragStore.getDraggable());
                 hideDnDPane();
             }
         });

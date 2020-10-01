@@ -3,104 +3,107 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <AnchorPane fx:id="momentBoundingBox" xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
-            <children>
-                <GridPane fx:id="grid">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="NEVER"/>
-                        <ColumnConstraints hgrow="ALWAYS"/>
-                        <ColumnConstraints hgrow="SOMETIMES"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-                        <RowConstraints vgrow="NEVER"/>
-                    </rowConstraints>
-                    <children>
-                        <AnchorPane fx:id="categoryDropper" GridPane.columnIndex="1">
-                            <children>
-                                <BorderPane fx:id="momentBody" styleClass="momentCard"
-                                            stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0"
-                                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                            AnchorPane.topAnchor="0.0">
-                                    <center>
-                                        <BorderPane BorderPane.alignment="CENTER">
-                                            <BorderPane.margin>
-                                                <Insets/>
-                                            </BorderPane.margin>
-                                            <padding>
-                                                <Insets bottom="10.0"/>
-                                            </padding>
-
-                                        </BorderPane>
-                                    </center>
-                                    <top>
-                                        <VBox>
-                                            <HBox alignment="CENTER_RIGHT" minWidth="150.0" styleClass="moment-header"
-                                                  BorderPane.alignment="CENTER">
-                                                <children>
-                                                    <MenuButton layoutX="128.0" layoutY="13.0" mnemonicParsing="false"
-                                                                style="visibility: hidden;">
-                                                        <items>
-                                                            <MenuItem mnemonicParsing="false" text="Action 1"/>
-                                                            <MenuItem mnemonicParsing="false" text="Action 2"/>
-                                                        </items>
-                                                    </MenuButton>
-                                                    <HBox fx:id="nameBox" alignment="CENTER" HBox.hgrow="ALWAYS">
-                                                        <children>
-                                                            <Label fx:id="momentName" text="Nom moment"
-                                                                   HBox.hgrow="ALWAYS">
-                                                                <padding>
-                                                                    <Insets left="20.0" right="20.0"/>
-                                                                </padding>
-                                                            </Label>
-                                                        </children>
-                                                    </HBox>
-                                                    <MenuButton fx:id="menuButton" mnemonicParsing="false"
-                                                                styleClass="threedotsTreeview"
-                                                                stylesheets="@../../../css/application.css"/>
-                                                </children>
-                                                <padding>
-                                                    <Insets bottom="3.0" top="3.0"/>
-                                                </padding>
-                                            </HBox>
-                                            <TextArea fx:id="commentArea" prefHeight="30" prefWidth="150"
-                                                      promptText="Ecrivez quelques commentaires ici:"
-                                                      styleClass="momentComment"
-                                                      stylesheets="@../../../css/application.css" visible="false">
-                                                <VBox.margin>
-                                                    <Insets/>
-                                                </VBox.margin>
-                                                <padding>
-                                                    <Insets bottom="5.0"/>
-                                                </padding>
-                                            </TextArea>
-                                        </VBox>
-                                    </top>
-                                    <padding>
-                                        <Insets bottom="10.0" left="10.0" right="10.0"/>
-                                    </padding>
-                                    <bottom>
-                                        <VBox fx:id="categoryContainer" BorderPane.alignment="CENTER"/>
-                                    </bottom>
-                                </BorderPane>
-                            </children>
-                        </AnchorPane>
-                    </children>
-                </GridPane>
-                <BorderPane fx:id="momentContainer">
-                    <padding>
-                        <Insets right="15.0"/>
-                    </padding>
+    <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <GridPane fx:id="grid">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                <RowConstraints vgrow="NEVER"/>
+            </rowConstraints>
+            <AnchorPane fx:id="categoryDropper" GridPane.columnIndex="1">
+                <BorderPane fx:id="momentContainer" styleClass="momentCard"
+                            stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0"
+                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                            AnchorPane.topAnchor="0.0">
                     <center>
-                        <HBox fx:id="childrenBox" alignment="CENTER" BorderPane.alignment="CENTER"/>
+                        <BorderPane BorderPane.alignment="CENTER">
+                            <BorderPane.margin>
+                                <Insets/>
+                            </BorderPane.margin>
+                            <padding>
+                                <Insets bottom="10.0"/>
+                            </padding>
+
+                        </BorderPane>
                     </center>
+                    <top>
+                        <BorderPane fx:id="momentBody">
+                            <top>
+                                <HBox alignment="CENTER_RIGHT" minWidth="150.0" styleClass="moment-header"
+                                      BorderPane.alignment="CENTER">
+                                    <padding>
+                                        <Insets bottom="3.0" top="3.0"/>
+                                    </padding>
+                                    <ImageView fx:id="collapseIcon" fitHeight="20.0" fitWidth="20.0"
+                                               pickOnBounds="true" preserveRatio="true"
+                                               BorderPane.alignment="TOP_CENTER">
+                                        <BorderPane.margin>
+                                            <Insets bottom="5.0" right="5.0" top="5.0"/>
+                                        </BorderPane.margin>
+                                        <Image url="@../../../images/collapse_up.png"/>
+                                    </ImageView>
+                                    <MenuButton layoutX="128.0" layoutY="13.0" mnemonicParsing="false"
+                                                style="visibility: hidden;">
+                                        <items>
+                                            <MenuItem mnemonicParsing="false" text="Action 1"/>
+                                            <MenuItem mnemonicParsing="false" text="Action 2"/>
+                                        </items>
+                                    </MenuButton>
+                                    <HBox fx:id="nameBox" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                        <Label fx:id="momentName" text="Nom moment"
+                                               HBox.hgrow="ALWAYS">
+                                            <padding>
+                                                <Insets left="20.0" right="20.0"/>
+                                            </padding>
+                                        </Label>
+                                    </HBox>
+                                    <MenuButton fx:id="menuButton" mnemonicParsing="false"
+                                                styleClass="threedotsTreeview"
+                                                stylesheets="@../../../css/application.css"/>
+                                </HBox>
+                            </top>
+                            <center>
+                                <TextArea fx:id="commentArea" prefHeight="30" prefWidth="150"
+                                          promptText="Ecrivez quelques commentaires ici:"
+                                          styleClass="momentComment"
+                                          stylesheets="@../../../css/application.css" visible="false">
+                                    <VBox.margin>
+                                        <Insets/>
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets bottom="5.0"/>
+                                    </padding>
+                                </TextArea>
+                            </center>
+
+                        </BorderPane>
+                    </top>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0"/>
+                    </padding>
+                    <bottom>
+                        <VBox fx:id="categoryContainer" BorderPane.alignment="CENTER"/>
+                    </bottom>
                 </BorderPane>
-            </children>
-        </VBox>
-    </children>
+            </AnchorPane>
+        </GridPane>
+        <BorderPane fx:id="childrenMomentContainer">
+            <padding>
+                <Insets right="15.0"/>
+            </padding>
+            <center>
+                <HBox fx:id="childrenBox" alignment="CENTER" BorderPane.alignment="CENTER"/>
+            </center>
+        </BorderPane>
+    </VBox>
 </AnchorPane>

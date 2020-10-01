@@ -19,12 +19,22 @@ public class RemoveConcreteProperty extends ModelUserActionCommand<Void, Void> {
     @Override
     public Void execute() {
         parent.removeConcreteProperty(property);
+
+        // Remove the underlining of the descripteme deleted
+        property.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().removeDescripteme(descripteme);
+        });
         return null;
     }
 
     @Override
     public Void undo() {
         parent.addConcreteProperty(index, property);
+
+        // Add the underlining of the descripteme deleted
+        property.getJustification().descriptemesProperty().forEach(descripteme -> {
+            descripteme.getInterviewText().addDescripteme(descripteme);
+        });
         return null;
     }
 }
