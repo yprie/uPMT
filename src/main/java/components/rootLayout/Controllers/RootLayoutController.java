@@ -302,7 +302,7 @@ public class RootLayoutController implements Initializable {
 		final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombSAVE = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombNEW = new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
-		final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
 		InputContext context = InputContext.getInstance();
 		String loc = context.getLocale().toString();
 		System.out.println(loc);  
