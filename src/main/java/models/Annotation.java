@@ -15,12 +15,12 @@ public class Annotation extends Fragment {
     }
 
     public Annotation(Fragment fragment, Color color) {
-        super(fragment.interviewText, fragment.getStartIndex(), fragment.getEndIndex());
+        super(fragment.interviewText, fragment.getIndexRange());
         this.color = color;
     }
 
     public Annotation(Annotation annotation) {
-        super(annotation.interviewText, annotation.getStartIndex(), annotation.getEndIndex());
+        super(annotation.interviewText, annotation.getIndexRange());
         this.color = annotation.color;
     }
 
