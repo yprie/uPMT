@@ -1,14 +1,13 @@
 package components.interviewSelector.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
-import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
+import components.modelisationSpace.controllers.ModelisationSpaceController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import models.Interview;
 import utils.ResourceLoader;
 
 import java.net.URL;
@@ -24,10 +23,12 @@ public class InterviewSelectorCellController implements Initializable {
     protected Interview interview;
     private boolean shouldRemoveMenuButtonVisibility;
     private InterviewSelectorCommandFactory commandFactory;
+    private ModelisationSpaceController modelisationSpaceController;
 
-    public InterviewSelectorCellController(Interview interview, InterviewSelectorCommandFactory commandFactory) {
+    public InterviewSelectorCellController(Interview interview, InterviewSelectorCommandFactory commandFactory, ModelisationSpaceController modelisationSpaceController) {
         this.interview = interview;
         this.commandFactory = commandFactory;
+        this.modelisationSpaceController = modelisationSpaceController;
     }
 
     @Override
@@ -39,6 +40,7 @@ public class InterviewSelectorCellController implements Initializable {
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
+        MenuItem printAsButton = new MenuItem("export as png");
 
         deleteButton.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -51,9 +53,11 @@ public class InterviewSelectorCellController implements Initializable {
             }
         });
         editButton.setOnAction(actionEvent -> { commandFactory.modifyInterview(interview).execute(); });
+        printAsButton.setOnAction(actionEvent -> { commandFactory.printAsInterview(interview, modelisationSpaceController).execute(); });
 
         optionsMenu.getItems().add(editButton);
         optionsMenu.getItems().add(deleteButton);
+        optionsMenu.getItems().add(printAsButton);
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {

@@ -110,6 +110,8 @@ public class MainViewController implements Initializable {
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview(), false).execute();
 		if(project.getSelectedInterview() != null)
 			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
+
+		interviewSelector.setModelisationSpaceController(modelisationSpaceController);
 	}
 
 	@Override
