@@ -85,6 +85,7 @@ public class InterviewPanelController implements Initializable {
                 textInterviewComment.setVisible(false);
                 mainSplitPane.setDividerPosition(1, 1.0);
             } else {
+
                 // open
                 buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
                 topBarContainerTextInterview.setCenter(headerGrid);

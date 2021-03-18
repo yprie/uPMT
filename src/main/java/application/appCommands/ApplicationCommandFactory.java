@@ -28,4 +28,5 @@ public class ApplicationCommandFactory {
     public ExportToCSVCommand exportToCSV() {return new ExportToCSVCommand(application);}
     public SetAutoScrollWhenRevealCommand SetAutoScrollWhenReveal(boolean autoScrollWhenReveal) {return new SetAutoScrollWhenRevealCommand(application, autoScrollWhenReveal);}
     public CollapseAllMoments collapseAllMoments(boolean collapse) { return new CollapseAllMoments(application, collapse); }
+    public ExportAsPngCommand exportAsPng(){ return new ExportAsPngCommand(application); }
 }

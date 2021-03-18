@@ -70,6 +70,7 @@ public class RootLayoutController implements Initializable {
 	public @FXML MenuItem redo;
 	public @FXML RadioMenuItem scrollOnReveal;
 	public @FXML MenuItem collapseAllMoments;
+	public @FXML MenuItem exportAsPng;
 
 	public @FXML MenuItem espanol;
 	public @FXML MenuItem italiano;
@@ -335,6 +336,10 @@ public class RootLayoutController implements Initializable {
 					: Configuration.langBundle.getString("collapse_all_moments");
 			collapseAllMoments.setText(label);
 			allCollapsed = !allCollapsed;
+		}));
+
+		exportAsPng.setOnAction((event -> {
+			appCommandFactory.exportAsPng().execute();
 		}));
 
 		setupRecentProjectUpdate();

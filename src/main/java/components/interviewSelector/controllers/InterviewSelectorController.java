@@ -2,8 +2,6 @@ package components.interviewSelector.controllers;
 
 import application.configuration.Configuration;
 import components.interviewSelector.InterviewSelectorCell;
-import components.modelisationSpace.controllers.ModelisationSpaceController;
-import models.Interview;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import models.Interview;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,12 +26,6 @@ public class InterviewSelectorController implements Initializable  {
 
     private ObservableList<Interview> interviews;
     private ListChangeListener<Interview> listChangeListener;
-
-    private ModelisationSpaceController modelisationSpaceController;
-
-    public void setModelisationSpaceController(ModelisationSpaceController model){
-        this.modelisationSpaceController = model;
-    }
 
     private ObservableValue<Interview> selectedInterview;
     private ChangeListener<Interview> selectedInterviewChanged;
@@ -60,7 +53,7 @@ public class InterviewSelectorController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addInterviewButton.setOnAction(event -> { commandFactory.createNewInterview().execute(); });
-        interviewList.setCellFactory(listView -> new InterviewSelectorCell(commandFactory, modelisationSpaceController));
+        interviewList.setCellFactory(listView -> new InterviewSelectorCell(commandFactory));
         bind(interviews);
         for(Interview i: interviews){
             this.interviewList.getItems().add(i);

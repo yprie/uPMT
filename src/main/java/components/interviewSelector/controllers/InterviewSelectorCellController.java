@@ -2,7 +2,6 @@ package components.interviewSelector.controllers;
 
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
-import components.modelisationSpace.controllers.ModelisationSpaceController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,12 +22,10 @@ public class InterviewSelectorCellController implements Initializable {
     protected Interview interview;
     private boolean shouldRemoveMenuButtonVisibility;
     private InterviewSelectorCommandFactory commandFactory;
-    private ModelisationSpaceController modelisationSpaceController;
 
-    public InterviewSelectorCellController(Interview interview, InterviewSelectorCommandFactory commandFactory, ModelisationSpaceController modelisationSpaceController) {
+    public InterviewSelectorCellController(Interview interview, InterviewSelectorCommandFactory commandFactory) {
         this.interview = interview;
         this.commandFactory = commandFactory;
-        this.modelisationSpaceController = modelisationSpaceController;
     }
 
     @Override
@@ -40,7 +37,6 @@ public class InterviewSelectorCellController implements Initializable {
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
-        MenuItem printAsButton = new MenuItem("export as png");
 
         deleteButton.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -53,11 +49,9 @@ public class InterviewSelectorCellController implements Initializable {
             }
         });
         editButton.setOnAction(actionEvent -> { commandFactory.modifyInterview(interview).execute(); });
-        printAsButton.setOnAction(actionEvent -> { commandFactory.printAsInterview(interview, modelisationSpaceController).execute(); });
 
         optionsMenu.getItems().add(editButton);
         optionsMenu.getItems().add(deleteButton);
-        optionsMenu.getItems().add(printAsButton);
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {

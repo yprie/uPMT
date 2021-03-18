@@ -2,21 +2,18 @@ package components.interviewSelector;
 
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
-import components.modelisationSpace.controllers.ModelisationSpaceController;
-import models.Interview;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
+import models.Interview;
 
 public class InterviewSelectorCell extends ListCell<Interview> {
 
     private InterviewSelectorCellController controller;
     private InterviewSelectorCommandFactory commandFactory;
-    private ModelisationSpaceController modelisationSpaceController;
 
-    public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory, ModelisationSpaceController modelisationSpaceController) {
+    public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory ) {
         this.commandFactory = commandFactory;
-        this.modelisationSpaceController = modelisationSpaceController;
         addEventHandler(MouseEvent.MOUSE_ENTERED, mouseEvent -> { if(controller != null)controller.setOnHover(true); });
         addEventHandler(MouseEvent.MOUSE_EXITED, mouseEvent -> {if(controller != null)controller.setOnHover(false); });
     }
@@ -32,7 +29,7 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/views/InterviewSelector/InterviewSelectorCell.fxml"));
             //Cell Controller
-            InterviewSelectorCellController newController = new InterviewSelectorCellController(item, commandFactory, modelisationSpaceController);
+            InterviewSelectorCellController newController = new InterviewSelectorCellController(item, commandFactory);
             loader.setController(newController);
             controller = newController;
 
