@@ -306,13 +306,31 @@ public class RootLayoutController implements Initializable {
 		InputContext context = InputContext.getInstance();
 		String loc = context.getLocale().toString();
 		System.out.println(loc);  
-		// javafx keyboard layout bug management 
-		if (OS.current == OS.mac) {
-			if (loc.equals("fr")) {
-				Locale.setDefault(Locale.FRANCE);
+		// javafx keyboard layout bug management
 
-			} else {
-				Locale.setDefault(Locale.US);
+		if (OS.current == OS.mac) {
+			System.out.println("keyboard mac os");
+			switch (loc) {
+				case "fr":
+				case "_US_UserDefined_251":
+					Locale.setDefault(Locale.FRENCH);
+					System.out.println("switched to fr");
+					break;
+				case "de_AT":
+				case "de":
+				case "de_CH":
+					Locale.setDefault(Locale.GERMAN);
+					System.out.println("switched to de");
+					break;
+				case "it__Pro":
+				case "it":
+					Locale.setDefault(Locale.ITALIAN);
+					System.out.println("switched to it");
+					break;
+				default:
+					Locale.setDefault(Locale.ENGLISH);
+					System.out.println("switched to en");
+					break;
 			}
 		}
 
