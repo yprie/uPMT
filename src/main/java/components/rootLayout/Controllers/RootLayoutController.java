@@ -302,7 +302,7 @@ public class RootLayoutController implements Initializable {
 		final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombSAVE = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombNEW = new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
-		final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+		final KeyCodeCombination keyCombUNDO;
 		InputContext context = InputContext.getInstance();
 		String loc = context.getLocale().toString();
 		System.out.println(loc);  
@@ -315,23 +315,30 @@ public class RootLayoutController implements Initializable {
 				case "_US_UserDefined_251":
 					Locale.setDefault(Locale.FRENCH);
 					System.out.println("switched to fr");
+					keyCombUNDO = new KeyCodeCombination(KeyCode.W, KeyCodeCombination.CONTROL_DOWN);
 					break;
 				case "de_AT":
 				case "de":
 				case "de_CH":
 					Locale.setDefault(Locale.GERMAN);
 					System.out.println("switched to de");
+					keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 					break;
 				case "it__Pro":
 				case "it":
 					Locale.setDefault(Locale.ITALIAN);
 					System.out.println("switched to it");
+					keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 					break;
 				default:
 					Locale.setDefault(Locale.ENGLISH);
 					System.out.println("switched to en");
+					keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 					break;
 			}
+		}
+		else {
+			keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.CONTROL_DOWN);
 		}
 
 		undo.setAccelerator(keyCombUNDO);
