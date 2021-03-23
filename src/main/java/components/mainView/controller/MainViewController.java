@@ -121,4 +121,8 @@ public class MainViewController implements Initializable {
 		SchemaCategoryUsesCounter service = new SchemaCategoryUsesCounter(project, modelisationSpaceController.getHooks());
 		SchemaPropertyUsesCounter service2 = new SchemaPropertyUsesCounter(project, modelisationSpaceController.getHooks());
 	}
+
+	public ModelisationSpaceController getModelisationSpaceController(){
+		return this.modelisationSpaceController;
+	}
 }

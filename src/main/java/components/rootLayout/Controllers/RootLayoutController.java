@@ -21,26 +21,26 @@
 
 package components.rootLayout.Controllers;
 
-import application.configuration.AppSettings;
-import components.aboutUs.Controllers.AboutUsController;
-import application.history.HistoryManager;
-import javafx.scene.control.RadioMenuItem;
-import models.Project;
 import application.appCommands.ApplicationCommandFactory;
+import application.configuration.AppSettings;
 import application.configuration.Configuration;
-import components.mainView.controller.MainViewController;
+import application.history.HistoryManager;
+import components.aboutUs.Controllers.AboutUsController;
 import components.interviewSelector.controllers.NewInterviewController;
+import components.mainView.controller.MainViewController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.*;
+import javafx.stage.WindowEvent;
+import models.Project;
 import utils.DialogState;
 import utils.OS;
 import utils.ZoomMenuItem;
@@ -77,6 +77,8 @@ public class RootLayoutController implements Initializable {
 
 	public @FXML MenuItem userGuide;
 
+	private MainViewController mainViewController;
+
 	private ApplicationCommandFactory appCommandFactory;
 
 	boolean allCollapsed = true; // for collapse/open all moments
@@ -102,6 +104,7 @@ public class RootLayoutController implements Initializable {
 		Platform.runLater(() -> {
 			bindUndoRedoButtons(false);
 			MainViewController controller = new MainViewController(project);
+			this.mainViewController = controller;
 			rootLayout.setCenter(MainViewController.createMainView(controller));
 			appCommandFactory.changeApplicationTitle("uPMT - "+ project.getName()).execute();
 			setProjectRelatedControlsDisable(false);
@@ -339,7 +342,7 @@ public class RootLayoutController implements Initializable {
 		}));
 
 		exportAsPng.setOnAction((event -> {
-			appCommandFactory.exportAsPng().execute();
+			appCommandFactory.exportAsPng(this.mainViewController.getModelisationSpaceController().getSuperPane()).execute();
 		}));
 
 		setupRecentProjectUpdate();

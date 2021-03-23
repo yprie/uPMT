@@ -3,6 +3,7 @@ package application.appCommands;
 import application.UPMTApp;
 import models.Interview;
 import components.interviewSelector.modelCommands.AddInterviewCommand;
+import utils.scrollOnDragPane.ScrollOnDragPane;
 
 import java.util.Locale;
 
@@ -28,5 +29,5 @@ public class ApplicationCommandFactory {
     public ExportToCSVCommand exportToCSV() {return new ExportToCSVCommand(application);}
     public SetAutoScrollWhenRevealCommand SetAutoScrollWhenReveal(boolean autoScrollWhenReveal) {return new SetAutoScrollWhenRevealCommand(application, autoScrollWhenReveal);}
     public CollapseAllMoments collapseAllMoments(boolean collapse) { return new CollapseAllMoments(application, collapse); }
-    public ExportAsPngCommand exportAsPng(){ return new ExportAsPngCommand(application); }
+    public ExportAsPngCommand exportAsPng(ScrollOnDragPane pane){ return new ExportAsPngCommand(application, pane); }
 }

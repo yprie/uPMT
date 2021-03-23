@@ -5,12 +5,9 @@ import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.hooks.ModelisationSpaceHook;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.moment.controllers.RootMomentController;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.transform.Scale;
@@ -19,8 +16,6 @@ import models.TemplateMoment;
 import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 
-import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,19 +46,6 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
 
         hooks = new ModelisationSpaceHook();
         hooksNotifier = new ModelisationSpaceHookNotifier(hooks);
-    }
-
-    public void TakeSnapshot(){
-        try {
-            System.out.println("Test de la méthode snapshot");
-            WritableImage image = this.anchorPane.snapshot(new SnapshotParameters(), null);
-            File file = new File("C:\\Users\\esteb\\.upmt\\test");
-
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -121,5 +103,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
                 rmController.addMoment(t.createConcreteMoment());
             }
         });
+    }
+
+    public ScrollOnDragPane getSuperPane(){
+        return this.superPane;
     }
 }
