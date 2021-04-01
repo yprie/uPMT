@@ -3,6 +3,7 @@ package components.modelisationSpace.moment.appCommands;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.modelisationSpace.moment.modelCommands.RenameMoment;
+import components.modelisationSpace.moment.modelCommands.SetMomentTrans;
 import models.Moment;
 import utils.DialogState;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
@@ -27,12 +28,7 @@ public class SetMomentTransCommand implements Executable {
 
     @Override
     public Object execute() {
-        if (moment.getTransitional()) {
-            moment.setNotTransitional();
-        }
-        else {
-            moment.setTransitional();
-        }
+        HistoryManager.addCommand(new SetMomentTrans(moment, moment.getTransitional()), userCommand);
         return null;
     }
 }

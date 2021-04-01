@@ -98,13 +98,13 @@ public class Moment extends RootMoment implements IDraggable {
     public void setCollapsed(boolean collapsed) { this.collapsed.set(collapsed); }
 
     public boolean getTransitional() { return this.transitional.get(); }
-    public void setTransitional() { this.transitional.set(true); }
-    public void setNotTransitional() {
-        if (this.momentsProperty().isEmpty()) {
-            this.transitional.set(false);
+    public void setTransitional(boolean bool) {
+        if (!this.momentsProperty().isEmpty() && bool) {
+            //provisoire!!!
+            throw new Error("remove the submoments before");
         }
         else {
-            //faire un message d'erreur
+            this.transitional.set(bool);
         }
     }
 
