@@ -172,6 +172,9 @@ public class MomentController extends ListViewController<Moment> implements Init
         //DND
         setupDragAndDrop();
 
+        //transitional moments display
+        displayTransitional();
+
         //Rename moment
         momentName.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
@@ -315,6 +318,11 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         }
     }
+
+    private void displayTransitional() {
+        //rien lol
+    }
+
     @Override
     public Moment getModel() {
         return moment;
