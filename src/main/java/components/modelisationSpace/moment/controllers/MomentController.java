@@ -158,6 +158,10 @@ public class MomentController extends ListViewController<Moment> implements Init
         renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
         menuButton.getItems().add(renameButton);
 
+        MenuItem transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_on_off"));
+        transitionButton.setOnAction(actionEvent -> cmdFactory.transitionCommand(moment).execute());
+        menuButton.getItems().add(transitionButton);
+
         // Show/Hide moment body (comment, justifications, categories)
         collapseIcon.setOnMouseClicked(actionEvent -> {
             moment.setCollapsed(!moment.isCollapsed());

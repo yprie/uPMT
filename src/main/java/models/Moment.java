@@ -27,6 +27,8 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty collapsed;
 
+    private SimpleBooleanProperty transitional; //true = transitional
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
@@ -35,6 +37,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(false);
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
     }
 
     public Moment(String name, String comment, boolean commentVisible, Justification j) {
@@ -45,6 +48,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
     }
 
     public Moment(String name, Descripteme d) {
@@ -55,9 +59,10 @@ public class Moment extends RootMoment implements IDraggable {
         this.commentVisible = new SimpleBooleanProperty(false);
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
     }
 
-    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed) {
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional) {
         super();
         this.name = new SimpleStringProperty(name);
         this.comment = new SimpleStringProperty(comment);
@@ -65,6 +70,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
     }
 
     public void setName(String name) {
@@ -90,6 +96,17 @@ public class Moment extends RootMoment implements IDraggable {
     public boolean isCollapsed() { return collapsed.get(); }
 
     public void setCollapsed(boolean collapsed) { this.collapsed.set(collapsed); }
+
+    public boolean getTransitional() { return this.transitional.get(); }
+    public void setTransitional() { this.transitional.set(true); }
+    public void setNotTransitional() {
+        if (this.momentsProperty().isEmpty()) {
+            this.transitional.set(false);
+        }
+        else {
+            //faire un message d'erreur
+        }
+    }
 
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);

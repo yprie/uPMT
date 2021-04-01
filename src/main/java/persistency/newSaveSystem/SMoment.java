@@ -22,6 +22,7 @@ public class SMoment extends Serializable<Moment> {
     public SJustification justification;
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
+    public boolean transitional;
 
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
@@ -38,6 +39,7 @@ public class SMoment extends Serializable<Moment> {
         this.isCommentVisible = modelReference.isCommentVisible();
         this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
+        this.transitional = modelReference.getTransitional();
 
         this.categories = new ArrayList<>();
         for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
@@ -66,6 +68,14 @@ public class SMoment extends Serializable<Moment> {
         justification = serializer.getObject("justification", SJustification::new);
         categories = serializer.getArray(serializer.setListSuffix(SConcreteCategory.modelName), SConcreteCategory::new);
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
+
+        try {
+            transitional = serializer.getBoolean("transitional");
+        } catch (JSONException error) {
+            transitional = false;
+            //System.out.println("older version, no transitions");
+            //a faire : warning version outdated
+        }
     }
 
     @Override
@@ -77,11 +87,12 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
+        serializer.writeBoolean("transitional", transitional);
     }
 
     @Override
     protected Moment createModel() {
-        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed);
+        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
         for(SConcreteCategory cc: categories)
