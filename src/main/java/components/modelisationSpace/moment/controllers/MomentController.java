@@ -3,12 +3,16 @@ package components.modelisationSpace.moment.controllers;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -62,6 +66,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML HBox nameBox;
     @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
+    @FXML private Text transition;
+    @FXML private HBox transitionBox;
 
     //Importants elements of a moment
     private JustificationController justificationController;
@@ -159,8 +165,12 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(renameButton);
 
         MenuItem transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_on_off"));
-        transitionButton.setOnAction(actionEvent -> cmdFactory.transitionCommand(moment).execute());
+        transitionButton.setOnAction(actionEvent -> {
+            cmdFactory.transitionCommand(moment).execute();
+            displayTransitional();
+        });
         menuButton.getItems().add(transitionButton);
+        displayTransitional();
 
         // Show/Hide moment body (comment, justifications, categories)
         collapseIcon.setOnMouseClicked(actionEvent -> {
@@ -171,9 +181,6 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //DND
         setupDragAndDrop();
-
-        //transitional moments display
-        displayTransitional();
 
         //Rename moment
         momentName.setOnMouseClicked(mouseEvent -> {
@@ -320,7 +327,20 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void displayTransitional() {
-        //rien lol
+        String transition_str_final = "";
+
+        if (!moment.getTransitional()) {
+            transitionBox.getChildren().remove(transition);
+        }
+        else {
+            String transition_str = "| | |";
+            int depth = 40;
+            for (int i = 0; i < depth; i++) {
+                transition_str_final = transition_str_final+"\n"+transition_str;
+            }
+            transition = new Text(transition_str_final);
+            transitionBox.getChildren().add(transition);
+        }
     }
 
     @Override
