@@ -34,7 +34,7 @@ public class UPMTApp {
 
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
         primaryStage.setScene(mainScene);
-        primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication().execute(); });
+        primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication(event).execute(); });
         primaryStage.show();
 
 

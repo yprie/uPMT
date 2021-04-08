@@ -26,12 +26,12 @@ public class ExportAsPngCommand extends ApplicationCommand<Void>{
     @Override
     public Void execute(){
         try {
-            System.out.println("Test de la méthode snapshot");
             WritableImage image = this.pane.snapshot(new SnapshotParameters(), null);
 
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+            fileChooser.setTitle("Export as");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png"));
             File selectedFile = fileChooser.showSaveDialog(application.getPrimaryStage());
             if (selectedFile != null) {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", selectedFile);

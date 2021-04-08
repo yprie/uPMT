@@ -4,6 +4,7 @@ import application.UPMTApp;
 import models.Interview;
 import components.interviewSelector.modelCommands.AddInterviewCommand;
 import utils.scrollOnDragPane.ScrollOnDragPane;
+import javafx.stage.WindowEvent;
 
 import java.util.Locale;
 
@@ -15,7 +16,7 @@ public class ApplicationCommandFactory {
         this.application = app;
     }
 
-    public CloseApplicationCommand closeApplication() { return new CloseApplicationCommand(application); }
+    public CloseApplicationCommand closeApplication(WindowEvent event) { return new CloseApplicationCommand(application, event); }
     public ChangeApplicationTitleCommand changeApplicationTitle(String newTitle) { return new ChangeApplicationTitleCommand(application, newTitle); }
     public OpenProjectManagerCommand openProjectManagerCommand() { return new OpenProjectManagerCommand(application); }
     public NewProjectCommand newProject() { return new NewProjectCommand(application); }
