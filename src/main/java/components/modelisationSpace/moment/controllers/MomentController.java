@@ -352,9 +352,9 @@ public class MomentController extends ListViewController<Moment> implements Init
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
         }
         else {
+            profondeur = getCurrentDepth();
             separatorBottom.setActive(false);
-            //transitionBox.setPrefHeight(profondeur);
-            transitionBox.setPrefHeight(500);
+            transitionBox.setPrefHeight(profondeur);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
         }
     }
@@ -523,4 +523,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
     }
 
+    private double getCurrentDepth() {
+        //TODO : implémenter calcul de profondeur
+        return 500;
+    }
 }
