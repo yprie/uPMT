@@ -66,7 +66,6 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML HBox nameBox;
     @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
-    @FXML private Text transition;
     @FXML private HBox transitionBox;
 
     //Importants elements of a moment
@@ -146,7 +145,6 @@ public class MomentController extends ListViewController<Moment> implements Init
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
         separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
-        separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
         MenuItem commentButton = new MenuItem(Configuration.langBundle.getString("show_hide_comment"));
@@ -327,19 +325,18 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void displayTransitional() {
-        String transition_str_final = "";
+        double profondeur;
+        transitionBox.setMaxWidth(40);
+        transitionBox.setStyle("-fx-background-color: #b1b1b1;\n");
 
         if (!moment.getTransitional()) {
-            transitionBox.getChildren().remove(transition);
+            separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
+            transitionBox.setPrefHeight(0);
         }
         else {
-            String transition_str = "| | |";
-            int depth = 40;
-            for (int i = 0; i < depth; i++) {
-                transition_str_final = transition_str_final+"\n"+transition_str;
-            }
-            transition = new Text(transition_str_final);
-            transitionBox.getChildren().add(transition);
+            separatorBottom.setActive(false);
+            //transitionBox.setPrefHeight(profondeur);
+            transitionBox.setPrefHeight(500);
         }
     }
 
