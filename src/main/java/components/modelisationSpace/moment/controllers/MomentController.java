@@ -81,6 +81,10 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     Node justificationArea;
 
+    //menu-item with several values
+    private MenuItem transitionButton;
+    private MenuItem commentButton;
+
     private ChangeListener<Boolean> commentVisibleListener;
     private ChangeListener<Boolean> commentFocusListener;
     private ChangeListener<String> commentTextListener;
@@ -147,10 +151,19 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
 
         //Menu Button
-        MenuItem commentButton = new MenuItem(Configuration.langBundle.getString("show_hide_comment"));
+        if (commentArea.isVisible()) {
+            commentButton = new MenuItem(Configuration.langBundle.getString("hide_comment"));
+        } else {
+            commentButton = new MenuItem(Configuration.langBundle.getString("show_comment"));
+        }
         commentButton.setOnAction(actionEvent -> {
             commentArea.setVisible(!commentArea.isVisible());
             moment.setCommentVisible(commentArea.isVisible());
+            if (commentArea.isVisible()) {
+                commentButton.setText(Configuration.langBundle.getString("hide_comment"));
+            } else {
+                commentButton.setText(Configuration.langBundle.getString("show_comment"));
+            }
         });
         menuButton.getItems().add(commentButton);
 
@@ -162,7 +175,11 @@ public class MomentController extends ListViewController<Moment> implements Init
         renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
         menuButton.getItems().add(renameButton);
 
-        MenuItem transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_on_off"));
+        if (moment.getTransitional()) {
+            transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_off"));
+        } else {
+            transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_on"));
+        }
         transitionButton.setOnAction(actionEvent -> {
             cmdFactory.transitionCommand(moment).execute();
             displayTransitional();
@@ -332,11 +349,13 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (!moment.getTransitional()) {
             separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
             transitionBox.setPrefHeight(0);
+            transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
         }
         else {
             separatorBottom.setActive(false);
             //transitionBox.setPrefHeight(profondeur);
             transitionBox.setPrefHeight(500);
+            transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
         }
     }
 
