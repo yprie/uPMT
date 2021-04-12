@@ -81,16 +81,15 @@
                 </BorderPane>
             </AnchorPane>
         </GridPane>
+      <BorderPane fx:id="transitionPane">
+         <center>
+            <HBox fx:id="transitionBox" alignment="CENTER" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
         <BorderPane fx:id="childrenMomentContainer">
-            <padding>
-                <Insets right="15.0" />
-            </padding>
             <center>
                 <HBox fx:id="childrenBox" alignment="CENTER" BorderPane.alignment="CENTER" />
             </center>
-         <bottom>
-            <HBox fx:id="transitionBox" alignment="CENTER" BorderPane.alignment="CENTER" />
-         </bottom>
         </BorderPane>
     </VBox>
 </AnchorPane>

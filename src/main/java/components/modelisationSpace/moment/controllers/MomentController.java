@@ -2,6 +2,7 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import components.modelisationSpace.controllers.ModelisationSpaceController;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -67,6 +68,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
     @FXML private HBox transitionBox;
+    @FXML private BorderPane transitionPane;
 
     //Importants elements of a moment
     private JustificationController justificationController;
@@ -90,6 +92,14 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ChangeListener<String> commentTextListener;
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
+
+    //transitional moments variables
+    private static int trans_height_1 = 800;
+    private static int trans_height_2 = 600;
+    private static int trans_height_3 = 400;
+    private static final String color_1 = "";
+    private static final String color_2 = "";
+    private static final String color_3 = "";
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -119,7 +129,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        grid.add(separatorBottom.getNode(), 1, 1);
+        grid.add(separatorBottom.getNode(), 1, 2);
         momentName.textProperty().bind(moment.nameProperty());
         commentArea.setVisible(moment.isCommentVisible());
         commentArea.managedProperty().bind(commentArea.visibleProperty());
@@ -185,6 +195,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             displayTransitional();
         });
         menuButton.getItems().add(transitionButton);
+        grid.add(transitionPane, 1, 1);
         displayTransitional();
 
         // Show/Hide moment body (comment, justifications, categories)
@@ -343,19 +354,23 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private void displayTransitional() {
         double profondeur;
-        transitionBox.setMaxWidth(40);
+        transitionBox.setMaxWidth(20);
         transitionBox.setStyle("-fx-background-color: #b1b1b1;\n");
 
         if (!moment.getTransitional()) {
             separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
             transitionBox.setPrefHeight(0);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
+            categoryContainer.setStyle("-fx-background-color: #ffffff;\n");
+            momentContainer.setStyle("-fx-background-color: #ffffff;\n");
         }
         else {
-            profondeur = getCurrentDepth();
+            profondeur = getLineDepth(trans_height_1);
             separatorBottom.setActive(false);
             transitionBox.setPrefHeight(profondeur);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
+            categoryContainer.setStyle("-fx-background-color: #b1b1b1;\n");
+            momentContainer.setStyle("-fx-background-color: #b1b1b1;\n");
         }
     }
 
@@ -523,8 +538,14 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
     }
 
-    private double getCurrentDepth() {
-        //TODO : implémenter calcul de profondeur
-        return 500;
+    private double getLineDepth(int height_check) {
+        if (height_check-momentContainer.getHeight() > 100) {
+            return height_check-momentContainer.getHeight();
+        } else {
+            trans_height_1 = trans_height_1 + 100;
+            trans_height_2 = trans_height_2 + 100;
+            trans_height_3 = trans_height_3 + 100;
+            return getLineDepth(height_check+100);
+        }
     }
 }
