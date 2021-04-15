@@ -110,6 +110,7 @@ public class MainViewController implements Initializable {
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview(), false).execute();
 		if(project.getSelectedInterview() != null)
 			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
+
 	}
 
 	@Override
@@ -119,5 +120,9 @@ public class MainViewController implements Initializable {
 
 		SchemaCategoryUsesCounter service = new SchemaCategoryUsesCounter(project, modelisationSpaceController.getHooks());
 		SchemaPropertyUsesCounter service2 = new SchemaPropertyUsesCounter(project, modelisationSpaceController.getHooks());
+	}
+
+	public ModelisationSpaceController getModelisationSpaceController(){
+		return this.modelisationSpaceController;
 	}
 }
