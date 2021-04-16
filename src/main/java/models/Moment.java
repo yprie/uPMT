@@ -132,7 +132,6 @@ public class Moment extends RootMoment implements IDraggable {
         else {
             this.transitional.set(bool);
         }
-        System.out.println("THIS MOMENT DEPTH IS : " + getDepth());
     }
 
     public RootMoment getParent() { return parent;}

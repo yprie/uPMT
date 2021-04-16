@@ -43,6 +43,7 @@ import utils.modelControllers.ListView.ListViewUpdate;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -93,13 +94,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
 
-    //transitional moments variables
-    private static int trans_height_1 = 800;
-    private static int trans_height_2 = 600;
-    private static int trans_height_3 = 400;
-    private static final String color_1 = "";
-    private static final String color_2 = "";
-    private static final String color_3 = "";
+    private static ArrayList<Integer> transitionalHeightChart = new ArrayList<Integer>();
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -353,9 +348,10 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void displayTransitional() {
-        double profondeur;
+        double depth;
+        String color = getColor();
         transitionBox.setMaxWidth(20);
-        transitionBox.setStyle("-fx-background-color: #b1b1b1;\n");
+        transitionBox.setStyle("-fx-background-color: #" + color + ";\n");
 
         if (!moment.getTransitional()) {
             separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
@@ -365,12 +361,12 @@ public class MomentController extends ListViewController<Moment> implements Init
             momentContainer.setStyle("-fx-background-color: #ffffff;\n");
         }
         else {
-            profondeur = getLineDepth(trans_height_1);
+            depth = getTransitionDepth();
             separatorBottom.setActive(false);
-            transitionBox.setPrefHeight(profondeur);
+            transitionBox.setPrefHeight(depth);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
-            categoryContainer.setStyle("-fx-background-color: #b1b1b1;\n");
-            momentContainer.setStyle("-fx-background-color: #b1b1b1;\n");
+            categoryContainer.setStyle("-fx-background-color: #" + color + ";\n");
+            momentContainer.setStyle("-fx-background-color: #" + color + ";\n");
         }
     }
 
@@ -538,14 +534,51 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
     }
 
-    private double getLineDepth(int height_check) {
-        if (height_check-momentContainer.getHeight() > 100) {
-            return height_check-momentContainer.getHeight();
-        } else {
-            trans_height_1 = trans_height_1 + 100;
-            trans_height_2 = trans_height_2 + 100;
-            trans_height_3 = trans_height_3 + 100;
-            return getLineDepth(height_check+100);
+
+    private double getTransitionDepth() {
+        int depth = moment.getDepth();
+        int height;
+        if (transitionalHeightChart.isEmpty()) {
+            transitionalHeightChart.add(1000);
+            transitionalHeightChart.add(800);
+            transitionalHeightChart.add(600);
+            transitionalHeightChart.add(400);
+            transitionalHeightChart.add(250);
         }
+
+        if (transitionalHeightChart.size() >= depth) {
+            if (transitionalHeightChart.get(depth-1) - momentContainer.getHeight() > 100) {
+                return transitionalHeightChart.get(depth-1) - momentContainer.getHeight();
+            }
+            else {
+                for (int i = 0; i <transitionalHeightChart.size(); i++) {
+                    transitionalHeightChart.set(i, transitionalHeightChart.get(i)+100);
+                }
+                return getTransitionDepth();
+            }
+        }
+        else {
+            transitionalHeightChart.add(100);
+            for (int i = 0; i <transitionalHeightChart.size(); i++) {
+                transitionalHeightChart.set(i, transitionalHeightChart.get(i)+100);
+            }
+            return getTransitionDepth();
+        }
+    }
+
+    private String getColor() {
+        int depth = moment.getDepth();
+        if (depth == 1)
+            return "4c4c4c";
+        else if (depth == 2)
+            return "666666";
+        else if (depth == 3)
+            return "7f7f7f";
+        else if (depth == 4)
+            return "999999";
+        else if (depth == 5)
+            return "b2b2b2";
+        else
+            return "cccccc";
     }
 }
