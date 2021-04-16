@@ -23,7 +23,6 @@ public class SMoment extends Serializable<Moment> {
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
     public boolean transitional;
-    public SRootMoment parent;
 
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
@@ -41,7 +40,6 @@ public class SMoment extends Serializable<Moment> {
         this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
         this.transitional = modelReference.getTransitional();
-        this.parent = new SRootMoment(serializer, modelReference.getParent());
 
         this.categories = new ArrayList<>();
         for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
@@ -76,12 +74,6 @@ public class SMoment extends Serializable<Moment> {
         } catch (JSONException error) {
             transitional = false;
         }
-
-        try {
-            parent = serializer.getObject("parent", SRootMoment::new);
-        } catch (JSONException error) {
-            parent = null;
-        }
     }
 
     @Override
@@ -94,7 +86,6 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
         serializer.writeBoolean("transitional", transitional);
-        serializer.writeObject("parent", parent);
     }
 
     @Override
@@ -102,12 +93,11 @@ public class SMoment extends Serializable<Moment> {
         Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
-        for (Moment sm : m.momentsProperty()) //make sure children have a parent
+        for (Moment sm : m.momentsProperty())
             sm.addParent(m);
         for(SConcreteCategory cc: categories)
             m.addCategory(cc.convertToModel());
 
-        if (parent != null) { m.addParent(parent.convertToModel()); }
         return m;
     }
 }
