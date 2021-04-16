@@ -102,6 +102,8 @@ public class SMoment extends Serializable<Moment> {
         Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
+        for (Moment sm : m.momentsProperty()) //make sure children have a parent
+            sm.addParent(m);
         for(SConcreteCategory cc: categories)
             m.addCategory(cc.convertToModel());
 
