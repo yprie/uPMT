@@ -29,6 +29,8 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty transitional; //true = transitional
 
+    private RootMoment parent;
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
@@ -38,6 +40,30 @@ public class Moment extends RootMoment implements IDraggable {
         this.commentVisible = new SimpleBooleanProperty(false);
         this.collapsed = new SimpleBooleanProperty();
         this.transitional = new SimpleBooleanProperty(false);
+    }
+
+    public Moment(String name, Moment parent) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
+        this.justification = new Justification();
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
+        this.parent = parent;
+    }
+
+    public Moment(String name, RootMoment parent) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
+        this.justification = new Justification();
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
+        this.parent = parent;
     }
 
     public Moment(String name, String comment, boolean commentVisible, Justification j) {
@@ -106,7 +132,11 @@ public class Moment extends RootMoment implements IDraggable {
         else {
             this.transitional.set(bool);
         }
+        System.out.println("THIS MOMENT DEPTH IS : " + getDepth());
     }
+
+    public RootMoment getParent() { return parent;}
+    public void addParent(RootMoment parent) {this.parent = parent;}
 
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);
@@ -164,6 +194,17 @@ public class Moment extends RootMoment implements IDraggable {
         }
         return had;
     }
+
+    public int getDepth() {
+        int parent_depth = 0;
+        if (parent != null) {
+            if (parent instanceof Moment) {
+                parent_depth = ((Moment) parent).getDepth();
+            }
+        }
+        return parent_depth+1;
+    }
+
     @Override
     public DataFormat getDataFormat() {
         return format;

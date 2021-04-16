@@ -23,6 +23,7 @@ public class SMoment extends Serializable<Moment> {
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
     public boolean transitional;
+    public SRootMoment parent;
 
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
@@ -40,6 +41,7 @@ public class SMoment extends Serializable<Moment> {
         this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
         this.transitional = modelReference.getTransitional();
+        this.parent = new SRootMoment(serializer, modelReference.getParent());
 
         this.categories = new ArrayList<>();
         for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
@@ -73,8 +75,12 @@ public class SMoment extends Serializable<Moment> {
             transitional = serializer.getBoolean("transitional");
         } catch (JSONException error) {
             transitional = false;
-            //System.out.println("older version, no transitions");
-            //a faire : warning version outdated
+        }
+
+        try {
+            parent = serializer.getObject("parent", SRootMoment::new);
+        } catch (JSONException error) {
+            parent = null;
         }
     }
 
@@ -88,6 +94,7 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
         serializer.writeBoolean("transitional", transitional);
+        serializer.writeObject("parent", parent);
     }
 
     @Override
@@ -97,6 +104,8 @@ public class SMoment extends Serializable<Moment> {
             m.addMoment(sm.convertToModel());
         for(SConcreteCategory cc: categories)
             m.addCategory(cc.convertToModel());
+
+        if (parent != null) { m.addParent(parent.convertToModel()); }
         return m;
     }
 }
