@@ -192,8 +192,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         transitionButton.setOnAction(actionEvent -> {
             try { cmdFactory.transitionCommand(moment).execute();
             } catch (Error error) {
-                // TODO: display a window warning
-                WarningPopup wp = WarningPopup.display(Configuration.langBundle.getString("transitional_warning"));
+                WarningPopup.display(Configuration.langBundle.getString("transitional_warning"));
             }
             displayTransitional();
         });
