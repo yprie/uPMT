@@ -40,6 +40,8 @@ import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
+import utils.popups.TextEntryController;
+import utils.popups.WarningPopup;
 
 import java.io.IOException;
 import java.net.URL;
@@ -191,6 +193,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             try { cmdFactory.transitionCommand(moment).execute();
             } catch (Error error) {
                 // TODO: display a window warning
+                WarningPopup wp = WarningPopup.display(Configuration.langBundle.getString("transitional_warning"));
             }
             displayTransitional();
         });
