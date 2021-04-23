@@ -94,7 +94,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
 
-    private static double TransitionalHeight = 1000;
+    private static double TransitionalHeight = 800;
 
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
@@ -234,17 +234,13 @@ public class MomentController extends ListViewController<Moment> implements Init
                     "-fx-background-insets: 1px;\n" +
                     "-fx-background-radius: 3;\n" +
                     "-fx-border-radius:3;");
-            moment.concreteCategoriesProperty().forEach((category) -> {
-                categoryNames.getChildren().add(new Label(category.getName()));
-            });
+            moment.concreteCategoriesProperty().forEach((category) -> categoryNames.getChildren().add(new Label(category.getName())));
             momentContainer.setBottom(categoryNames);
         }
     }
 
     public void bind(){
-        commentVisibleListener = (observableValue, oldValue, visible) -> {
-            moment.setCommentVisible(visible);
-        };
+        commentVisibleListener = (observableValue, oldValue, visible) -> moment.setCommentVisible(visible);
 
         //Add the comment; When the moment has no comment the textArea disappears
         commentFocusListener = (observableValue, oldValue, focused) -> {
@@ -380,9 +376,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void onMount() {
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
-                event -> {
-                    paneCmdFactory.scrollToNode(childrenMomentContainer).execute();
-            }));
+                event -> paneCmdFactory.scrollToNode(childrenMomentContainer).execute()));
         viewFocus.play();
     }
 
@@ -429,8 +423,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         }
         else {
             //Hide an show the separators
-            if(grid.getChildren().contains(separatorLeft.getNode()))
-                grid.getChildren().remove(separatorLeft.getNode());
+            grid.getChildren().remove(separatorLeft.getNode());
             if(!grid.getChildren().contains(separatorRight.getNode()))
                 grid.add(separatorRight.getNode(), 2, 0);
 
@@ -552,24 +545,28 @@ public class MomentController extends ListViewController<Moment> implements Init
     private String getColor() {
         int depth = moment.getDepth();
         if (depth == 1)
-            return "4c4c4c";
+            return "555555";
         else if (depth == 2)
             return "666666";
         else if (depth == 3)
-            return "7f7f7f";
+            return "888888";
         else if (depth == 4)
             return "999999";
         else if (depth == 5)
-            return "b2b2b2";
+            return "a1a1a1";
         else
-            return "cccccc";
+            return "b1b1b1";
     }
 
     private double getFullHeight() {
         double parentHeight = 0;
         if (moment.getParent() != null) {
-            Moment parentMoment = (Moment) moment.getParent();
-            parentHeight = parentMoment.getController().momentContainer.getHeight();
+            try {
+                Moment parentMoment = (Moment) moment.getParent();
+                parentHeight = parentMoment.getController().getFullHeight()+16;
+            } catch (ClassCastException error){
+                //ignores when trying to get the rootMoment's height (it's not displayed)
+            }
         }
         return parentHeight+momentContainer.getHeight();
     }
