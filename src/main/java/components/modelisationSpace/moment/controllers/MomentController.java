@@ -188,7 +188,10 @@ public class MomentController extends ListViewController<Moment> implements Init
             transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_on"));
         }
         transitionButton.setOnAction(actionEvent -> {
-            cmdFactory.transitionCommand(moment).execute();
+            try { cmdFactory.transitionCommand(moment).execute();
+            } catch (Error error) {
+                // TODO: display a window warning
+            }
             displayTransitional();
         });
         menuButton.getItems().add(transitionButton);
@@ -545,9 +548,9 @@ public class MomentController extends ListViewController<Moment> implements Init
     private String getColor() {
         int depth = moment.getDepth();
         if (depth == 1)
-            return "555555";
-        else if (depth == 2)
             return "666666";
+        else if (depth == 2)
+            return "777777";
         else if (depth == 3)
             return "888888";
         else if (depth == 4)

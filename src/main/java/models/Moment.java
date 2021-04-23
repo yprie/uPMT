@@ -128,7 +128,6 @@ public class Moment extends RootMoment implements IDraggable {
     public boolean getTransitional() { return this.transitional.get(); }
     public void setTransitional(boolean bool) {
         if (!this.momentsProperty().isEmpty() && bool) {
-            //provisoire!!!
             throw new Error("remove the submoments before");
         }
         else {

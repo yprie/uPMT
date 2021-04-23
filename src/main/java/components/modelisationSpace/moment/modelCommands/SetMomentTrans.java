@@ -16,12 +16,7 @@ public class SetMomentTrans extends ModelUserActionCommand {
 
     @Override
     public Object execute() {
-        if (oldstate) {
-            newstate = false;
-        }
-        else {
-            newstate = true;
-        }
+        newstate = !oldstate;
         moment.setTransitional(newstate);
         return null;
     }
