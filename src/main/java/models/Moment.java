@@ -2,6 +2,7 @@ package models;
 
 import application.history.HistoryManager;
 import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
+import components.modelisationSpace.moment.controllers.MomentController;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,6 +31,7 @@ public class Moment extends RootMoment implements IDraggable {
     private SimpleBooleanProperty transitional; //true = transitional
 
     private RootMoment parent;
+    private MomentController controller;
 
     public Moment(String name) {
         super();
@@ -202,6 +204,14 @@ public class Moment extends RootMoment implements IDraggable {
             }
         }
         return parent_depth+1;
+    }
+
+    public MomentController getController() {
+        return controller;
+    }
+
+    public void setController(MomentController controller) {
+        this.controller = controller;
     }
 
     @Override

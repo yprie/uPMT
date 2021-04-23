@@ -94,7 +94,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
 
-    private static ArrayList<Integer> transitionalHeightChart = new ArrayList<Integer>();
+    private static double TransitionalHeight = 1000;
+
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -124,6 +125,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        moment.setController(this);
         grid.add(separatorBottom.getNode(), 1, 2);
         momentName.textProperty().bind(moment.nameProperty());
         commentArea.setVisible(moment.isCommentVisible());
@@ -536,32 +538,13 @@ public class MomentController extends ListViewController<Moment> implements Init
 
 
     private double getTransitionDepth() {
-        int depth = moment.getDepth();
-        int height;
-        if (transitionalHeightChart.isEmpty()) {
-            transitionalHeightChart.add(1000);
-            transitionalHeightChart.add(800);
-            transitionalHeightChart.add(600);
-            transitionalHeightChart.add(400);
-            transitionalHeightChart.add(250);
-        }
+        double height = getFullHeight();
 
-        if (transitionalHeightChart.size() >= depth) {
-            if (transitionalHeightChart.get(depth-1) - momentContainer.getHeight() > 100) {
-                return transitionalHeightChart.get(depth-1) - momentContainer.getHeight();
-            }
-            else {
-                for (int i = 0; i <transitionalHeightChart.size(); i++) {
-                    transitionalHeightChart.set(i, transitionalHeightChart.get(i)+100);
-                }
-                return getTransitionDepth();
-            }
+        if (TransitionalHeight-height > 100) {
+            return TransitionalHeight-height;
         }
         else {
-            transitionalHeightChart.add(100);
-            for (int i = 0; i <transitionalHeightChart.size(); i++) {
-                transitionalHeightChart.set(i, transitionalHeightChart.get(i)+100);
-            }
+            TransitionalHeight += 100;
             return getTransitionDepth();
         }
     }
@@ -580,5 +563,14 @@ public class MomentController extends ListViewController<Moment> implements Init
             return "b2b2b2";
         else
             return "cccccc";
+    }
+
+    private double getFullHeight() {
+        double parentHeight = 0;
+        if (moment.getParent() != null) {
+            Moment parentMoment = (Moment) moment.getParent();
+            parentHeight = parentMoment.getController().momentContainer.getHeight();
+        }
+        return parentHeight+momentContainer.getHeight();
     }
 }
