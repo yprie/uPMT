@@ -108,4 +108,11 @@ public abstract class Serializable<ModelType> {
 
     protected abstract ModelType createModel();
     protected void finalizeModelCreation(ModelType model) {}
+
+    protected void versionCheck(int version, int fileversion){
+        //will prevent the user to launch a file with an outdated software, call in a read() if you want to use it
+        if(version < fileversion) {
+            System.out.println("version outdated detectée pour "+serializer.getString("name"));
+        }
+    }
 }

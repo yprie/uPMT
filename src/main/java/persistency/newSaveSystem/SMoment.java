@@ -57,6 +57,7 @@ public class SMoment extends Serializable<Moment> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         name = serializer.getString("name");
         comment = serializer.getFacultativeString("momentComment",null);
         isCommentVisible = serializer.getBoolean("isCommentVisible");
