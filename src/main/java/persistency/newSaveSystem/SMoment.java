@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SMoment extends Serializable<Moment> {
 
     //General info
-    public static final int version = 1;
+    public static final int version = 2;
     public static final String modelName = "moment";
 
     //Fields
