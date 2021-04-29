@@ -96,7 +96,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
 
-    private static double TransitionalHeight = 800;
+    private static double TransitionalHeight = 950;
 
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
