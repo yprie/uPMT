@@ -38,6 +38,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +54,10 @@ public class MainViewController implements Initializable {
 	private @FXML ModelisationSpaceController modelisationSpaceController;
 	private @FXML TemplateSpaceController templateSpaceController;
 	private @FXML HBox modelMomentBox;
+	private @FXML Button btnModelisationFull;
+	private @FXML Button btnScreenShared;
+	private @FXML Button btnTextAreaFull;
+	private @FXML VBox boxModelisationSpace;
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
@@ -110,6 +115,23 @@ public class MainViewController implements Initializable {
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview(), false).execute();
 		if(project.getSelectedInterview() != null)
 			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
+
+		btnModelisationFull.setOnAction((event -> {
+
+			mainSplitPane.setDividerPosition(1,1);
+		}));
+
+		btnTextAreaFull.setOnAction((event -> {
+
+			mainSplitPane.setDividerPosition(1,0.0);
+		}));
+
+		btnScreenShared.setOnAction(((event -> {
+
+			mainSplitPane.setDividerPosition(1,0.7);
+		})));
+
+
 
 	}
 
