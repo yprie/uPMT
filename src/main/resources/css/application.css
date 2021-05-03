@@ -395,7 +395,7 @@ Green: #40AC40  #19C519
 */
 
 #btnModelisationFull {
-    -fx-background-size: 25 25;
+    -fx-background-size: 32 25;
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
@@ -403,7 +403,7 @@ Green: #40AC40  #19C519
 }
 
 #btnScreenShared {
-    -fx-background-size: 25 25;
+    -fx-background-size: 32 25;
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
@@ -411,11 +411,27 @@ Green: #40AC40  #19C519
 }
 
 #btnTextAreaFull {
-    -fx-background-size: 25 25;
+    -fx-background-size: 32 25;
     -fx-background-color: rgba(0, 0, 0, 0);
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
     -fx-background-image: url("/images/btnTextAreaFullPng.png");
+}
+
+#btnZoomMinus {
+    -fx-background-size: 25 25;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+    -fx-background-image: url("/images/btnZoomMinusPng.png");
+}
+
+#btnZoomPlus {
+    -fx-background-size: 25 25;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+    -fx-background-image: url("/images/btnZoomPlusPng.png");
 }
 
 

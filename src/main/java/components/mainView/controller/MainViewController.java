@@ -20,6 +20,7 @@
 
 package components.mainView.controller;
 
+import application.configuration.AppSettings;
 import components.schemaTree.Services.categoryUsesCounter.SchemaCategoryUsesCounter;
 import components.schemaTree.Services.propertyUsesCounter.SchemaPropertyUsesCounter;
 import components.templateSpace.controllers.TemplateSpaceController;
@@ -50,10 +51,12 @@ public class MainViewController implements Initializable {
 
 	private @FXML SplitPane mainSplitPane;
 	private @FXML SplitPane leftPane;
-	private @FXML SplitPane paneOfTextArea;
+	private @FXML HBox paneOfTextArea;
 	private @FXML ModelisationSpaceController modelisationSpaceController;
 	private @FXML TemplateSpaceController templateSpaceController;
 	private @FXML HBox modelMomentBox;
+	private @FXML Button btnZoomMinus;
+	private @FXML Button btnZoomPlus;
 	private @FXML Button btnModelisationFull;
 	private @FXML Button btnScreenShared;
 	private @FXML Button btnTextAreaFull;
@@ -110,28 +113,35 @@ public class MainViewController implements Initializable {
 		if(interviewPanel != null)
 			interviewPanel.unbind();
 		interviewPanel = new InterviewPanelController(project.selectedInterviewProperty(), mainSplitPane);
-		paneOfTextArea.getItems().add(InterviewPanelController.createInterviewPanel(interviewPanel));
+		paneOfTextArea.getChildren().add(InterviewPanelController.createInterviewPanel(interviewPanel));
 
 		interviewSelectorCommandfactory.selectCurrentInterview(project.getSelectedInterview(), false).execute();
 		if(project.getSelectedInterview() != null)
 			modelisationSpaceController.setRootMoment(project.getSelectedInterview().getRootMoment());
 
-		btnModelisationFull.setOnAction((event -> {
+		btnZoomMinus.setOnAction((event -> {
+			if (AppSettings.zoomLevelProperty.get() >= 10) {
+				AppSettings.zoomLevelProperty.set(AppSettings.zoomLevelProperty.get() - 10);
+			}
+		}));
 
+		btnZoomPlus.setOnAction((event -> {
+			if (AppSettings.zoomLevelProperty.get() <= 190) {
+				AppSettings.zoomLevelProperty.set(AppSettings.zoomLevelProperty.get() + 10);
+			}
+		}));
+
+		btnModelisationFull.setOnAction((event -> {
 			mainSplitPane.setDividerPosition(1,1);
 		}));
 
 		btnTextAreaFull.setOnAction((event -> {
-
 			mainSplitPane.setDividerPosition(1,0.0);
 		}));
 
 		btnScreenShared.setOnAction(((event -> {
-
 			mainSplitPane.setDividerPosition(1,0.7);
 		})));
-
-
 
 	}
 
