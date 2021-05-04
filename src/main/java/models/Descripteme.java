@@ -23,7 +23,7 @@ public class Descripteme extends Fragment {
     }
 
     public Descripteme(Annotation a) {
-        super(a.getInterviewText(), a.getStartIndex(),a.getEndIndex());
+        super(a.getInterviewText(), a.getIndexRange());
         descripteme = new SimpleStringProperty();
         descripteme.set(getSelection());
     }
