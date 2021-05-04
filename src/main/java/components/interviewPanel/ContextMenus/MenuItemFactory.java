@@ -47,4 +47,12 @@ public class MenuItemFactory {
         });
         return item;
     }
+
+    public MenuItem getCopyToClipboard(String selectedText) {
+        MenuItem item = new MenuItem(Configuration.langBundle.getString("copy_to_clipboard"));
+        item.setOnAction(event -> {
+            interviewPanelCommandFactory.getCopyToClipboardCommand(selectedText).execute();
+        });
+        return item;
+    }
 }

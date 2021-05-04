@@ -1,10 +1,8 @@
 package components.interviewPanel.ContextMenus;
 
 import components.interviewPanel.appCommands.InterviewTextCommandFactory;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.IndexRange;
-import javafx.scene.control.Menu;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import models.Annotation;
 import models.AnnotationColor;
 import models.Descripteme;
@@ -22,66 +20,71 @@ public class ContextMenuFactory {
         this.annotationColorList = annotationColorList;
     }
 
-    public ContextMenu getContextMenuSelection(IndexRange selection) {
+    public ContextMenu getContextMenuSelection(String selectedText, IndexRange selection) {
         ContextMenu menu = new ContextMenu();
         menu.getItems().add(menuItemFactory.getCatch(selection));
         menu.getItems().add(new SeparatorMenuItem());
-        annotationColorList.forEach(annotationColor -> {
-            menu.getItems().add(menuItemFactory.getAnnotate(annotationColor, selection));
-        });
+        addMenuAnnotationColorList(menu.getItems(), selection);
+        addMenuCopyToClipboard(menu, selectedText);
         return menu;
     }
 
-    public ContextMenu getContextMenuAnnotation(Annotation annotation) {
+    public ContextMenu getContextMenuAnnotation(String selectedText, Annotation annotation) {
         ContextMenu menu = new ContextMenu();
         menu.getItems().add(menuItemFactory.getCatch(annotation.getIndexRange()));
         menu.getItems().add(new SeparatorMenuItem());
-        for (AnnotationColor annotationColor : annotationColorList) {
-            menu.getItems().add(menuItemFactory.getAnnotate(annotationColor, annotation.getIndexRange()));
-        }
+        addMenuAnnotationColorList(menu.getItems(), annotation.getIndexRange());
         menu.getItems().add(new SeparatorMenuItem());
         menu.getItems().add(menuItemFactory.getEraser(annotation));
+        addMenuCopyToClipboard(menu, selectedText);
         return menu;
     }
 
-    public ContextMenu getContextMenuDescriptemeAndAnnotation(ArrayList<Descripteme> descriptemes, Annotation annotation) {
+    public ContextMenu getContextMenuDescriptemeAndAnnotation(String selectedText, ArrayList<Descripteme> descriptemes, Annotation annotation) {
         ContextMenu menu = new ContextMenu();
 
         // For descriptemes
-        for (Descripteme descripteme : descriptemes) {
-            Menu subMenu = new Menu(descripteme.getCroppedFragmentText());
-            subMenu.getItems().add(menuItemFactory.getReveal(descripteme));
-            subMenu.getItems().add(new SeparatorMenuItem());
-            for (AnnotationColor annotationColor : annotationColorList) {
-                subMenu.getItems().add(menuItemFactory.getAnnotate(annotationColor, descripteme.getIndexRange()));
-            }
-            menu.getItems().add(subMenu);
-        }
+        addMenuDescripteme(menu, descriptemes);
+
         menu.getItems().add(new SeparatorMenuItem());
 
         // For the annotation
         menu.getItems().add(menuItemFactory.getCatch(annotation.getIndexRange()));
         menu.getItems().add(new SeparatorMenuItem());
-        for (AnnotationColor annotationColor : annotationColorList) {
-            menu.getItems().add(menuItemFactory.getAnnotate(annotationColor, annotation.getIndexRange()));
-        }
+        addMenuAnnotationColorList(menu.getItems(), annotation.getIndexRange());
         menu.getItems().add(new SeparatorMenuItem());
         menu.getItems().add(menuItemFactory.getEraser(annotation));
-
+        addMenuCopyToClipboard(menu, selectedText);
         return menu;
     }
 
-    public ContextMenu getContextMenuDescripteme(ArrayList<Descripteme> descriptemes) {
+    public ContextMenu getContextMenuDescripteme(String selectedText, ArrayList<Descripteme> descriptemes) {
         ContextMenu menu = new ContextMenu();
+        addMenuDescripteme(menu, descriptemes);
+        addMenuCopyToClipboard(menu, selectedText);
+        return menu;
+    }
+
+    private void addMenuDescripteme(ContextMenu menu, ArrayList<Descripteme> descriptemes) {
         for (Descripteme descripteme : descriptemes) {
             Menu subMenu = new Menu(descripteme.getCroppedFragmentText());
             subMenu.getItems().add(menuItemFactory.getReveal(descripteme));
             subMenu.getItems().add(new SeparatorMenuItem());
-            for (AnnotationColor annotationColor: annotationColorList) {
-                subMenu.getItems().add(menuItemFactory.getAnnotate(annotationColor, descripteme.getIndexRange()));
-            }
+            addMenuAnnotationColorList(subMenu.getItems(), descripteme.getIndexRange());
             menu.getItems().add(subMenu);
         }
-        return menu;
+    }
+
+    private void addMenuAnnotationColorList(ObservableList<MenuItem> menuItems, IndexRange selection) {
+        annotationColorList.forEach(annotationColor -> {
+            menuItems.add(menuItemFactory.getAnnotate(annotationColor, selection));
+        });
+    }
+
+    private void addMenuCopyToClipboard(ContextMenu menu, String selectedText) {
+        if (!selectedText.isEmpty()) {
+            menu.getItems().add(new SeparatorMenuItem());
+            menu.getItems().add(menuItemFactory.getCopyToClipboard(selectedText));
+        }
     }
 }
