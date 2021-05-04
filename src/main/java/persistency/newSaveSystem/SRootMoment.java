@@ -52,7 +52,8 @@ public class SRootMoment extends Serializable<RootMoment> {
 
         for(SMoment sm: submoments)
             rm.addMoment(sm.convertToModel());
-
+        for(Moment sm: rm.momentsProperty())
+            sm.addParent(rm);
         return rm;
     }
 }

@@ -117,6 +117,8 @@ public class AddSiblingMomentCommand implements Executable<Void> {
             new AddDescriptemeCommand(newMoment.getJustification(), descripteme, false).execute();
         }
 
+        newMoment.addParent(parent);
+
         return null;
     }
 }

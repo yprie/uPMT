@@ -47,6 +47,7 @@ public class MomentCommandFactory {
     }
     public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m); }
     public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
+    public SetMomentTransCommand transitionCommand(Moment m) { return new SetMomentTransCommand(m); }
     public AddCommentCommand addCommentCommand(Moment m, String comment){ return new AddCommentCommand(m, comment);}
 
     public RootMoment getParentMoment(){
