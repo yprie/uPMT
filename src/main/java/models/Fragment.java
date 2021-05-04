@@ -19,6 +19,12 @@ public abstract class Fragment extends Emphasable implements IDraggable {
         this.interviewText = interviewText;
     }
 
+    public Fragment(InterviewText interviewText, IndexRange indexRange) {
+        this.startIndex = new SimpleIntegerProperty(indexRange.getStart());
+        this.endIndex = new SimpleIntegerProperty(indexRange.getEnd());
+        this.interviewText = interviewText;
+    }
+
     public int getStartIndex() { return startIndex.getValue(); }
     public IntegerProperty startIndexProperty() { return startIndex; }
     public int getEndIndex() { return endIndex.getValue(); }

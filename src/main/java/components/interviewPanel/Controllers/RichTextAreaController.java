@@ -96,7 +96,6 @@ public class RichTextAreaController {
     }
 
     public void bind() {
-        System.out.println(100);
         // Two listeners that update the view (highlight and underline)
         this.interviewText.getAnnotationsProperty().addListener((ListChangeListener.Change<? extends Annotation> c) -> {
             while (c.next()) {
@@ -313,16 +312,29 @@ public class RichTextAreaController {
         Annotation annotation = interviewText.getAnnotationByIndex(area.getCaretPosition());
         ArrayList<Descripteme> descriptemes = interviewText.getDescriptemesByIndex(area.getCaretPosition());
         if (annotation != null && !descriptemes.isEmpty()) {
-            area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(descriptemes, annotation));
+            area.setContextMenu(contextMenuFactory.getContextMenuDescriptemeAndAnnotation(
+                    area.getSelectedText(),
+                    descriptemes,
+                    annotation)
+            );
         }
         else if (annotation != null) {
-            area.setContextMenu(contextMenuFactory.getContextMenuAnnotation(annotation));
+            area.setContextMenu(contextMenuFactory.getContextMenuAnnotation(
+                    area.getSelectedText(),
+                    annotation)
+            );
         }
         else if (!descriptemes.isEmpty()) {
-            area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(descriptemes));
+            area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(
+                    area.getSelectedText(),
+                    descriptemes)
+            );
         }
         else if (!area.getSelectedText().isEmpty()) {
-            area.setContextMenu(contextMenuFactory.getContextMenuSelection(area.getSelection()));
+            area.setContextMenu(contextMenuFactory.getContextMenuSelection(
+                    area.getSelectedText(),
+                    area.getSelection())
+            );
         }
     }
 }
