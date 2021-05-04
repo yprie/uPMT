@@ -550,17 +550,17 @@ public class MomentController extends ListViewController<Moment> implements Init
     private String getColor() {
         int depth = moment.getDepth();
         if (depth == 1)
-            return "666666";
-        else if (depth == 2)
-            return "777777";
-        else if (depth == 3)
             return "888888";
+        else if (depth == 2)
+            return "a0a0a0";
+        else if (depth == 3)
+            return "b3b3b3";
         else if (depth == 4)
-            return "999999";
+            return "c3c3c3";
         else if (depth == 5)
-            return "a1a1a1";
+            return "d3d3d3";
         else
-            return "b1b1b1";
+            return "e3e3e3";
     }
 
     private double getFullHeight() {
