@@ -98,8 +98,8 @@ public class NewInterviewController implements Initializable {
             }
 
             RootMoment rm = new RootMoment();
-            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1"));
-            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2"));
+            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 1", rm));
+            rm.addMoment(new Moment(Configuration.langBundle.getString("moment") + " 2", rm));
 
             LocalDate date = interviewDate.getValue();
             if (interviewDate.getValue() == null) {
