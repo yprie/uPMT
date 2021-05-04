@@ -46,6 +46,7 @@ import utils.popups.WarningPopup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -168,6 +169,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         commentButton.setOnAction(actionEvent -> {
             commentArea.setVisible(!commentArea.isVisible());
             moment.setCommentVisible(commentArea.isVisible());
+            updateTransHeight();
             if (commentArea.isVisible()) {
                 commentButton.setText(Configuration.langBundle.getString("hide_comment"));
             } else {
@@ -242,6 +244,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             moment.concreteCategoriesProperty().forEach((category) -> categoryNames.getChildren().add(new Label(category.getName())));
             momentContainer.setBottom(categoryNames);
         }
+        updateTransHeight();
     }
 
     public void bind(){
@@ -353,12 +356,12 @@ public class MomentController extends ListViewController<Moment> implements Init
     private void displayTransitional() {
         double depth;
         String color = getColor();
+        transitionBox.setMaxHeight(0);
         transitionBox.setMaxWidth(20);
         transitionBox.setStyle("-fx-background-color: #" + color + ";\n");
 
         if (!moment.getTransitional()) {
             separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
-            transitionBox.setPrefHeight(0);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
             categoryContainer.setStyle("-fx-background-color: #ffffff;\n");
             momentContainer.setStyle("-fx-background-color: #ffffff;\n");
@@ -366,6 +369,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         else {
             depth = getTransitionDepth();
             separatorBottom.setActive(false);
+            transitionBox.setMaxHeight(depth);
             transitionBox.setPrefHeight(depth);
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
             categoryContainer.setStyle("-fx-background-color: #" + color + ";\n");
@@ -451,6 +455,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             Insets ins = childrenMomentContainer.getPadding();
             childrenMomentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
+        updateTransHeight();
     }
 
     private void setupDragAndDrop() {
@@ -552,15 +557,15 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (depth == 1)
             return "888888";
         else if (depth == 2)
-            return "a0a0a0";
+            return "9a9a9a";
         else if (depth == 3)
-            return "b3b3b3";
+            return "acacac";
         else if (depth == 4)
-            return "c3c3c3";
+            return "bebebe";
         else if (depth == 5)
-            return "d3d3d3";
+            return "d0d0d0";
         else
-            return "e3e3e3";
+            return "e0e0e0";
     }
 
     private double getFullHeight() {
@@ -574,5 +579,12 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         }
         return parentHeight+momentContainer.getHeight();
+    }
+
+    private void updateTransHeight() {
+        double height = getTransitionDepth();
+        if (moment.getTransitional()) {
+            transitionBox.setPrefHeight(height);
+        }
     }
 }
