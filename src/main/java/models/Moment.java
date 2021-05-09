@@ -30,6 +30,8 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty transitional; //true = transitional
 
+    private SimpleStringProperty color = new SimpleStringProperty("000000");
+
     private RootMoment parent;
     private MomentController controller;
 
@@ -211,6 +213,14 @@ public class Moment extends RootMoment implements IDraggable {
 
     public void setController(MomentController controller) {
         this.controller = controller;
+    }
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
     }
 
     @Override
