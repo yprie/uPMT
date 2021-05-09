@@ -103,6 +103,18 @@ public class Moment extends RootMoment implements IDraggable {
         this.transitional = new SimpleBooleanProperty(transitional);
     }
 
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional, String color) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
+        this.justification = j;
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(commentVisible);
+        this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
+        this.color = new SimpleStringProperty(color);
+    }
+
     public void setName(String name) {
         this.name.set(name);
     }

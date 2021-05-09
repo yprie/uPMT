@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SMoment extends Serializable<Moment> {
 
     //General info
-    public static final int version = 2;
+    public static final int version = 3;
     public static final String modelName = "moment";
 
     //Fields
@@ -23,6 +23,7 @@ public class SMoment extends Serializable<Moment> {
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
     public boolean transitional;
+    public String color;
 
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
@@ -40,6 +41,7 @@ public class SMoment extends Serializable<Moment> {
         this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
         this.transitional = modelReference.getTransitional();
+        this.color = modelReference.getColor();
 
         this.categories = new ArrayList<>();
         for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
@@ -75,6 +77,12 @@ public class SMoment extends Serializable<Moment> {
         } catch (JSONException error) {
             transitional = false;
         }
+
+        try {
+            color = serializer.getString("color");
+        } catch (JSONException error) {
+            color = "000000";
+        }
     }
 
     @Override
@@ -87,11 +95,12 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
         serializer.writeBoolean("transitional", transitional);
+        serializer.writeString("color", color);
     }
 
     @Override
     protected Moment createModel() {
-        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional);
+        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional, color);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
         for (Moment sm : m.momentsProperty())
