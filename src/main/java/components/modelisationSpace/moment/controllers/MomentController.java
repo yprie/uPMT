@@ -363,8 +363,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (!moment.getTransitional()) {
             separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
             transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
-            categoryContainer.setStyle("-fx-background-color: #ffffff;\n");
-            momentContainer.setStyle("-fx-background-color: #ffffff;\n");
+            categoryContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+            momentContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
         }
         else {
             depth = getTransitionDepth();

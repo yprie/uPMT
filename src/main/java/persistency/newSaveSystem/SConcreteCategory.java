@@ -11,13 +11,12 @@ import java.util.ArrayList;
 public class SConcreteCategory extends Serializable<ConcreteCategory> {
 
     //General info
-    public static final int version = 2;
+    public static final int version = 1;
     public static final String modelName = "concreteCategory";
 
     public SSchemaCategory schemaCategory;
     public SJustification justification;
     public ArrayList<SConcreteProperty> properties;
-    public String color;
 
     public SConcreteCategory(ObjectSerializer serializer) {
         super(serializer);
@@ -32,7 +31,6 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
         schemaCategory = new SSchemaCategory(serializer, modelReference.getSchemaCategory());
         justification = new SJustification(serializer, modelReference.getJustification());
         properties = new ArrayList<>();
-        color = modelReference.getColor();
         for(ConcreteProperty p: modelReference.propertiesProperty())
             properties.add(new SConcreteProperty(serializer, p));
     }
@@ -44,15 +42,9 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
 
     @Override
     protected void read() {
-        versionCheck(version, serializer.getInt("@version"));
         schemaCategory = serializer.getObject("schemaCategory", SSchemaCategory::new);
         justification = serializer.getObject("justification", SJustification::new);
         properties = serializer.getArray(serializer.setListSuffix(SConcreteProperty.modelName), SConcreteProperty::new);
-        try {
-            color = serializer.getString("color");
-        } catch (JSONException error) {
-            color = "ffeaa7";
-        }
     }
 
     @Override
@@ -60,7 +52,6 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
         serializer.writeObject("schemaCategory", schemaCategory);
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteProperty.modelName), properties);
-        serializer.writeString("color", color);
     }
 
     @Override
@@ -69,6 +60,6 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
         for(SConcreteProperty cp: properties)
             props.add(cp.convertToModel());
 
-        return new ConcreteCategory(schemaCategory.convertToModel(), justification.convertToModel(), props, color);
+        return new ConcreteCategory(schemaCategory.convertToModel(), justification.convertToModel(), props);
     }
 }

@@ -21,12 +21,21 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     //Computed values, no need to store them
     private SimpleIntegerProperty nbUsesInModelisation;
+    private SimpleStringProperty color = new SimpleStringProperty("ffeaa7");
 
     public SchemaCategory(String name) {
         super(name);
         this.exists = new SimpleBooleanProperty(true);
         this.properties = new SimpleListProperty<SchemaProperty>(FXCollections.observableList(new LinkedList<SchemaProperty>()));
         this.nbUsesInModelisation = new SimpleIntegerProperty(0);
+    }
+
+    public SchemaCategory(String name, String color) {
+        super(name);
+        this.exists = new SimpleBooleanProperty(true);
+        this.properties = new SimpleListProperty<SchemaProperty>(FXCollections.observableList(new LinkedList<SchemaProperty>()));
+        this.nbUsesInModelisation = new SimpleIntegerProperty(0);
+        this.color = new SimpleStringProperty(color);
     }
 
     public final ObservableList<SchemaProperty> propertiesProperty() { return properties; }
@@ -116,4 +125,13 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     public void setNumberOfUsesInModelisation(int nbUses) { this.nbUsesInModelisation.set(nbUses); }
     public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
+
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
+    }
 }

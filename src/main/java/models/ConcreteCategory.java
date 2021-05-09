@@ -36,8 +36,6 @@ public class ConcreteCategory implements IDraggable {
         }
     };
 
-    private SimpleStringProperty color = new SimpleStringProperty("ffeaa7");
-
     public ConcreteCategory(SchemaCategory c) {
         this.category = c;
         this.justification = new Justification();
@@ -55,16 +53,6 @@ public class ConcreteCategory implements IDraggable {
         this.properties = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.properties.addAll(properties);
         c.propertiesProperty().addListener(onPropertiesUpdate);
-    }
-
-    public ConcreteCategory(SchemaCategory c, Justification j, ArrayList<ConcreteProperty> properties, String color) {
-        this.category = c;
-        this.justification = j;
-
-        this.properties = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
-        this.properties.addAll(properties);
-        c.propertiesProperty().addListener(onPropertiesUpdate);
-        this.color = new SimpleStringProperty(color);
     }
 
     public final SchemaCategory getSchemaCategory() { return category; }
@@ -104,14 +92,6 @@ public class ConcreteCategory implements IDraggable {
             if(properties.get(i).isSchemaProperty(sp))
                 return i;
         return -1;
-    }
-
-    public String getColor() {
-        return color.get();
-    }
-
-    public void setColor(String color) {
-        this.color.set(color);
     }
 
     @Override
