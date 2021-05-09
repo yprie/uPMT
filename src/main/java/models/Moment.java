@@ -30,7 +30,7 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty transitional; //true = transitional
 
-    private SimpleStringProperty color = new SimpleStringProperty("000000");
+    private SimpleStringProperty color = new SimpleStringProperty("ffffff");
 
     private RootMoment parent;
     private MomentController controller;

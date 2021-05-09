@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SConcreteCategory extends Serializable<ConcreteCategory> {
 
     //General info
-    public static final int version = 1;
+    public static final int version = 2;
     public static final String modelName = "concreteCategory";
 
     public SSchemaCategory schemaCategory;
@@ -44,6 +44,7 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         schemaCategory = serializer.getObject("schemaCategory", SSchemaCategory::new);
         justification = serializer.getObject("justification", SJustification::new);
         properties = serializer.getArray(serializer.setListSuffix(SConcreteProperty.modelName), SConcreteProperty::new);

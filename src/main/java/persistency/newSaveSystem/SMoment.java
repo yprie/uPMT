@@ -81,7 +81,7 @@ public class SMoment extends Serializable<Moment> {
         try {
             color = serializer.getString("color");
         } catch (JSONException error) {
-            color = "000000";
+            color = "ffffff";
         }
     }
 
