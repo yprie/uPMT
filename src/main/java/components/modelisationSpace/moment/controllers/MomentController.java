@@ -238,7 +238,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             // hide categories
             // when the moment is collapsed, there is only the moment names displayed
             VBox categoryNames = new VBox();
-            categoryNames.setStyle("-fx-background-color: #ffeaa7;\n" +
+            categoryNames.setStyle("-fx-background-color: #ffffff;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-background-insets: 1px;\n" +
                     "-fx-background-radius: 3;\n" +

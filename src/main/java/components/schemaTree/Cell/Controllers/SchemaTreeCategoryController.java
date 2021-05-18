@@ -7,6 +7,7 @@ import javafx.scene.control.Menu;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
+import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
 
@@ -52,6 +53,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         optionsMenu.getItems().add(addPropertyButton);
 
         addColorChange();
+        updateCategoryIcon(category.getColor());
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
@@ -65,44 +67,101 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
         MenuItem white = new MenuItem("    ");
         white.setStyle("-fx-background-color: #ffffff;\n");
-        white.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "ffffff").execute());
+        white.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "ffffff").execute();
+            updateCategoryIcon("ffffff");
+        });
         changeColor.getItems().add(white);
 
         MenuItem brown = new MenuItem("    ");
         brown.setStyle("-fx-background-color: #c9a18b;\n");
-        brown.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "c9a18b").execute());
+        brown.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "c9a18b").execute();
+            updateCategoryIcon("c9a18b");
+        });
         changeColor.getItems().add(brown);
 
         MenuItem pink = new MenuItem("    ");
         pink.setStyle("-fx-background-color: #ffd7e4;\n");
-        pink.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "ffd7e4").execute());
+        pink.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "ffd7e4").execute();
+            updateCategoryIcon("ffd7e4");
+        });
         changeColor.getItems().add(pink);
 
         MenuItem yellow = new MenuItem("    ");
         yellow.setStyle("-fx-background-color: #efe4b0;\n");
-        yellow.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "efe4b0").execute());
+        yellow.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "efe4b0").execute();
+            updateCategoryIcon("efe4b0");
+        });
         changeColor.getItems().add(yellow);
 
         MenuItem green = new MenuItem("    ");
         green.setStyle("-fx-background-color: #d1eb81;\n");
-        green.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "d1eb81").execute());
+        green.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "d1eb81").execute();
+            updateCategoryIcon("d1eb81");
+        });
         changeColor.getItems().add(green);
 
         MenuItem blue = new MenuItem("    ");
         blue.setStyle("-fx-background-color: #99d9ea;\n");
-        blue.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "99d9ea").execute());
+        blue.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "99d9ea").execute();
+            updateCategoryIcon("99d9ea");
+        });
         changeColor.getItems().add(blue);
 
         MenuItem purple = new MenuItem("    ");
         purple.setStyle("-fx-background-color: #9b8dcc;\n");
-        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "9b8dcc").execute());
+        purple.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "9b8dcc").execute();
+            updateCategoryIcon("9b8dcc");
+        });
         changeColor.getItems().add(purple);
 
         MenuItem red = new MenuItem("    ");
         red.setStyle("-fx-background-color: #f4a6a6;\n");
-        red.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "f4a6a6").execute());
+        red.setOnAction(actionEvent -> {
+            cmdFactory.colorCommand(category, "f4a6a6").execute();
+            updateCategoryIcon("f4a6a6");
+        });
         changeColor.getItems().add(red);
 
         optionsMenu.getItems().add(changeColor);
+    }
+
+    public void updateCategoryIcon(String color){
+
+        switch (color) {
+            case "ffffff":
+                pictureView.setImage(ResourceLoader.loadImage("category_white_filled.png"));
+                break;
+            case "c9a18b":
+                pictureView.setImage(ResourceLoader.loadImage("category_brown.png"));
+                break;
+            case "ffd7e4":
+                pictureView.setImage(ResourceLoader.loadImage("category_pink.png"));
+                break;
+            case "efe4b0":
+                pictureView.setImage(ResourceLoader.loadImage("category_yellow.png"));
+                break;
+            case "d1eb81":
+                pictureView.setImage(ResourceLoader.loadImage("category_green.png"));
+                break;
+            case "99d9ea":
+                pictureView.setImage(ResourceLoader.loadImage("category_blue.png"));
+                break;
+            case "9b8dcc":
+                pictureView.setImage(ResourceLoader.loadImage("category_purple.png"));
+                break;
+            case "f4a6a6":
+                pictureView.setImage(ResourceLoader.loadImage("category_red.png"));
+                break;
+            default:
+                pictureView.setImage(ResourceLoader.loadImage("category.png"));
+                break;
+        }
     }
 }

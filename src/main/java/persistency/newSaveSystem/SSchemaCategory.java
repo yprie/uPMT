@@ -48,7 +48,7 @@ public class SSchemaCategory extends SSchemaElement<SchemaCategory> {
         try {
             color = serializer.getString("color");
         } catch (JSONException error) {
-            color = "ffeaa7";
+            color = "efe4b0";
         }
     }
 
