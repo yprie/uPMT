@@ -233,6 +233,7 @@ public class Moment extends RootMoment implements IDraggable {
 
     public void setColor(String color) {
         this.color.set(color);
+        controller.updateColor();
     }
 
     @Override

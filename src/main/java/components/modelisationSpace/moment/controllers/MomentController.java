@@ -186,6 +186,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
         menuButton.getItems().add(renameButton);
 
+        addColorChange();
+
         if (moment.getTransitional()) {
             transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_off"));
         } else {
@@ -355,7 +357,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     private void displayTransitional() {
         double depth;
-        String color = getColor();
+        String color = getTransitionColor();
         transitionBox.setMaxHeight(0);
         transitionBox.setMaxWidth(20);
         transitionBox.setStyle("-fx-background-color: #" + color + ";\n");
@@ -552,7 +554,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         }
     }
 
-    private String getColor() {
+    private String getTransitionColor() {
         int depth = moment.getDepth();
         if (depth == 1)
             return "888888";
@@ -586,5 +588,56 @@ public class MomentController extends ListViewController<Moment> implements Init
         if (moment.getTransitional()) {
             transitionBox.setPrefHeight(height);
         }
+    }
+
+    public void updateColor() {
+        categoryContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+        momentContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+    }
+
+    private void addColorChange() {
+        Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
+
+        MenuItem white = new MenuItem("    ");
+        white.setStyle("-fx-background-color: #ffffff;\n");
+        white.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffffff").execute());
+        changeColor.getItems().add(white);
+
+        MenuItem brown = new MenuItem("    ");
+        brown.setStyle("-fx-background-color: #b97a57;\n");
+        brown.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "b97a57").execute());
+        changeColor.getItems().add(brown);
+
+        MenuItem pink = new MenuItem("    ");
+        pink.setStyle("-fx-background-color: #ffaec9;\n");
+        pink.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffaec9").execute());
+        changeColor.getItems().add(pink);
+
+        MenuItem yellow = new MenuItem("    ");
+        yellow.setStyle("-fx-background-color: #ffc90e;\n");
+        yellow.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffc90e").execute());
+        changeColor.getItems().add(yellow);
+
+        MenuItem green = new MenuItem("    ");
+        green.setStyle("-fx-background-color: #b5e61d;\n");
+        green.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "b5e61d").execute());
+        changeColor.getItems().add(green);
+
+        MenuItem blue = new MenuItem("    ");
+        blue.setStyle("-fx-background-color: #7092be;\n");
+        blue.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "7092be").execute());
+        changeColor.getItems().add(blue);
+
+        MenuItem purple = new MenuItem("    ");
+        purple.setStyle("-fx-background-color: #9b8dcc;\n");
+        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "9b8dcc").execute());
+        changeColor.getItems().add(purple);
+
+        MenuItem red = new MenuItem("    ");
+        red.setStyle("-fx-background-color: #f15252;\n");
+        red.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "f15252").execute());
+        changeColor.getItems().add(red);
+
+        menuButton.getItems().add(changeColor);
     }
 }

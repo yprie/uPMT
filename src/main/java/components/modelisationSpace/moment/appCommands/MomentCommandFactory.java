@@ -6,6 +6,7 @@ import models.Moment;
 import models.RootMoment;
 import models.SchemaCategory;
 import models.Descripteme;
+import utils.command.Executable;
 
 public class MomentCommandFactory {
 
@@ -61,5 +62,9 @@ public class MomentCommandFactory {
 
     public AddSiblingMomentCommand addSiblingCommand(Moment m, Descripteme descripteme, int index) {
         return new AddSiblingMomentCommand(hookNotifier, parent, m, descripteme, index);
+    }
+
+    public Executable<Object> colorCommand(Moment m, String color) {
+        return new ChangeColorMomentCommand(m, color);
     }
 }
