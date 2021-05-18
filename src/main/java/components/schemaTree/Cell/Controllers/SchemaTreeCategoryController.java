@@ -3,6 +3,7 @@ package components.schemaTree.Cell.Controllers;
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import javafx.beans.binding.Bindings;
+import javafx.scene.control.Menu;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -50,10 +51,58 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         });
         optionsMenu.getItems().add(addPropertyButton);
 
+        addColorChange();
+
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             cmdFactory.removeTreeElement(category).execute();
         });
         optionsMenu.getItems().add(deleteButton);
+    }
+
+    private void addColorChange() {
+        Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
+
+        MenuItem white = new MenuItem("    ");
+        white.setStyle("-fx-background-color: #ffffff;\n");
+        white.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "ffffff").execute());
+        changeColor.getItems().add(white);
+
+        MenuItem brown = new MenuItem("    ");
+        brown.setStyle("-fx-background-color: #c9a18b;\n");
+        brown.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "c9a18b").execute());
+        changeColor.getItems().add(brown);
+
+        MenuItem pink = new MenuItem("    ");
+        pink.setStyle("-fx-background-color: #ffd7e4;\n");
+        pink.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "ffd7e4").execute());
+        changeColor.getItems().add(pink);
+
+        MenuItem yellow = new MenuItem("    ");
+        yellow.setStyle("-fx-background-color: #efe4b0;\n");
+        yellow.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "efe4b0").execute());
+        changeColor.getItems().add(yellow);
+
+        MenuItem green = new MenuItem("    ");
+        green.setStyle("-fx-background-color: #d1eb81;\n");
+        green.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "d1eb81").execute());
+        changeColor.getItems().add(green);
+
+        MenuItem blue = new MenuItem("    ");
+        blue.setStyle("-fx-background-color: #99d9ea;\n");
+        blue.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "99d9ea").execute());
+        changeColor.getItems().add(blue);
+
+        MenuItem purple = new MenuItem("    ");
+        purple.setStyle("-fx-background-color: #9b8dcc;\n");
+        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "9b8dcc").execute());
+        changeColor.getItems().add(purple);
+
+        MenuItem red = new MenuItem("    ");
+        red.setStyle("-fx-background-color: #f4a6a6;\n");
+        red.setOnAction(actionEvent -> cmdFactory.colorCommand(category, "f4a6a6").execute());
+        changeColor.getItems().add(red);
+
+        optionsMenu.getItems().add(changeColor);
     }
 }

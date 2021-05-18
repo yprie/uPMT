@@ -629,8 +629,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         changeColor.getItems().add(blue);
 
         MenuItem purple = new MenuItem("    ");
-        purple.setStyle("-fx-background-color: #9b8dcc;\n");
-        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "9b8dcc").execute());
+        purple.setStyle("-fx-background-color: #8671cd;\n");
+        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "8671cd").execute());
         changeColor.getItems().add(purple);
 
         MenuItem red = new MenuItem("    ");

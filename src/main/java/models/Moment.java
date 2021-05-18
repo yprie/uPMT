@@ -191,7 +191,7 @@ public class Moment extends RootMoment implements IDraggable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
-                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category), false);
+                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category, category.getController()), false);
                     category.existsProperty().removeListener(this);
                 }
             }

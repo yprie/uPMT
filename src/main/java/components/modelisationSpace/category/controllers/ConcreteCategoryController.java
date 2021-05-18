@@ -67,6 +67,8 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        category.getSchemaCategory().addToControllers(this);
+        category.setController(this);
         name.textProperty().bind(category.nameProperty());
         VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
         justif.setPadding(new Insets(0, 0, 0, 10));

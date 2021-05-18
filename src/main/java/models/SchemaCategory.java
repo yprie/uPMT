@@ -1,5 +1,6 @@
 package models;
 
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
@@ -10,7 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SchemaCategory extends SchemaElement implements IRemovable {
 
@@ -21,7 +24,8 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     //Computed values, no need to store them
     private SimpleIntegerProperty nbUsesInModelisation;
-    private SimpleStringProperty color = new SimpleStringProperty("ffeaa7");
+    private SimpleStringProperty color = new SimpleStringProperty("efe4b0");
+    private ArrayList<ConcreteCategoryController> ListImplements = new ArrayList<>();
 
     public SchemaCategory(String name) {
         super(name);
@@ -133,5 +137,15 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     public void setColor(String color) {
         this.color.set(color);
+        for(ConcreteCategoryController c: ListImplements) {
+            c.updateColor();
+        }
+    }
+
+    public void addToControllers(ConcreteCategoryController newController){
+        ListImplements.add(newController);
+    }
+    public void removeFromControllers(ConcreteCategoryController Controller){
+        ListImplements.remove(Controller);
     }
 }
