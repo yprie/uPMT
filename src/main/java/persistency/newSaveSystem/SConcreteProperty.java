@@ -36,6 +36,7 @@ public class SConcreteProperty extends Serializable<ConcreteProperty> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         schemaProperty = serializer.getObject("schemaProperty", SSchemaProperty::new);
         justification = serializer.getObject("justification", SJustification::new);
         value = serializer.getString("value");

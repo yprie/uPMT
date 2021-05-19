@@ -2,6 +2,7 @@ package persistency.newSaveSystem;
 
 import models.ConcreteCategory;
 import models.ConcreteProperty;
+import org.json.JSONException;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
@@ -41,6 +42,7 @@ public class SConcreteCategory extends Serializable<ConcreteCategory> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         schemaCategory = serializer.getObject("schemaCategory", SSchemaCategory::new);
         justification = serializer.getObject("justification", SJustification::new);
         properties = serializer.getArray(serializer.setListSuffix(SConcreteProperty.modelName), SConcreteProperty::new);

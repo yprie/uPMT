@@ -1,9 +1,11 @@
 package models;
 
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.property.appCommands.AddConcretePropertyCommand;
 import components.modelisationSpace.property.appCommands.RemoveConcretePropertyCommand;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
@@ -20,6 +22,7 @@ public class ConcreteCategory implements IDraggable {
     public static final DataFormat format = new DataFormat("ConcreteCategory");
     private SchemaCategory category;
     private Justification justification;
+    private ConcreteCategoryController controller;
 
     private ListProperty<ConcreteProperty> properties;
     private ListChangeListener<SchemaProperty> onPropertiesUpdate = change -> {
@@ -101,5 +104,13 @@ public class ConcreteCategory implements IDraggable {
     @Override
     public boolean isDraggable() {
         return true;
+    }
+
+    public ConcreteCategoryController getController() {
+        return controller;
+    }
+
+    public void setController(ConcreteCategoryController controller) {
+        this.controller = controller;
     }
 }
