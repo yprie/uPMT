@@ -21,7 +21,6 @@ public class SRootMoment extends Serializable<RootMoment> {
 
     @Override
     public void init(RootMoment modelReference) {
-        versionCheck(version, serializer.getInt("@version"));
         this.submoments = new ArrayList<>();
         for(Moment m: modelReference.momentsProperty())
             submoments.add(new SMoment(serializer ,m));
@@ -39,6 +38,7 @@ public class SRootMoment extends Serializable<RootMoment> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
     }
 
