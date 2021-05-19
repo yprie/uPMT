@@ -43,6 +43,7 @@ public class SInterviewText extends Serializable<InterviewText> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         text = serializer.getString("text");
         annotations = serializer.getArray(serializer.setListSuffix(SAnnotation.modelName), SAnnotation::new);
     }

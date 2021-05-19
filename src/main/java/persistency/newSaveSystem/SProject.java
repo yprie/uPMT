@@ -46,6 +46,7 @@ public class SProject extends Serializable<Project> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         name = serializer.getString("name");
         schemaTreeRoot = serializer.getObject(SSchemaTreeRoot.modelName, SSchemaTreeRoot::new);
         interviews = serializer.getArray(serializer.setListSuffix(SInterview.modelName), SInterview::new);
