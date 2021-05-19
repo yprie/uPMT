@@ -2,13 +2,18 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import components.modelisationSpace.controllers.ModelisationSpaceController;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
@@ -35,9 +40,13 @@ import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListView;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
+import utils.popups.TextEntryController;
+import utils.popups.WarningPopup;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -62,6 +71,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML HBox nameBox;
     @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
+    @FXML private HBox transitionBox;
+    @FXML private BorderPane transitionPane;
 
     //Importants elements of a moment
     private JustificationController justificationController;
@@ -76,11 +87,18 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     Node justificationArea;
 
+    //menu-item with several values
+    private MenuItem transitionButton;
+    private MenuItem commentButton;
+
     private ChangeListener<Boolean> commentVisibleListener;
     private ChangeListener<Boolean> commentFocusListener;
     private ChangeListener<String> commentTextListener;
     private ChangeListener<Boolean> momentEmphasizeListener;
     private final ChangeListener<Boolean> collapsedListener = ((observable, oldValue, newValue) -> collapseOrNot());
+
+    private static double TransitionalHeight = 950;
+
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
@@ -110,7 +128,8 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        grid.add(separatorBottom.getNode(), 1, 1);
+        moment.setController(this);
+        grid.add(separatorBottom.getNode(), 1, 2);
         momentName.textProperty().bind(moment.nameProperty());
         commentArea.setVisible(moment.isCommentVisible());
         commentArea.managedProperty().bind(commentArea.visibleProperty());
@@ -140,13 +159,22 @@ public class MomentController extends ListViewController<Moment> implements Init
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
         separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
-        separatorBottom.setActive(moment.momentsProperty().size() == 0);
 
         //Menu Button
-        MenuItem commentButton = new MenuItem(Configuration.langBundle.getString("show_hide_comment"));
+        if (commentArea.isVisible()) {
+            commentButton = new MenuItem(Configuration.langBundle.getString("hide_comment"));
+        } else {
+            commentButton = new MenuItem(Configuration.langBundle.getString("show_comment"));
+        }
         commentButton.setOnAction(actionEvent -> {
             commentArea.setVisible(!commentArea.isVisible());
             moment.setCommentVisible(commentArea.isVisible());
+            updateTransHeight();
+            if (commentArea.isVisible()) {
+                commentButton.setText(Configuration.langBundle.getString("hide_comment"));
+            } else {
+                commentButton.setText(Configuration.langBundle.getString("show_comment"));
+            }
         });
         menuButton.getItems().add(commentButton);
 
@@ -157,6 +185,24 @@ public class MomentController extends ListViewController<Moment> implements Init
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
         renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
         menuButton.getItems().add(renameButton);
+
+        addColorChange();
+
+        if (moment.getTransitional()) {
+            transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_off"));
+        } else {
+            transitionButton = new MenuItem(Configuration.langBundle.getString("transitional_set_on"));
+        }
+        transitionButton.setOnAction(actionEvent -> {
+            try { cmdFactory.transitionCommand(moment).execute();
+            } catch (Error error) {
+                WarningPopup.display(Configuration.langBundle.getString("transitional_warning"));
+            }
+            displayTransitional();
+        });
+        menuButton.getItems().add(transitionButton);
+        grid.add(transitionPane, 1, 1);
+        displayTransitional();
 
         // Show/Hide moment body (comment, justifications, categories)
         collapseIcon.setOnMouseClicked(actionEvent -> {
@@ -192,22 +238,19 @@ public class MomentController extends ListViewController<Moment> implements Init
             // hide categories
             // when the moment is collapsed, there is only the moment names displayed
             VBox categoryNames = new VBox();
-            categoryNames.setStyle("-fx-background-color: #ffeaa7;\n" +
+            categoryNames.setStyle("-fx-background-color: #ffffff;\n" +
                     "-fx-border-color: transparent;\n" +
                     "-fx-background-insets: 1px;\n" +
                     "-fx-background-radius: 3;\n" +
                     "-fx-border-radius:3;");
-            moment.concreteCategoriesProperty().forEach((category) -> {
-                categoryNames.getChildren().add(new Label(category.getName()));
-            });
+            moment.concreteCategoriesProperty().forEach((category) -> categoryNames.getChildren().add(new Label(category.getName())));
             momentContainer.setBottom(categoryNames);
         }
+        updateTransHeight();
     }
 
     public void bind(){
-        commentVisibleListener = (observableValue, oldValue, visible) -> {
-            moment.setCommentVisible(visible);
-        };
+        commentVisibleListener = (observableValue, oldValue, visible) -> moment.setCommentVisible(visible);
 
         //Add the comment; When the moment has no comment the textArea disappears
         commentFocusListener = (observableValue, oldValue, focused) -> {
@@ -311,6 +354,31 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
         }
     }
+
+    private void displayTransitional() {
+        double depth;
+        String color = getTransitionColor();
+        transitionBox.setMaxHeight(0);
+        transitionBox.setMaxWidth(20);
+        transitionBox.setStyle("-fx-background-color: #" + color + ";\n");
+
+        if (!moment.getTransitional()) {
+            separatorBottom.setActive(moment.momentsProperty().size() == 0 && !moment.getTransitional());
+            transitionButton.setText(Configuration.langBundle.getString("transitional_set_on"));
+            categoryContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+            momentContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+        }
+        else {
+            depth = getTransitionDepth();
+            separatorBottom.setActive(false);
+            transitionBox.setMaxHeight(depth);
+            transitionBox.setPrefHeight(depth);
+            transitionButton.setText(Configuration.langBundle.getString("transitional_set_off"));
+            categoryContainer.setStyle("-fx-background-color: #" + color + ";\n");
+            momentContainer.setStyle("-fx-background-color: #" + color + ";\n");
+        }
+    }
+
     @Override
     public Moment getModel() {
         return moment;
@@ -319,9 +387,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @Override
     public void onMount() {
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
-                event -> {
-                    paneCmdFactory.scrollToNode(childrenMomentContainer).execute();
-            }));
+                event -> paneCmdFactory.scrollToNode(childrenMomentContainer).execute()));
         viewFocus.play();
     }
 
@@ -368,8 +434,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         }
         else {
             //Hide an show the separators
-            if(grid.getChildren().contains(separatorLeft.getNode()))
-                grid.getChildren().remove(separatorLeft.getNode());
+            grid.getChildren().remove(separatorLeft.getNode());
             if(!grid.getChildren().contains(separatorRight.getNode()))
                 grid.add(separatorRight.getNode(), 2, 0);
 
@@ -392,6 +457,7 @@ public class MomentController extends ListViewController<Moment> implements Init
             Insets ins = childrenMomentContainer.getPadding();
             childrenMomentContainer.setPadding(new Insets(ins.getTop(), ins.getRight(), ins.getBottom(), 0));
         }
+        updateTransHeight();
     }
 
     private void setupDragAndDrop() {
@@ -475,4 +541,103 @@ public class MomentController extends ListViewController<Moment> implements Init
         });
     }
 
+
+    private double getTransitionDepth() {
+        double height = getFullHeight();
+
+        if (TransitionalHeight-height > 100) {
+            return TransitionalHeight-height;
+        }
+        else {
+            TransitionalHeight += 100;
+            return getTransitionDepth();
+        }
+    }
+
+    private String getTransitionColor() {
+        int depth = moment.getDepth();
+        if (depth == 1)
+            return "888888";
+        else if (depth == 2)
+            return "9a9a9a";
+        else if (depth == 3)
+            return "acacac";
+        else if (depth == 4)
+            return "bebebe";
+        else if (depth == 5)
+            return "d0d0d0";
+        else
+            return "e0e0e0";
+    }
+
+    private double getFullHeight() {
+        double parentHeight = 0;
+        if (moment.getParent() != null) {
+            try {
+                Moment parentMoment = (Moment) moment.getParent();
+                parentHeight = parentMoment.getController().getFullHeight()+16;
+            } catch (ClassCastException error){
+                //ignores when trying to get the rootMoment's height (it's not displayed)
+            }
+        }
+        return parentHeight+momentContainer.getHeight();
+    }
+
+    private void updateTransHeight() {
+        double height = getTransitionDepth();
+        if (moment.getTransitional()) {
+            transitionBox.setPrefHeight(height);
+        }
+    }
+
+    public void updateColor() {
+        categoryContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+        momentContainer.setStyle("-fx-background-color: #" + moment.getColor() + ";\n");
+    }
+
+    private void addColorChange() {
+        Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
+
+        MenuItem white = new MenuItem("    ");
+        white.setStyle("-fx-background-color: #ffffff;\n");
+        white.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffffff").execute());
+        changeColor.getItems().add(white);
+
+        MenuItem brown = new MenuItem("    ");
+        brown.setStyle("-fx-background-color: #b97a57;\n");
+        brown.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "b97a57").execute());
+        changeColor.getItems().add(brown);
+
+        MenuItem pink = new MenuItem("    ");
+        pink.setStyle("-fx-background-color: #ffaec9;\n");
+        pink.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffaec9").execute());
+        changeColor.getItems().add(pink);
+
+        MenuItem yellow = new MenuItem("    ");
+        yellow.setStyle("-fx-background-color: #ffc90e;\n");
+        yellow.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "ffc90e").execute());
+        changeColor.getItems().add(yellow);
+
+        MenuItem green = new MenuItem("    ");
+        green.setStyle("-fx-background-color: #b5e61d;\n");
+        green.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "b5e61d").execute());
+        changeColor.getItems().add(green);
+
+        MenuItem blue = new MenuItem("    ");
+        blue.setStyle("-fx-background-color: #7092be;\n");
+        blue.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "7092be").execute());
+        changeColor.getItems().add(blue);
+
+        MenuItem purple = new MenuItem("    ");
+        purple.setStyle("-fx-background-color: #8671cd;\n");
+        purple.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "8671cd").execute());
+        changeColor.getItems().add(purple);
+
+        MenuItem red = new MenuItem("    ");
+        red.setStyle("-fx-background-color: #f15252;\n");
+        red.setOnAction(actionEvent -> cmdFactory.colorCommand(moment, "f15252").execute());
+        changeColor.getItems().add(red);
+
+        menuButton.getItems().add(changeColor);
+    }
 }

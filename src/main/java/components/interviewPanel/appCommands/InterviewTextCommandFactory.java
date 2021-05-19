@@ -44,4 +44,8 @@ public class InterviewTextCommandFactory {
     public RevealDescriptemeCommand getRevealDescriptemeCommand(Descripteme descripteme) {
         return new RevealDescriptemeCommand(descripteme);
     }
+
+    public CopyToClipboardCommand getCopyToClipboardCommand(String selectedText) {
+        return new CopyToClipboardCommand(selectedText);
+    }
 }

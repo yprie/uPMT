@@ -2,6 +2,7 @@ package models;
 
 import application.history.HistoryManager;
 import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
+import components.modelisationSpace.moment.controllers.MomentController;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +28,13 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty collapsed;
 
+    private SimpleBooleanProperty transitional; //true = transitional
+
+    private SimpleStringProperty color = new SimpleStringProperty("ffffff");
+
+    private RootMoment parent;
+    private MomentController controller;
+
     public Moment(String name) {
         super();
         this.name = new SimpleStringProperty(name);
@@ -35,6 +43,31 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(false);
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
+    }
+
+    public Moment(String name, Moment parent) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
+        this.justification = new Justification();
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
+        this.parent = parent;
+    }
+
+    public Moment(String name, RootMoment parent) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
+        this.justification = new Justification();
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
+        this.parent = parent;
     }
 
     public Moment(String name, String comment, boolean commentVisible, Justification j) {
@@ -45,6 +78,7 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
     }
 
     public Moment(String name, Descripteme d) {
@@ -55,9 +89,10 @@ public class Moment extends RootMoment implements IDraggable {
         this.commentVisible = new SimpleBooleanProperty(false);
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.collapsed = new SimpleBooleanProperty();
+        this.transitional = new SimpleBooleanProperty(false);
     }
 
-    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed) {
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional) {
         super();
         this.name = new SimpleStringProperty(name);
         this.comment = new SimpleStringProperty(comment);
@@ -65,6 +100,19 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
+    }
+
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional, String color) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
+        this.justification = j;
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(commentVisible);
+        this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
+        this.color = new SimpleStringProperty(color);
     }
 
     public void setName(String name) {
@@ -90,6 +138,19 @@ public class Moment extends RootMoment implements IDraggable {
     public boolean isCollapsed() { return collapsed.get(); }
 
     public void setCollapsed(boolean collapsed) { this.collapsed.set(collapsed); }
+
+    public boolean getTransitional() { return this.transitional.get(); }
+    public void setTransitional(boolean bool) {
+        if (!this.momentsProperty().isEmpty() && bool) {
+            throw new Error("remove the submoments before");
+        }
+        else {
+            this.transitional.set(bool);
+        }
+    }
+
+    public RootMoment getParent() { return parent;}
+    public void addParent(RootMoment parent) {this.parent = parent;}
 
     public void addCategory(ConcreteCategory cc) {
         categories.add(cc);
@@ -130,7 +191,7 @@ public class Moment extends RootMoment implements IDraggable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
-                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category), false);
+                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category, category.getController()), false);
                     category.existsProperty().removeListener(this);
                 }
             }
@@ -147,6 +208,34 @@ public class Moment extends RootMoment implements IDraggable {
         }
         return had;
     }
+
+    public int getDepth() {
+        int parent_depth = 0;
+        if (parent != null) {
+            if (parent instanceof Moment) {
+                parent_depth = ((Moment) parent).getDepth();
+            }
+        }
+        return parent_depth+1;
+    }
+
+    public MomentController getController() {
+        return controller;
+    }
+
+    public void setController(MomentController controller) {
+        this.controller = controller;
+    }
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
+        controller.updateColor();
+    }
+
     @Override
     public DataFormat getDataFormat() {
         return format;

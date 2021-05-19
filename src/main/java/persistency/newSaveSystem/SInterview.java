@@ -43,6 +43,7 @@ public class SInterview extends Serializable<Interview> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         participantName = serializer.getString("participantName");
         date = serializer.getLocalDate("date");
         comment = serializer.getFacultativeString("comment", null);

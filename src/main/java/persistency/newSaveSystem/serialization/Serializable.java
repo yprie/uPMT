@@ -1,6 +1,9 @@
 package persistency.newSaveSystem.serialization;
 
+import application.configuration.Configuration;
 import persistency.newSaveSystem.upgrades.UpgradeStrategy;
+import utils.popups.OutdatedSoftware;
+import utils.popups.WarningPopup;
 
 import java.util.HashMap;
 
@@ -108,4 +111,12 @@ public abstract class Serializable<ModelType> {
 
     protected abstract ModelType createModel();
     protected void finalizeModelCreation(ModelType model) {}
+
+    protected void versionCheck(int version, int fileversion){
+        //will prevent the user to launch a file with an outdated software, call in a read() if you want to use it
+        //check SMoment.read() for example
+        if(version < fileversion) {
+            OutdatedSoftware.display(Configuration.langBundle.getString("outdated_soft"));
+        }
+    }
 }

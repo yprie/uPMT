@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SMoment extends Serializable<Moment> {
 
     //General info
-    public static final int version = 1;
+    public static final int version = 3;
     public static final String modelName = "moment";
 
     //Fields
@@ -22,6 +22,8 @@ public class SMoment extends Serializable<Moment> {
     public SJustification justification;
     public ArrayList<SConcreteCategory> categories;
     public ArrayList<SMoment> submoments;
+    public boolean transitional;
+    public String color;
 
     public SMoment(ObjectSerializer serializer) {
         super(serializer);
@@ -38,6 +40,8 @@ public class SMoment extends Serializable<Moment> {
         this.isCommentVisible = modelReference.isCommentVisible();
         this.isCollapsed = modelReference.isCollapsed();
         this.justification = new SJustification(serializer, modelReference.getJustification());
+        this.transitional = modelReference.getTransitional();
+        this.color = modelReference.getColor();
 
         this.categories = new ArrayList<>();
         for(ConcreteCategory cc: modelReference.concreteCategoriesProperty())
@@ -55,6 +59,7 @@ public class SMoment extends Serializable<Moment> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         name = serializer.getString("name");
         comment = serializer.getFacultativeString("momentComment",null);
         isCommentVisible = serializer.getBoolean("isCommentVisible");
@@ -66,6 +71,18 @@ public class SMoment extends Serializable<Moment> {
         justification = serializer.getObject("justification", SJustification::new);
         categories = serializer.getArray(serializer.setListSuffix(SConcreteCategory.modelName), SConcreteCategory::new);
         submoments = serializer.getArray(serializer.setListSuffix(SMoment.modelName), SMoment::new);
+
+        try {
+            transitional = serializer.getBoolean("transitional");
+        } catch (JSONException error) {
+            transitional = false;
+        }
+
+        try {
+            color = serializer.getString("color");
+        } catch (JSONException error) {
+            color = "ffffff";
+        }
     }
 
     @Override
@@ -77,15 +94,20 @@ public class SMoment extends Serializable<Moment> {
         serializer.writeObject("justification", justification);
         serializer.writeArray(serializer.setListSuffix(SConcreteCategory.modelName), categories);
         serializer.writeArray(serializer.setListSuffix(SMoment.modelName), submoments);
+        serializer.writeBoolean("transitional", transitional);
+        serializer.writeString("color", color);
     }
 
     @Override
     protected Moment createModel() {
-        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed);
+        Moment m = new Moment(name, comment, isCommentVisible, justification.createModel(), isCollapsed, transitional, color);
         for(SMoment sm: submoments)
             m.addMoment(sm.convertToModel());
+        for (Moment sm : m.momentsProperty())
+            sm.addParent(m);
         for(SConcreteCategory cc: categories)
             m.addCategory(cc.convertToModel());
+
         return m;
     }
 }

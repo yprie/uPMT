@@ -35,6 +35,7 @@ public class SDescripteme extends Serializable<Descripteme> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         startIndex = serializer.getInt("startIndex");
         endIndex = serializer.getInt("endIndex");
         interviewText = serializer.getObject("interviewText", SInterviewText::new);
