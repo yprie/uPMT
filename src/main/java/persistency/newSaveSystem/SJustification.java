@@ -39,6 +39,7 @@ public class SJustification extends Serializable<Justification> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         descriptemes = serializer.getArray(serializer.setListSuffix(SDescripteme.modelName), SDescripteme::new);
     }
 

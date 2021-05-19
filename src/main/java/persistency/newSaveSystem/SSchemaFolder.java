@@ -49,6 +49,7 @@ public class SSchemaFolder extends SSchemaElement<SchemaFolder> {
     @Override
     protected void read() {
         super.read();
+        versionCheck(version, serializer.getInt("@version"));
         folders = serializer.getArray(serializer.setListSuffix(SSchemaFolder.modelName), SSchemaFolder::new);
         categories = serializer.getArray(serializer.setListSuffix(SSchemaCategory.modelName), SSchemaCategory::new);
     }
