@@ -1,14 +1,12 @@
 package components.interviewSelector.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
-import models.Interview;
 import application.configuration.Configuration;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import models.Interview;
 import utils.ResourceLoader;
 
 import java.net.URL;
