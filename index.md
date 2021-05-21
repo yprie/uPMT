@@ -1,37 +1,27 @@
-## Welcome to GitHub Pages
+## Welcome to the µPMT webpage
 
-You can use the [editor on GitHub](https://github.com/yprie/uPMT/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### What is µPMT?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+µPMT stands for "micro Phenomenology Modelling Tool". It is also written uPMT because greec letters can be hard to find on average keyboards.
 
-### Markdown
+This tool is aimed at researchers using microphenomenology interviews (also know as explicitation interviews) to study lived experience. It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of "experience moments" described with categories and properties, and linked to the descriptemes - excerpts of the transcript - that justify them.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+More info on microphenomenology and explicitation interviews can be found on 
+-  http://microphenomenology.com (en/fr)
+-  https://www.grex2.com/ (fr)
 
-```markdown
-Syntax highlighted code block
+### Where is it?
 
-# Header 1
-## Header 2
-### Header 3
+The last release can be obtained from https://github.com/yprie/uPMT/releases
 
-- Bulleted
-- List
+Documentation is here: https://github.com/yprie/uPMT/wiki
 
-1. Numbered
-2. List
+And bug reporting / feature asking can be done here https://github.com/yprie/uPMT/issues
 
-**Bold** and _Italic_ and `Code` text
+### Where does it come from?
 
-[Link](url) and ![Image](src)
-```
+This is an ongoing work conducted at University of Nantes, France; led by Pr. Yannick Prié (http://yannickprie.net), with the help of students of the CS Department of Polytech Nantes.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Current work is carried out by Yves Motteux and Esteban Jamin. Past developers were Xavier Tremillon, Yahuan Chen and Nathan Seva (19-20), Gwenaelle Gouriten, Salma Hichami and Othman Houmair (18-19), and Mehdi Haddad, Eva Boon and Yinxing Huang (17-18), under the supervision of Yannick Prié. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron.
 
-### Jekyll Themes
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/yprie/uPMT/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
