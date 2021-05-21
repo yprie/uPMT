@@ -24,4 +24,6 @@ This is an ongoing work conducted at University of Nantes, France; led by Pr. Ya
 
 Current work is carried out by Yves Motteux and Esteban Jamin. Past developers were Xavier Tremillon, Yahuan Chen and Nathan Seva (19-20), Gwenaelle Gouriten, Salma Hichami and Othman Houmair (18-19), and Mehdi Haddad, Eva Boon and Yinxing Huang (17-18), under the supervision of Yannick Prié. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron.
 
+### What does it look like?
 
+![uPMT main screenshot](/uPMT-main.png)
