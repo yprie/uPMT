@@ -12,7 +12,7 @@ More info on microphenomenology and explicitation interviews can be found on
 - [http://microphenomenology.com](http://microphenomenology.com) (en/fr)
 - [https://www.grex2.com/](https://www.grex2.com/) (fr)
 
-### Where is it?
+### Where can I find it?
 
 The last release can be obtained from [https://github.com/yprie/uPMT/releases](https://github.com/yprie/uPMT/releases)
 
