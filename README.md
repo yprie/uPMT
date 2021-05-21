@@ -1,4 +1,4 @@
-# uPMT
+# uPMT: micro Phenomenology Modelling Tool
 
 uPMT is aimed at researchers using microphenomenology interviews (also know as explicitation interviews) to study lived experience. It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of "experience moments" described with categories and properties, and linked to the descriptemes - excerpts of the transcript - that justify them.
 
