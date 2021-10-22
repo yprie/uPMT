@@ -21,7 +21,11 @@ public class ProjectSavingStatusChangedCommand extends ApplicationCommand<Void> 
         UUID lastSavedCommandId = upmtApp.getLastSavedCommandId();
         if(currentCommandId != null ){
             if (lastSavedCommandId == null){
-                upmtApp.getPrimaryStage().setTitle(currentTitle + unsavedProjectSymbol);
+                /* Correction : on ajoute '*' seulement si '*' n'est pas déjà présent dans le titre.
+                 Patch : add '*' only if '*' is not already in the title. */
+                if (currentTitle.charAt(currentTitle.length() - 2) != '*') {
+                    upmtApp.getPrimaryStage().setTitle(currentTitle + unsavedProjectSymbol);
+                }
             }else {
                 if (HistoryManager.getCurrentCommandId().equals(lastSavedCommandId)) {
                     if (currentTitle.endsWith(unsavedProjectSymbol)) {
