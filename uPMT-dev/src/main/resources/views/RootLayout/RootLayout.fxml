@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.control.RadioMenuItem?>
+<BorderPane fx:id="rootLayout" prefHeight="572.0" prefWidth="904.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+       <MenuBar BorderPane.alignment="CENTER">
+           <Menu fx:id="menu" mnemonicParsing="false" text="%file">
+               <MenuItem fx:id="newProject" mnemonicParsing="false" onAction="#newProject" text="%new_project"/>
+               <Menu fx:id="openRecentProject" mnemonicParsing="false" text="%open_project"/>
+               <MenuItem fx:id="openProject" mnemonicParsing="false" onAction="#openProject" text="%open_project_as"/>
+               <MenuItem fx:id="saveProject" mnemonicParsing="false" onAction="#saveProject" text="%save_project"/>
+               <MenuItem fx:id="saveProjectAs" mnemonicParsing="false" onAction="#saveProjectAs"
+                         text="%save_project_as"/>
+               <MenuItem fx:id="exportProject" mnemonicParsing="false" onAction="#exportProject"
+                         text="%export_project"/>
+               <SeparatorMenuItem mnemonicParsing="false"/>
+               <MenuItem fx:id="newInterview" mnemonicParsing="false" onAction="#newInterview" text="%new_interview"/>
+               <SeparatorMenuItem mnemonicParsing="false"/>
+               <MenuItem fx:id="quitterBouton" mnemonicParsing="false" onAction="#close" text="%quit"/>
+           </Menu>
+           <Menu fx:id="viewMenu" mnemonicParsing="false" text="%view">
+               <MenuItem fx:id="collapseAllMoments" mnemonicParsing="false" text="%collapse_all_moments"/>
+               <MenuItem fx:id="exportAsPng" mnemonicParsing="false" text="%export_as_png" />
+           </Menu>
+           <Menu mnemonicParsing="false" text="%edit">
+               <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
+               <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>
+               <RadioMenuItem fx:id="scrollOnReveal" mnemonicParsing="false" text="%scroll_on_reveal"/>
+           </Menu>
+           <Menu mnemonicParsing="false" text="%language">
+               <MenuItem fx:id="anglais" mnemonicParsing="false" onAction="#openEnglishVersion" text="English"/>
+               <MenuItem fx:id="francais" mnemonicParsing="false" onAction="#openFrenchVersion" text="Français"/>
+               <MenuItem fx:id="espanol" mnemonicParsing="false" onAction="#openSpanishVersion" text="Español"/>
+               <MenuItem fx:id="italiano" mnemonicParsing="false" onAction="#openItalienVersion" text="Italiano"/>
+           </Menu>
+           <Menu mnemonicParsing="false" text="%help">
+               <MenuItem fx:id="aboutUs" mnemonicParsing="false" onAction="#aboutUs" text="%about_us"/>
+               <MenuItem fx:id="userGuide" mnemonicParsing="false" onAction="#openALink" text="%userGuide"/>
+           </Menu>
+           <!--            <Menu mnemonicParsing="false" text="%tools">
+                         <items>
+                           <MenuItem mnemonicParsing="false" onAction="#statsCategory" text="%stats_category" />
+                           <MenuItem mnemonicParsing="false" onAction="#momentsComparaison" text="%moments_comparaison" />
+                         </items>
+                       </Menu>-->
+       </MenuBar>
+   </top>
+</BorderPane>

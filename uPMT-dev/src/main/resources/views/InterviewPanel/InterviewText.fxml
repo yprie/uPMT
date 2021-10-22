@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" minWidth="200">
+    <top>
+        <HBox fx:id="hboxAnnotation">
+        </HBox>
+    </top>
+    <center>
+        <StackPane fx:id="stackPaneInterview">
+            <!-- Here is inserted the rich text area -->
+        </StackPane>
+    </center>
+</BorderPane>

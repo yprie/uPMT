@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="container" prefWidth="100.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <HBox BorderPane.alignment="TOP_LEFT">
+         <Label fx:id="text" minWidth="150.0" style="-fx-text-overrun: ellipsis;" text="Un exemple de descripteme">
+            <font>
+               <Font name="Arial Italic" size="12.0" />
+            </font></Label>
+         <BorderPane.margin>
+            <Insets top="7.0" />
+         </BorderPane.margin>
+        </HBox>
+
+    </center>
+   <left>
+       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
+                  BorderPane.alignment="TOP_CENTER">
+           <BorderPane.margin>
+               <Insets bottom="5.0" right="5.0" top="5.0"/>
+           </BorderPane.margin>
+           <Image url="@../../../../images/hasExtractIconDisabled-2.png"/>
+       </ImageView>
+   </left>
+   <right>
+         <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../../css/application.css" BorderPane.alignment="TOP_CENTER">
+         <BorderPane.margin>
+            <Insets left="5.0" />
+         </BorderPane.margin>
+      </MenuButton>
+   </right>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</BorderPane>
