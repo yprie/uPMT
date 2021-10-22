@@ -2,17 +2,17 @@ package components.interviewSelector;
 
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
-import models.Interview;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
+import models.Interview;
 
 public class InterviewSelectorCell extends ListCell<Interview> {
 
     private InterviewSelectorCellController controller;
     private InterviewSelectorCommandFactory commandFactory;
 
-    public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory) {
+    public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory ) {
         this.commandFactory = commandFactory;
         addEventHandler(MouseEvent.MOUSE_ENTERED, mouseEvent -> { if(controller != null)controller.setOnHover(true); });
         addEventHandler(MouseEvent.MOUSE_EXITED, mouseEvent -> {if(controller != null)controller.setOnHover(false); });

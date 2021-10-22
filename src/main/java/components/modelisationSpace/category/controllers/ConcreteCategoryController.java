@@ -67,10 +67,13 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        category.getSchemaCategory().addToControllers(this);
+        category.setController(this);
         name.textProperty().bind(category.nameProperty());
         VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
         justif.setPadding(new Insets(0, 0, 0, 10));
         container.setCenter(justif);
+        updateColor();
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
@@ -153,6 +156,10 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         container.setOnDragEntered(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
         });
+    }
+
+    public void updateColor() {
+        container.setStyle("-fx-background-color: #" + category.getSchemaCategory().getColor() + ";\n");
     }
 
     @Override

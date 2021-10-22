@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import models.SchemaCategory;
 import utils.removable.IRemovable;
 
 public class SchemaTreeCommandFactory {
@@ -68,5 +69,9 @@ public class SchemaTreeCommandFactory {
                 HistoryManager.addCommand(cmd, !element.mustBeRenamed());
             }
         }
+    }
+
+    public ChangeColorCategoryCommand colorCommand(SchemaCategory c, String newColor) {
+        return new ChangeColorCategoryCommand(c, newColor);
     }
 }

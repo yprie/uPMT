@@ -1,6 +1,7 @@
 package components.modelisationSpace.category.modelCommands;
 
 import application.history.ModelUserActionCommand;
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import models.ConcreteCategory;
 import models.Moment;
 
@@ -9,11 +10,13 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
     private Moment moment;
     private ConcreteCategory concreteCategory;
     int prevIndex;
+    private ConcreteCategoryController controller;
 
-    public RemoveConcreteCategory(Moment m, ConcreteCategory c) {
+    public RemoveConcreteCategory(Moment m, ConcreteCategory c, ConcreteCategoryController controller) {
         this.moment = m;
         this.concreteCategory = c;
         this.prevIndex = moment.indexOfConcreteCategory(concreteCategory);
+        this.controller = controller;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
                 descripteme.getInterviewText().removeDescripteme(descripteme);
             });
         });
+        concreteCategory.getSchemaCategory().removeFromControllers(controller);
         return null;
     }
 
@@ -45,6 +49,7 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
                 descripteme.getInterviewText().addDescripteme(descripteme);
             });
         });
+        concreteCategory.getSchemaCategory().addToControllers(controller);
         return null;
     }
 }
