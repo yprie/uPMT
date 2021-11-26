@@ -26,6 +26,7 @@ public class ProjectSavingStatusChangedCommand extends ApplicationCommand<Void> 
                 if (currentTitle.charAt(currentTitle.length() - 2) != '*') {
                     upmtApp.getPrimaryStage().setTitle(currentTitle + unsavedProjectSymbol);
                 }
+                /* gitmoji */
             }else {
                 if (HistoryManager.getCurrentCommandId().equals(lastSavedCommandId)) {
                     if (currentTitle.endsWith(unsavedProjectSymbol)) {
