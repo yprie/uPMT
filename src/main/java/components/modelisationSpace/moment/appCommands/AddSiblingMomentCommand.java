@@ -96,6 +96,9 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         if(c!= null && c.getState() == DialogState.SUCCESS){
             newMoment.setName(c.getValue());
         }
+        if (c != null && c.getState() == DialogState.CLOSED) {
+            return null;
+        }
 
         //Model command creation
         AddSubMoment cmd;
