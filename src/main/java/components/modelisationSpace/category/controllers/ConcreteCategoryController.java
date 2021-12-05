@@ -151,6 +151,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragExited(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
+            container.setStyle("-fx-background-color: #" + category.getSchemaCategory().getColor() + ";\n");
         });
 
         container.setOnDragEntered(dragEvent -> {
