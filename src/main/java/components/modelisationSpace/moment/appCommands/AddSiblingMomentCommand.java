@@ -87,19 +87,6 @@ public class AddSiblingMomentCommand implements Executable<Void> {
     @Override
     public Void execute() {
         String name = Configuration.langBundle.getString("new_moment");
-        TextEntryController c = TextEntryController.enterText(
-                Configuration.langBundle.getString("new_moment_name"),
-                newMoment.getName(),
-                50,
-                new SuggestionStrategyMoment()
-        );
-        if(c!= null && c.getState() == DialogState.SUCCESS){
-            newMoment.setName(c.getValue());
-        }
-        if (c != null && c.getState() == DialogState.CLOSED) {
-            // TODO remettre la catégorie. Changer retour fonction en int ? si erreur return -1 ?
-            return null;
-        }
 
         //Model command creation
         AddSubMoment cmd;
@@ -123,6 +110,8 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         }
 
         newMoment.addParent(parent);
+
+        newMoment.getController().passInRenamingMode(true);
 
         return null;
     }
