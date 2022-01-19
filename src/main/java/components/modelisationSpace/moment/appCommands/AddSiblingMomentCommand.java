@@ -97,6 +97,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
             newMoment.setName(c.getValue());
         }
         if (c != null && c.getState() == DialogState.CLOSED) {
+            // TODO remettre la catégorie. Changer retour fonction en int ? si erreur return -1 ?
             return null;
         }
 
@@ -111,6 +112,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         HistoryManager.addCommand(cmd, true);
 
         if (concreteCategory != null) {
+            // TODO ici que categorie cree suite au drag drop
             new AddConcreteCategoryCommand(newMoment, concreteCategory, false).execute();
         }
         else if(schemaCategory != null) {

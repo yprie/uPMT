@@ -9,6 +9,7 @@ import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
 import utils.popups.TextEntryController;
 
+// class normalement inutile
 public class RenameMomentCommand implements Executable {
 
     private Moment moment;

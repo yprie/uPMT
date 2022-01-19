@@ -153,8 +153,16 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
-        separatorBottom.setOnDragDoneDescripteme(descripteme -> childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
-        separatorBottom.setOnDragDoneCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
+
+        // TODO meme bug que categoryDrop + annuler
+        separatorBottom.setOnDragDoneDescripteme(descripteme ->
+                childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
+
+        // TODO cmd creant le new moment avec la categorie
+        separatorBottom.setOnDragDoneCategory(category ->
+                childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
+
+
         separatorBottom.setOnDragDoneShemaCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute());
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
@@ -183,7 +191,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(deleteButton);
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
-        renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
+        renameButton.setOnAction(actionEvent -> passInRenamingMode(true));    //Clic sur 'rename'
         menuButton.getItems().add(renameButton);
 
         addColorChange();
@@ -215,7 +223,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         setupDragAndDrop();
 
         //Rename moment
-        momentName.setOnMouseClicked(mouseEvent -> {
+        momentName.setOnMouseClicked(mouseEvent -> {    //double clic sur le nom
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
                     passInRenamingMode(true);

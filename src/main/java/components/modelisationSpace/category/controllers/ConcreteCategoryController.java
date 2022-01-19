@@ -117,6 +117,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragDone(dragEvent -> {
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                // TODO recup résult du drop, if confirm -> removeConcreteCategoryCommand
                 cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false).execute();
             }
         });
