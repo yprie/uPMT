@@ -191,7 +191,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(deleteButton);
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
-        renameButton.setOnAction(actionEvent -> passInRenamingMode(true));    //Clic sur 'rename'
+        renameButton.setOnAction(actionEvent -> passInRenamingMode(true));
         menuButton.getItems().add(renameButton);
 
         addColorChange();
@@ -223,7 +223,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         setupDragAndDrop();
 
         //Rename moment
-        momentName.setOnMouseClicked(mouseEvent -> {    //double clic sur le nom
+        momentName.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
                     passInRenamingMode(true);
@@ -337,14 +337,13 @@ public class MomentController extends ListViewController<Moment> implements Init
                 renamingField.selectAll();
 
                 renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                    if (!newVal)
+                    if (!newVal){   //unfocus
                         passInRenamingMode(false);
+                    }
                 });
 
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
-                        if(renamingField.getLength() > 0)
-                        HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
                         passInRenamingMode(false);
                     }
                 });
@@ -354,8 +353,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 renamingMode = true;
             }
             else {
-                if(renamingField.getLength() > 0)
+                if(renamingField.getLength() > 0 && !momentName.getText().equals(renamingField.getText())) {
                     HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                }
                 this.nameBox.getChildren().clear();
                 this.nameBox.getChildren().add(momentName);
                 renamingMode = false;
