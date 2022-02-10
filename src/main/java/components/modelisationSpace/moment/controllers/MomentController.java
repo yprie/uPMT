@@ -154,13 +154,9 @@ public class MomentController extends ListViewController<Moment> implements Init
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
 
-        // TODO meme bug que categoryDrop + annuler
-        separatorBottom.setOnDragDoneDescripteme(descripteme ->
-                childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
+        separatorBottom.setOnDragDoneDescripteme(descripteme -> childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
 
-        // TODO cmd creant le new moment avec la categorie
-        separatorBottom.setOnDragDoneCategory(category ->
-                childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
+        separatorBottom.setOnDragDoneCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
 
 
         separatorBottom.setOnDragDoneShemaCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute());
