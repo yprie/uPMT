@@ -153,8 +153,12 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         //Listeners SETUP
         //bottom separator works only when there is no child yet !
+
         separatorBottom.setOnDragDoneDescripteme(descripteme -> childCmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
+
         separatorBottom.setOnDragDoneCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category).execute());
+
+
         separatorBottom.setOnDragDoneShemaCategory(category -> childCmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment).execute());
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
@@ -183,7 +187,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         menuButton.getItems().add(deleteButton);
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
-        renameButton.setOnAction(actionEvent -> cmdFactory.renameCommand(moment).execute());
+        renameButton.setOnAction(actionEvent -> passInRenamingMode(true));
         menuButton.getItems().add(renameButton);
 
         addColorChange();
@@ -329,14 +333,13 @@ public class MomentController extends ListViewController<Moment> implements Init
                 renamingField.selectAll();
 
                 renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-                    if (!newVal)
+                    if (!newVal){   //unfocus
                         passInRenamingMode(false);
+                    }
                 });
 
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
-                        if(renamingField.getLength() > 0)
-                        HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
                         passInRenamingMode(false);
                     }
                 });
@@ -346,8 +349,9 @@ public class MomentController extends ListViewController<Moment> implements Init
                 renamingMode = true;
             }
             else {
-                if(renamingField.getLength() > 0)
+                if(renamingField.getLength() > 0 && !momentName.getText().equals(renamingField.getText())) {
                     HistoryManager.addCommand(new RenameMoment(moment, renamingField.getText()), true);
+                }
                 this.nameBox.getChildren().clear();
                 this.nameBox.getChildren().add(momentName);
                 renamingMode = false;

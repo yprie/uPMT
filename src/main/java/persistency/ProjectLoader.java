@@ -22,12 +22,13 @@ public class ProjectLoader {
         byte[] content = new byte[(int) fileToRead.length()];
         file_input.read(content);
         file_input.close();
-        int i ;
         fileContents = new String(content, StandardCharsets.UTF_8);
+
         JSONObject obj = new JSONObject(fileContents);
         JSONReadPool pool = new JSONReadPool();
         SerializationPool<Integer, Object> modelsPool = new SerializationPool<>();
         JSONSerializer serializer = new JSONSerializer(obj, pool, modelsPool);
+
         SProject p = new SProject(serializer);
         p.initReading();
         return p.convertToModel();

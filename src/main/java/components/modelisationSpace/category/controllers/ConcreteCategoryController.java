@@ -1,6 +1,8 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
@@ -117,7 +119,8 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragDone(dragEvent -> {
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false).execute();
+                RemoveConcreteCategoryCommand c = cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false);
+                Platform.runLater(c::execute);
             }
         });
 
@@ -151,6 +154,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragExited(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
+            container.setStyle("-fx-background-color: #" + category.getSchemaCategory().getColor() + ";\n");
         });
 
         container.setOnDragEntered(dragEvent -> {
