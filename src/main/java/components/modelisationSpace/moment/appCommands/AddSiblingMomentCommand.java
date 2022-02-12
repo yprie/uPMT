@@ -99,7 +99,6 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         HistoryManager.addCommand(cmd, true);
 
         if (concreteCategory != null) {
-            // TODO ici que categorie cree suite au drag drop
             new AddConcreteCategoryCommand(newMoment, concreteCategory, false).execute();
         }
         else if(schemaCategory != null) {
