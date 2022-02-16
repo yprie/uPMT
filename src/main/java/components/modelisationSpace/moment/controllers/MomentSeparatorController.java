@@ -2,8 +2,6 @@ package components.modelisationSpace.moment.controllers;
 
 import javafx.application.Platform;
 import models.*;
-import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import utils.dragAndDrop.DragStore;

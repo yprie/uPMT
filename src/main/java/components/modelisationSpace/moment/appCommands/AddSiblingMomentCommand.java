@@ -12,7 +12,6 @@ import components.modelisationSpace.moment.modelCommands.AddSubMoment;
 import utils.DialogState;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
-import utils.popups.TextEntryController;
 
 public class AddSiblingMomentCommand implements Executable<Void> {
 
@@ -86,8 +85,6 @@ public class AddSiblingMomentCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        String name = Configuration.langBundle.getString("new_moment");
-
         //Model command creation
         AddSubMoment cmd;
         if(index == -1)
