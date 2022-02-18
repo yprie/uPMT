@@ -41,4 +41,8 @@ public class RootMoment extends Emphasable {
         return -1;
     }
 
+    public int numberOfSubMoments() {
+        return submoments.size();
+    }
+
 }

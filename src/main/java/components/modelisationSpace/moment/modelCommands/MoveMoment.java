@@ -33,6 +33,9 @@ public class MoveMoment extends ModelUserActionCommand {
             parent.addMoment(moment);
         }
         else {
+            if (originParent.equals(parent) && originIndex < addIndex) {
+                addIndex -= 1;
+            }
             parent.addMoment(addIndex, moment);
         }
         return null;
