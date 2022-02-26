@@ -37,6 +37,7 @@ public class SAnnotation extends Serializable<Annotation> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         startIndex = serializer.getInt("startIndex");
         endIndex = serializer.getInt("endIndex");
         color = serializer.getColor("color");

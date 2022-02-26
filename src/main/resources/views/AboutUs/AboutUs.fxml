@@ -26,14 +26,14 @@
                 </HBox>
             </bottom>
             <center>
-                <Label lineSpacing="1.0" text="uPMT is aimed at researchers using microphenomenology interviews (also know as explicitation interviews) to study lived experience. It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of &quot;experience moments&quot; described with categories and properties, and linked to the descriptemes - excerpts of the transcript - that justify them.&#10;&#10;Current work is carried out by Yahuan Chen, Nathan Seva, Xavier Tremillon under the supervision of Yannick Prié. The second version of uPMT was implemented by Gwenaelle Gouriten, Salma Hichami, Othman Houmair. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron. Version 0.1 to 0.3 were implemented by Mehdi Haddad, with the help of Eva Boon and Yinxing Huang, under the supervision of Yannick Prié." textAlignment="CENTER" textOverrun="CLIP" wrapText="true" BorderPane.alignment="CENTER">
+                <Label lineSpacing="1.0" text="uPMT is aimed at researchers using microphenomenology interviews (also know as explicitation interviews) to study lived experience. It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of &quot;experience moments&quot; described with categories and properties, and linked to the descriptemes - excerpts of the transcript - that justify them.&#10;&#10;Current work is carried out by Yves Motteux and Esteban Jamin. Past developers were Xavier Tremillon, Yahuan Chen and Nathan Seva (19-20), Gwenaelle Gouriten, Salma Hichami and Othman Houmair (18-19), and Mehdi Haddad, Eva Boon and Yinxing Huang (17-18), under the supervision of Yannick Prié. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron." textAlignment="CENTER" textOverrun="CLIP" wrapText="true" BorderPane.alignment="CENTER">
                     <padding>
                         <Insets bottom="20.0" />
                     </padding>
                 </Label>
             </center>
          <top>
-            <Label text="Current version : 0.5.0" BorderPane.alignment="CENTER">
+            <Label text="Current version : 0.5.1" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="15.0" />
                </BorderPane.margin>

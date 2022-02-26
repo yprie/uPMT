@@ -30,6 +30,8 @@ public class Moment extends RootMoment implements IDraggable {
 
     private SimpleBooleanProperty transitional; //true = transitional
 
+    private SimpleStringProperty color = new SimpleStringProperty("ffffff");
+
     private RootMoment parent;
     private MomentController controller;
 
@@ -99,6 +101,18 @@ public class Moment extends RootMoment implements IDraggable {
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty(collapsed);
         this.transitional = new SimpleBooleanProperty(transitional);
+    }
+
+    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional, String color) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty(comment);
+        this.justification = j;
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.commentVisible = new SimpleBooleanProperty(commentVisible);
+        this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
+        this.color = new SimpleStringProperty(color);
     }
 
     public void setName(String name) {
@@ -177,7 +191,7 @@ public class Moment extends RootMoment implements IDraggable {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 if(!t1){
-                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category), false);
+                    HistoryManager.addCommand(new RemoveConcreteCategory(m, category, category.getController()), false);
                     category.existsProperty().removeListener(this);
                 }
             }
@@ -211,6 +225,15 @@ public class Moment extends RootMoment implements IDraggable {
 
     public void setController(MomentController controller) {
         this.controller = controller;
+    }
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
+        controller.updateColor();
     }
 
     @Override

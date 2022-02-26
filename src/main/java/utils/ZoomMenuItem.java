@@ -1,18 +1,25 @@
 package utils;
 
 import application.configuration.AppSettings;
+import application.configuration.Configuration;
 import javafx.scene.control.Button;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class ZoomMenuItem extends CustomMenuItem {
     private HBox box;
     private Label zoomLabel;
+    private Label zoomTextLabel;
 
     public ZoomMenuItem() {
         this.setHideOnClick(false);
         box = new HBox();
+
+
+        zoomTextLabel = new Label(Configuration.langBundle.getString("adjust_zoom_level"));
+        zoomTextLabel.setTextFill(Color.BLACK);
 
         Button minusButton = new Button("-");
         minusButton.setOnAction(event -> {
@@ -30,6 +37,8 @@ public class ZoomMenuItem extends CustomMenuItem {
 
         zoomLabel = new Label(AppSettings.zoomLevelProperty.getValue().toString());
 
+
+        box.getChildren().add(zoomTextLabel);
         box.getChildren().add(minusButton);
         box.getChildren().add(zoomLabel);
         box.getChildren().add(plusButton);

@@ -5,19 +5,19 @@ import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.hooks.ModelisationSpaceHook;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.moment.controllers.RootMomentController;
-import javafx.scene.input.TransferMode;
-import javafx.scene.transform.Scale;
-import models.RootMoment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import java.io.IOException;
-import java.net.URL;
-
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.transform.Scale;
+import models.RootMoment;
 import models.TemplateMoment;
 import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ModelisationSpaceController extends ScrollOnDragPane implements Initializable {
@@ -103,5 +103,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
                 rmController.addMoment(t.createConcreteMoment());
             }
         });
+    }
+
+    public ScrollOnDragPane getSuperPane(){
+        return this.superPane;
     }
 }

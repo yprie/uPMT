@@ -42,6 +42,7 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
     @Override
     protected void read() {
         super.read();
+        versionCheck(version, serializer.getInt("@version"));
         folders = serializer.getArray(serializer.setListSuffix(SSchemaFolder.modelName), SSchemaFolder::new);
     }
 

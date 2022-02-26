@@ -1,6 +1,8 @@
 package components.modelisationSpace.category.controllers;
 
 import application.configuration.Configuration;
+import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
@@ -67,10 +69,13 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        category.getSchemaCategory().addToControllers(this);
+        category.setController(this);
         name.textProperty().bind(category.nameProperty());
         VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
         justif.setPadding(new Insets(0, 0, 0, 10));
         container.setCenter(justif);
+        updateColor();
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
@@ -114,7 +119,8 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragDone(dragEvent -> {
             if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false).execute();
+                RemoveConcreteCategoryCommand c = cmdFactory.removeConcreteCategoryCommand(DragStore.getDraggable(), false);
+                Platform.runLater(c::execute);
             }
         });
 
@@ -148,11 +154,16 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragExited(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
+            container.setStyle("-fx-background-color: #" + category.getSchemaCategory().getColor() + ";\n");
         });
 
         container.setOnDragEntered(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
         });
+    }
+
+    public void updateColor() {
+        container.setStyle("-fx-background-color: #" + category.getSchemaCategory().getColor() + ";\n");
     }
 
     @Override

@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -27,7 +26,6 @@ public class InterviewPanelController implements Initializable {
     @FXML private BorderPane headerGrid;
     @FXML private BorderPane topBarContainerTextInterview;
 
-    private boolean collapsed = false;
     private double panePosition;
     private final SplitPane mainSplitPane;
 
@@ -75,29 +73,6 @@ public class InterviewPanelController implements Initializable {
         bind();
         refreshContent(interview.getValue());
         panePosition = mainSplitPane.getDividers().get(1).getPosition();
-
-        buttonCollapseInterviewPanel.setOnMouseClicked(arg01 -> {
-            if (!collapsed) {
-                // close
-                buttonCollapseInterviewPanel.setImage(new Image("/images/openMenuBlack.png"));
-                topBarContainerTextInterview.setCenter(null);
-                container.setCenter(null);
-                textInterviewComment.setVisible(false);
-                mainSplitPane.setDividerPosition(1, 1.0);
-            } else {
-                // open
-                buttonCollapseInterviewPanel.setImage(new Image("/images/closeMenuBlack.png"));
-                topBarContainerTextInterview.setCenter(headerGrid);
-                if (interview.getValue() != null) {
-                    container.setCenter(interviewTextController);
-                    textInterviewTitle.setText(interview.getValue().getTitle());
-                    //textInterviewComment.setText(interview.getValue().getComment());
-                }
-                textInterviewComment.setVisible(true);
-                mainSplitPane.setDividerPosition(1, panePosition);
-            }
-            collapsed = !collapsed;
-        });
     }
 
     private void bind() {
@@ -115,19 +90,17 @@ public class InterviewPanelController implements Initializable {
     }
 
     private void refreshContent(Interview newInterview) {
-        if (!collapsed) {
-            if(newInterview != null) {
-                textInterviewTitle.setText(newInterview.getTitle());
-                textInterviewComment.setText(newInterview.getComment());
-                textInterviewComment.setVisible(true);
-                interviewTextController = InterviewTextController.createInterviewTextController(interview.getValue());
-                container.setCenter(interviewTextController);
-            }
-            else {
-                textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
-                textInterviewComment.setVisible(false);
-                container.setCenter(null);
-            }
+        if(newInterview != null) {
+            textInterviewTitle.setText(newInterview.getTitle());
+            textInterviewComment.setText(newInterview.getComment());
+            textInterviewComment.setVisible(true);
+            interviewTextController = InterviewTextController.createInterviewTextController(interview.getValue());
+            container.setCenter(interviewTextController);
+        }
+        else {
+            textInterviewTitle.setText(Configuration.langBundle.getString("no_interview_selected"));
+            textInterviewComment.setVisible(false);
+            container.setCenter(null);
         }
     }
 }
