@@ -1,7 +1,6 @@
 package components.modelisationSpace.moment.appCommands;
 
 
-import application.configuration.Configuration;
 import application.history.HistoryManager;
 import application.history.ModelUserActionCommandHooks;
 import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
@@ -9,8 +8,6 @@ import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.appCommands.AddDescriptemeCommand;
 import models.*;
 import components.modelisationSpace.moment.modelCommands.AddSubMoment;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
 
 public class AddSiblingMomentCommand implements Executable<Void> {
