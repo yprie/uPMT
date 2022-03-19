@@ -96,7 +96,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         HistoryManager.addCommand(cmd, true);
 
         if (concreteCategory != null) {
-            new AddConcreteCategoryCommand(newMoment, concreteCategory, false).execute();
+            new AddConcreteCategoryCommand(hooksNotifier, newMoment, concreteCategory, false).execute();
         }
         else if(schemaCategory != null) {
             new AddConcreteCategoryCommand(hooksNotifier, newMoment, schemaCategory, false).execute();
