@@ -34,7 +34,6 @@ public class UPMTApp {
 
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
         mainScene.getRoot().setStyle("-fx-font-family: 'Calibri'");
-        System.out.println(javafx.scene.text.Font.getFamilies());
         primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication(event).execute());
         primaryStage.show();
