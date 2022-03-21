@@ -1,7 +1,6 @@
 package components.modelisationSpace.moment.appCommands;
 
 
-import application.configuration.Configuration;
 import application.history.HistoryManager;
 import application.history.ModelUserActionCommandHooks;
 import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
@@ -9,10 +8,7 @@ import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.appCommands.AddDescriptemeCommand;
 import models.*;
 import components.modelisationSpace.moment.modelCommands.AddSubMoment;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
-import utils.popups.TextEntryController;
 
 public class AddSiblingMomentCommand implements Executable<Void> {
 
@@ -86,8 +82,6 @@ public class AddSiblingMomentCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        String name = Configuration.langBundle.getString("new_moment");
-
         //Model command creation
         AddSubMoment cmd;
         if(index == -1)
@@ -99,7 +93,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         HistoryManager.addCommand(cmd, true);
 
         if (concreteCategory != null) {
-            new AddConcreteCategoryCommand(newMoment, concreteCategory, false).execute();
+            new AddConcreteCategoryCommand(hooksNotifier, newMoment, concreteCategory, false).execute();
         }
         else if(schemaCategory != null) {
             new AddConcreteCategoryCommand(hooksNotifier, newMoment, schemaCategory, false).execute();

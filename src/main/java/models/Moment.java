@@ -150,6 +150,11 @@ public class Moment extends RootMoment implements IDraggable {
     }
 
     public RootMoment getParent() { return parent;}
+
+    public void setParent(RootMoment parent) {
+        this.parent = parent;
+    }
+
     public void addParent(RootMoment parent) {this.parent = parent;}
 
     public void addCategory(ConcreteCategory cc) {

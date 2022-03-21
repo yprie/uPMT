@@ -33,10 +33,10 @@ public class UPMTApp {
         HistoryManager.init(appCommandFactory);
 
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
+        mainScene.getRoot().setStyle("-fx-font-family: 'Calibri'");
         primaryStage.setScene(mainScene);
-        primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication(event).execute(); });
+        primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication(event).execute());
         primaryStage.show();
-
 
         //Load the last used project or ask for a new one.
         if(Configuration.getProjectsPath().length > 0){
