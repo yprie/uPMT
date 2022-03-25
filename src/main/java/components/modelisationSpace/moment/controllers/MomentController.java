@@ -194,7 +194,6 @@ public class MomentController extends ListViewController<Moment> implements Init
             } catch (Error error) {
                 WarningPopup.display(Configuration.langBundle.getString("transitional_warning"));
             }
-            displayTransitional();
         });
         menuButton.getItems().add(transitionButton);
         grid.add(transitionPane, 1, 1);
@@ -351,7 +350,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         }
     }
 
-    private void displayTransitional() {
+    public void displayTransitional() {
         double depth;
         String color = getTransitionColor();
         transitionBox.setMaxHeight(0);

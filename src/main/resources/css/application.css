@@ -1,5 +1,9 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
+* {
+    -fx-font-family: serif;
+}
+
 /* --------------------------------------
  * --------------------------------------
  * --------------SCROLLBAR---------------
@@ -223,7 +227,6 @@
 
 .moment-dnd-zone {
     -fx-background-radius: 50px;
-    -fx-background-color: red;
 }
 
 moment-no-left-padding {
@@ -434,4 +437,7 @@ Green: #40AC40  #19C519
     -fx-background-image: url("/images/btnZoomPlusPng.png");
 }
 
+#textInterviewTitle {
+    -fx-font-size: 22px;
+}
 

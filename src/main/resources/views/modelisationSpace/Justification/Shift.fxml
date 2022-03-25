@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
-    <Button fx:id="leftButton" styleClass="shift-descripteme" stylesheets="@../../../css/application.css" />
-    <Button fx:id="rightButton" styleClass="shift-descripteme" stylesheets="@../../../css/application.css" />
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" stylesheets="/css/application.css">
+    <Button fx:id="leftButton" styleClass="shift-descripteme" />
+    <Button fx:id="rightButton" styleClass="shift-descripteme" />
 </HBox>
