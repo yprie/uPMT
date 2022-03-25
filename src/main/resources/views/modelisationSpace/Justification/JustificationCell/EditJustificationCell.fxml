@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_CENTER" maxWidth="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxWidth="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <children>
       <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
           <VBox.margin>

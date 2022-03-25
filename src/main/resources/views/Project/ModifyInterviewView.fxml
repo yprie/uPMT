@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="458.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="458.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <VBox prefHeight="531.0" prefWidth="710.0">
         <GridPane prefHeight="400.0" prefWidth="614.0" vgap="20.0">
             <columnConstraints>
@@ -100,7 +100,7 @@
             </VBox.margin>
          <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="358.0" GridPane.columnIndex="1">
             <children>
-                  <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="23.0" prefWidth="98.0" styleClass="button-gray" stylesheets="/css/application.css" text="%cancel">
+                  <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="23.0" prefWidth="98.0" styleClass="button-gray" text="%cancel">
                       <font>
                           <Font size="18.0" />
                       </font>
@@ -108,7 +108,7 @@
                      <Insets right="20.0" />
                   </HBox.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#modifyInterview" styleClass="button-gray" stylesheets="/css/application.css" text="%confirm">
+                  <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#modifyInterview" styleClass="button-gray" text="%confirm">
                       <font>
                           <Font size="18.0" />
                       </font>

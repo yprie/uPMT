@@ -3,7 +3,9 @@ package application;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import com.sun.javafx.css.StyleManager;
 import components.rootLayout.Controllers.RootLayoutController;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -33,7 +35,11 @@ public class UPMTApp {
         HistoryManager.init(appCommandFactory);
 
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
-        mainScene.getRoot().setStyle("-fx-font-family: 'Calibri'");
+
+        //set default stylesheet
+        Application.setUserAgentStylesheet(null);
+        StyleManager.getInstance().addUserAgentStylesheet(this.getClass().getResource("/css/application.css").toExternalForm());
+
         primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication(event).execute());
         primaryStage.show();

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="60.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="60.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <children>
       <HBox fx:id="momentsBox" alignment="CENTER_LEFT" />
    </children>

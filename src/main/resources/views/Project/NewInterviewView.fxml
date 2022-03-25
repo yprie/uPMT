@@ -7,7 +7,7 @@
 
 <!-- fx:controller="components.InterviewSelector.Controllers.NewInterviewController" -->
 
-<AnchorPane prefHeight="678.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="678.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <VBox layoutY="-18.0" prefHeight="695.0" prefWidth="800.0">
         <HBox prefHeight="25.0" prefWidth="800.0">
             <Label id="wel" textFill="#9a1111">
@@ -119,7 +119,7 @@
                <Font size="14.0" />
             </font>
          </Label>
-              <Button id="btnSelectFile" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="32.0" prefWidth="106.0" styleClass="button-gray" stylesheets="/css/application.css" text="%select_file" GridPane.columnIndex="2" GridPane.rowIndex="4">
+              <Button id="btnSelectFile" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#openFileChooser" prefHeight="32.0" prefWidth="106.0" styleClass="button-gray" text="%select_file" GridPane.columnIndex="2" GridPane.rowIndex="4">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
@@ -148,7 +148,7 @@
             </VBox.margin>
          <HBox GridPane.columnIndex="2">
             <children>
-                  <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="36.0" prefWidth="98.0" styleClass="button-gray" stylesheets="/css/application.css" text="%cancel">
+                  <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="36.0" prefWidth="98.0" styleClass="button-gray" text="%cancel">
                       <font>
                           <Font size="18.0" />
                       </font>
@@ -156,7 +156,7 @@
                      <Insets right="20.0" />
                   </HBox.margin>
                   </Button>
-                  <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#createInterview" styleClass="button-gray" stylesheets="/css/application.css" text="%confirm">
+                  <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#createInterview" styleClass="button-gray" text="%confirm">
                       <font>
                           <Font size="18.0" />
                       </font>
