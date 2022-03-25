@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="container" styleClass="categoryCard" stylesheets="@../../../css/application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" styleClass="categoryCard" stylesheets="/css/application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
    </padding>
@@ -22,13 +22,13 @@
             </ImageView>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="name" alignment="CENTER" styleClass="categoryCard-header" stylesheets="@../../../css/application.css" text="Super catégorie !" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="name" alignment="CENTER" styleClass="categoryCard-header" text="Super catégorie !" HBox.hgrow="ALWAYS" />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <MenuButton fx:id="menuButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
+            <MenuButton fx:id="menuButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="threedotsTreeview"/>
          </children>
       </HBox>
    </top>

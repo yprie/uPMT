@@ -6,12 +6,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="container" prefHeight="30.0" prefWidth="176.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" prefHeight="30.0" prefWidth="176.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <left>
       <ImageView fx:id="pictureView" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview" stylesheets="/css/application.css" BorderPane.alignment="CENTER">
+      <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets right="10.0" />
          </BorderPane.margin></MenuButton>
