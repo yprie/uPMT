@@ -486,6 +486,14 @@ public class MomentController extends ListViewController<Moment> implements Init
                     dragEvent.acceptTransferModes(TransferMode.MOVE);
                     dragEvent.consume();
                 }
+                //Moment
+                else if (
+                        DragStore.getDraggable().getDataFormat() == Moment.format
+                        && !moment.equals(DragStore.getDraggable())
+                ) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    dragEvent.consume();
+                }
             }
         });
 
@@ -505,6 +513,11 @@ public class MomentController extends ListViewController<Moment> implements Init
             }
             else if(DragStore.getDraggable().getDataFormat() == ConcreteCategory.format) {
                 categoryCmdFactory.addConcreteCategoryCommand(DragStore.getDraggable(), true).execute();
+                dragEvent.setDropCompleted(true);
+                dragEvent.consume();
+            }
+            else if(DragStore.getDraggable().getDataFormat() == Moment.format) {
+                cmdFactory.mergeMomentCommand(moment, DragStore.getDraggable(),  true).execute();
                 dragEvent.setDropCompleted(true);
                 dragEvent.consume();
             }

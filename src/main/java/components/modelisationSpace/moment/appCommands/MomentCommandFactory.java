@@ -45,7 +45,7 @@ public class MomentCommandFactory {
     public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent){
         return new MoveMomentCommand(parent, originParent, m);
     }
-    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m); }
+    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m, true); }
     public SetMomentTransCommand transitionCommand(Moment m) { return new SetMomentTransCommand(m); }
     public AddCommentCommand addCommentCommand(Moment m, String comment){ return new AddCommentCommand(m, comment);}
 
@@ -64,5 +64,9 @@ public class MomentCommandFactory {
 
     public ChangeColorMomentCommand colorCommand(Moment m, String color) {
         return new ChangeColorMomentCommand(m, color);
+    }
+
+    public MergeMomentCommand mergeMomentCommand(Moment destinationMoment, Moment sourceMoment, boolean userCommand) {
+        return new MergeMomentCommand(hookNotifier, destinationMoment, sourceMoment, userCommand);
     }
 }

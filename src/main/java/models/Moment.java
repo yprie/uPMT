@@ -204,14 +204,21 @@ public class Moment extends RootMoment implements IDraggable {
     }
 
     public boolean hadThisCategory(ConcreteCategory category) {
-        boolean had = false;
         for (ConcreteCategory concreteCategory : categories) {
             if (category.getSchemaCategory() == concreteCategory.getSchemaCategory()) {
-                had = true;
-                break;
+                return true;
             }
         }
-        return had;
+        return false;
+    }
+
+    public ConcreteCategory getCategory(ConcreteCategory category) {
+        for (ConcreteCategory concreteCategory : categories) {
+            if (category.getSchemaCategory() == concreteCategory.getSchemaCategory()) {
+                return concreteCategory;
+            }
+        }
+        return null;
     }
 
     public int getDepth() {
