@@ -48,13 +48,15 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-tasks.withType(Jar) { duplicatesStrategy = DuplicatesStrategy.INHERIT }
+
 
 test {
     systemProperty "file.encoding", "utf-8"
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes 'Main-Class': 'application.Launcher'
     }
