@@ -55,8 +55,6 @@ test {
 }
 
 jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
     manifest {
         attributes 'Main-Class': 'application.Launcher'
     }
