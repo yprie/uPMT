@@ -23,7 +23,6 @@ dependencies {
 
     implementation group: 'org.json', name: 'json', version: '20190722'
     implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.4'
-    implementation group: 'org.ow2.asm', name: 'asm', version: '7.1'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
@@ -47,6 +46,9 @@ sourceSets {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    options.compilerArgs.add("-XDignore.symbol.file=true")
+    options.fork = true
+    options.forkOptions.executable = 'javac'
 }
 
 
