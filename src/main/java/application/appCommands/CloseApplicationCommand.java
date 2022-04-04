@@ -27,8 +27,6 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
     @Override
     public Void execute() {
 
-        System.out.println("Test checking project unsaved");
-        //TODO check for unsaved work
         boolean workUnsaved = false;
         String currentTitle = upmtApp.getPrimaryStage().getTitle();
         UUID currentCommandId = HistoryManager.getCurrentCommandId();
@@ -49,6 +47,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             alert.setHeaderText("");
             alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
             alert.setContentText(Configuration.langBundle.getString("alert_unsaved_project"));
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
             ButtonType buttonTypeOne = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeOne"));
             ButtonType buttonTypeTwo = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeTwo"));
