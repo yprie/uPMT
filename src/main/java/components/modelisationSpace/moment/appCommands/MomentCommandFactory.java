@@ -24,6 +24,13 @@ public class MomentCommandFactory {
         return new AddSiblingMomentCommand(hookNotifier, parent, m);
     }
 
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, int index, boolean isRenaming) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, index, isRenaming);
+    }
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, boolean isRenaming) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, isRenaming);
+    }
+
 
     public AddSiblingMomentCommand addSiblingCommand(Moment m, ConcreteCategory category) {
         return new AddSiblingMomentCommand(hookNotifier, parent, m, category);

@@ -1,0 +1,26 @@
+/* toolbox */
+/*
+#toolBoxHBOX {
+    -fx-background-color: blue;
+}
+*/
+
+#addMomentTypeFolder {
+    -fx-background-size: 40 40;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+    -fx-background-image: url("/images/toolBox_icon.png");
+}
+
+/*
+#draggableMomentsType {
+    -fx-background-color: red;
+}
+*/
+
+#momentTypeBorderPane {
+    -fx-background-color: white;
+    -fx-border-width: 1;
+    -fx-border-color: black;
+}

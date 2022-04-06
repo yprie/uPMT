@@ -3,7 +3,10 @@ package models;
 import application.history.HistoryManager;
 import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
 import components.modelisationSpace.moment.controllers.MomentController;
-import javafx.beans.property.*;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -258,4 +261,19 @@ public class Moment extends RootMoment implements IDraggable {
         return true;
     }
 
+    public void setJustification(Justification justification) {
+        this.justification = justification;
+    }
+
+    public void setCategories(ObservableList<ConcreteCategory> categories) {
+        this.categories.set(categories);
+    }
+
+    public ObservableList<ConcreteCategory> getCategories() {
+        return categories.get();
+    }
+
+    public ListProperty<ConcreteCategory> categoriesProperty() {
+        return categories;
+    }
 }

@@ -6,8 +6,8 @@ import application.history.ModelUserActionCommandHooks;
 import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.appCommands.AddDescriptemeCommand;
-import models.*;
 import components.modelisationSpace.moment.modelCommands.AddSubMoment;
+import models.*;
 import utils.command.Executable;
 
 public class AddSiblingMomentCommand implements Executable<Void> {
@@ -19,6 +19,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
     private ConcreteCategory concreteCategory;
     int index = -1;
     private ModelisationSpaceHookNotifier hooksNotifier;
+    private Boolean isRenaming = true;
 
     public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, ConcreteCategory concreteCategory) {
         this.hooksNotifier = hooksNotifier;
@@ -65,6 +66,23 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         concreteCategory = null;
     }
 
+    public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, int index, boolean isRenaming) {
+        this.hooksNotifier = hooksNotifier;
+        this.parent = parent;
+        this.newMoment = newMoment;
+        this.index = index;
+        this.isRenaming = isRenaming;
+        concreteCategory = null;
+    }
+
+    public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, boolean isRenaming) {
+        this.hooksNotifier = hooksNotifier;
+        this.parent = parent;
+        this.newMoment = newMoment;
+        this.isRenaming = isRenaming;
+        concreteCategory = null;
+    }
+
     public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, Descripteme descripteme) {
         this.hooksNotifier = hooksNotifier;
         this.parent = parent;
@@ -104,7 +122,9 @@ public class AddSiblingMomentCommand implements Executable<Void> {
 
         newMoment.addParent(parent);
 
-        newMoment.getController().passInRenamingMode(true);
+        if (this.isRenaming) {
+            newMoment.getController().passInRenamingMode(true);
+        }
 
         return null;
     }

@@ -1,10 +1,7 @@
 package components.schemaTree.Cell.Visitors;
 
 import components.schemaTree.Cell.Controllers.*;
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
-import models.SchemaTreeRoot;
+import models.*;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 
 public class CreateControllerVisitor extends SchemaTreePluggableVisitor {
@@ -32,6 +29,11 @@ public class CreateControllerVisitor extends SchemaTreePluggableVisitor {
     @Override
     public void visit(SchemaProperty element) {
         resultController = new SchemaTreePropertyController(element, cmdFactory);
+    }
+
+    @Override
+    public void visit(SchemaMomentType element) {
+        resultController = new SchemaTreeMomentTypeController(element, cmdFactory);
     }
 
     public SchemaTreeCellController getResultController() {

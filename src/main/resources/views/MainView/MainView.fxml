@@ -4,11 +4,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 <?import javafx.scene.layout.VBox?>
-<?import components.templateSpace.controllers.TemplateSpaceController?>
+<?import components.toolbox.initalizable.ToolBoxControllers?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.ScrollPane?>
+
+
 <BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
 <center>
    <SplitPane fx:id="mainSplitPane" dividerPositions="0.3789">
@@ -16,8 +17,14 @@
       </SplitPane>
 
       <VBox fx:id="boxModelisationSpace" minWidth="0" maxWidth="6000">
-            <TemplateSpaceController fx:id="templateSpaceController"/>
-            <ModelisationSpaceController fx:id="modelisationSpaceController" VBox.vgrow="ALWAYS"/>
+          <!-- Tool box,
+          qui est initialisé dans : src > main > java > components > toolbox > initializable > ToolBoxControllers
+          la vue est dans : src > main > ressources > views > ToolBox
+          -->
+          <ToolBoxControllers fx:id="toolBox"/>
+
+          <!-- Représentation générale -->
+          <ModelisationSpaceController fx:id="modelisationSpaceController" VBox.vgrow="ALWAYS"/>
       </VBox>
 
       <!-- Interview are -->
