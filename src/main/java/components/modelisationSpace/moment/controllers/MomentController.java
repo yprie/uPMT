@@ -2,14 +2,6 @@ package components.modelisationSpace.moment.controllers;
 
 import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-import javafx.scene.input.*;
-import javafx.scene.paint.Color;
-import models.Descripteme;
 import components.modelisationSpace.appCommand.ScrollPaneCommandFactory;
 import components.modelisationSpace.category.appCommands.ConcreteCategoryCommandFactory;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
@@ -410,6 +402,9 @@ public class MomentController extends ListViewController<Moment> implements Init
 
         separatorLeft.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute());
         separatorRight.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute());
+
+        separatorLeft.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentType()), 0, false).execute());
+        separatorRight.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentType()), index+1, false).execute());
 
         if(index == 0) {
             //Hide an show the separators
