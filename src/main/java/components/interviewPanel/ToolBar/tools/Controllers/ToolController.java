@@ -62,7 +62,7 @@ public abstract class ToolController extends Node {
 
     protected void updateStyle() {
         if (selectedProperty.get()) {
-            label.setStyle("-fx-font-weight: bold");
+            label.setStyle("-fx-font-weight: bold; -fx-font-family: serif;");
             vbox.setStyle("-fx-border-color: black ; -fx-border-width: 1 ;");
             SetGraphicsSelected();
         }
