@@ -29,7 +29,7 @@ public class ConcreteProperty {
 
     public String getValue() { return value.get(); }
     public ObservableStringValue valueProperty() { return value; }
-    public void setValue(String s) { value.set(s); System.out.println("V" + value.get());}
+    public void setValue(String s) { value.set(s); }
 
     public Justification getJustification() { return justification; }
 

@@ -31,22 +31,29 @@ public class MergeMomentCommand implements Executable<Void> {
 
     private boolean confirmationMessage() {
         StringBuilder message = new StringBuilder();
-        AtomicBoolean confirmationNeeded = new AtomicBoolean(false);
+
+        message.append(Configuration.langBundle.getString("merge_information"));
+        message.append("\n\n");
 
         sourceMoment.concreteCategoriesProperty().forEach(category -> {
-            if (!destinationMoment.hadThisCategory(category)) return;   //return of the lambda function, not global fonction
-            confirmationNeeded.set(true);
+            if (!destinationMoment.hadThisCategory(category)) {
+                message.append(Configuration.langBundle.getString("merging_add_category"));
+                message.append(" \"").append(category.getName()).append("\"\n\n");
+                return;
+            }
+
             ConcreteCategory destinationCategory = destinationMoment.getCategory(category);
 
+            StringBuilder cc = new MergeConcreteCategoryCommand(null, destinationCategory, category, false).buildMessage();
             //message for category to merge
-            message.append(category.getName()).append(" :\n");
-            message.append(new MergeConcreteCategoryCommand(null, destinationCategory, category, false).buildMessage());
-            message.append("\n");
-        });
+            if (!cc.isEmpty()){
+                message.append(Configuration.langBundle.getString("category")).append(' ')
+                        .append('"').append(category.getName()).append('"').append(" :\n");
+                message.append(cc);
+                message.append('\n');
+            }
 
-        if(!confirmationNeeded.get()) {
-            return true;
-        }
+        });
 
         message.append(Configuration.langBundle.getString("merge_confirmation"));
         MergerPopup mp = MergerPopup.display(message.toString(), sourceMoment.getName());

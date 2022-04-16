@@ -40,17 +40,18 @@ public class MergeConcreteCategoryCommand implements Executable<Void> {
     public StringBuilder buildMessage() {
         StringBuilder message = new StringBuilder();
         sourceCategory.propertiesProperty().forEach(sourceProperty -> {
+            if (sourceProperty.getValue().isEmpty()) return;
+
             int sourcePropertyIndex = sourceCategory.propertiesProperty().indexOf(sourceProperty);
             String destinationPropertyValue = destinationCategory.propertiesProperty().get(sourcePropertyIndex).getValue();
-            if (destinationPropertyValue.equals("")) destinationPropertyValue = "''";
+            if (sourceProperty.getValue().equals(destinationPropertyValue)) return;
 
-            message.append(sourceProperty.getName()).append(" : ").append(destinationPropertyValue).append(" -> ");
-            if (sourceProperty.getValue().equals("")) {
-                message.append(destinationPropertyValue);
-            } else {
-                message.append(sourceProperty.getValue());
-            }
-            message.append("\n");
+
+            message.append(Configuration.langBundle.getString("property")).append(" \"").append(sourceProperty.getName()).append("\" : ");
+            message.append('\"').append(destinationPropertyValue).append('\"');
+            message.append(' ').append(Configuration.langBundle.getString("merge_be_replaced")).append(' ');
+            message.append('\"').append(sourceProperty.getValue()).append('\"');
+            message.append('\n');
         });
         return message;
     }
@@ -73,12 +74,14 @@ public class MergeConcreteCategoryCommand implements Executable<Void> {
         }
 
         //Merge command
+
+        //add category's descriptems
         sourceCategory.getJustification().descriptemesProperty().forEach(descripteme -> {
             new AddDescriptemeCommand(destinationCategory.getJustification(), descripteme, userCommand).execute();
             if (userCommand) userCommand = false;
         });
 
-
+        //manage properties
         sourceCategory.propertiesProperty().forEach(sourceProperty -> {
             if (sourceProperty.getValue().equals("")) return; //skip only this lambda function
 
