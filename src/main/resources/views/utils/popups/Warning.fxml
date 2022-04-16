@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <children>
-        <Label fx:id="text" />
+        <Label fx:id="text" wrapText="true"/>
         <HBox alignment="CENTER_RIGHT" spacing="15.0">
             <children>
                 <Button fx:id="confirm" mnemonicParsing="false" text="%confirm" />
