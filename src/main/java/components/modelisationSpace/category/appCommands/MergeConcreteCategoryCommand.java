@@ -44,14 +44,13 @@ public class MergeConcreteCategoryCommand implements Executable<Void> {
 
             int sourcePropertyIndex = sourceCategory.propertiesProperty().indexOf(sourceProperty);
             String destinationPropertyValue = destinationCategory.propertiesProperty().get(sourcePropertyIndex).getValue();
+
             if (sourceProperty.getValue().equals(destinationPropertyValue)) return;
 
-
-            message.append(Configuration.langBundle.getString("property")).append(" \"").append(sourceProperty.getName()).append("\" : ");
-            message.append('\"').append(destinationPropertyValue).append('\"');
+            message.append("\t\t- ").append(sourceProperty.getName()).append(" : ");
+            message.append('"').append(destinationPropertyValue).append('"');
             message.append(' ').append(Configuration.langBundle.getString("merge_be_replaced")).append(' ');
-            message.append('\"').append(sourceProperty.getValue()).append('\"');
-            message.append('\n');
+            message.append('"').append(sourceProperty.getValue()).append("\"\n");
         });
         return message;
     }
@@ -60,7 +59,7 @@ public class MergeConcreteCategoryCommand implements Executable<Void> {
         String message = buildMessage() +
                 Configuration.langBundle.getString("merge_confirmation");
 
-        MergerPopup mp = MergerPopup.display(message, sourceCategory.getName());
+        MergerPopup mp = MergerPopup.display(message);
 
         return mp.getState() == DialogState.SUCCESS;
 

@@ -50,14 +50,12 @@ public class MergerPopup implements Initializable {
         });
     }
 
-    public static MergerPopup display(String instruction, String itemToMerge) {
+    public static MergerPopup display(String instruction) {
         Stage stage = new Stage(StageStyle.UTILITY);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle(Configuration.langBundle.getString("merging") + " " + itemToMerge);
+        stage.setTitle(Configuration.langBundle.getString("merge_confirmation_title"));
 
         MergerPopup controller = new MergerPopup(stage, instruction);
-
-
 
         try {
             FXMLLoader loader = new FXMLLoader();
