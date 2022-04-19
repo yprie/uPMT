@@ -47,7 +47,7 @@ public class MergeConcreteCategoryCommand implements Executable<Void> {
 
             if (sourceProperty.getValue().equals(destinationPropertyValue)) return;
 
-            message.append("\t\t- ").append(sourceProperty.getName()).append(" : ");
+            message.append("\t- ").append(sourceProperty.getName()).append(" : ");
             message.append('"').append(destinationPropertyValue).append('"');
             message.append(' ').append(Configuration.langBundle.getString("merge_be_replaced")).append(' ');
             message.append('"').append(sourceProperty.getValue()).append("\"\n");
