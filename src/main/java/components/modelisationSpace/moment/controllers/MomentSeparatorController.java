@@ -1,5 +1,6 @@
 package components.modelisationSpace.moment.controllers;
 
+import components.toolbox.models.SchemaMomentType;
 import javafx.application.Platform;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;

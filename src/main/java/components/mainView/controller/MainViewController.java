@@ -23,7 +23,7 @@ package components.mainView.controller;
 import application.configuration.AppSettings;
 import components.schemaTree.Services.categoryUsesCounter.SchemaCategoryUsesCounter;
 import components.schemaTree.Services.propertyUsesCounter.SchemaPropertyUsesCounter;
-import components.toolbox.initalizable.ToolBoxControllers;
+import components.toolbox.controllers.ToolBoxControllers;
 import javafx.scene.layout.HBox;
 import models.Project;
 import models.Interview;

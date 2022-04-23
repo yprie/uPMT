@@ -9,6 +9,7 @@ import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
 import components.modelisationSpace.moment.modelCommands.RenameMoment;
+import components.toolbox.models.MomentType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
@@ -152,7 +153,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
         separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
-        separatorBottom.setOnDragSchemaMomentType(schemaMomentType -> childCmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentType()), false).execute());
+        separatorBottom.setOnDragSchemaMomentType(schemaMomentType -> childCmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentTypeController().getMomentType(), schemaMomentType.getMomentTypeController()), false).execute());
 
         //Menu Button
         if (commentArea.isVisible()) {
@@ -404,8 +405,10 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorLeft.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute());
         separatorRight.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute());
 
-        separatorLeft.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentType()), 0, false).execute());
-        separatorRight.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentType()), index+1, false).execute());
+        separatorLeft.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentTypeController().getMomentType(), schemaMomentType.getMomentTypeController()), 0, false).execute());
+        separatorRight.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(new MomentType(schemaMomentType.getMomentTypeController().getMomentType(), schemaMomentType.getMomentTypeController()), index+1, false).execute());
+
+
 
         if(index == 0) {
             //Hide an show the separators

@@ -1,5 +1,6 @@
 package models;
 
+import components.toolbox.models.SchemaMomentType;
 import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
@@ -179,4 +180,6 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         momentTypes.remove(mt);
         children.remove(mt);
     }
+
+
 }

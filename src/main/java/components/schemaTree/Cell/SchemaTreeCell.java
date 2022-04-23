@@ -5,7 +5,9 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
 import components.schemaTree.Section;
+import components.toolbox.controllers.ToolBoxControllers;
 import javafx.scene.control.TreeItem;
+import models.Moment;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import models.SchemaProperty;
@@ -101,44 +103,55 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                boolean accept = false;
-                // TODO: get size of the target
-                Section sect = controller.mouseIsDraggingOn(event.getY());
-                SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
-                SchemaTreePluggable target = selfCell.getItem();
+                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                    Moment m = DragStore.getDraggable();
 
-                SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
-                        .getParent().getValue();
-                SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
+                    if (ToolBoxControllers.canBeDragged(m)) {
+                        event.acceptTransferModes(TransferMode.MOVE);
+                    } else {
+                        event.acceptTransferModes(TransferMode.NONE);
+                    }
+                } else {
+                    boolean accept = false;
+                    // TODO: get size of the target
+                    Section sect = controller.mouseIsDraggingOn(event.getY());
+                    SchemaTreePluggable source = DragStore.getDraggable();
+                    SchemaTreePluggable target = selfCell.getItem();
 
-                if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
-                    if (sect == Section.middle) {
-                        if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
-                            selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                            controller.setStyle("");
-                            accept = true;
+                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                            .getParent().getValue();
+                    SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
+
+                    if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
+                        if (sect == Section.middle) {
+                            if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
+                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                controller.setStyle("");
+                                accept = true;
+                            }
                         }
+                        else {
+                            if (canMove(sourceParent, targetParent, source, target, sect)) {
+                                if (sect == Section.bottom) {
+                                    selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                    controller.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                                }
+                                else if (sect == Section.top) {
+                                    selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                    controller.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                                }
+                                accept = true;
+                            }
+                        }
+                    }
+                    if (accept) {
+                        event.acceptTransferModes(TransferMode.MOVE);
                     }
                     else {
-                        if (canMove(sourceParent, targetParent, source, target, sect)) {
-                            if (sect == Section.bottom) {
-                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
-                            }
-                            else if (sect == Section.top) {
-                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
-                            }
-                            accept = true;
-                        }
+                        selfCell.setStyle("");
+                        controller.setStyle("");
                     }
-                }
-                if (accept) {
-                    event.acceptTransferModes(TransferMode.MOVE);
-                }
-                else {
-                    selfCell.setStyle("");
-                    controller.setStyle("");
+                    event.consume();
                 }
                 event.consume();
             }
@@ -146,56 +159,60 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                    Moment m = DragStore.getDraggable();
+                    ToolBoxControllers.addMomentTypeCommand(m);
+                } else {
+                    //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
+                    if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
 
-                //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
-                if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
+                        SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
+                        DragStore.clearStore();
+                        SchemaTreePluggable target = selfCell.getItem();
 
-                    SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
-                    DragStore.clearStore();
-                    SchemaTreePluggable target = selfCell.getItem();
+                        Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                    Section sect = controller.mouseIsDraggingOn(event.getY());
+                        SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                                .getParent().getValue();
+                        SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
 
-                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
-                            .getParent().getValue();
-                    SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
+                        SchemaTreePluggable newParent = null;
 
-                    SchemaTreePluggable newParent = null;
+                        int newIndex = -1;
 
-                    int newIndex = -1;
+                        if (sect != Section.middle) {
+                            newParent = parentTarget;
+                            int oldIndex = sourceParent.getChildIndex(source);
+                            newIndex = parentTarget.getChildIndex(target);
 
-                    if (sect != Section.middle) {
-                        newParent = parentTarget;
-                        int oldIndex = sourceParent.getChildIndex(source);
-                        newIndex = parentTarget.getChildIndex(target);
-
-                        if (sourceParent == parentTarget) {
-                            if (sect == Section.top && oldIndex < newIndex) {
-                                newIndex--;
+                            if (sourceParent == parentTarget) {
+                                if (sect == Section.top && oldIndex < newIndex) {
+                                    newIndex--;
+                                }
+                                else if (sect == Section.bottom && oldIndex > newIndex) {
+                                    newIndex++;
+                                }
                             }
-                            else if (sect == Section.bottom && oldIndex > newIndex) {
-                                newIndex++;
+                            else {
+                                if (sect == Section.bottom) {
+                                    newIndex++;
+                                }
                             }
+                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
+                                    .getSelectedItem()); // TODO: fix
                         }
                         else {
-                            if (sect == Section.bottom) {
-                                newIndex++;
-                            }
+                            // sect == middle so change parent
+                            newParent = target;
+                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
                         }
-                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
-                                .getSelectedItem()); // TODO: fix
-                    }
-                    else {
-                        // sect == middle so change parent
-                        newParent = target;
-                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-                    }
-                    HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
-                            true);
+                        HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
+                                true);
 
+                    }
+                    event.setDropCompleted(false);
+                    event.consume();
                 }
-                event.setDropCompleted(false);
-                event.consume();
             }
         });
 

@@ -1,7 +1,11 @@
 package components.schemaTree.Cell;
 
+import components.toolbox.models.SchemaMomentType;
 import javafx.scene.control.TreeItem;
-import models.*;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 
 public class Utils {
 
@@ -21,7 +25,7 @@ public class Utils {
         return item.getDataFormat() == SchemaProperty.format;
     }
 
-        public static boolean IsSchemaTreeMomentType(SchemaTreePluggable item){
+    public static boolean IsSchemaTreeMomentType(SchemaTreePluggable item){
         return item.getDataFormat() == SchemaMomentType.format;
     }
 

@@ -1,7 +1,10 @@
 package components.schemaTree.Cell.Controllers;
 
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import models.SchemaMomentType;
+import javafx.geometry.Pos;
+import javafx.scene.input.KeyCode;
+import components.toolbox.models.SchemaMomentType;
+import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 
@@ -10,12 +13,12 @@ import java.util.ResourceBundle;
 
 public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
 
-    private SchemaMomentType momentType;
+    private SchemaMomentType schemaMomentType;
     private SchemaTreeCommandFactory cmdFactory;
-
-    public SchemaTreeMomentTypeController(SchemaMomentType momentType, SchemaTreeCommandFactory cmdFactory) {
-        super(momentType, cmdFactory);
-        this.momentType = momentType;
+    private boolean renamingMode = false;
+    public SchemaTreeMomentTypeController(SchemaMomentType schemaMomentType, SchemaTreeCommandFactory cmdFactory) {
+        super(schemaMomentType, cmdFactory);
+        this.schemaMomentType = schemaMomentType;
         this.cmdFactory = cmdFactory;
     }
 
@@ -28,6 +31,40 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        name.textProperty().bind(this.momentType.nameProperty());
+        name.textProperty().bind(this.schemaMomentType.nameProperty());
+    }
+
+    @Override
+    public void passInRenamingMode(boolean YoN) {
+        if (YoN != renamingMode) {
+            if (YoN) {
+                renamingField = new AutoSuggestionsTextField(name.getText());
+                renamingField.setStrategy(this.getSuggestionStrategy());
+                renamingField.setAlignment(Pos.CENTER);
+                renamingField.end();
+                renamingField.selectAll();
+
+                renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal)
+                        passInRenamingMode(false);
+                });
+
+                renamingField.setOnKeyPressed(keyEvent -> {
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        if (renamingField.getLength() > 0) {
+                            cmdFactory.renameTreeSchemaMomentTypes(this.schemaMomentType, renamingField.getText());
+                        }
+                        passInRenamingMode(false);
+                    }
+                });
+
+                this.nameDisplayer.setLeft(renamingField);
+                renamingField.requestFocus();
+                renamingMode = true;
+            } else {
+                this.nameDisplayer.setLeft(name);
+                renamingMode = false;
+            }
+        }
     }
 }

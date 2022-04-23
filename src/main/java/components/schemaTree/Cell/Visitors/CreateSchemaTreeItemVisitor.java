@@ -3,6 +3,7 @@ package components.schemaTree.Cell.Visitors;
 import components.schemaTree.Cell.SchemaTreeContainer;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Section;
+import components.toolbox.models.SchemaMomentType;
 import models.*;
 import utils.reactiveTree.ReactiveTreeElement;
 

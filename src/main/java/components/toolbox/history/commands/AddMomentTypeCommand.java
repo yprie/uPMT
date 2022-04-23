@@ -1,7 +1,7 @@
-package components.toolbox.initalizable.commands;
+package components.toolbox.history.commands;
 
 import application.history.HistoryManager;
-import components.toolbox.initalizable.ToolBoxControllers;
+import components.toolbox.controllers.ToolBoxControllers;
 import models.Moment;
 import utils.command.Executable;
 

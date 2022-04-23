@@ -1,28 +1,27 @@
-package models;
+package components.toolbox.models;
 
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
+import components.toolbox.controllers.MomentTypeController;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.scene.input.DataFormat;
+import models.SchemaElement;
 import utils.removable.IRemovable;
 
 public class SchemaMomentType extends SchemaElement implements IRemovable {
-
     public static final DataFormat format = new DataFormat("SchemaMomentType");
     private SimpleBooleanProperty exists;
-    private MomentType momentType;
-
-    //Computed values, no need to store them
+    private MomentTypeController momentTypeController;
     private SimpleIntegerProperty nbUsesInModelisation;
 
-    public SchemaMomentType(String name, MomentType momentType) {
+    public SchemaMomentType(String name, MomentTypeController momentTypeController) {
         super(name);
         this.exists = new SimpleBooleanProperty(true);
         this.nbUsesInModelisation = new SimpleIntegerProperty(0);
-        this.momentType = momentType;
+        this.momentTypeController = momentTypeController;
     }
 
     @Override
@@ -66,6 +65,11 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     }
 
     @Override
+    public boolean mustBeRenamed() {
+        return false;
+    }
+
+    @Override
     public DataFormat getDataFormat() {
         return SchemaMomentType.format;
     }
@@ -94,7 +98,7 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
 
     public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
 
-    public MomentType getMomentType() {
-        return momentType;
+    public MomentTypeController getMomentTypeController() {
+        return momentTypeController;
     }
 }

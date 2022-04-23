@@ -44,7 +44,9 @@ public class MoveMoment extends ModelUserActionCommand {
     @Override
     public Void undo() {
         parent.removeMoment(moment);
-        originParent.addMoment(originIndex, moment);
+        if (originIndex != -1) {
+            originParent.addMoment(originIndex, moment);
+        }
        return null;
     }
 }

@@ -9,7 +9,7 @@ public abstract class SchemaElement implements SchemaTreePluggable {
     private SimpleBooleanProperty expanded;
     private StringProperty name;
 
-    SchemaElement(String name) {
+    public SchemaElement(String name) {
         this.expanded = new SimpleBooleanProperty(true);
         this.name = new SimpleStringProperty(name);
         this.mustBeRenamed = false;

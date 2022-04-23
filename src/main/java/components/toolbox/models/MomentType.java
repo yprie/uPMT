@@ -1,23 +1,27 @@
-package models;
+package components.toolbox.models;
 
+import components.toolbox.controllers.MomentTypeController;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import models.ConcreteCategory;
+import models.Justification;
+import models.Moment;
 
 import java.util.LinkedList;
 
 public class MomentType extends Moment {
-    private SchemaMomentType schemaMomentType;
+    private MomentTypeController momentTypeController;
 
-    public MomentType(Moment moment) {
+    public MomentType(Moment moment, MomentTypeController momentTypeController) {
         super(moment.getName());
-        super.setParent(moment.getParent());
         super.setController(moment.getController());
         super.setJustification(new Justification());
         super.setComment(moment.getComment());
         ListProperty<ConcreteCategory> newCategoriesProperties =  new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         for (int i = 0; i < moment.getCategories().size(); i++) {
-            newCategoriesProperties.add(moment.getCategories().get(i));
+            ConcreteCategory concreteCategory = new ConcreteCategory(moment.getCategories().get(i).getSchemaCategory());
+            newCategoriesProperties.add(concreteCategory);
             newCategoriesProperties.get(i).noJustificationNoPropertiesValues();
         }
         super.setCategories(newCategoriesProperties);
@@ -25,11 +29,10 @@ public class MomentType extends Moment {
         super.setCollapsed(moment.isCollapsed());
         super.setTransitional(moment.getTransitional());
         super.setColor(moment.getColor());
-
-        this.schemaMomentType = new SchemaMomentType(moment.getName(), this);
+        this.momentTypeController = momentTypeController;
     }
 
-    public SchemaMomentType getSchemaMomentType() {
-        return schemaMomentType;
+    public MomentTypeController getMomentTypeController() {
+        return momentTypeController;
     }
 }

@@ -1,6 +1,7 @@
 package components.schemaTree.Services.propertyUsesCounter;
 
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
+import components.toolbox.models.SchemaMomentType;
 import models.*;
 
 public class ResetPropertyUsesCounterVisitor extends SchemaTreePluggableVisitor {
