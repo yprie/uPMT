@@ -2,11 +2,9 @@ package components.modelisationSpace.moment.appCommands;
 
 import application.configuration.Configuration;
 import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
-import components.modelisationSpace.category.appCommands.MergeConcreteCategoryCommand;
+import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.appCommands.AddDescriptemeCommand;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import models.ConcreteCategory;
 import models.Moment;
 import utils.DialogState;
@@ -30,6 +28,26 @@ public class MergeMomentCommand implements Executable<Void> {
         this.destinationMoment = destinationMoment;
         this.sourceMoment = sourceMoment;
         this.userCommand = userCommand;
+    }
+
+    public StringBuilder buildRemplacementCategoryMessage(ConcreteCategory sourceCategory, ConcreteCategory destinationCategory) {
+        StringBuilder message = new StringBuilder();
+        sourceCategory.propertiesProperty().forEach(sourceProperty -> {
+            int sourcePropertyIndex = sourceCategory.propertiesProperty().indexOf(sourceProperty);
+            String destinationPropertyValue = destinationCategory.propertiesProperty().get(sourcePropertyIndex).getValue();
+
+            if (sourceProperty.getValue().equals(destinationPropertyValue)) return;
+
+
+            message.append("\t- ").append(sourceProperty.getName()).append(" : ");
+            message.append('"').append(destinationPropertyValue).append('"');
+            message.append(' ').append(Configuration.langBundle.getString("merge_be_replaced")).append(' ');
+            message.append('"').append(sourceProperty.getValue()).append("\"\n");
+        });
+        if (message.isEmpty()) {
+            message.append('\t').append(Configuration.langBundle.getString("merge_empty_category_replacement")).append('\n');
+        }
+        return message;
     }
 
     private boolean confirmationMessage() {
@@ -73,20 +91,18 @@ public class MergeMomentCommand implements Executable<Void> {
         }
 
 
-        //merge part
+        //replacement part
         sourceMoment.concreteCategoriesProperty().forEach(category -> {
             if (!destinationMoment.hadThisCategory(category)) return;
 
             ConcreteCategory destinationCategory = destinationMoment.getCategory(category);
 
-            StringBuilder cc = new MergeConcreteCategoryCommand(null, destinationCategory, category, false).buildMessage();
-            //message for category to merge
-            if (!cc.isEmpty()){
-                message.append(Configuration.langBundle.getString("merge_add_category_p1")).append(' ')
-                        .append(category.getName()).append(' ')
-                        .append(Configuration.langBundle.getString("merge_merge_category")).append(" :\n")
-                        .append(cc).append('\n');
-            }
+            //message for category to replace
+            StringBuilder cc = buildRemplacementCategoryMessage(category, destinationCategory);
+            message.append(Configuration.langBundle.getString("merge_add_category_p1")).append(' ')
+                    .append(category.getName()).append(' ')
+                    .append(Configuration.langBundle.getString("merge_merge_category")).append(' ')
+                    .append(sourceMoment.getName()).append(" :\n").append(cc).append('\n');
         });
 
         //end part
@@ -115,15 +131,13 @@ public class MergeMomentCommand implements Executable<Void> {
 
         //Copy categories
         sourceMoment.concreteCategoriesProperty().forEach(category -> {
-            if (!destinationMoment.hadThisCategory(category)) {
-                //add category
-                new AddConcreteCategoryCommand(hookNotifier, destinationMoment, category, userCommand).execute();
-            }
-            else {
-                //Merge category
+            if (destinationMoment.hadThisCategory(category)) {
+                //delete old category
                 ConcreteCategory destinationCC = destinationMoment.getCategory(category);
-                new MergeConcreteCategoryCommand(hookNotifier, destinationCC, category, userCommand, false).execute();
+                new RemoveConcreteCategoryCommand(hookNotifier, destinationMoment, destinationCC, destinationCC.getController(), userCommand).execute();
             }
+            new AddConcreteCategoryCommand(hookNotifier, destinationMoment, category, userCommand).execute();
+
             if (userCommand) userCommand = false;
         });
 
