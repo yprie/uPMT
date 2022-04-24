@@ -145,8 +145,8 @@ public class MainViewController implements Initializable {
 		})));
 
 		// Initialisation de la ToolBox avec tout ce qui suit (TemplateSpaceController)
-		ToolBoxControllers toolBoxControllers = new ToolBoxControllers();
-		toolBox.getChildren().add(toolBoxControllers.createToolBoxControllers(toolBoxControllers, project));
+		ToolBoxControllers toolBoxControllers = ToolBoxControllers.getToolBoxControllersInstance(project);
+		toolBox.getChildren().add(toolBoxControllers.createToolBoxControllers(toolBoxControllers));
 	}
 
 	@Override

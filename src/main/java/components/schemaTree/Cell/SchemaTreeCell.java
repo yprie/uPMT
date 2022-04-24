@@ -106,7 +106,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                 if (DragStore.getDraggable().getDataFormat() == Moment.format) {
                     Moment m = DragStore.getDraggable();
 
-                    if (ToolBoxControllers.canBeDragged(m)) {
+                    if (ToolBoxControllers.getToolBoxControllersInstance().canBeDragged(m)) {
                         event.acceptTransferModes(TransferMode.MOVE);
                     } else {
                         event.acceptTransferModes(TransferMode.NONE);
@@ -161,7 +161,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
             public void handle(DragEvent event) {
                 if (DragStore.getDraggable().getDataFormat() == Moment.format) {
                     Moment m = DragStore.getDraggable();
-                    ToolBoxControllers.addMomentTypeCommand(m);
+                    ToolBoxControllers.getToolBoxControllersInstance().addMomentTypeCommand(m);
                 } else {
                     //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
                     if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {

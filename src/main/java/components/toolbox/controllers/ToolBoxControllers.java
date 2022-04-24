@@ -39,7 +39,8 @@ import java.util.ResourceBundle;
  * DONE 11 :  renommage d'un type de moments via le modèle, mais c'est dégeu, faudra le refaire ! (la liaison dans momentType est moche, faut la faire dans le controller, y'a bcp de l'architecture à refaire)
  * DONE 12 : Refactor, correction d'un bug, passage en mvc PUR
  * DONE 12 à faire : continuer le refactor, notamment les changements dans le SchemaTreeRoot (la fonction en bas)
- * vérifier un peu le code et faire en sorte que l'on puisse créer un mtc quand on glisse le moment vers l'arbre à gauche (HF) :)
+ * DONE 13 : vérifier un peu le code et faire en sorte que l'on puisse créer un mtc quand on glisse le moment vers l'arbre à gauche (HF) :)
+ * DONE 14 : Rendre le changement de langue persistant (TOUT PASSER EN SIGNLETON + faire un methode update graphics
  */
 
 public class ToolBoxControllers extends HBox implements Initializable {
@@ -55,34 +56,46 @@ public class ToolBoxControllers extends HBox implements Initializable {
     private SchemaFolder momentTypesSchemaTree;
     public static ToolBoxControllers instance;
 
-    public Node createToolBoxControllers(ToolBoxControllers controller, Project project) {
-        try {
-            this.project = project;
-            this.schemaTreeRoot = project.getSchemaTreeRoot();
-            this.currentMomentTypeControllers = new LinkedList<>();
-            this.momentTypesSchemaTree = this.containMomentTypesSchemaTree();
-            instance = this;
+    public static ToolBoxControllers getToolBoxControllersInstance(Project project) {
+        if (instance == null) {
+            instance = new ToolBoxControllers();
+            instance.project = project;
+            instance.schemaTreeRoot = project.getSchemaTreeRoot();
+            instance.currentMomentTypeControllers = new LinkedList<MomentTypeController>();
+            instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
+        }
+        return instance;
+    }
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controller.getClass().getResource("/views/Toolbox/Toolbox.fxml"));
-            loader.setController(controller);
-            loader.setResources(Configuration.langBundle);
-            return loader.load();
+    public static ToolBoxControllers getToolBoxControllersInstance() {
+        return instance;
+    }
+
+    public Node createToolBoxControllers(ToolBoxControllers controller) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/Toolbox/Toolbox.fxml"));
+            fxmlLoader.setController(controller);
+            fxmlLoader.setResources(Configuration.langBundle);
+
+            return fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
 
-    public static void p() {
-        System.out.println("POLICE");
+
+    private void updateGraphics() {
+        for (MomentTypeController mtc : instance.currentMomentTypeControllers) {
+            this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
+        }
     }
 
     private void setupDragAndDrop() {
         /* On vérifie que l'on y glisse bien un moment */
-        containerMomentsTypes.setOnDragOver(dragEvent -> {
+        instance.containerMomentsTypes.setOnDragOver(dragEvent -> {
             if (canBeDragged(DragStore.getDraggable())) {
                 dragEvent.acceptTransferModes(TransferMode.MOVE);
-                containerMomentsTypes.setStyle(" -fx-background-color: #bdc3c7;");
+                instance.containerMomentsTypes.setStyle(" -fx-background-color: #bdc3c7;");
                 dragEvent.consume();
             } else {
                 dragEvent.acceptTransferModes(TransferMode.NONE);
@@ -90,37 +103,38 @@ public class ToolBoxControllers extends HBox implements Initializable {
         });
 
         /* Quand un élément est drag on l'ajoute au modèle + toolbox */
-        containerMomentsTypes.setOnDragDropped(dragEvent -> {
+        instance.containerMomentsTypes.setOnDragDropped(dragEvent -> {
             Moment m = DragStore.getDraggable();
             if (canBeDragged(m)) {
-                ToolBoxControllers.addMomentTypeCommand(m);
+                instance.addMomentTypeCommand(m);
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
         });
 
         /* Quand un draggable sort de draggableMomentsType */
-        containerMomentsTypes.setOnDragExited(dragEvent -> {
-            containerMomentsTypes.setStyle(" -fx-background-color: none;");
+        instance.containerMomentsTypes.setOnDragExited(dragEvent -> {
+            instance.containerMomentsTypes.setStyle(" -fx-background-color: none;");
             dragEvent.consume();
         });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateGraphics();
         setupDragAndDrop();
     }
 
-    // Accessible de partout, permet d'être utiliser dans l'arbre à gauche pour créer un type de moment
-    public static void addMomentTypeCommand(Moment m) {
-        ToolBoxControllers.instance.addMomentTypeCommand = new AddMomentTypeCommand(ToolBoxControllers.instance, m);
-        ToolBoxControllers.instance.addMomentTypeCommand.execute();
+    // permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
+    public void addMomentTypeCommand(Moment m) {
+        instance.addMomentTypeCommand = new AddMomentTypeCommand(instance, m);
+        instance.addMomentTypeCommand.execute();
     }
 
-    // Accessible de partout, permet d'être utiliser dans l'arbre à gauche pour créer un type de moment
-    public static boolean canBeDragged(Moment m) {
+    //  permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
+    public boolean canBeDragged(Moment m) {
         if (DragStore.getDraggable().getDataFormat() == Moment.format) {
-            for (MomentTypeController momentTypeController : ToolBoxControllers.instance.currentMomentTypeControllers) {
+            for (MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
                 /* TODO créer une méthode qui permet de comparer les noms des catégories */
                 if (momentTypeController.exists(m)) {
                     return false;
@@ -132,29 +146,29 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     public void addAMomentType(Moment moment) {
         MomentTypeController momentTypeController = new MomentTypeController(moment);
-        this.currentMomentTypeControllers.add(momentTypeController);
-        this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
-        this.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
+        instance.currentMomentTypeControllers.add(momentTypeController);
+        instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
+        instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
     }
 
     public void removeAMomentType(Moment moment) {
-        for(MomentTypeController momentTypeController : this.currentMomentTypeControllers) {
+        for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
             if (momentTypeController.getMomentType().getName().equals(moment.getName())) {
-                this.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
-                this.containerMomentsTypes.getChildren().remove(this.currentMomentTypeControllers.indexOf(momentTypeController));
-                this.currentMomentTypeControllers.remove(momentTypeController);
+                instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
+                instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
+                instance.currentMomentTypeControllers.remove(momentTypeController);
             }
         }
     }
 
     public SchemaFolder containMomentTypesSchemaTree() {
-        for (SchemaFolder sf : this.schemaTreeRoot.foldersProperty()) {
+        for (SchemaFolder sf : instance.schemaTreeRoot.foldersProperty()) {
             if (sf.getName().equals("Types de Moment")) {
                 return sf;
             }
         }
         SchemaFolder momentTypesFolder = new SchemaFolder("Types de Moment");
-        this.schemaTreeRoot.addChild(momentTypesFolder);
+        instance.schemaTreeRoot.addChild(momentTypesFolder);
         return momentTypesFolder;
     }
 }
