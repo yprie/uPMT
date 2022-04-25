@@ -1,14 +1,14 @@
 package components.modelisationSpace.property.controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import application.history.ModelUserActionCommandHooks;
-import components.modelisationSpace.hooks.ModelisationSpaceHook;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
+import components.modelisationSpace.property.appCommands.EditConcretePropertyCommand;
+import javafx.geometry.Pos;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import models.Descripteme;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import models.ConcreteProperty;
-import components.modelisationSpace.property.modelCommands.EditConcretePropertyValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,12 +19,11 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyProperty;
+import utils.autoSuggestion.AutoSuggestionsTextField;
+import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.dragAndDrop.DragStore;
 import utils.modelControllers.ListView.ListViewController;
 import utils.modelControllers.ListView.ListViewUpdate;
-import utils.popups.TextEntryController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +34,8 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
     private ConcreteProperty property;
     private JustificationController justificationController;
     private ModelisationSpaceHookNotifier modelisationSpaceHookNotifier;
+    private boolean renamingMode;
+    private TextField renamingField;
 
     @FXML private BorderPane container;
     @FXML private Label name;
@@ -46,6 +47,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         this.modelisationSpaceHookNotifier = modelisationSpaceHookNotifier;
         property = p;
         justificationController = new JustificationController(property.getJustification());
+        this.renamingMode = false;
     }
 
     public static Node create(ConcretePropertyController controller) {
@@ -69,22 +71,9 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         justif.setPadding(new Insets(0, 0, 0, 20));
         container.setCenter(justif);
 
+
         head.setOnMouseClicked(mouseEvent -> {
-            TextEntryController c = TextEntryController.enterText(
-                    property.getName(),
-                    property.getValue(),
-                    20,
-                    new SuggestionStrategyProperty()
-            );
-            //c.setStrategy();
-            if(c.getState() == DialogState.SUCCESS){
-                EditConcretePropertyValue cmd = new EditConcretePropertyValue(property, c.getValue());
-                String oldValue = property.getValue();
-                String newValue = c.getValue();
-                cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterExecute, () -> { modelisationSpaceHookNotifier.notifyConcretePropertyValueChanged(oldValue, property); });
-                cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterUndo, () -> { modelisationSpaceHookNotifier.notifyConcretePropertyValueChanged(newValue, property);});
-                HistoryManager.addCommand(cmd, true);
-            }
+            passInRenamingMode();
         });
 
         setupDragAndDrop();
@@ -146,4 +135,50 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
     public void onUnmount() {
 
     }
+
+
+    public void passInRenamingMode() {
+        if (renamingMode) return;
+        renamingField = new AutoSuggestionsTextField(value.getText(), new SuggestionStrategyMoment());
+
+        renamingField.setAlignment(Pos.CENTER_LEFT);
+        renamingField.end();
+        renamingField.selectAll();
+
+        int indexOfValue = this.head.getChildren().indexOf(value);
+
+        renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal){   //unfocus
+                exitRenamingMode(indexOfValue, false);
+            }
+        });
+
+        renamingField.setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.ENTER) {
+                exitRenamingMode(indexOfValue, false);
+            }
+
+            if(keyEvent.getCode() == KeyCode.ESCAPE) {
+                exitRenamingMode(indexOfValue, true);
+            }
+        });
+        this.head.getChildren().remove(value);
+        this.head.getChildren().add(indexOfValue, renamingField);
+        renamingField.requestFocus();
+        renamingMode = true;
+    }
+
+    private void exitRenamingMode(int indexOfValue, boolean canceled) {
+        if (!renamingMode) return;
+
+        if(!canceled && renamingField.getLength() > 0 && !value.getText().equals(renamingField.getText())) {
+            new EditConcretePropertyCommand(modelisationSpaceHookNotifier, property, renamingField.getText(), true).execute();
+        }
+
+        this.head.getChildren().remove(renamingField);
+        this.head.getChildren().add(indexOfValue, value);
+        renamingMode = false;
+    }
+
+
 }
