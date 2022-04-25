@@ -6,6 +6,7 @@ import components.modelisationSpace.property.appCommands.EditConcretePropertyCom
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import models.Descripteme;
 import components.modelisationSpace.justification.controllers.JustificationController;
 import models.ConcreteProperty;
@@ -73,7 +74,11 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
 
 
         head.setOnMouseClicked(mouseEvent -> {
-            passInRenamingMode();
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    passInRenamingMode();
+                }
+            }
         });
 
         setupDragAndDrop();
@@ -81,23 +86,17 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
 
     private void setupDragAndDrop() {
 
-        container.setOnDragEntered(dragEvent -> {
-            container.setStyle("-fx-opacity: 1;");
-        });
+        container.setOnDragEntered(dragEvent -> container.setStyle("-fx-opacity: 1;"));
 
         container.setOnDragOver(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
             if(
                 !dragEvent.isAccepted()
-                && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                        && DragStore.getDraggable().getDataFormat() == Descripteme.format
+                        && justificationController.acceptDescripteme(DragStore.getDraggable())
             ){
-                if(justificationController.acceptDescripteme(DragStore.getDraggable())){
-                    container.setStyle("-fx-opacity: 0.5;");
-                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                }
-                else {
-                    //dragEvent.acceptTransferModes(TransferMode.NONE);
-                }
+                container.setStyle("-fx-opacity: 0.5;");
+                dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
             }
         });
 
@@ -112,9 +111,7 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
             }
         });
 
-        container.setOnDragExited(dragEvent -> {
-            container.setStyle("-fx-opacity: 1;");
-        });
+        container.setOnDragExited(dragEvent -> container.setStyle("-fx-opacity: 1;"));
     }
 
     @Override
