@@ -81,15 +81,15 @@ public class MergeMomentCommand implements Executable<Void> {
             if (categoryNames.size() == 1) {
                 message.append("\t- ").append(Configuration.langBundle.getString("merge_add_category_p1"))
                         .append(' ').append(ctgNames).append(' ')
-                        .append(Configuration.langBundle.getString("merge_add_category_p2")).append("\n\n");
+                        .append(Configuration.langBundle.getString("merge_add_category_p2")).append('\n');
             }
             else {
                 message.append("\t- ").append(Configuration.langBundle.getString("merge_add_category_p1_pluriel"))
                         .append(' ').append(ctgNames).append(' ')
-                        .append(Configuration.langBundle.getString("merge_add_category_p2_pluriel")).append("\n\n");
+                        .append(Configuration.langBundle.getString("merge_add_category_p2_pluriel")).append('\n');
             }
         }
-
+        message.append('\n');
 
         //replacement part
         sourceMoment.concreteCategoriesProperty().forEach(category -> {
