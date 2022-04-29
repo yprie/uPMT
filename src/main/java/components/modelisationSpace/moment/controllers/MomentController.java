@@ -37,6 +37,7 @@ import utils.popups.WarningPopup;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 
@@ -306,6 +307,8 @@ public class MomentController extends ListViewController<Moment> implements Init
     }
 
     private void addCategories() {
+        moment.concreteCategoriesProperty().sort(Comparator.comparing(ConcreteCategory::getName));
+
         categories = new ListView<>(
                 moment.concreteCategoriesProperty(),
                 (cc -> new ConcreteCategoryController(cc, categoryCmdFactory, paneCmdFactory)),
