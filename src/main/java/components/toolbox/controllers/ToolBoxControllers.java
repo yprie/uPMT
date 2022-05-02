@@ -61,10 +61,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
             return fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-        } catch (Exception e) {
-            System.out.println("toolboxcontrollers createToolBoxControllers");
-            e.printStackTrace();
-            throw e;
         }
     }
 
@@ -130,10 +126,15 @@ public class ToolBoxControllers extends HBox implements Initializable {
     }
 
     public void addAMomentType(Moment moment) {
+        System.out.println("a");
         MomentTypeController momentTypeController = new MomentTypeController(moment);
+        System.out.println("b");
         instance.currentMomentTypeControllers.add(momentTypeController);
+        System.out.println("c");
         instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
+        System.out.println("d");
         instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
+        System.out.println("e");
     }
 
     public void removeAMomentType(Moment moment) {
