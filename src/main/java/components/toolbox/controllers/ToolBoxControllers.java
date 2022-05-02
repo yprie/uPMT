@@ -53,14 +53,18 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     public Node createToolBoxControllers(ToolBoxControllers controller) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/Toolbox/Toolbox.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(controller.getClass().getResource("/views/Toolbox/Toolbox.fxml"));
             fxmlLoader.setController(controller);
             fxmlLoader.setResources(Configuration.langBundle);
 
             return fxmlLoader.load();
         } catch (IOException exception) {
-            System.out.println("aaa");
             throw new RuntimeException(exception);
+        } catch (Exception e) {
+            System.out.println("toolboxcontrollers createToolBoxControllers");
+            e.printStackTrace();
+            throw e;
         }
     }
 
