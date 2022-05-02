@@ -33,15 +33,10 @@ public class MomentTypeController implements Initializable {
 
     public static Node createMomentTypeController(MomentTypeController controller) {
         try {
-            System.out.println("a");
             FXMLLoader loader = new FXMLLoader();
-            System.out.println("b");
-            loader.setLocation(controller.getClass().getResource("/views/ToolBox/components/MomentType.fxml"));
-            System.out.println("c");
+            loader.setLocation(controller.getClass().getResource("/views/Toolbox/components/MomentType.fxml"));
             loader.setController(controller);
-            System.out.println("d");
             loader.setResources(Configuration.langBundle);
-            System.out.println("e");
             return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
