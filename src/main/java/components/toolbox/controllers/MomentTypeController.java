@@ -6,18 +6,22 @@ import components.toolbox.models.SchemaMomentType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
-import models.Moment;
-import models.SchemaElement;
+import javafx.stage.Popup;
+import models.*;
+import org.fxmisc.richtext.event.MouseOverTextEvent;
 import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class MomentTypeController implements Initializable {
@@ -59,11 +63,25 @@ public class MomentTypeController implements Initializable {
        });
     }
 
+    private void setupPopUp() {
+        StringBuilder message = new StringBuilder(momentType.getName() + "\n");
+        for (ConcreteCategory cc : momentType.concreteCategoriesProperty()) {
+            message.append('\n').append(cc.getName()).append(" :\n");
+            for (ConcreteProperty cp : cc.propertiesProperty()) {
+                message.append("\t- ").append(cp.getName()).append("\n");
+            }
+        }
+
+        Tooltip tt = new Tooltip(message.toString());
+        Tooltip.install(momentTypeBorderPane, tt);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        this.momentTypeLabel.setText(this.momentType.getName());
        this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.momentType.getColor()+";");
        setupDragAndDrop();
+       setupPopUp();
     }
 
     public boolean exists(Moment moment) {
