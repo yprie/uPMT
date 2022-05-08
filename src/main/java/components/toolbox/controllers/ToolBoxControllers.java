@@ -29,7 +29,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
     private @FXML HBox containerMomentsTypes;
     private @FXML TemplateSpaceController templateSpaceController;
 
-    private Project project;
+    public Project project;
     private SchemaTreeRoot schemaTreeRoot;
     private List<MomentTypeController> currentMomentTypeControllers;
     private AddMomentTypeCommand addMomentTypeCommand;
@@ -44,6 +44,24 @@ public class ToolBoxControllers extends HBox implements Initializable {
             instance.currentMomentTypeControllers = new LinkedList<MomentTypeController>();
             instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
         }
+
+        if (!instance.project.equals(project)) {
+            instance.project = project;
+            instance.schemaTreeRoot = project.getSchemaTreeRoot();
+            instance.currentMomentTypeControllers = new LinkedList<MomentTypeController>();
+            instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
+        }
+
+        for (MomentTypeController mtc : instance.project.getMomentTypeControllers()) {
+            // lINKAGE
+            mtc.getMomentType().setMomentTypeController(mtc);
+            mtc.getSchemaMomentType().setMomentTypeController(mtc);
+            if (!instance.currentMomentTypeControllers.contains(mtc)) {
+                instance.currentMomentTypeControllers.add(mtc);
+                instance.momentTypesSchemaTree.addChild(mtc.getSchemaMomentType());
+            }
+        }
+
         return instance;
     }
 
@@ -64,6 +82,11 @@ public class ToolBoxControllers extends HBox implements Initializable {
         }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        updateGraphics();
+        setupDragAndDrop();
+    }
 
     private void updateGraphics() {
         for (MomentTypeController mtc : instance.currentMomentTypeControllers) {
@@ -74,20 +97,25 @@ public class ToolBoxControllers extends HBox implements Initializable {
     private void setupDragAndDrop() {
         /* On vérifie que l'on y glisse bien un moment */
         instance.containerMomentsTypes.setOnDragOver(dragEvent -> {
-            if (canBeDragged(DragStore.getDraggable())) {
-                dragEvent.acceptTransferModes(TransferMode.MOVE);
-                instance.containerMomentsTypes.setStyle(" -fx-background-color: #bdc3c7;");
-                dragEvent.consume();
-            } else {
+            if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                if (canBeDragged(DragStore.getDraggable())) {
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
+                    instance.containerMomentsTypes.setStyle(" -fx-background-color: #bdc3c7;");
+                    dragEvent.consume();
+                }
+            }
+            else {
                 dragEvent.acceptTransferModes(TransferMode.NONE);
             }
         });
 
         /* Quand un élément est drag on l'ajoute au modèle + toolbox */
         instance.containerMomentsTypes.setOnDragDropped(dragEvent -> {
-            Moment m = DragStore.getDraggable();
-            if (canBeDragged(m)) {
-                instance.addMomentTypeCommand(m);
+            if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                Moment m = DragStore.getDraggable();
+                if (canBeDragged(DragStore.getDraggable())) {
+                    instance.addMomentTypeCommand(m);
+                }
             }
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
@@ -100,12 +128,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
         });
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        updateGraphics();
-        setupDragAndDrop();
-    }
-
     // permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public void addMomentTypeCommand(Moment m) {
         instance.addMomentTypeCommand = new AddMomentTypeCommand(instance, m);
@@ -114,12 +136,10 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     //  permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public boolean canBeDragged(Moment m) {
-        if (DragStore.getDraggable().getDataFormat() == Moment.format) {
-            for (MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
-                /* TODO créer une méthode qui permet de comparer les noms des catégories */
-                if (momentTypeController.exists(m)) {
-                    return false;
-                }
+        for (MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
+            /* TODO créer une méthode qui permet de comparer les noms des catégories */
+            if (momentTypeController.exists(m)) {
+                return false;
             }
         }
         return true;
@@ -130,6 +150,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
         instance.currentMomentTypeControllers.add(momentTypeController);
         instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
         instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
+        instance.project.getMomentTypeControllers().add(momentTypeController);
     }
 
     public void removeAMomentType(Moment moment) {
@@ -138,6 +159,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
                 instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
                 instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
                 instance.currentMomentTypeControllers.remove(momentTypeController);
+                instance.project.getMomentTypeControllers().remove(momentTypeController);
             }
         }
     }

@@ -35,6 +35,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
 
     public final ObservableList<SchemaCategory> categoriesProperty() { return categories; }
     public final ObservableList<SchemaFolder> foldersProperty() { return folders; }
+    public final ObservableList<SchemaMomentType> momentTypesProperty() { return momentTypes; }
     public final ObservableList<SchemaTreePluggable> childrenProperty() { return children; }
 
     @Override

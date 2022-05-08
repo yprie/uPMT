@@ -10,6 +10,9 @@ import java.util.function.Function;
 public interface ObjectSerializer {
 
     static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/MM/yyyy");
+
+    boolean getExists(String setListSuffix);
+
     enum SerializationType { Object, Array };
 
     String getString(String s);

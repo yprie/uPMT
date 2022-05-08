@@ -24,6 +24,12 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
         this.momentTypeController = momentTypeController;
     }
 
+    public SchemaMomentType(String name) {
+        super(name);
+        this.exists = new SimpleBooleanProperty(true);
+        this.nbUsesInModelisation = new SimpleIntegerProperty(0);
+    }
+
     @Override
     public boolean canContain(SchemaTreePluggable item) {
         return false;
@@ -100,5 +106,9 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
 
     public MomentTypeController getMomentTypeController() {
         return momentTypeController;
+    }
+
+    public void setMomentTypeController(MomentTypeController momentTypeController) {
+        this.momentTypeController = momentTypeController;
     }
 }

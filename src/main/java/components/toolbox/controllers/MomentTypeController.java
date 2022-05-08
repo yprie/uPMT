@@ -14,6 +14,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
+import models.Moment;
 import javafx.stage.Popup;
 import models.*;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
@@ -27,12 +28,17 @@ import java.util.ResourceBundle;
 public class MomentTypeController implements Initializable {
     private @FXML BorderPane momentTypeBorderPane;
     private @FXML Label momentTypeLabel;
-    private Moment momentType;
-    private SchemaElement schemaMomentType;
+    private MomentType momentType;
+    private SchemaMomentType schemaMomentType;
 
     public MomentTypeController(Moment moment) {
         this.schemaMomentType = new SchemaMomentType(moment.getName(), this);
         this.momentType = new MomentType(moment,this);
+    }
+
+    public MomentTypeController(SchemaMomentType schemaMomentType, MomentType momentType) {
+        this.schemaMomentType = schemaMomentType;
+        this.momentType = momentType;
     }
 
     public static Node createMomentTypeController(MomentTypeController controller) {
@@ -50,10 +56,10 @@ public class MomentTypeController implements Initializable {
 
     private void setupDragAndDrop() {
        momentTypeBorderPane.setOnDragDetected(event -> {
-           Moment newMomentType = new MomentType(this.momentType, this);
+           MomentType newMomentType = new MomentType(this.momentType, this);
            Dragboard db = momentTypeBorderPane.startDragAndDrop(TransferMode.MOVE);
            ClipboardContent content = new ClipboardContent();
-           content.put(newMomentType.getDataFormat(), 0);
+           content.put(MomentType.format, 0);
            DragStore.setDraggable(newMomentType);
            db.setContent(content);
        });
@@ -79,7 +85,7 @@ public class MomentTypeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        this.momentTypeLabel.setText(this.momentType.getName());
-       this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.momentType.getColor()+";");
+       //this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.momentType.getColor()+";");
        setupDragAndDrop();
        setupPopUp();
     }
@@ -97,11 +103,11 @@ public class MomentTypeController implements Initializable {
         this.schemaMomentType.setName(name);
     }
 
-    public Moment getMomentType() {
+    public MomentType getMomentType() {
         return momentType;
     }
 
-    public SchemaElement getSchemaMomentType() {
+    public SchemaMomentType getSchemaMomentType() {
         return schemaMomentType;
     }
 }
