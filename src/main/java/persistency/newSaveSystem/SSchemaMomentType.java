@@ -26,6 +26,7 @@ public class SSchemaMomentType extends SSchemaElement<SchemaMomentType> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         super.read();
     }
 

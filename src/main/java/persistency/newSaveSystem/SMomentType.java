@@ -56,6 +56,7 @@ public class SMomentType extends Serializable<MomentType> {
 
     @Override
     protected void read() {
+        versionCheck(version, serializer.getInt("@version"));
         try {
             name = serializer.getString("name");
         } catch (Exception e) {

@@ -28,7 +28,7 @@ public class MomentType implements IDraggable {
     public MomentType(Moment moment, MomentTypeController momentTypeController) {
         this.name = moment.getName();
         this.momentTypeController = momentTypeController;
-        this.justification = moment.getJustification();
+        this.justification = new Justification();
         ListProperty<ConcreteCategory> newCategoriesProperties =  new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         for (int i = 0; i < moment.getCategories().size(); i++) {
             ConcreteCategory concreteCategory = new ConcreteCategory(moment.getCategories().get(i).getSchemaCategory());
@@ -46,7 +46,7 @@ public class MomentType implements IDraggable {
     public MomentType(MomentType moment, MomentTypeController momentTypeController) {
         this.name = moment.getName();
         this.momentTypeController = momentTypeController;
-        this.justification = moment.getJustification();
+        this.justification = new Justification();
         ListProperty<ConcreteCategory> newCategoriesProperties =  new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         for (int i = 0; i < moment.getCategories().size(); i++) {
             ConcreteCategory concreteCategory = new ConcreteCategory(moment.getCategories().get(i).getSchemaCategory());
