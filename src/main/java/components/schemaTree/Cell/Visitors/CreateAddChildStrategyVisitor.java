@@ -1,6 +1,6 @@
 package components.schemaTree.Cell.Visitors;
 
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import models.*;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.appCommands.strategies.ContainerCreateChildStrategy;

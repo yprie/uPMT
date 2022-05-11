@@ -3,10 +3,7 @@ package models;
 import application.history.HistoryManager;
 import components.modelisationSpace.category.modelCommands.RemoveConcreteCategory;
 import components.modelisationSpace.moment.controllers.MomentController;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -126,6 +123,24 @@ public class Moment extends RootMoment implements IDraggable {
         this.categories = categories;
         this.commentVisible = new SimpleBooleanProperty(commentVisible);
         this.collapsed = new SimpleBooleanProperty(collapsed);
+        this.transitional = new SimpleBooleanProperty(transitional);
+        this.color = new SimpleStringProperty(color);
+    }
+
+    public Moment(String name, ObservableList<SchemaCategory> categories, boolean transitional, String color) {
+        super();
+        this.name = new SimpleStringProperty(name);
+        this.comment = new SimpleStringProperty();
+        this.justification = new Justification();
+
+        ListProperty<ConcreteCategory> newCategoriesProperties =  new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        for (SchemaCategory category : categories) {
+            newCategoriesProperties.add(new ConcreteCategory(category));
+        }
+        this.categories = newCategoriesProperties;
+
+        this.commentVisible = new SimpleBooleanProperty(false);
+        this.collapsed = new SimpleBooleanProperty();
         this.transitional = new SimpleBooleanProperty(transitional);
         this.color = new SimpleStringProperty(color);
     }
@@ -265,14 +280,6 @@ public class Moment extends RootMoment implements IDraggable {
     @Override
     public boolean isDraggable() {
         return true;
-    }
-
-    public void setJustification(Justification justification) {
-        this.justification = justification;
-    }
-
-    public void setCategories(ObservableList<ConcreteCategory> categories) {
-        this.categories.set(categories);
     }
 
     public ObservableList<ConcreteCategory> getCategories() {

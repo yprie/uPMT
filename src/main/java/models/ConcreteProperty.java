@@ -35,8 +35,4 @@ public class ConcreteProperty {
 
     public boolean isSchemaProperty(SchemaProperty sp) { return sp == property; }
 
-    public void noValueNoJustification() {
-        this.value = new SimpleStringProperty("");
-        this.justification = new Justification();
-    }
 }

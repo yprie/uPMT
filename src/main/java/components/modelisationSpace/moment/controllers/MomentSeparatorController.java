@@ -1,7 +1,6 @@
 package components.modelisationSpace.moment.controllers;
 
-import components.toolbox.models.MomentType;
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import javafx.application.Platform;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -24,7 +23,6 @@ public class MomentSeparatorController {
     private BiConsumer<Moment, RootMoment> onDragMomentDone = (moment, originParentMoment) -> { };
     private Consumer<TemplateMoment> onDragTemplateMoment = templateMoment -> {};
     private Consumer<SchemaMomentType> onDragSchemaMomentType = schemaMomentType -> {};
-    private Consumer<MomentType> onDragMomentType = MomentType -> {};
 
     public MomentSeparatorController(boolean vertical) {
         p = new Pane();
@@ -87,11 +85,6 @@ public class MomentSeparatorController {
                     dragEvent.consume();
                     Platform.runLater(() -> { onDragSchemaMomentType.accept(DragStore.getDraggable()); });
                 }
-                else if(DragStore.getDraggable().isDraggable() && DragStore.getDraggable().getDataFormat() == MomentType.format && active){
-                    dragEvent.setDropCompleted(true);
-                    dragEvent.consume();
-                    Platform.runLater(() -> { onDragMomentType.accept(DragStore.getDraggable()); });
-                }
             }
         });
 
@@ -125,9 +118,6 @@ public class MomentSeparatorController {
     public void setOnDragSchemaMomentType(Consumer<SchemaMomentType> consumer) {
         this.onDragSchemaMomentType = consumer;
     }
-    public void setOnDragMomentType(Consumer<MomentType> consumer) {
-        this.onDragMomentType = consumer;
-    }
 
     public Pane getNode() {
         return p;
@@ -140,7 +130,6 @@ public class MomentSeparatorController {
                 || DragStore.getDraggable().getDataFormat() == Moment.format
                 || DragStore.getDraggable().getDataFormat() == TemplateMoment.format
                 || DragStore.getDraggable().getDataFormat() == SchemaMomentType.format
-                || DragStore.getDraggable().getDataFormat() == MomentType.format
         );
     }
 }

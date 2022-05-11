@@ -1,6 +1,6 @@
 package components.schemaTree.Cell;
 
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import javafx.scene.control.TreeItem;
 import models.SchemaCategory;
 import models.SchemaFolder;

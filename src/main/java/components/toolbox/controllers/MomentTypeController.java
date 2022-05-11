@@ -1,44 +1,41 @@
 package components.toolbox.controllers;
 
 import application.configuration.Configuration;
-import components.toolbox.models.MomentType;
-import components.toolbox.models.SchemaMomentType;
+import components.toolbox.appCommand.RenameMomentTypesCommand;
+import models.SchemaMomentType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import models.Moment;
-import javafx.stage.Popup;
 import models.*;
-import org.fxmisc.richtext.event.MouseOverTextEvent;
+import utils.autoSuggestion.AutoSuggestionsTextField;
+import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ResourceBundle;
 
 public class MomentTypeController implements Initializable {
     private @FXML BorderPane momentTypeBorderPane;
     private @FXML Label momentTypeLabel;
-    private MomentType momentType;
     private SchemaMomentType schemaMomentType;
 
+    private boolean renamingMode = false;
+    private AutoSuggestionsTextField renamingField;
+
     public MomentTypeController(Moment moment) {
-        this.schemaMomentType = new SchemaMomentType(moment.getName(), this);
-        this.momentType = new MomentType(moment,this);
+        this.schemaMomentType = new SchemaMomentType(moment, this);
     }
 
-    public MomentTypeController(SchemaMomentType schemaMomentType, MomentType momentType) {
+    public MomentTypeController(SchemaMomentType schemaMomentType) {
         this.schemaMomentType = schemaMomentType;
-        this.momentType = momentType;
     }
 
     public static Node createMomentTypeController(MomentTypeController controller) {
@@ -54,60 +51,84 @@ public class MomentTypeController implements Initializable {
         }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.momentTypeLabel.textProperty().bind(this.schemaMomentType.nameProperty());
+        this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.schemaMomentType.getColor()+";");
+        setupDragAndDrop();
+        updatePopUp();
+
+        this.momentTypeBorderPane.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    passInRenamingMode(true);
+                }
+            }
+        });
+
+        schemaMomentType.nameProperty().addListener((observableValue, o, t1) -> updatePopUp());
+    }
+
     private void setupDragAndDrop() {
        momentTypeBorderPane.setOnDragDetected(event -> {
-           MomentType newMomentType = new MomentType(this.momentType, this);
            Dragboard db = momentTypeBorderPane.startDragAndDrop(TransferMode.MOVE);
            ClipboardContent content = new ClipboardContent();
-           content.put(MomentType.format, 0);
-           DragStore.setDraggable(newMomentType);
+           content.put(SchemaMomentType.format, 0);
+           DragStore.setDraggable(schemaMomentType);
            db.setContent(content);
-       });
-
-       momentTypeBorderPane.setOnDragDone(event -> {
            event.consume();
        });
     }
 
-    private void setupPopUp() {
-        StringBuilder message = new StringBuilder(momentType.getName() + "\n");
-        for (ConcreteCategory cc : momentType.concreteCategoriesProperty()) {
-            message.append('\n').append(cc.getName()).append(" :\n");
-            for (ConcreteProperty cp : cc.propertiesProperty()) {
-                message.append("\t- ").append(cp.getName()).append("\n");
+    private void updatePopUp() {
+        StringBuilder message = new StringBuilder(schemaMomentType.getName() + "\n");
+        for (SchemaCategory sc : schemaMomentType.categoriesProperty()) {
+            message.append('\n').append(sc.getName()).append(" :\n");
+            for (SchemaProperty sp : sc.propertiesProperty()) {
+                message.append("\t- ").append(sp.getName()).append("\n");
             }
         }
 
-        Tooltip tt = new Tooltip(message.toString());
-        Tooltip.install(momentTypeBorderPane, tt);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-       this.momentTypeLabel.setText(this.momentType.getName());
-       //this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.momentType.getColor()+";");
-       setupDragAndDrop();
-       setupPopUp();
+        Tooltip.install(momentTypeBorderPane, new Tooltip(message.toString()));
     }
 
     public boolean exists(Moment moment) {
-        if (moment.getName().equals(this.momentType.getName())) {
-            return true;
-        }
-        return false;
-    }
-
-    public void rename(String name) {
-        this.momentTypeLabel.setText(name);
-        this.momentType.setName(name);
-        this.schemaMomentType.setName(name);
-    }
-
-    public MomentType getMomentType() {
-        return momentType;
+        return moment.getName().equals(this.schemaMomentType.getName());
     }
 
     public SchemaMomentType getSchemaMomentType() {
         return schemaMomentType;
+    }
+
+    public void passInRenamingMode(boolean YoN) {
+        if (YoN != renamingMode) {
+            if (YoN) {
+                renamingField = new AutoSuggestionsTextField(schemaMomentType.getName(), new SuggestionStrategyMoment());
+                renamingField.setAlignment(Pos.BASELINE_CENTER);
+                renamingField.end();
+                renamingField.selectAll();
+
+                renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                    if (!newVal)
+                        passInRenamingMode(false);
+                });
+
+                renamingField.setOnKeyPressed(keyEvent -> {
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        if (renamingField.getLength() > 0) {
+                            new RenameMomentTypesCommand(this.schemaMomentType, renamingField.getText()).execute();
+                        }
+                        passInRenamingMode(false);
+                    }
+                });
+
+                this.momentTypeBorderPane.setCenter(renamingField);
+                renamingField.requestFocus();
+                renamingMode = true;
+            } else {
+                this.momentTypeBorderPane.setCenter(momentTypeLabel);
+                renamingMode = false;
+            }
+        }
     }
 }

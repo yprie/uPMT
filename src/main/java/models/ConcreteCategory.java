@@ -113,10 +113,4 @@ public class ConcreteCategory implements IDraggable {
         this.controller = controller;
     }
 
-    public void noJustificationNoPropertiesValues() {
-        this.justification = new Justification();
-        for (int i = 0; i < this.properties.size(); i++) {
-            this.properties.get(i).noValueNoJustification();
-        }
-    }
 }

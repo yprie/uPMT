@@ -1,7 +1,7 @@
 package components.schemaTree.Cell.modelCommands;
 
 import application.history.ModelUserActionCommand;
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 
 public class RenameSchemaMomentTypes extends ModelUserActionCommand {
     SchemaMomentType element;
@@ -16,13 +16,13 @@ public class RenameSchemaMomentTypes extends ModelUserActionCommand {
 
     @Override
     public Void execute() {
-        this.element.getMomentTypeController().rename(newName);
+        element.setName(newName);
         return null;
     }
 
     @Override
     public Void undo() {
-        this.element.getMomentTypeController().rename(originalName);
+        element.setName(originalName);
         return null;
     }
 }

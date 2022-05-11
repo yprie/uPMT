@@ -2,7 +2,7 @@ package components.toolbox.controllers;
 
 import application.configuration.Configuration;
 import components.templateSpace.controllers.TemplateSpaceController;
-import components.toolbox.history.commands.AddMomentTypeCommand;
+import components.toolbox.history.commands.AddSchemaMomentTypeCommand;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,10 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
-import models.Moment;
-import models.Project;
-import models.SchemaFolder;
-import models.SchemaTreeRoot;
+import models.*;
 import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
@@ -32,7 +29,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
     public Project project;
     private SchemaTreeRoot schemaTreeRoot;
     private List<MomentTypeController> currentMomentTypeControllers;
-    private AddMomentTypeCommand addMomentTypeCommand;
+    private AddSchemaMomentTypeCommand addSchemaMomentTypeCommand;
     private SchemaFolder momentTypesSchemaTree;
     public static ToolBoxControllers instance;
 
@@ -54,7 +51,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
         for (MomentTypeController mtc : instance.project.getMomentTypeControllers()) {
             // lINKAGE
-            mtc.getMomentType().setMomentTypeController(mtc);
             mtc.getSchemaMomentType().setMomentTypeController(mtc);
             if (!instance.currentMomentTypeControllers.contains(mtc)) {
                 instance.currentMomentTypeControllers.add(mtc);
@@ -130,14 +126,14 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     // permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public void addMomentTypeCommand(Moment m) {
-        instance.addMomentTypeCommand = new AddMomentTypeCommand(instance, m);
-        instance.addMomentTypeCommand.execute();
+        SchemaMomentType smt = new SchemaMomentType(m, new MomentTypeController(m));
+        instance.addSchemaMomentTypeCommand = new AddSchemaMomentTypeCommand(instance, smt);
+        instance.addSchemaMomentTypeCommand.execute();
     }
 
     //  permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public boolean canBeDragged(Moment m) {
         for (MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
-            /* TODO créer une méthode qui permet de comparer les noms des catégories */
             if (momentTypeController.exists(m)) {
                 return false;
             }
@@ -145,21 +141,22 @@ public class ToolBoxControllers extends HBox implements Initializable {
         return true;
     }
 
-    public void addAMomentType(Moment moment) {
-        MomentTypeController momentTypeController = new MomentTypeController(moment);
+    public void addAMomentType(SchemaMomentType schemaMomentType) {
+        MomentTypeController momentTypeController = schemaMomentType.getMomentTypeController();
         instance.currentMomentTypeControllers.add(momentTypeController);
         instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
-        instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
+        instance.momentTypesSchemaTree.addChild(schemaMomentType);
         instance.project.getMomentTypeControllers().add(momentTypeController);
     }
 
-    public void removeAMomentType(Moment moment) {
+    public void removeAMomentType(SchemaMomentType schemaMomentType) {
         for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
-            if (momentTypeController.getMomentType().getName().equals(moment.getName())) {
-                instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
+            if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
+                instance.momentTypesSchemaTree.removeChild(schemaMomentType);
                 instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
                 instance.currentMomentTypeControllers.remove(momentTypeController);
                 instance.project.getMomentTypeControllers().remove(momentTypeController);
+                break;
             }
         }
     }

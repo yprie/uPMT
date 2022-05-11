@@ -1,6 +1,5 @@
 package models;
 
-import components.toolbox.models.SchemaMomentType;
 import javafx.beans.value.ObservableBooleanValue;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
@@ -99,6 +98,9 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         int r = this.folders.indexOf(item);
         if(r == -1) {
             r = this.categories.indexOf(item);
+        }
+        if(r == -1) {
+            r = this.momentTypes.indexOf(item);
         }
         if(r == -1)
             throw new IllegalArgumentException("(SchemaFolder::getChildIndex) The provided item is not a child of this element!");

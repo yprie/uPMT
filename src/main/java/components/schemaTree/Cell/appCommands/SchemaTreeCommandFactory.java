@@ -8,14 +8,14 @@ import components.schemaTree.Cell.Visitors.CanTreeElementBeSafelyRenamedVisitor;
 import components.schemaTree.Cell.Visitors.CreateAddChildStrategyVisitor;
 import components.schemaTree.Cell.Visitors.CreateRemovingStrategyVisitor;
 import components.schemaTree.Cell.appCommands.strategies.UnremovableRemovingStrategy;
-import components.schemaTree.Cell.modelCommands.RenameSchemaMomentTypes;
 import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
+import components.toolbox.appCommand.RenameMomentTypesCommand;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import models.SchemaCategory;
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import utils.removable.IRemovable;
 
 public class SchemaTreeCommandFactory {
@@ -75,9 +75,8 @@ public class SchemaTreeCommandFactory {
         }
     }
 
-    public void renameTreeSchemaMomentTypes(SchemaMomentType element, String newName) {
-        RenameSchemaMomentTypes rsmt = new RenameSchemaMomentTypes(element, newName);
-        HistoryManager.addCommand(rsmt, false);
+    public RenameMomentTypesCommand renameTreeSchemaMomentTypes(SchemaMomentType element, String newName) {
+        return new RenameMomentTypesCommand(element, newName);
     }
 
     public ChangeColorCategoryCommand colorCommand(SchemaCategory c, String newColor) {

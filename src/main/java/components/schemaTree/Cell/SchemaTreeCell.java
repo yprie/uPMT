@@ -7,10 +7,7 @@ import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
 import components.schemaTree.Section;
 import components.toolbox.controllers.ToolBoxControllers;
 import javafx.scene.control.TreeItem;
-import models.Moment;
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
+import models.*;
 import utils.reactiveTree.LeafToRootIterator;
 import components.schemaTree.Cell.Visitors.CreateControllerVisitor;
 import javafx.event.EventHandler;
@@ -103,6 +100,11 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                if (DragStore.getDraggable().getDataFormat() == SchemaMomentType.format) {
+                    event.acceptTransferModes(TransferMode.NONE);
+                    event.consume();
+                    return;
+                }
                 if (DragStore.getDraggable().getDataFormat() == Moment.format) {
                     Moment m = DragStore.getDraggable();
 
@@ -111,47 +113,48 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
                     } else {
                         event.acceptTransferModes(TransferMode.NONE);
                     }
-                } else {
-                    boolean accept = false;
-                    // TODO: get size of the target
-                    Section sect = controller.mouseIsDraggingOn(event.getY());
-                    SchemaTreePluggable source = DragStore.getDraggable();
-                    SchemaTreePluggable target = selfCell.getItem();
+                    event.consume();
+                    return;
 
-                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
-                            .getParent().getValue();
-                    SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
+                }
 
-                    if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
-                        if (sect == Section.middle) {
-                            if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
-                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                                controller.setStyle("");
-                                accept = true;
-                            }
+                boolean accept = false;
+                Section sect = controller.mouseIsDraggingOn(event.getY());
+                SchemaTreePluggable source = DragStore.getDraggable();
+                SchemaTreePluggable target = selfCell.getItem();
+
+                SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                        .getParent().getValue();
+                SchemaTreePluggable targetParent = selfCell.getTreeItem().getParent().getValue();
+
+                if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
+                    if (sect == Section.middle) {
+                        if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
+                            selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                            controller.setStyle("");
+                            accept = true;
                         }
-                        else {
-                            if (canMove(sourceParent, targetParent, source, target, sect)) {
-                                if (sect == Section.bottom) {
-                                    selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                                    controller.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
-                                }
-                                else if (sect == Section.top) {
-                                    selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
-                                    controller.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
-                                }
-                                accept = true;
-                            }
-                        }
-                    }
-                    if (accept) {
-                        event.acceptTransferModes(TransferMode.MOVE);
                     }
                     else {
-                        selfCell.setStyle("");
-                        controller.setStyle("");
+                        if (canMove(sourceParent, targetParent, source, target, sect)) {
+                            if (sect == Section.bottom) {
+                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                            }
+                            else if (sect == Section.top) {
+                                selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
+                                controller.setStyle("-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                            }
+                            accept = true;
+                        }
                     }
-                    event.consume();
+                }
+                if (accept) {
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+                else {
+                    selfCell.setStyle("");
+                    controller.setStyle("");
                 }
                 event.consume();
             }

@@ -18,7 +18,6 @@ public class SProject extends Serializable<Project> {
     public SSchemaTreeRoot schemaTreeRoot;
     public ArrayList<SInterview> interviews;
     public SInterview selectedInterview;
-    /* TODO */
     public ArrayList<SMomentTypeController> momentTypeControllers;
 
     public SProject(ObjectSerializer serializer) {

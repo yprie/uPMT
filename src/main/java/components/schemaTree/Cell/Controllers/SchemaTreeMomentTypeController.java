@@ -1,9 +1,12 @@
 package components.schemaTree.Cell.Controllers;
 
+import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
+import components.toolbox.controllers.ToolBoxControllers;
 import javafx.geometry.Pos;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
@@ -16,6 +19,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
     private SchemaMomentType schemaMomentType;
     private SchemaTreeCommandFactory cmdFactory;
     private boolean renamingMode = false;
+
     public SchemaTreeMomentTypeController(SchemaMomentType schemaMomentType, SchemaTreeCommandFactory cmdFactory) {
         super(schemaMomentType, cmdFactory);
         this.schemaMomentType = schemaMomentType;
@@ -32,14 +36,19 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
         super.initialize(url, resourceBundle);
 
         name.textProperty().bind(this.schemaMomentType.nameProperty());
+
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        deleteButton.setOnAction(actionEvent -> {
+            ToolBoxControllers.getToolBoxControllersInstance().removeAMomentType(schemaMomentType);
+        });
+        optionsMenu.getItems().add(deleteButton);
     }
 
     @Override
     public void passInRenamingMode(boolean YoN) {
         if (YoN != renamingMode) {
             if (YoN) {
-                renamingField = new AutoSuggestionsTextField(name.getText());
-                renamingField.setStrategy(this.getSuggestionStrategy());
+                renamingField = new AutoSuggestionsTextField(name.getText(), new SuggestionStrategyMoment());
                 renamingField.setAlignment(Pos.CENTER);
                 renamingField.end();
                 renamingField.selectAll();
@@ -52,7 +61,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
                 renamingField.setOnKeyPressed(keyEvent -> {
                     if (keyEvent.getCode() == KeyCode.ENTER) {
                         if (renamingField.getLength() > 0) {
-                            cmdFactory.renameTreeSchemaMomentTypes(this.schemaMomentType, renamingField.getText());
+                            cmdFactory.renameTreeSchemaMomentTypes(this.schemaMomentType, renamingField.getText()).execute();
                         }
                         passInRenamingMode(false);
                     }

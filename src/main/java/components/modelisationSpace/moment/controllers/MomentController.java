@@ -156,8 +156,7 @@ public class MomentController extends ListViewController<Moment> implements Init
         // category -> { cmdFactory.addSiblingCommand(new Moment("Moment"), category, 0).execute(); }
         separatorBottom.setOnDragMomentDone((moment, originParent) -> childCmdFactory.moveMomentCommand(moment, originParent).execute());
         separatorBottom.setOnDragTemplateMomentDone(templateMoment -> childCmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
-        separatorBottom.setOnDragMomentType(momentType -> childCmdFactory.addSiblingCommand(momentType.createConcreteMoment(), false).execute());
-        separatorBottom.setOnDragSchemaMomentType(schemaMomentType -> childCmdFactory.addSiblingCommand(schemaMomentType.getMomentTypeController().getMomentType().createConcreteMoment(), false).execute());
+        separatorBottom.setOnDragSchemaMomentType(schemaMomentType -> childCmdFactory.addSiblingCommand(schemaMomentType.createMoment(), false).execute());
 
         //Menu Button
         if (commentArea.isVisible()) {
@@ -411,8 +410,8 @@ public class MomentController extends ListViewController<Moment> implements Init
         separatorLeft.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, 0).execute());
         separatorRight.setOnDragDoneShemaCategory(category -> cmdFactory.addSiblingCommand(new Moment("Moment"), category, this.moment, index+1).execute());
 
-        separatorLeft.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(schemaMomentType.getMomentTypeController().getMomentType().createConcreteMoment(), 0, false).execute());
-        separatorRight.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(schemaMomentType.getMomentTypeController().getMomentType().createConcreteMoment(), index+1, false).execute());
+        separatorLeft.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(schemaMomentType.createMoment(), 0, false).execute());
+        separatorRight.setOnDragSchemaMomentType(schemaMomentType -> cmdFactory.addSiblingCommand(schemaMomentType.createMoment(), index+1, false).execute());
 
 
 
@@ -433,9 +432,6 @@ public class MomentController extends ListViewController<Moment> implements Init
 
             separatorLeft.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), 0).execute());
             separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute());
-            separatorLeft.setOnDragMomentType(momentType -> cmdFactory.addSiblingCommand(momentType.createConcreteMoment(), 0,false).execute());
-            separatorRight.setOnDragMomentType(momentType -> cmdFactory.addSiblingCommand(momentType.createConcreteMoment(), index + 1 ,false).execute());
-
 
             //Make moment aligned, no need to understand that !
             Insets ins = childrenMomentContainer.getPadding();
@@ -451,20 +447,17 @@ public class MomentController extends ListViewController<Moment> implements Init
             separatorLeft.setOnDragDoneDescripteme(descripteme -> {});
             separatorLeft.setOnDragMomentDone((m, factory) -> {});
             separatorLeft.setOnDragTemplateMomentDone(templateMoment -> {});
-            separatorLeft.setOnDragMomentType(momentType -> {});
 
             if(index == siblingsCount - 1) {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme).execute());
                 separatorRight.setOnDragMomentDone((m, originParent) -> cmdFactory.moveMomentCommand(m, originParent).execute());
                 separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment()).execute());
-                separatorRight.setOnDragMomentType(momentType -> cmdFactory.addSiblingCommand(momentType.createConcreteMoment(),false).execute());
 
             }
             else {
                 separatorRight.setOnDragDoneDescripteme(descripteme -> cmdFactory.addSiblingCommand(new Moment("Moment"), descripteme, index+1).execute());
                 separatorRight.setOnDragMomentDone((m,originParent) -> cmdFactory.moveMomentCommand(m, originParent, index + 1).execute());
                 separatorRight.setOnDragTemplateMomentDone(templateMoment -> cmdFactory.addSiblingCommand(templateMoment.createConcreteMoment(), index+1).execute());
-                separatorRight.setOnDragMomentType(momentType -> cmdFactory.addSiblingCommand(momentType.createConcreteMoment(), index + 1 ,false).execute());
 
             }
 

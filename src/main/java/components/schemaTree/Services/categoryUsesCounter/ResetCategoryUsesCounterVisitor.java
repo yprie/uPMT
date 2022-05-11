@@ -1,7 +1,7 @@
 package components.schemaTree.Services.categoryUsesCounter;
 
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
-import components.toolbox.models.SchemaMomentType;
+import models.SchemaMomentType;
 import models.*;
 
 public class ResetCategoryUsesCounterVisitor extends SchemaTreePluggableVisitor {
