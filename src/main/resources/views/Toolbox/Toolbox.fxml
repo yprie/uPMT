@@ -13,7 +13,7 @@
     <!-- New Moment -->
     <TemplateSpaceController fx:id="templateSpaceController" xmlns:fx="http://javafx.com/fxml/1"/>
 
-    <ScrollPane fx:id="scrollbarMomentTypes" vbarPolicy="NEVER" fitToWidth="true" HBox.hgrow="ALWAYS">
+    <ScrollPane fx:id="scrollbarMomentTypes" vbarPolicy="NEVER" fitToWidth="true" fitToHeight="true" HBox.hgrow="ALWAYS">
         <!-- HBox où les types de moments sont affichés -->
         <HBox fx:id="containerMomentsTypes" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/toolbox.css" HBox.hgrow="ALWAYS" maxWidth="Infinity">
         </HBox>
