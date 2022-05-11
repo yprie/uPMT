@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 public class SProject extends Serializable<Project> {
 
-    public static final int version = 1;
+    public static final int version = 2;
     public static final String modelName = "project";
 
     public String name;

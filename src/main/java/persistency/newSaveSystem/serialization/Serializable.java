@@ -114,7 +114,6 @@ public abstract class Serializable<ModelType> {
         //check SMoment.read() for example
         if(version > fileversion) {
             serializer.writeInt("@version", version);
-            //OutdatedSoftware.display(Configuration.langBundle.getString("outdated_soft"));
         }
     }
 }
