@@ -145,14 +145,14 @@ public class ToolBoxControllers extends HBox implements Initializable {
         MomentTypeController momentTypeController = schemaMomentType.getMomentTypeController();
         instance.currentMomentTypeControllers.add(momentTypeController);
         instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
-        instance.momentTypesSchemaTree.addChild(schemaMomentType);
+        instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
         instance.project.getMomentTypeControllers().add(momentTypeController);
     }
 
     public void removeAMomentType(SchemaMomentType schemaMomentType) {
         for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
-                instance.momentTypesSchemaTree.removeChild(schemaMomentType);
+                instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
                 instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
                 instance.currentMomentTypeControllers.remove(momentTypeController);
                 instance.project.getMomentTypeControllers().remove(momentTypeController);
