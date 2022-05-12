@@ -2,7 +2,8 @@ package components.toolbox.controllers;
 
 import application.configuration.Configuration;
 import components.templateSpace.controllers.TemplateSpaceController;
-import components.toolbox.history.commands.AddSchemaMomentTypeCommand;
+import components.toolbox.appCommand.AddSchemaMomentTypeCommand;
+import components.toolbox.appCommand.RemoveSchemaMomentTypeCommand;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,7 +30,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
     public Project project;
     private SchemaTreeRoot schemaTreeRoot;
     private List<MomentTypeController> currentMomentTypeControllers;
-    private AddSchemaMomentTypeCommand addSchemaMomentTypeCommand;
     private SchemaFolder momentTypesSchemaTree;
     public static ToolBoxControllers instance;
 
@@ -127,8 +127,11 @@ public class ToolBoxControllers extends HBox implements Initializable {
     // permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public void addMomentTypeCommand(Moment m) {
         SchemaMomentType smt = new SchemaMomentType(m, new MomentTypeController(m));
-        instance.addSchemaMomentTypeCommand = new AddSchemaMomentTypeCommand(instance, smt);
-        instance.addSchemaMomentTypeCommand.execute();
+        new AddSchemaMomentTypeCommand(instance, smt).execute();
+    }
+
+    public void removeMomentTypeCommand(SchemaMomentType smt) {
+        new RemoveSchemaMomentTypeCommand(instance, smt).execute();
     }
 
     //  permet d'être utilisé dans l'arbre à gauche pour créer un type de moment

@@ -2,6 +2,7 @@ package components.toolbox.controllers;
 
 import application.configuration.Configuration;
 import components.toolbox.appCommand.RenameMomentTypesCommand;
+import javafx.util.Duration;
 import models.SchemaMomentType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,7 +90,9 @@ public class MomentTypeController implements Initializable {
             }
         }
 
-        Tooltip.install(momentTypeBorderPane, new Tooltip(message.toString()));
+        Tooltip tt = new Tooltip(message.toString());
+        tt.setShowDelay(Duration.millis(500));
+        Tooltip.install(momentTypeBorderPane, tt);
     }
 
     public boolean exists(Moment moment) {

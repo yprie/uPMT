@@ -39,7 +39,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
-            ToolBoxControllers.getToolBoxControllersInstance().removeAMomentType(schemaMomentType);
+            ToolBoxControllers.getToolBoxControllersInstance().removeMomentTypeCommand(schemaMomentType);
         });
         optionsMenu.getItems().add(deleteButton);
     }
