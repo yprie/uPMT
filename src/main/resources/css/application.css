@@ -72,9 +72,6 @@
 .tree-cell:selected Text{
     -fx-fill: black ;
 }
-/*.tree-cell {
-    -fx-padding: 5px 0em 5px 0em;
-}*/
 
 .tree-view-right > .button{
 	-fx-border-width: 1;

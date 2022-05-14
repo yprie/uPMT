@@ -14,7 +14,8 @@
       <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets right="10.0" />
-         </BorderPane.margin></MenuButton>
+         </BorderPane.margin>
+      </MenuButton>
    </right>
    <padding>
       <Insets left="15.0" />
@@ -22,13 +23,13 @@
    <center>
       <BorderPane fx:id="nameDisplayer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_LEFT">
          <left>
-            <Label fx:id="name" style="-fx-font-weight: bold;" text="name" BorderPane.alignment="CENTER" />
+            <Label fx:id="name" style="-fx-font-weight: bold; -fx-text-fill: black;" text="name" BorderPane.alignment="CENTER" />
          </left>
          <padding>
             <Insets left="10.0" />
          </padding>
          <right>
-            <Label fx:id="complementaryInfo" BorderPane.alignment="CENTER" />
+            <Label fx:id="complementaryInfo" style="-fx-text-fill: black;" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
    </center>
