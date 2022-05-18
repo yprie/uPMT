@@ -41,7 +41,7 @@ public class UPMTApp {
         StyleManager.getInstance().addUserAgentStylesheet(this.getClass().getResource("/css/application.css").toExternalForm());
 
         primaryStage.setScene(mainScene);
-        primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication(event).execute());
+        primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication().execute());
         primaryStage.show();
 
         //Load the last used project or ask for a new one.

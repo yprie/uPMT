@@ -14,14 +14,12 @@ import java.util.UUID;
 
 public class CloseApplicationCommand extends ApplicationCommand<Void> {
 
-    public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application, WindowEvent event) {
 
+    public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application) {
         super(application);
-        this.event = event;
         this.appCommandFactory = appCommandFactory;
     }
 
-    WindowEvent event;
     ApplicationCommandFactory appCommandFactory;
 
     @Override
@@ -63,11 +61,11 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             } else if (result.get() == buttonTypeTwo) {
                 // ... user chose "Quit without saving"
                 System.exit(0);
-            } else {
-                // ... user chose CANCEL or closed the dialog
-                event.consume();
             }
+        } else {
+            System.exit(0);
         }
+
         return null;
     }
 }
