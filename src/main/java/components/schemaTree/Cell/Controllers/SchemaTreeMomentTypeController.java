@@ -42,6 +42,18 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
             ToolBoxControllers.getToolBoxControllersInstance().removeMomentTypeCommand(schemaMomentType);
         });
         optionsMenu.getItems().add(deleteButton);
+
+        MenuItem showButton = new MenuItem("Hide");
+        showButton.setOnAction(actionEvent -> {
+            if (showButton.textProperty().get().equals("Hide")) {
+                ToolBoxControllers.getToolBoxControllersInstance().hide(schemaMomentType.getMomentTypeController());
+                showButton.textProperty().set("Show");
+            } else {
+                ToolBoxControllers.getToolBoxControllersInstance().show(schemaMomentType.getMomentTypeController());
+                showButton.textProperty().set("Hide");
+            }
+        });
+        optionsMenu.getItems().add(showButton);
     }
 
     @Override

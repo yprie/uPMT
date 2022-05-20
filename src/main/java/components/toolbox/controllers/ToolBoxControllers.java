@@ -174,4 +174,14 @@ public class ToolBoxControllers extends HBox implements Initializable {
         instance.schemaTreeRoot.addChild(momentTypesFolder);
         return momentTypesFolder;
     }
+
+    public void hide(MomentTypeController mtc) {
+        this.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(mtc));
+        this.currentMomentTypeControllers.remove(mtc);
+    }
+
+    public void show(MomentTypeController mtc) {
+        this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
+        this.currentMomentTypeControllers.add(mtc);
+    }
 }
