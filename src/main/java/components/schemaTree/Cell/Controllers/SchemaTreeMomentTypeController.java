@@ -43,14 +43,14 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
         });
         optionsMenu.getItems().add(deleteButton);
 
-        MenuItem showButton = new MenuItem("Hide");
+        MenuItem showButton = new MenuItem(Configuration.langBundle.getString("hide_in_toolbox"));
         showButton.setOnAction(actionEvent -> {
-            if (showButton.textProperty().get().equals("Hide")) {
+            if (showButton.textProperty().get().equals(Configuration.langBundle.getString("hide_in_toolbox"))) {
                 ToolBoxControllers.getToolBoxControllersInstance().hide(schemaMomentType.getMomentTypeController());
-                showButton.textProperty().set("Show");
+                showButton.textProperty().set(Configuration.langBundle.getString("show_in_toolbox"));
             } else {
                 ToolBoxControllers.getToolBoxControllersInstance().show(schemaMomentType.getMomentTypeController());
-                showButton.textProperty().set("Hide");
+                showButton.textProperty().set(Configuration.langBundle.getString("hide_in_toolbox"));
             }
         });
         optionsMenu.getItems().add(showButton);
