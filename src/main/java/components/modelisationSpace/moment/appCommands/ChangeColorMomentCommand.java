@@ -4,12 +4,8 @@ package components.modelisationSpace.moment.appCommands;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.modelisationSpace.moment.modelCommands.ChangeColorMoment;
-import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import models.Moment;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
-import utils.popups.TextEntryController;
 import utils.popups.WarningPopup;
 
 public class ChangeColorMomentCommand implements Executable {

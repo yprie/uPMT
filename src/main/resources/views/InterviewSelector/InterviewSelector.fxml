@@ -6,11 +6,11 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <top>
        <ButtonBar prefHeight="40.0" prefWidth="200.0">
            <buttons>
-               <Button fx:id="addInterviewButton" mnemonicParsing="false" stylesheets="/css/application.css" text="%add_interview" styleClass="button-gray" />
+               <Button fx:id="addInterviewButton" mnemonicParsing="false" text="%add_interview" styleClass="button-gray" />
            </buttons>
          <padding>
             <Insets left="15.0" right="15.0" />

@@ -1,17 +1,16 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Section;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;

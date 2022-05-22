@@ -1,18 +1,14 @@
 package components.modelisationSpace.moment.appCommands;
 
 
-import application.configuration.Configuration;
 import application.history.HistoryManager;
 import application.history.ModelUserActionCommandHooks;
 import components.modelisationSpace.category.appCommands.AddConcreteCategoryCommand;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import components.modelisationSpace.justification.appCommands.AddDescriptemeCommand;
-import models.*;
 import components.modelisationSpace.moment.modelCommands.AddSubMoment;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
+import models.*;
 import utils.command.Executable;
-import utils.popups.TextEntryController;
 
 public class AddSiblingMomentCommand implements Executable<Void> {
 
@@ -23,6 +19,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
     private ConcreteCategory concreteCategory;
     int index = -1;
     private ModelisationSpaceHookNotifier hooksNotifier;
+    private Boolean isRenaming = true;
 
     public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, ConcreteCategory concreteCategory) {
         this.hooksNotifier = hooksNotifier;
@@ -69,6 +66,23 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         concreteCategory = null;
     }
 
+    public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, int index, boolean isRenaming) {
+        this.hooksNotifier = hooksNotifier;
+        this.parent = parent;
+        this.newMoment = newMoment;
+        this.index = index;
+        this.isRenaming = isRenaming;
+        concreteCategory = null;
+    }
+
+    public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, boolean isRenaming) {
+        this.hooksNotifier = hooksNotifier;
+        this.parent = parent;
+        this.newMoment = newMoment;
+        this.isRenaming = isRenaming;
+        concreteCategory = null;
+    }
+
     public AddSiblingMomentCommand(ModelisationSpaceHookNotifier hooksNotifier, RootMoment parent, Moment newMoment, Descripteme descripteme) {
         this.hooksNotifier = hooksNotifier;
         this.parent = parent;
@@ -86,17 +100,6 @@ public class AddSiblingMomentCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        String name = Configuration.langBundle.getString("new_moment");
-        TextEntryController c = TextEntryController.enterText(
-                Configuration.langBundle.getString("new_moment_name"),
-                newMoment.getName(),
-                50,
-                new SuggestionStrategyMoment()
-        );
-        if(c!= null && c.getState() == DialogState.SUCCESS){
-            newMoment.setName(c.getValue());
-        }
-
         //Model command creation
         AddSubMoment cmd;
         if(index == -1)
@@ -108,7 +111,7 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         HistoryManager.addCommand(cmd, true);
 
         if (concreteCategory != null) {
-            new AddConcreteCategoryCommand(newMoment, concreteCategory, false).execute();
+            new AddConcreteCategoryCommand(hooksNotifier, newMoment, concreteCategory, false).execute();
         }
         else if(schemaCategory != null) {
             new AddConcreteCategoryCommand(hooksNotifier, newMoment, schemaCategory, false).execute();
@@ -118,6 +121,10 @@ public class AddSiblingMomentCommand implements Executable<Void> {
         }
 
         newMoment.addParent(parent);
+
+        if (this.isRenaming) {
+            newMoment.getController().passInRenamingMode(true);
+        }
 
         return null;
     }

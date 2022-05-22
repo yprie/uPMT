@@ -5,10 +5,9 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
 import components.schemaTree.Section;
+import components.toolbox.controllers.ToolBoxControllers;
 import javafx.scene.control.TreeItem;
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
+import models.*;
 import utils.reactiveTree.LeafToRootIterator;
 import components.schemaTree.Cell.Visitors.CreateControllerVisitor;
 import javafx.event.EventHandler;
@@ -101,10 +100,27 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                if (DragStore.getDraggable().getDataFormat() == SchemaMomentType.format) {
+                    event.acceptTransferModes(TransferMode.NONE);
+                    event.consume();
+                    return;
+                }
+                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                    Moment m = DragStore.getDraggable();
+
+                    if (ToolBoxControllers.getToolBoxControllersInstance().canBeDragged(m)) {
+                        event.acceptTransferModes(TransferMode.MOVE);
+                    } else {
+                        event.acceptTransferModes(TransferMode.NONE);
+                    }
+                    event.consume();
+                    return;
+
+                }
+
                 boolean accept = false;
-                // TODO: get size of the target
                 Section sect = controller.mouseIsDraggingOn(event.getY());
-                SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
+                SchemaTreePluggable source = DragStore.getDraggable();
                 SchemaTreePluggable target = selfCell.getItem();
 
                 SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
@@ -146,56 +162,60 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
+                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
+                    Moment m = DragStore.getDraggable();
+                    ToolBoxControllers.getToolBoxControllersInstance().addMomentTypeCommand(m);
+                } else {
+                    //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
+                    if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
 
-                //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
-                if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
+                        SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
+                        DragStore.clearStore();
+                        SchemaTreePluggable target = selfCell.getItem();
 
-                    SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
-                    DragStore.clearStore();
-                    SchemaTreePluggable target = selfCell.getItem();
+                        Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                    Section sect = controller.mouseIsDraggingOn(event.getY());
+                        SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                                .getParent().getValue();
+                        SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
 
-                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
-                            .getParent().getValue();
-                    SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
+                        SchemaTreePluggable newParent = null;
 
-                    SchemaTreePluggable newParent = null;
+                        int newIndex = -1;
 
-                    int newIndex = -1;
+                        if (sect != Section.middle) {
+                            newParent = parentTarget;
+                            int oldIndex = sourceParent.getChildIndex(source);
+                            newIndex = parentTarget.getChildIndex(target);
 
-                    if (sect != Section.middle) {
-                        newParent = parentTarget;
-                        int oldIndex = sourceParent.getChildIndex(source);
-                        newIndex = parentTarget.getChildIndex(target);
-
-                        if (sourceParent == parentTarget) {
-                            if (sect == Section.top && oldIndex < newIndex) {
-                                newIndex--;
+                            if (sourceParent == parentTarget) {
+                                if (sect == Section.top && oldIndex < newIndex) {
+                                    newIndex--;
+                                }
+                                else if (sect == Section.bottom && oldIndex > newIndex) {
+                                    newIndex++;
+                                }
                             }
-                            else if (sect == Section.bottom && oldIndex > newIndex) {
-                                newIndex++;
+                            else {
+                                if (sect == Section.bottom) {
+                                    newIndex++;
+                                }
                             }
+                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
+                                    .getSelectedItem()); // TODO: fix
                         }
                         else {
-                            if (sect == Section.bottom) {
-                                newIndex++;
-                            }
+                            // sect == middle so change parent
+                            newParent = target;
+                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
                         }
-                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
-                                .getSelectedItem()); // TODO: fix
-                    }
-                    else {
-                        // sect == middle so change parent
-                        newParent = target;
-                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
-                    }
-                    HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
-                            true);
+                        HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
+                                true);
 
+                    }
+                    event.setDropCompleted(false);
+                    event.consume();
                 }
-                event.setDropCompleted(false);
-                event.consume();
             }
         });
 

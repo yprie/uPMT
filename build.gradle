@@ -21,8 +21,8 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
-    compile group: 'org.json', name: 'json', version: '20190722'
-    compile group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.4'
+    implementation group: 'org.json', name: 'json', version: '20190722'
+    implementation group: 'org.fxmisc.richtext', name: 'richtextfx', version: '0.10.4'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
@@ -47,6 +47,8 @@ sourceSets {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+
 
 test {
     systemProperty "file.encoding", "utf-8"

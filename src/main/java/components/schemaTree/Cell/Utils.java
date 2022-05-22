@@ -1,5 +1,6 @@
 package components.schemaTree.Cell;
 
+import models.SchemaMomentType;
 import javafx.scene.control.TreeItem;
 import models.SchemaCategory;
 import models.SchemaFolder;
@@ -22,6 +23,10 @@ public class Utils {
 
     public static boolean IsSchemaTreeProperty(SchemaTreePluggable item){
         return item.getDataFormat() == SchemaProperty.format;
+    }
+
+    public static boolean IsSchemaTreeMomentType(SchemaTreePluggable item){
+        return item.getDataFormat() == SchemaMomentType.format;
     }
 
     public static boolean IsSameType(SchemaTreePluggable a, SchemaTreePluggable b) {

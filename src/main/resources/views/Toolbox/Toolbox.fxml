@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.HBox?>
+<?import components.templateSpace.controllers.TemplateSpaceController?>
+
+
+<HBox fx:id="bodyToolBox" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/toolbox.css" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+    <!-- Icone "loupe" pour le moment -->
+    <Button fx:id="addMomentTypeFolder" maxWidth="60" minWidth="60" maxHeight="60" minHeight="60"  stylesheets="/css/toolbox.css" xmlns:fx="http://javafx.com/fxml/1"/>
+
+    <!-- New Moment -->
+    <TemplateSpaceController fx:id="templateSpaceController" xmlns:fx="http://javafx.com/fxml/1"/>
+
+    <ScrollPane fx:id="scrollbarMomentTypes" vbarPolicy="NEVER" fitToWidth="true" fitToHeight="true" HBox.hgrow="ALWAYS">
+        <!-- HBox où les types de moments sont affichés -->
+        <HBox fx:id="containerMomentsTypes" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/toolbox.css" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+        </HBox>
+    </ScrollPane>
+
+
+</HBox>

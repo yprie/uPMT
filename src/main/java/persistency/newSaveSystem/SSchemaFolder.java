@@ -2,7 +2,6 @@ package persistency.newSaveSystem;
 
 import models.SchemaCategory;
 import models.SchemaFolder;
-
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 
 import java.util.ArrayList;

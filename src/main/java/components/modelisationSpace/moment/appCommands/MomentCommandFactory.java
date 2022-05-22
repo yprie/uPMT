@@ -6,7 +6,6 @@ import models.Moment;
 import models.RootMoment;
 import models.SchemaCategory;
 import models.Descripteme;
-import utils.command.Executable;
 
 public class MomentCommandFactory {
 
@@ -23,6 +22,13 @@ public class MomentCommandFactory {
     }
     public AddSiblingMomentCommand addSiblingCommand(Moment m) {
         return new AddSiblingMomentCommand(hookNotifier, parent, m);
+    }
+
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, int index, boolean isRenaming) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, index, isRenaming);
+    }
+    public AddSiblingMomentCommand addSiblingCommand(Moment m, boolean isRenaming) {
+        return new AddSiblingMomentCommand(hookNotifier, parent, m, isRenaming);
     }
 
 
@@ -46,8 +52,7 @@ public class MomentCommandFactory {
     public MoveMomentCommand moveMomentCommand(Moment m, RootMoment originParent){
         return new MoveMomentCommand(parent, originParent, m);
     }
-    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m); }
-    public RenameMomentCommand renameCommand(Moment m) { return new RenameMomentCommand(m); }
+    public DeleteMomentCommand deleteCommand(Moment m) { return new DeleteMomentCommand(hookNotifier, parent, m, true); }
     public SetMomentTransCommand transitionCommand(Moment m) { return new SetMomentTransCommand(m); }
     public AddCommentCommand addCommentCommand(Moment m, String comment){ return new AddCommentCommand(m, comment);}
 
@@ -64,7 +69,11 @@ public class MomentCommandFactory {
         return new AddSiblingMomentCommand(hookNotifier, parent, m, descripteme, index);
     }
 
-    public Executable<Object> colorCommand(Moment m, String color) {
+    public ChangeColorMomentCommand colorCommand(Moment m, String color) {
         return new ChangeColorMomentCommand(m, color);
+    }
+
+    public MergeMomentCommand mergeMomentCommand(Moment destinationMoment, Moment sourceMoment, boolean userCommand) {
+        return new MergeMomentCommand(hookNotifier, destinationMoment, sourceMoment, userCommand);
     }
 }

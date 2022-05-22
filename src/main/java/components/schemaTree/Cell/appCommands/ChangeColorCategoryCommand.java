@@ -1,17 +1,9 @@
 package components.schemaTree.Cell.appCommands;
 
-import application.configuration.Configuration;
 import application.history.HistoryManager;
-import components.modelisationSpace.moment.modelCommands.ChangeColorMoment;
-import components.modelisationSpace.moment.modelCommands.RenameMoment;
 import components.schemaTree.Cell.modelCommands.ChangeColorTreePluggable;
-import models.Moment;
 import models.SchemaCategory;
-import utils.DialogState;
-import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
 import utils.command.Executable;
-import utils.popups.TextEntryController;
-import utils.popups.WarningPopup;
 
 public class ChangeColorCategoryCommand implements Executable {
 
