@@ -38,14 +38,14 @@ public class ToolBoxControllers extends HBox implements Initializable {
             instance = new ToolBoxControllers();
             instance.project = project;
             instance.schemaTreeRoot = project.getSchemaTreeRoot();
-            instance.currentMomentTypeControllers = new LinkedList<MomentTypeController>();
+            instance.currentMomentTypeControllers = new LinkedList<>();
             instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
         }
 
         if (!instance.project.equals(project)) {
             instance.project = project;
             instance.schemaTreeRoot = project.getSchemaTreeRoot();
-            instance.currentMomentTypeControllers = new LinkedList<MomentTypeController>();
+            instance.currentMomentTypeControllers = new LinkedList<>();
             instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
         }
 
@@ -156,8 +156,11 @@ public class ToolBoxControllers extends HBox implements Initializable {
         for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
                 instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
-                instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
-                instance.currentMomentTypeControllers.remove(momentTypeController);
+                if(instance.currentMomentTypeControllers.contains(momentTypeController)) { //si le momentType est affiché, on le supprime de la vue
+                    instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
+                    instance.currentMomentTypeControllers.remove(momentTypeController);
+                }
+
                 instance.project.getMomentTypeControllers().remove(momentTypeController);
                 break;
             }
@@ -184,4 +187,10 @@ public class ToolBoxControllers extends HBox implements Initializable {
         this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
         this.currentMomentTypeControllers.add(mtc);
     }
+
+    public List<MomentTypeController> getCurrentMomentTypeControllers() {
+        return currentMomentTypeControllers;
+    }
+
+
 }
