@@ -168,7 +168,7 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     }
 
     public Moment createMoment() {
-        return new Moment(super.nameProperty().get(), this.categories.get(), this.transitional.get(), this.color.get());
+        return new Moment(super.getName(), this.categories.get(), this.transitional.get(), this.color.get());
     }
 
     public boolean getTransitional() {
