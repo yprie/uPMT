@@ -35,7 +35,7 @@ public class SSchemaMomentType extends SSchemaElement<SchemaMomentType> {
         this.transitional = modelReference.getTransitional();
         this.categories = new ArrayList<>();
         for (SchemaCategory sc : modelReference.categoriesProperty()) {
-            this.categories.add(new SSchemaCategory(serializer, sc));
+            this.categories.add((SSchemaCategory) serializer.getSerializationPool().get(sc));
         }
     }
 

@@ -60,21 +60,28 @@ public abstract class SchemaTreeCellController implements Initializable {
         name.setText(element.nameProperty().get());
         name.textProperty().bind(element.nameProperty());
 
-        MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
-        renameButton.setOnAction(actionEvent -> {
-            passInRenamingMode(true);
-        });
-        optionsMenu.getItems().add(renameButton);
-
-        optionsMenu.setVisible(false);
-        optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
-            if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
-        });
-
-        Platform.runLater(()-> {
-            if(element.mustBeRenamed())
+        if (this.element.nameProperty().get().equals(Configuration.langBundle.getString("folder_moment_type"))) {
+            optionsMenu.setDisable(true);
+            optionsMenu.setStyle("-fx-opacity: 0;");
+        } else {
+            MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
+            renameButton.setOnAction(actionEvent -> {
                 passInRenamingMode(true);
-        });
+            });
+            optionsMenu.getItems().add(renameButton);
+
+            optionsMenu.setVisible(false);
+            optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
+                if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
+            });
+
+            Platform.runLater(()-> {
+                if(element.mustBeRenamed())
+                    passInRenamingMode(true);
+            });
+        }
+
+
     }
 
 
