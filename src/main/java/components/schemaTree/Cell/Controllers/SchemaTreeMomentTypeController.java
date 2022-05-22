@@ -34,7 +34,6 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-
         name.textProperty().bind(this.schemaMomentType.nameProperty());
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
@@ -43,9 +42,16 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
         });
         optionsMenu.getItems().add(deleteButton);
 
-        MenuItem showButton = new MenuItem(Configuration.langBundle.getString("hide_in_toolbox"));
+        MenuItem showButton = new MenuItem();
+        if (ToolBoxControllers.getToolBoxControllersInstance().getCurrentMomentTypeControllers().contains(this.schemaMomentType.getMomentTypeController())) {
+            showButton.setText(Configuration.langBundle.getString("hide_in_toolbox"));
+        }
+        else {
+            showButton.setText(Configuration.langBundle.getString("show_in_toolbox"));
+        }
+
         showButton.setOnAction(actionEvent -> {
-            if (showButton.textProperty().get().equals(Configuration.langBundle.getString("hide_in_toolbox"))) {
+            if (ToolBoxControllers.getToolBoxControllersInstance().getCurrentMomentTypeControllers().contains(this.schemaMomentType.getMomentTypeController())) {
                 ToolBoxControllers.getToolBoxControllersInstance().hide(schemaMomentType.getMomentTypeController());
                 showButton.textProperty().set(Configuration.langBundle.getString("show_in_toolbox"));
             } else {
