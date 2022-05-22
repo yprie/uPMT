@@ -5,8 +5,12 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.toolbox.controllers.ToolBoxControllers;
 import javafx.geometry.Pos;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
+import models.SchemaCategory;
 import models.SchemaMomentType;
+import models.SchemaProperty;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
@@ -54,6 +58,23 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
             }
         });
         optionsMenu.getItems().add(showButton);
+    }
+
+    @Override
+    public void setOnHover(boolean YoN) {
+        super.setOnHover(YoN);
+
+        StringBuilder message = new StringBuilder(schemaMomentType.getName() + "\n");
+        for (SchemaCategory sc : schemaMomentType.categoriesProperty()) {
+            message.append('\n').append(sc.getName()).append(" :\n");
+            for (SchemaProperty sp : sc.propertiesProperty()) {
+                message.append("\t- ").append(sp.getName()).append("\n");
+            }
+        }
+
+        Tooltip tt = new Tooltip(message.toString());
+        tt.setShowDelay(Duration.millis(500));
+        Tooltip.install(nameDisplayer, tt);
     }
 
     @Override
