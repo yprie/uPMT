@@ -73,6 +73,9 @@ public abstract class SchemaTreeCellController implements Initializable {
                     dragEvent.consume();
                 }
             });
+        } else if (this.element.nameProperty().get().equals("Categories")) {
+            optionsMenu.setDisable(true);
+            optionsMenu.setStyle("-fx-opacity: 0;");
         } else {
             MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
             renameButton.setOnAction(actionEvent -> {
