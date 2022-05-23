@@ -88,7 +88,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
         for (MomentTypeController mtc : instance.currentMomentTypeControllers) {
             this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
         }
-        this.schemaTreeRoot.setName(Configuration.langBundle.getString("folder_moment_type"));
+        this.momentTypesSchemaTree.setName(Configuration.langBundle.getString("folder_moment_type"));
     }
 
     private void setupDragAndDrop() {
@@ -172,6 +172,10 @@ public class ToolBoxControllers extends HBox implements Initializable {
         for (SchemaFolder sf : instance.schemaTreeRoot.foldersProperty()) {
             if (sf.getName().equals(Configuration.langBundle.getString("folder_moment_type"))) {
                 return sf;
+            } else {
+                if (sf.children.size() == 0) {
+                    schemaTreeRoot.removeChild(sf);
+                }
             }
         }
         SchemaFolder momentTypesFolder = new SchemaFolder(Configuration.langBundle.getString("folder_moment_type"));
