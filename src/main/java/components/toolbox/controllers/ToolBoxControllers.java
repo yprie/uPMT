@@ -154,7 +154,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
     }
 
     public void removeAMomentType(SchemaMomentType schemaMomentType) {
-        for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
+        for(MomentTypeController momentTypeController : instance.project.getMomentTypeControllers()) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
                 instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
                 if(instance.currentMomentTypeControllers.contains(momentTypeController)) { //si le momentType est affiché, on le supprime de la vue
