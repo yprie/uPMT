@@ -13,11 +13,15 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import models.SchemaCategory;
+import models.SchemaFolder;
 import utils.ResourceLoader;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.dragAndDrop.DragStore;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -61,6 +65,15 @@ public abstract class SchemaTreeCellController implements Initializable {
         name.textProperty().bind(element.nameProperty());
 
         if (this.element.nameProperty().get().equals(Configuration.langBundle.getString("folder_moment_type"))) {
+            optionsMenu.setDisable(true);
+            optionsMenu.setStyle("-fx-opacity: 0;");
+            container.setOnDragOver(dragEvent -> {
+                if (DragStore.getDraggable().getDataFormat() == SchemaCategory.format || DragStore.getDraggable().getDataFormat() == SchemaFolder.format) {
+                    dragEvent.acceptTransferModes(TransferMode.NONE);
+                    dragEvent.consume();
+                }
+            });
+        } else if (this.element.nameProperty().get().equals("Categories")) {
             optionsMenu.setDisable(true);
             optionsMenu.setStyle("-fx-opacity: 0;");
         } else {

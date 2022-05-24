@@ -37,13 +37,7 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
         pictureView.setImage(ResourceLoader.loadImage(element.getIconPath()));
         name.setText(element.nameProperty().get());
 
-        MenuItem addFolderButton = new MenuItem(Configuration.langBundle.getString("add_folder"));
-        addFolderButton.setOnAction(actionEvent -> {
-            SchemaFolder f = new SchemaFolder(Configuration.langBundle.getString("folder"));
-            cmdFactory.addSchemaTreeChild(f).execute();
-        });
-
-        optionsMenu.getItems().add(addFolderButton);
-        optionsMenu.setVisible(false);
+        optionsMenu.setDisable(true);
+        optionsMenu.setStyle("-fx-opacity: 0;");
     }
 }
