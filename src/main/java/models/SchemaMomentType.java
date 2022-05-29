@@ -110,7 +110,7 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
 
     @Override
     public boolean canChangeParent() {
-        return false;
+        return true;
     }
 
     @Override

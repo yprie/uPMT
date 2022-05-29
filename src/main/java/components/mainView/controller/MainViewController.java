@@ -145,9 +145,6 @@ public class MainViewController implements Initializable {
 			mainSplitPane.setDividerPosition(1,0.7);
 		})));
 
-		SchemaFolder categories = new SchemaFolder("Categories");
-		this.project.schemaTreeRootProperty().get().addChild(categories);
-
 		// Initialisation de la ToolBox avec tout ce qui suit (TemplateSpaceController)
 		ToolBoxControllers toolBoxControllers = ToolBoxControllers.getToolBoxControllersInstance(project);
 		toolBox.getChildren().add(toolBoxControllers.createToolBoxControllers(toolBoxControllers));

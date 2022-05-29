@@ -30,7 +30,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
     public Project project;
     private SchemaTreeRoot schemaTreeRoot;
     private List<MomentTypeController> currentMomentTypeControllers;
-    private SchemaFolder momentTypesSchemaTree;
     public static ToolBoxControllers instance;
 
     public static ToolBoxControllers getToolBoxControllersInstance(Project project) {
@@ -39,14 +38,12 @@ public class ToolBoxControllers extends HBox implements Initializable {
             instance.project = project;
             instance.schemaTreeRoot = project.getSchemaTreeRoot();
             instance.currentMomentTypeControllers = new LinkedList<>();
-            instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
         }
 
         if (!instance.project.equals(project)) {
             instance.project = project;
             instance.schemaTreeRoot = project.getSchemaTreeRoot();
             instance.currentMomentTypeControllers = new LinkedList<>();
-            instance.momentTypesSchemaTree = instance.containMomentTypesSchemaTree();
         }
 
         for (MomentTypeController mtc : instance.project.getMomentTypeControllers()) {
@@ -54,7 +51,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
             mtc.getSchemaMomentType().setMomentTypeController(mtc);
             if (!instance.currentMomentTypeControllers.contains(mtc)) {
                 instance.currentMomentTypeControllers.add(mtc);
-                instance.momentTypesSchemaTree.addChild(mtc.getSchemaMomentType());
+                instance.schemaTreeRoot.addChild(mtc.getSchemaMomentType());
             }
         }
 
@@ -88,7 +85,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
         for (MomentTypeController mtc : instance.currentMomentTypeControllers) {
             this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
         }
-        this.momentTypesSchemaTree.setName(Configuration.langBundle.getString("folder_moment_type"));
     }
 
     private void setupDragAndDrop() {
@@ -149,14 +145,14 @@ public class ToolBoxControllers extends HBox implements Initializable {
         MomentTypeController momentTypeController = schemaMomentType.getMomentTypeController();
         instance.currentMomentTypeControllers.add(momentTypeController);
         instance.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(momentTypeController));
-        instance.momentTypesSchemaTree.addChild(momentTypeController.getSchemaMomentType());
+        instance.schemaTreeRoot.addChild(momentTypeController.getSchemaMomentType());
         instance.project.getMomentTypeControllers().add(momentTypeController);
     }
 
     public void removeAMomentType(SchemaMomentType schemaMomentType) {
         for(MomentTypeController momentTypeController : instance.project.getMomentTypeControllers()) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
-                instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
+                instance.schemaTreeRoot.removeChild(momentTypeController.getSchemaMomentType());
                 if(instance.currentMomentTypeControllers.contains(momentTypeController)) { //si le momentType est affiché, on le supprime de la vue
                     instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
                     instance.currentMomentTypeControllers.remove(momentTypeController);
@@ -166,22 +162,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
                 break;
             }
         }
-    }
-
-    public SchemaFolder containMomentTypesSchemaTree() {
-        for (SchemaFolder sf : instance.schemaTreeRoot.foldersProperty()) {
-            if (sf.getName().equals(Configuration.langBundle.getString("folder_moment_type"))) {
-                return sf;
-            } else {
-                if (sf.children.size() == 0) {
-                    schemaTreeRoot.removeChild(sf);
-                }
-            }
-        }
-        SchemaFolder momentTypesFolder = new SchemaFolder(Configuration.langBundle.getString("folder_moment_type"));
-
-        instance.schemaTreeRoot.addChild(momentTypesFolder);
-        return momentTypesFolder;
     }
 
     public void hide(MomentTypeController mtc) {
