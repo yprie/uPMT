@@ -68,6 +68,7 @@ public class MomentTypeController implements Initializable {
         });
 
         schemaMomentType.nameProperty().addListener((observableValue, o, t1) -> updatePopUp());
+        schemaMomentType.categoriesProperty().addListener((observableValue, o, t1) -> updatePopUp());
     }
 
     private void setupDragAndDrop() {

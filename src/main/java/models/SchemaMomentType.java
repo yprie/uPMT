@@ -36,11 +36,11 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
         this.nbUsesInModelisation = new SimpleIntegerProperty(0);
         this.momentTypeController = momentTypeController;
 
-        ListProperty<SchemaCategory> newCategoriesProperties = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         for (int i = 0; i < moment.getCategories().size(); i++) {
-            newCategoriesProperties.add(moment.getCategories().get(i).getSchemaCategory());
+            addCategory(moment.getCategories().get(i).getSchemaCategory(), -1);
         }
-        this.categories = newCategoriesProperties;
+
         this.transitional = new SimpleBooleanProperty(moment.getTransitional());
         this.color = new SimpleStringProperty(moment.getColor());
     }
