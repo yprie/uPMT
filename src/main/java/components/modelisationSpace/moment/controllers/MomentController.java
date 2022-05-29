@@ -95,6 +95,7 @@ public class MomentController extends ListViewController<Moment> implements Init
 
     public MomentController(Moment m, MomentCommandFactory cmdFactory, ScrollPaneCommandFactory paneCmdFactory) {
         this.moment = m;
+        m.setController(this);
         this.cmdFactory = cmdFactory;
         this.categoryCmdFactory = new ConcreteCategoryCommandFactory(cmdFactory.getHookNotifier(), moment);
         this.childCmdFactory = new MomentCommandFactory(cmdFactory.getHookNotifier(), moment);
