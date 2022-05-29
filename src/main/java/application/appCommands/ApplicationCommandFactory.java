@@ -17,6 +17,7 @@ public class ApplicationCommandFactory {
     }
 
     public CloseApplicationCommand closeApplication() { return new CloseApplicationCommand(this, application); }
+    public CloseApplicationCommand closeApplication(WindowEvent event) { return new CloseApplicationCommand(this, application, event); }
     public ChangeApplicationTitleCommand changeApplicationTitle(String newTitle) { return new ChangeApplicationTitleCommand(application, newTitle); }
     public OpenProjectManagerCommand openProjectManagerCommand() { return new OpenProjectManagerCommand(application); }
     public NewProjectCommand newProject() { return new NewProjectCommand(application); }
