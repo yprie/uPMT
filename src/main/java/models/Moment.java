@@ -115,29 +115,16 @@ public class Moment extends RootMoment implements IDraggable {
         this.color = new SimpleStringProperty(color);
     }
 
-    public Moment(String name, String comment, boolean commentVisible, Justification j, boolean collapsed, boolean transitional, String color, ListProperty<ConcreteCategory> categories) {
-        super();
-        this.name = new SimpleStringProperty(name);
-        this.comment = new SimpleStringProperty(comment);
-        this.justification = j;
-        this.categories = categories;
-        this.commentVisible = new SimpleBooleanProperty(commentVisible);
-        this.collapsed = new SimpleBooleanProperty(collapsed);
-        this.transitional = new SimpleBooleanProperty(transitional);
-        this.color = new SimpleStringProperty(color);
-    }
-
     public Moment(String name, ObservableList<SchemaCategory> categories, boolean transitional, String color) {
         super();
         this.name = new SimpleStringProperty(name);
         this.comment = new SimpleStringProperty();
         this.justification = new Justification();
 
-        ListProperty<ConcreteCategory> newCategoriesProperties =  new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
-        for (SchemaCategory category : categories) {
-            newCategoriesProperties.add(new ConcreteCategory(category));
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        for (SchemaCategory sc : categories) {
+            addCategory(new ConcreteCategory(sc));
         }
-        this.categories = newCategoriesProperties;
 
         this.commentVisible = new SimpleBooleanProperty(false);
         this.collapsed = new SimpleBooleanProperty();

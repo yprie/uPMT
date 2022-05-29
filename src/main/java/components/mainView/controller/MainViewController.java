@@ -40,6 +40,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import models.SchemaFolder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -143,6 +144,9 @@ public class MainViewController implements Initializable {
 		btnScreenShared.setOnAction(((event -> {
 			mainSplitPane.setDividerPosition(1,0.7);
 		})));
+
+		SchemaFolder categories = new SchemaFolder("Categories");
+		this.project.schemaTreeRootProperty().get().addChild(categories);
 
 		// Initialisation de la ToolBox avec tout ce qui suit (TemplateSpaceController)
 		ToolBoxControllers toolBoxControllers = ToolBoxControllers.getToolBoxControllersInstance(project);

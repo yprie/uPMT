@@ -1,11 +1,15 @@
 package models;
 
+import application.history.HistoryManager;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
 import components.toolbox.controllers.MomentTypeController;
+import components.toolbox.history.commands.RemoveCategoryFromMomentType;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
@@ -151,14 +155,31 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
         this.momentTypeController = momentTypeController;
     }
 
-    private void addCategory(SchemaCategory p, int index){
-        if(index == -1)
-            categories.add(p);
-        else
-            categories.add(index, p);
+    public void addCategory(SchemaCategory sc, int index){
+        if(index == -1) {
+            categories.add(sc);
+        }
+        else {
+            categories.add(index, sc);
+        }
+        bindListener(sc);
     }
-    private void removeCategory(SchemaCategory p){
+    public void removeCategory(SchemaCategory p){
         categories.remove(p);
+    }
+
+
+    private void bindListener(SchemaCategory sc) {
+        SchemaMomentType smt = this;
+        sc.existsProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if(!t1){
+                    HistoryManager.addCommand(new RemoveCategoryFromMomentType(smt, sc), false);
+                    sc.existsProperty().removeListener(this);
+                }
+            }
+        });
     }
 
     public ListProperty<SchemaCategory> categoriesProperty() { return categories; }
@@ -168,7 +189,7 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     }
 
     public Moment createMoment() {
-        return new Moment(super.nameProperty().get(), this.categories.get(), this.transitional.get(), this.color.get());
+        return new Moment(super.getName(), this.categories.get(), this.transitional.get(), this.color.get());
     }
 
     public boolean getTransitional() {

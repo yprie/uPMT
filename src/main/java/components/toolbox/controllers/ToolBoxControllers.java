@@ -88,6 +88,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
         for (MomentTypeController mtc : instance.currentMomentTypeControllers) {
             this.containerMomentsTypes.getChildren().add(MomentTypeController.createMomentTypeController(mtc));
         }
+        this.momentTypesSchemaTree.setName(Configuration.langBundle.getString("folder_moment_type"));
     }
 
     private void setupDragAndDrop() {
@@ -153,7 +154,7 @@ public class ToolBoxControllers extends HBox implements Initializable {
     }
 
     public void removeAMomentType(SchemaMomentType schemaMomentType) {
-        for(MomentTypeController momentTypeController : instance.currentMomentTypeControllers) {
+        for(MomentTypeController momentTypeController : instance.project.getMomentTypeControllers()) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
                 instance.momentTypesSchemaTree.removeChild(momentTypeController.getSchemaMomentType());
                 if(instance.currentMomentTypeControllers.contains(momentTypeController)) { //si le momentType est affiché, on le supprime de la vue
@@ -169,11 +170,16 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     public SchemaFolder containMomentTypesSchemaTree() {
         for (SchemaFolder sf : instance.schemaTreeRoot.foldersProperty()) {
-            if (sf.getName().equals("Types de Moment")) {
+            if (sf.getName().equals(Configuration.langBundle.getString("folder_moment_type"))) {
                 return sf;
+            } else {
+                if (sf.children.size() == 0) {
+                    schemaTreeRoot.removeChild(sf);
+                }
             }
         }
-        SchemaFolder momentTypesFolder = new SchemaFolder("Types de Moment");
+        SchemaFolder momentTypesFolder = new SchemaFolder(Configuration.langBundle.getString("folder_moment_type"));
+
         instance.schemaTreeRoot.addChild(momentTypesFolder);
         return momentTypesFolder;
     }

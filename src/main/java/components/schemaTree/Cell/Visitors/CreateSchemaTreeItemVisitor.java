@@ -39,9 +39,7 @@ public class CreateSchemaTreeItemVisitor extends SchemaTreePluggableVisitor {
 
     @Override
     public void visit(SchemaMomentType element) {
-        SchemaTreeContainer item = new SchemaTreeContainer(element);
-        item.bindChildrenCollection(element.categoriesProperty());
-        result = item;
+        result = new ReactiveTreeElement<SchemaTreePluggable>(element);
     }
 
     public ReactiveTreeElement<SchemaTreePluggable> getSchemaTreeItem() {

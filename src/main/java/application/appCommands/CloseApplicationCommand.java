@@ -18,9 +18,17 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
     public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application) {
         super(application);
         this.appCommandFactory = appCommandFactory;
+        this.event = null;
+    }
+
+    public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application, WindowEvent event) {
+        super(application);
+        this.appCommandFactory = appCommandFactory;
+        this.event = event;
     }
 
     ApplicationCommandFactory appCommandFactory;
+    WindowEvent event;
 
     @Override
     public Void execute() {
@@ -61,6 +69,12 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             } else if (result.get() == buttonTypeTwo) {
                 // ... user chose "Quit without saving"
                 System.exit(0);
+            } else if (result.get() == buttonTypeCancel) {
+                // ... user chose "Cancel"
+                if (event != null) {
+                    event.consume();
+                }
+                return null;
             }
         } else {
             System.exit(0);
