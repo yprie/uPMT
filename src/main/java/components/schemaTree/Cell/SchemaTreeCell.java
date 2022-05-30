@@ -100,11 +100,6 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                if (DragStore.getDraggable().getDataFormat() == SchemaMomentType.format) {
-                    event.acceptTransferModes(TransferMode.NONE);
-                    event.consume();
-                    return;
-                }
                 if (DragStore.getDraggable().getDataFormat() == Moment.format) {
                     Moment m = DragStore.getDraggable();
 
@@ -129,7 +124,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
                 if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
                     if (sect == Section.middle) {
-                        if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
+                        if (target.canContain(source) && !target.hasChild(source) && source.canChangeParent()) {
                             selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
                             controller.setStyle("");
                             accept = true;
@@ -237,7 +232,8 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
         return (
                 db.hasContent(SchemaCategory.format) ||
                         db.hasContent(SchemaFolder.format) ||
-                        db.hasContent(SchemaProperty.format)
+                        db.hasContent(SchemaProperty.format) ||
+                        db.hasContent(SchemaMomentType.format)
         );
     }
 

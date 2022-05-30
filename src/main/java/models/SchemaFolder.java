@@ -15,21 +15,21 @@ import java.util.LinkedList;
 public class SchemaFolder extends SchemaElement implements IRemovable {
 
     public static final DataFormat format = new DataFormat("SchemaFolder");
-    private ListProperty<SchemaCategory> categories;
-    private ListProperty<SchemaFolder> folders;
-    private ListProperty<SchemaMomentType> momentTypes;
     private SimpleBooleanProperty exists;
 
     public ListProperty<SchemaTreePluggable> children;
+    private ListProperty<SchemaCategory> categories;
+    private ListProperty<SchemaFolder> folders;
+    private ListProperty<SchemaMomentType> momentTypes;
 
     public SchemaFolder(String name) {
         super(name);
-        this.categories = new SimpleListProperty<SchemaCategory>(FXCollections.observableList(new LinkedList<SchemaCategory>()));
-        this.momentTypes = new SimpleListProperty<SchemaMomentType>(FXCollections.observableList(new LinkedList<SchemaMomentType>()));
-        this.folders = new SimpleListProperty<SchemaFolder>(FXCollections.observableList(new LinkedList<SchemaFolder>()));
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.momentTypes = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.folders = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         this.exists = new SimpleBooleanProperty(true);
 
-        this.children = new SimpleListProperty<SchemaTreePluggable>(FXCollections.observableList(new LinkedList<SchemaTreePluggable>()));
+        this.children = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
     }
 
     public final ObservableList<SchemaCategory> categoriesProperty() { return categories; }
@@ -54,19 +54,12 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
 
     @Override
     public boolean hasChild(SchemaTreePluggable item) {
-        return this.children.indexOf(item) != -1;
+        return this.children.contains(item);
     }
 
     @Override
     public void addChild(SchemaTreePluggable item) {
-        if(Utils.IsSchemaTreeCategory(item))
-            addCategory((SchemaCategory) item, -1);
-        else if(Utils.IsSchemaTreeFolder(item))
-            addFolder((SchemaFolder) item, -1);
-        else if(Utils.IsSchemaTreeMomentType(item))
-            addMomentType((SchemaMomentType) item, -1);
-        else
-            throw new IllegalArgumentException("(SchemaFolder::addChild) Can't receive this kind of child ! ");
+        addChildAt(item, -1);
     }
 
     @Override
@@ -125,11 +118,9 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     @Override
     public void setExists(boolean b) {
        exists.set(b);
-       for(SchemaFolder f: folders){
-           f.setExists(b);
-       }
-       for(SchemaCategory c: categories)
-           c.setExists(b);
+       for(SchemaFolder f: folders) f.setExists(b);
+       for(SchemaCategory c: categories) c.setExists(b);
+       for(SchemaMomentType mt : momentTypes) mt.setExists(b);
     }
 
     @Override
@@ -140,7 +131,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
     private void addCategory(SchemaCategory c, int index){
         if(index == -1) {
             categories.add(c);
-            children.add(c);
+            children.add(folders.size() + categories.size()-1, c);
         }
         else {
             categories.add(index, c);
@@ -161,8 +152,6 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
             folders.add(index, f);
             children.add(index ,f);
         }
-
-
     }
     private void removeFolder(SchemaFolder f){
         folders.remove(f);
@@ -176,7 +165,7 @@ public class SchemaFolder extends SchemaElement implements IRemovable {
         }
         else {
             momentTypes.add(index, mt);
-            children.add(folders.size() + index, mt);
+            children.add(folders.size() + categories.size() +index, mt);
         }
     }
     private void removeMomentType(SchemaMomentType mt){

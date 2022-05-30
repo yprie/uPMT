@@ -1,8 +1,7 @@
 package persistency.newSaveSystem;
 
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaTreeRoot;
+import models.*;
+import org.json.JSONException;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 
 import java.util.ArrayList;
@@ -16,6 +15,8 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
 
     //Fields
     public ArrayList<SSchemaFolder> folders;
+    public ArrayList<SSchemaCategory> categories;
+    public ArrayList<SSchemaMomentType> momentTypes;
 
     public SSchemaTreeRoot(ObjectSerializer serializer) {
         super(serializer);
@@ -32,8 +33,17 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
         for(SchemaFolder f: modelReference.foldersProperty()) {
             folders.add(new SSchemaFolder(serializer, f));
         }
-    }
 
+        this.momentTypes = new ArrayList<>();
+        for (SchemaMomentType mt: modelReference.momentTypesProperty()) {
+            momentTypes.add(new SSchemaMomentType(serializer, mt));
+        }
+
+        this.categories = new ArrayList<>();
+        for (SchemaCategory c : modelReference.categoriesProperty()) {
+            categories.add(new SSchemaCategory(serializer, c));
+        }
+    }
     @Override
     protected void addStrategies() {
 
@@ -43,13 +53,32 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
     protected void read() {
         super.read();
         versionCheck(version, serializer.getInt("@version"));
-        folders = serializer.getArray(serializer.setListSuffix(SSchemaFolder.modelName), SSchemaFolder::new);
+
+        try {
+            folders = serializer.getArray(serializer.setListSuffix(SSchemaFolder.modelName), SSchemaFolder::new);
+        } catch (JSONException error) {
+            folders = new ArrayList<>();
+        }
+
+        try {
+            categories = serializer.getArray(serializer.setListSuffix(SSchemaCategory.modelName), SSchemaCategory::new);
+        } catch (JSONException error) {
+            categories = new ArrayList<>();
+        }
+
+        try {
+            momentTypes = serializer.getArray(serializer.setListSuffix(SSchemaMomentType.modelName), SSchemaMomentType::new);
+        } catch (JSONException error) {
+            momentTypes = new ArrayList<>();
+        }
     }
 
     @Override
     public void write(ObjectSerializer serializer) {
         super.write(serializer);
         serializer.writeArray(serializer.setListSuffix(SSchemaFolder.modelName), folders);
+        serializer.writeArray(serializer.setListSuffix(SSchemaCategory.modelName), categories);
+        serializer.writeArray(serializer.setListSuffix(SSchemaMomentType.modelName), momentTypes);
     }
 
     @Override
@@ -59,6 +88,14 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
 
         for(SSchemaFolder f: folders){
             root.addChild(f.convertToModel());
+        }
+
+        for(SSchemaCategory c: categories){
+            root.addChild(c.convertToModel());
+        }
+
+        for(SSchemaMomentType mt: momentTypes) {
+            root.addChild(mt.convertToModel());
         }
         return root;
     }

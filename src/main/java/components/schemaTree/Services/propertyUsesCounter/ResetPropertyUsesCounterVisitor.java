@@ -8,7 +8,7 @@ public class ResetPropertyUsesCounterVisitor extends SchemaTreePluggableVisitor 
 
     @Override
     public void visit(SchemaTreeRoot element) {
-        element.foldersProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
+        element.childrenProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
     }
 
     @Override
