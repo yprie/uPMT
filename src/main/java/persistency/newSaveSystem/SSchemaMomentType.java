@@ -41,7 +41,6 @@ public class SSchemaMomentType extends SSchemaElement<SchemaMomentType> {
 
     @Override
     protected void read() {
-        versionCheck(version, serializer.getInt("@version"));
         super.read();
         versionCheck(version, serializer.getInt("@version"));
         categories = serializer.getArray(serializer.setListSuffix(SSchemaCategory.modelName), SSchemaCategory::new);

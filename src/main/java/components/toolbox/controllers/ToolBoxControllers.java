@@ -51,7 +51,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
             mtc.getSchemaMomentType().setMomentTypeController(mtc);
             if (!instance.currentMomentTypeControllers.contains(mtc)) {
                 instance.currentMomentTypeControllers.add(mtc);
-                instance.schemaTreeRoot.addChild(mtc.getSchemaMomentType());
             }
         }
 
