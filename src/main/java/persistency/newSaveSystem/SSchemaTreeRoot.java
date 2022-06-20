@@ -29,6 +29,12 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
     public void init(SchemaTreeRoot modelReference) {
         super.init(modelReference);
 
+        // WARNING : ORDER IS REALLY IMPORTANT : categories needs to be saved before entering a folder and momentTypes after a folder
+        this.categories = new ArrayList<>();
+        for (SchemaCategory c : modelReference.categoriesProperty()) {
+            categories.add(new SSchemaCategory(serializer, c));
+        }
+
         this.folders = new ArrayList<>();
         for(SchemaFolder f: modelReference.foldersProperty()) {
             folders.add(new SSchemaFolder(serializer, f));
@@ -39,10 +45,6 @@ public class SSchemaTreeRoot extends SSchemaElement<SchemaTreeRoot> {
             momentTypes.add(new SSchemaMomentType(serializer, mt));
         }
 
-        this.categories = new ArrayList<>();
-        for (SchemaCategory c : modelReference.categoriesProperty()) {
-            categories.add(new SSchemaCategory(serializer, c));
-        }
     }
     @Override
     protected void addStrategies() {
