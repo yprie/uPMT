@@ -73,6 +73,7 @@ public class ProjectExporter {
     private static void showExportResult(boolean succeed){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(Configuration.langBundle.getString("export_to_csv"));
+        alert.getDialogPane().getStylesheets().add(alert.getClass().getResource("/css/application.css").toExternalForm());
         alert.setHeaderText(null);
         if (succeed) {
             alert.setContentText(Configuration.langBundle.getString("export_success"));

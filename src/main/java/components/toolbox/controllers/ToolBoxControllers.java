@@ -51,7 +51,6 @@ public class ToolBoxControllers extends HBox implements Initializable {
             mtc.getSchemaMomentType().setMomentTypeController(mtc);
             if (!instance.currentMomentTypeControllers.contains(mtc)) {
                 instance.currentMomentTypeControllers.add(mtc);
-                instance.schemaTreeRoot.addChild(mtc.getSchemaMomentType());
             }
         }
 
@@ -150,15 +149,16 @@ public class ToolBoxControllers extends HBox implements Initializable {
     }
 
     public void removeAMomentType(SchemaMomentType schemaMomentType) {
+        // Remove only from Toolbox. To remove from SchemaTree use removeTreeElement
         for(MomentTypeController momentTypeController : instance.project.getMomentTypeControllers()) {
             if (momentTypeController.getSchemaMomentType().getName().equals(schemaMomentType.getName())) {
                 instance.schemaTreeRoot.removeChild(momentTypeController.getSchemaMomentType());
+                instance.project.getMomentTypeControllers().remove(momentTypeController);
+
                 if(instance.currentMomentTypeControllers.contains(momentTypeController)) { //si le momentType est affiché, on le supprime de la vue
                     instance.containerMomentsTypes.getChildren().remove(instance.currentMomentTypeControllers.indexOf(momentTypeController));
                     instance.currentMomentTypeControllers.remove(momentTypeController);
                 }
-
-                instance.project.getMomentTypeControllers().remove(momentTypeController);
                 break;
             }
         }

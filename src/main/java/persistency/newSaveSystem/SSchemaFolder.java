@@ -32,14 +32,15 @@ public class SSchemaFolder extends SSchemaElement<SchemaFolder> {
     public void init(SchemaFolder modelReference) {
         super.init(modelReference);
 
-        this.folders = new ArrayList<>();
-        for(SchemaFolder f: modelReference.foldersProperty()) {
-            folders.add(new SSchemaFolder(serializer, f));
-        }
-
+        // WARNING : ORDER IS REALLY IMPORTANT : categories needs to be saved before entering a folder and momentTypes after a folder
         this.categories = new ArrayList<>();
         for(SchemaCategory c: modelReference.categoriesProperty()) {
             categories.add(new SSchemaCategory(serializer, c));
+        }
+
+        this.folders = new ArrayList<>();
+        for(SchemaFolder f: modelReference.foldersProperty()) {
+            folders.add(new SSchemaFolder(serializer, f));
         }
 
         this.momentTypes = new ArrayList<>();
