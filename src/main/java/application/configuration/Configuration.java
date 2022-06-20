@@ -83,6 +83,7 @@ public class Configuration {
             Alert alert = new Alert(
                     Alert.AlertType.ERROR,
                     "Invalid properties file. Please delete the file" + HOME_DIRECTORY + properties_file);
+            alert.getDialogPane().getStylesheets().add(alert.getClass().getResource("/css/application.css").toExternalForm());
             alert.showAndWait();
             return "";
         }
