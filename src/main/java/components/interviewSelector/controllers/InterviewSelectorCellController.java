@@ -43,6 +43,7 @@ public class InterviewSelectorCellController implements Initializable {
             alert.setTitle(Configuration.langBundle.getString("confirmation_dialog"));
             alert.setHeaderText(Configuration.langBundle.getString("delete_interview"));
             alert.setContentText(Configuration.langBundle.getString("continue_alert"));
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK){
                 commandFactory.deleteInterview(interview).execute();

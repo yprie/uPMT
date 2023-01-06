@@ -1,18 +1,18 @@
 package components.schemaTree.Controllers;
 
-import components.schemaTree.Cell.SchemaTreePluggable;
-import models.SchemaTreeRoot;
-import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
-import components.schemaTree.Cell.SchemaTreeCell;
 import application.configuration.Configuration;
+import components.schemaTree.Cell.SchemaTreeCell;
+import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.Visitors.CreateSchemaTreeItemVisitor;
 import components.schemaTree.Section;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeView;
-import utils.GlobalVariables;
 import javafx.scene.layout.Pane;
+import models.SchemaTreeRoot;
+import utils.GlobalVariables;
 
 import java.io.IOException;
 import java.net.URL;

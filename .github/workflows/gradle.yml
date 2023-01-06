@@ -13,7 +13,6 @@ on:
 
 jobs:
   create_release:
-    permissions: write-all
     name: Create release
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +41,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        java: [11]
+        java: [15]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK

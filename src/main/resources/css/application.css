@@ -1,5 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
+* {
+    -fx-font-family: serif;
+}
 /* --------------------------------------
  * --------------------------------------
  * --------------SCROLLBAR---------------
@@ -69,9 +72,6 @@
 .tree-cell:selected Text{
     -fx-fill: black ;
 }
-/*.tree-cell {
-    -fx-padding: 5px 0em 5px 0em;
-}*/
 
 .tree-view-right > .button{
 	-fx-border-width: 1;
@@ -223,7 +223,6 @@
 
 .moment-dnd-zone {
     -fx-background-radius: 50px;
-    -fx-background-color: red;
 }
 
 moment-no-left-padding {
@@ -434,4 +433,7 @@ Green: #40AC40  #19C519
     -fx-background-image: url("/images/btnZoomPlusPng.png");
 }
 
+#textInterviewTitle {
+    -fx-font-size: 22px;
+}
 

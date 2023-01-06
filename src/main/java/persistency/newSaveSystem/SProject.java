@@ -1,21 +1,24 @@
 package persistency.newSaveSystem;
 
+import components.toolbox.controllers.MomentTypeController;
 import models.Project;
 import models.Interview;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SProject extends Serializable<Project> {
 
-    public static final int version = 1;
+    public static final int version = 2;
     public static final String modelName = "project";
 
     public String name;
     public SSchemaTreeRoot schemaTreeRoot;
     public ArrayList<SInterview> interviews;
     public SInterview selectedInterview;
+    public ArrayList<SMomentTypeController> momentTypeControllers;
 
     public SProject(ObjectSerializer serializer) {
         super(serializer);
@@ -37,6 +40,11 @@ public class SProject extends Serializable<Project> {
         if(modelReference.getSelectedInterview() != null){
             this.selectedInterview = new SInterview(serializer, modelReference.getSelectedInterview());
         }
+
+        this.momentTypeControllers = new ArrayList<>();
+        for(MomentTypeController mtc : modelReference.getMomentTypeControllers()) {
+            this.momentTypeControllers.add(new SMomentTypeController(serializer, mtc));
+        }
     }
 
     @Override
@@ -51,6 +59,12 @@ public class SProject extends Serializable<Project> {
         schemaTreeRoot = serializer.getObject(SSchemaTreeRoot.modelName, SSchemaTreeRoot::new);
         interviews = serializer.getArray(serializer.setListSuffix(SInterview.modelName), SInterview::new);
         selectedInterview = serializer.getFacultativeObject("selectedInterview", SInterview::new);
+        try {
+            momentTypeControllers = serializer.getArray(serializer.setListSuffix(SMomentTypeController.modelName), SMomentTypeController::new);
+        } catch (Exception e) {
+            momentTypeControllers = new ArrayList<>();
+            serializer.writeArray(serializer.setListSuffix(SMomentTypeController.modelName), momentTypeControllers);
+        }
     }
 
     @Override
@@ -59,6 +73,7 @@ public class SProject extends Serializable<Project> {
         serializer.writeObject(SSchemaTreeRoot.modelName, schemaTreeRoot);
         serializer.writeArray(serializer.setListSuffix(SInterview.modelName), interviews);
         serializer.writeFacultativeObject("selectedInterview", selectedInterview);
+        serializer.writeArray(serializer.setListSuffix(SMomentTypeController.modelName), momentTypeControllers);
     }
 
     @Override
@@ -71,6 +86,12 @@ public class SProject extends Serializable<Project> {
 
         if(selectedInterview != null)
             p.setSelectedInterview(selectedInterview.convertToModel());
+
+        LinkedList<MomentTypeController> mtcs = new LinkedList();
+        for(SMomentTypeController smtc : momentTypeControllers) {
+            mtcs.add(smtc.createModel());
+        }
+        p.setMomentTypeControllers(mtcs);
 
         return p;
     }

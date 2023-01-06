@@ -1,5 +1,6 @@
 package models;
 
+import components.toolbox.controllers.MomentTypeController;
 import persistency.ProjectSaver;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
@@ -10,6 +11,8 @@ import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Project implements Serializable {
 
@@ -21,6 +24,8 @@ public class Project implements Serializable {
 
     private SimpleObjectProperty<Interview> selectedInterview;
 
+    private List<MomentTypeController> momentTypeControllers;
+
     public Project(String name, SchemaTreeRoot baseScheme) {
         this.name = new SimpleStringProperty(name);
         this.schemaTreeRoot = new SimpleObjectProperty<>(baseScheme);
@@ -29,6 +34,8 @@ public class Project implements Serializable {
         this.readOnlyInterviews = new ReadOnlyListWrapper<>(this.interviews);
 
         this.selectedInterview = new SimpleObjectProperty<>();
+
+        this.momentTypeControllers = new LinkedList<>();
     }
 
     public String getName() { return this.name.get(); }
@@ -61,4 +68,11 @@ public class Project implements Serializable {
         ProjectSaver.save(this, path+name);
     }
 
+    public List<MomentTypeController> getMomentTypeControllers() {
+        return momentTypeControllers;
+    }
+
+    public void setMomentTypeControllers(List<MomentTypeController> momentTypeControllers) {
+        this.momentTypeControllers = momentTypeControllers;
+    }
 }

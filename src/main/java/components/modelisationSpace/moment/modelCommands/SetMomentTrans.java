@@ -18,12 +18,14 @@ public class SetMomentTrans extends ModelUserActionCommand {
     public Object execute() {
         newstate = !oldstate;
         moment.setTransitional(newstate);
+        moment.getController().displayTransitional();
         return null;
     }
 
     @Override
     public Object undo() {
         moment.setTransitional(oldstate);
+        moment.getController().displayTransitional();
         return null;
     }
 

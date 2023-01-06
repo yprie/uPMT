@@ -14,56 +14,37 @@ import java.util.LinkedList;
 public class SchemaTreeRoot extends SchemaElement {
 
     public static final DataFormat format = new DataFormat("SchemaTreeRoot");
+
+    private ListProperty<SchemaTreePluggable> children;
+    private ListProperty<SchemaCategory> categories;
     private ListProperty<SchemaFolder> folders;
+    private ListProperty<SchemaMomentType> momentTypes;
 
     public SchemaTreeRoot(String name) {
         super(name);
-        this.folders = new SimpleListProperty<SchemaFolder>(FXCollections.observableList(new LinkedList<SchemaFolder>()));
+        this.categories = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.momentTypes = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.folders = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        this.children = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
         GlobalVariables.getGlobalVariables().setSchemaTreeRoot(this);
     }
 
+    public final ObservableList<SchemaCategory> categoriesProperty() { return categories; }
     public final ObservableList<SchemaFolder> foldersProperty() { return folders; }
+    public final ObservableList<SchemaMomentType> momentTypesProperty() { return momentTypes; }
+    public final ObservableList<SchemaTreePluggable> childrenProperty() { return children; }
+
+    @Override
+    public String toString() { return getName(); }
 
     @Override
     public boolean canContain(SchemaTreePluggable item) {
-        return Utils.IsSchemaTreeFolder(item);
+        return (Utils.IsSchemaTreeFolder(item) || Utils.IsSchemaTreeCategory(item) || Utils.IsSchemaTreeMomentType(item));
     }
 
     @Override
     public boolean hasChild(SchemaTreePluggable item) {
-        return this.folders.indexOf(item) != -1;
-    }
-
-    @Override
-    public void addChild(SchemaTreePluggable item) {
-        if(Utils.IsSchemaTreeFolder(item))
-            addFolder((SchemaFolder)item, -1);
-        else
-            throw new IllegalArgumentException("(SchemaTreeRoot::addChild) Can't receive this kind of child !");
-    }
-
-    @Override
-    public void addChildAt(SchemaTreePluggable item, int index) {
-        if(Utils.IsSchemaTreeFolder(item))
-            addFolder((SchemaFolder)item, index);
-        else
-            throw new IllegalArgumentException("(SchemaTreeRoot::addChildAt) Can't receive this kind of child !");
-    }
-
-    @Override
-    public void removeChild(SchemaTreePluggable item) {
-        if(Utils.IsSchemaTreeFolder(item))
-            removeFolder((SchemaFolder)item);
-        else
-            throw new IllegalArgumentException("(SchemaTreeRoot::removeChild) Can't remove this kind of child !");
-    }
-
-    @Override
-    public int getChildIndex(SchemaTreePluggable item) {
-        int r = this.folders.get().indexOf(item);
-        if(r == -1)
-            throw new IllegalArgumentException("(SchemaTreeRoot) The provided item is not a child of this element!");
-        return r;
+        return this.children.contains(item);
     }
 
     @Override
@@ -91,16 +72,94 @@ public class SchemaTreeRoot extends SchemaElement {
         return false;
     }
 
-    public void addFolder(SchemaFolder f, int index){
-        if(index == -1)
-            folders.add(f);
-        else
-            folders.add(index, f);
-    }
-    public void removeFolder(SchemaFolder f){
-        folders.remove(f);
+    @Override
+    public void addChild(SchemaTreePluggable item) {
+        addChildAt(item, -1);
     }
 
     @Override
-    public String toString() { return getName(); }
+    public void addChildAt(SchemaTreePluggable item, int index) {
+        if(Utils.IsSchemaTreeCategory(item))
+            addCategory((SchemaCategory) item, index);
+        else if(Utils.IsSchemaTreeFolder(item))
+            addFolder((SchemaFolder) item, index);
+        else if(Utils.IsSchemaTreeMomentType(item))
+            addMomentType((SchemaMomentType) item, index);
+        else
+            throw new IllegalArgumentException("(SchemaTreeRoot::addChildAt) Can't receive this kind of child !");
+
+    }
+
+    @Override
+    public void removeChild(SchemaTreePluggable item) {
+        if(Utils.IsSchemaTreeCategory(item))
+            removeCategory((SchemaCategory) item);
+        else if(Utils.IsSchemaTreeFolder(item))
+            removeFolder((SchemaFolder) item);
+        else if(Utils.IsSchemaTreeMomentType(item))
+            removeMomentType((SchemaMomentType) item);
+        else
+            throw new IllegalArgumentException("(SchemaTreeRoot::removeChild) Can't remove this kind of child !");
+    }
+
+    @Override
+    public int getChildIndex(SchemaTreePluggable item) {
+        int r = this.folders.indexOf(item);
+        if(r == -1) {
+            r = this.categories.indexOf(item);
+        }
+        if(r == -1) {
+            r = this.momentTypes.indexOf(item);
+        }
+        if(r == -1)
+            throw new IllegalArgumentException("(SchemaTreeRoot) The provided item is not a child of this element!");
+        return r;
+    }
+
+    private void addCategory(SchemaCategory c, int index){
+        if(index == -1) {
+            categories.add(c);
+            children.add(folders.size() + categories.size()-1, c);
+        }
+        else {
+            categories.add(index, c);
+            children.add(folders.size() + index, c);
+        }
+    }
+    private void removeCategory(SchemaCategory c){
+        categories.remove(c);
+        children.remove(c);
+    }
+
+    private void addFolder(SchemaFolder f, int index){
+        if(index == -1) {
+            folders.add(f);
+            children.add(folders.size()-1 ,f);
+        }
+        else {
+            folders.add(index, f);
+            children.add(index ,f);
+        }
+    }
+    private void removeFolder(SchemaFolder f){
+        folders.remove(f);
+        children.remove(f);
+    }
+
+    private void addMomentType(SchemaMomentType mt, int index) {
+        if (index == -1) {
+            momentTypes.add(mt);
+            children.add(mt);
+        }
+        else {
+            momentTypes.add(index, mt);
+            children.add(folders.size() + categories.size() +index, mt);
+        }
+    }
+    private void removeMomentType(SchemaMomentType mt){
+        momentTypes.remove(mt);
+        children.remove(mt);
+    }
+
+
 }

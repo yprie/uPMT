@@ -9,11 +9,13 @@ import components.schemaTree.Cell.Visitors.CreateAddChildStrategyVisitor;
 import components.schemaTree.Cell.Visitors.CreateRemovingStrategyVisitor;
 import components.schemaTree.Cell.appCommands.strategies.UnremovableRemovingStrategy;
 import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
+import components.toolbox.appCommand.RenameMomentTypesCommand;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import models.SchemaCategory;
+import models.SchemaMomentType;
 import utils.removable.IRemovable;
 
 public class SchemaTreeCommandFactory {
@@ -43,6 +45,7 @@ public class SchemaTreeCommandFactory {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Configuration.langBundle.getString("schemaTree_deletion_prevent"), ButtonType.YES, ButtonType.NO);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
                 return v.getResultStrategy();
@@ -64,11 +67,16 @@ public class SchemaTreeCommandFactory {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, Configuration.langBundle.getString("schemaTree_renaming_prevent"), ButtonType.YES, ButtonType.NO);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
                 HistoryManager.addCommand(cmd, !element.mustBeRenamed());
             }
         }
+    }
+
+    public RenameMomentTypesCommand renameTreeSchemaMomentTypes(SchemaMomentType element, String newName) {
+        return new RenameMomentTypesCommand(element, newName);
     }
 
     public ChangeColorCategoryCommand colorCommand(SchemaCategory c, String newColor) {

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="270.0" maxWidth="550.0" minHeight="270.0" minWidth="550.0" prefHeight="270.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="270.0" maxWidth="550.0" minHeight="270.0" minWidth="550.0" prefHeight="270.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <center>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
@@ -16,9 +16,9 @@
             <ListView fx:id="tousLesProjets" prefHeight="172.0" prefWidth="249.0" />
             <HBox alignment="TOP_CENTER" prefHeight="37.0" prefWidth="249.0" spacing="10.0">
                <children>
-                  <Button fx:id="btn_ouvrirProjetSelected" mnemonicParsing="false" onAction="#OpenProjectDialog" styleClass="button-gray" stylesheets="/css/application.css" text="%open_project_selected" />
-                  <Button fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProject" styleClass="button-gray" stylesheets="/css/application.css" text="%open_project_as" />
-                  <Button fx:id="btn_nouveauProjet" mnemonicParsing="false" onAction="#NewProjectDialog" styleClass="button-gray" stylesheets="/css/application.css" text="%new_project" wrapText="true" />
+                  <Button fx:id="btn_ouvrirProjetSelected" mnemonicParsing="false" onAction="#OpenProjectDialog" styleClass="button-gray" text="%open_project_selected" />
+                  <Button fx:id="openProjectAs" mnemonicParsing="false" onAction="#openProject" styleClass="button-gray" text="%open_project_as" />
+                  <Button fx:id="btn_nouveauProjet" mnemonicParsing="false" onAction="#NewProjectDialog" styleClass="button-gray" text="%new_project" wrapText="true" />
                </children>
             </HBox>
          </children>

@@ -1,9 +1,7 @@
 package components.schemaTree.Cell.Visitors;
 
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
-import models.SchemaTreeRoot;
+import models.SchemaMomentType;
+import models.*;
 
 public class CanTreeElementBeSafelyRenamedVisitor extends SchemaTreePluggableVisitor {
 
@@ -25,6 +23,11 @@ public class CanTreeElementBeSafelyRenamedVisitor extends SchemaTreePluggableVis
     public void visit(SchemaProperty element) {
         if(element.numberOfUsesInModelisationProperty().get() > 0)
             result = false;
+    }
+
+    @Override
+    public void visit(SchemaMomentType element) {
+        result = true;
     }
 
     public boolean elementCanBeSafelyRenamed() { return result; }
