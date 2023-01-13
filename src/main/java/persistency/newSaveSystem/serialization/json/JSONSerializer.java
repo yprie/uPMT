@@ -149,12 +149,6 @@ public class JSONSerializer implements ObjectSerializer {
             writeObject(name, object);
     }
 
-    public boolean getExists(String name) {
-        if (jsonObject.has(name)) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public <T extends Serializable> ArrayList<T> getArray(String name, Function<ObjectSerializer, T> serializableCreator) {

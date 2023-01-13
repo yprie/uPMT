@@ -13,6 +13,7 @@ import javafx.scene.input.DataFormat;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SchemaCategory extends SchemaElement implements IRemovable {
 

@@ -23,7 +23,7 @@ package components.mainView.controller;
 import application.configuration.AppSettings;
 import components.schemaTree.Services.categoryUsesCounter.SchemaCategoryUsesCounter;
 import components.schemaTree.Services.propertyUsesCounter.SchemaPropertyUsesCounter;
-import components.toolbox.controllers.ToolBoxControllers;
+import components.templateSpace.controllers.TemplateSpaceController;
 import javafx.scene.layout.HBox;
 import models.Project;
 import models.Interview;
@@ -40,7 +40,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import models.SchemaFolder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,7 +53,7 @@ public class MainViewController implements Initializable {
 	private @FXML SplitPane leftPane;
 	private @FXML HBox paneOfTextArea;
 	private @FXML ModelisationSpaceController modelisationSpaceController;
-	private @FXML ToolBoxControllers toolBox;
+	private @FXML TemplateSpaceController templateSpaceController;
 	private @FXML HBox modelMomentBox;
 	private @FXML Button btnZoomMinus;
 	private @FXML Button btnZoomPlus;
@@ -65,7 +64,6 @@ public class MainViewController implements Initializable {
 
 	private InterviewSelectorController interviewSelector;
 	private InterviewPanelController interviewPanel;
-	private ToolBoxControllers toolBoxControllers;
 
 	private ChangeListener<Interview> onSelectedInterviewChanges = (observableValue, o, t1) -> {
 		if(t1 != null){
@@ -145,9 +143,6 @@ public class MainViewController implements Initializable {
 			mainSplitPane.setDividerPosition(1,0.7);
 		})));
 
-		// Initialisation de la ToolBox avec tout ce qui suit (TemplateSpaceController)
-		ToolBoxControllers toolBoxControllers = ToolBoxControllers.getToolBoxControllersInstance(project);
-		toolBox.getChildren().add(toolBoxControllers.createToolBoxControllers(toolBoxControllers));
 	}
 
 	@Override

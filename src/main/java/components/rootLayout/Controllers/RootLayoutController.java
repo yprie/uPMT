@@ -277,8 +277,10 @@ public class RootLayoutController implements Initializable {
 	}
 
 	@FXML
-	public void close() {
-		appCommandFactory.closeApplication().execute();
+	public void close(javafx.stage.WindowEvent event) {
+		System.out.println(event);
+
+		appCommandFactory.closeApplication(event).execute();
 	} 
 
 	@FXML

@@ -5,7 +5,6 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import javafx.scene.control.MenuItem;
-import components.toolbox.controllers.ToolBoxControllers;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyFolder;
 
@@ -49,11 +48,6 @@ public class SchemaTreeFolderController extends SchemaTreeCellController {
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         deleteButton.setOnAction(actionEvent -> {
             cmdFactory.removeTreeElement(folder).execute();
-            if (folder.momentTypesProperty() != null) {
-                folder.momentTypesProperty().forEach(momentType -> {
-                    ToolBoxControllers.getToolBoxControllersInstance().removeMomentTypeCommand(momentType);
-                });
-            }
         });
         optionsMenu.getItems().add(deleteButton);
     }

@@ -2,7 +2,6 @@ package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import models.SchemaCategory;
 import models.SchemaFolder;
 import models.SchemaTreeRoot;
 import javafx.scene.control.MenuItem;
@@ -43,16 +42,8 @@ public class SchemaTreeRootController extends SchemaTreeCellController {
             SchemaFolder f = new SchemaFolder(Configuration.langBundle.getString("folder"));
             cmdFactory.addSchemaTreeChild(f).execute();
         });
+
         optionsMenu.getItems().add(addFolderButton);
-
-        MenuItem addCategoryButton = new MenuItem(Configuration.langBundle.getString("add_category"));
-        addCategoryButton.setOnAction(actionEvent -> {
-            SchemaCategory newModel = new SchemaCategory("category");
-            cmdFactory.addSchemaTreeChild(newModel).execute();
-        });
-        optionsMenu.getItems().add(addCategoryButton);
-
-
         optionsMenu.setVisible(false);
     }
 }

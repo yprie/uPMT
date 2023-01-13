@@ -14,25 +14,21 @@ import java.util.UUID;
 
 public class CloseApplicationCommand extends ApplicationCommand<Void> {
 
-
-    public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application) {
-        super(application);
-        this.appCommandFactory = appCommandFactory;
-        this.event = null;
-    }
-
     public CloseApplicationCommand(ApplicationCommandFactory appCommandFactory, UPMTApp application, WindowEvent event) {
+
         super(application);
-        this.appCommandFactory = appCommandFactory;
         this.event = event;
+        this.appCommandFactory = appCommandFactory;
     }
 
-    ApplicationCommandFactory appCommandFactory;
     WindowEvent event;
+    ApplicationCommandFactory appCommandFactory;
 
     @Override
     public Void execute() {
 
+        System.out.println("Test checking project unsaved");
+        //TODO check for unsaved work
         boolean workUnsaved = false;
         String currentTitle = upmtApp.getPrimaryStage().getTitle();
         UUID currentCommandId = HistoryManager.getCurrentCommandId();
@@ -53,7 +49,6 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             alert.setHeaderText("");
             alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
             alert.setContentText(Configuration.langBundle.getString("alert_unsaved_project"));
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
             ButtonType buttonTypeOne = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeOne"));
             ButtonType buttonTypeTwo = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeTwo"));
@@ -69,17 +64,11 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             } else if (result.get() == buttonTypeTwo) {
                 // ... user chose "Quit without saving"
                 System.exit(0);
-            } else if (result.get() == buttonTypeCancel) {
-                // ... user chose "Cancel"
-                if (event != null) {
-                    event.consume();
-                }
-                return null;
+            } else {
+                // ... user chose CANCEL or closed the dialog
+                event.consume();
             }
-        } else {
-            System.exit(0);
         }
-
         return null;
     }
 }

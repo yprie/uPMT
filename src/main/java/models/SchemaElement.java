@@ -6,10 +6,10 @@ import javafx.beans.property.*;
 public abstract class SchemaElement implements SchemaTreePluggable {
 
     private boolean mustBeRenamed;
-    protected SimpleBooleanProperty expanded;
-    protected StringProperty name;
+    private SimpleBooleanProperty expanded;
+    private StringProperty name;
 
-    public SchemaElement(String name) {
+    SchemaElement(String name) {
         this.expanded = new SimpleBooleanProperty(true);
         this.name = new SimpleStringProperty(name);
         this.mustBeRenamed = false;

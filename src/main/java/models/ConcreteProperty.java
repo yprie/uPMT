@@ -29,10 +29,9 @@ public class ConcreteProperty {
 
     public String getValue() { return value.get(); }
     public ObservableStringValue valueProperty() { return value; }
-    public void setValue(String s) { value.set(s); }
+    public void setValue(String s) { value.set(s); System.out.println("V" + value.get());}
 
     public Justification getJustification() { return justification; }
 
     public boolean isSchemaProperty(SchemaProperty sp) { return sp == property; }
-
 }

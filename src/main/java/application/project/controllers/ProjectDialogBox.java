@@ -9,7 +9,6 @@ public class ProjectDialogBox {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(Configuration.langBundle.getString("error"));
         alert.setHeaderText(Configuration.langBundle.getString("project_creating_error_occured"));
-        alert.getDialogPane().getStylesheets().add(alert.getClass().getResource("/css/application.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -18,7 +17,6 @@ public class ProjectDialogBox {
         alert.setTitle(Configuration.langBundle.getString("error"));
         alert.setHeaderText(Configuration.langBundle.getString("project_loading_error_occured"));
         alert.setContentText(Configuration.langBundle.getString("project_loading_error_reason"));
-        alert.getDialogPane().getStylesheets().add(alert.getClass().getResource("/css/application.css").toExternalForm());
         alert.showAndWait();
     }
 
@@ -26,7 +24,6 @@ public class ProjectDialogBox {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(Configuration.langBundle.getString("error"));
         alert.setHeaderText(Configuration.langBundle.getString("project_saving_error_occured"));
-        alert.getDialogPane().getStylesheets().add(alert.getClass().getResource("/css/application.css").toExternalForm());
         alert.showAndWait();
     }
 }

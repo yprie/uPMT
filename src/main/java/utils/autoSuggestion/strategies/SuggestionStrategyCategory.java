@@ -16,11 +16,6 @@ public class SuggestionStrategyCategory extends SuggestionStrategy<SchemaCategor
         for(SchemaFolder folder: GlobalVariables.getSchemaTreeRoot().foldersProperty()) {
             iterateOverFolder(folder, result);
         }
-
-        // Loop over the categories
-        for(SchemaCategory category: GlobalVariables.getSchemaTreeRoot().categoriesProperty()) {
-            result.put(category.getName(), category);
-        }
         return result;
     }
 

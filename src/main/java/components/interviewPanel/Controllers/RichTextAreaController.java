@@ -132,8 +132,7 @@ public class RichTextAreaController {
         popupMsg.setStyle(
                 "-fx-background-color: black;" +
                         "-fx-text-fill: white;" +
-                        "-fx-padding: 5;" +
-                        "-fx-font-family: serif;");
+                        "-fx-padding: 5;");
         popup.getContent().add(popupMsg);
 
         area.setMouseOverTextDelay(Duration.ofMillis(500));

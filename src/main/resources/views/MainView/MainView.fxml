@@ -4,27 +4,20 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import components.modelisationSpace.controllers.ModelisationSpaceController?>
 <?import javafx.scene.layout.VBox?>
-<?import components.toolbox.controllers.ToolBoxControllers?>
+<?import components.templateSpace.controllers.TemplateSpaceController?>
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
-
-
-<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
 <center>
    <SplitPane fx:id="mainSplitPane" dividerPositions="0.3789">
       <SplitPane fx:id="leftPane" maxWidth="400.0" minWidth="250.0" orientation="VERTICAL" prefWidth="300.0">
       </SplitPane>
 
       <VBox fx:id="boxModelisationSpace" minWidth="0" maxWidth="6000">
-          <!-- Tool box,
-          qui est initialisé dans : src > main > java > components > toolbox > initializable > ToolBoxControllers
-          la vue est dans : src > main > ressources > views > ToolBox
-          -->
-          <ToolBoxControllers fx:id="toolBox"/>
-
-          <!-- Représentation générale -->
-          <ModelisationSpaceController fx:id="modelisationSpaceController" VBox.vgrow="ALWAYS"/>
+            <TemplateSpaceController fx:id="templateSpaceController"/>
+            <ModelisationSpaceController fx:id="modelisationSpaceController" VBox.vgrow="ALWAYS"/>
       </VBox>
 
       <!-- Interview are -->
@@ -34,11 +27,11 @@
 </center>
     <bottom>
         <HBox fx:id="HBoxBtn" alignment="CENTER_RIGHT" prefHeight="30" spacing="4" >
-            <Button fx:id="btnZoomMinus" maxWidth="25" minWidth="25"/>
-            <Button fx:id="btnZoomPlus" maxWidth="25" minWidth="25"/>
-            <Button fx:id="btnModelisationFull" maxWidth="35" minWidth="35"/>
-            <Button fx:id="btnScreenShared" maxWidth="35" minWidth="35"/>
-            <Button fx:id="btnTextAreaFull" maxWidth="35" minWidth="35"/>
+            <Button fx:id="btnZoomMinus" maxWidth="25" minWidth="25" stylesheets="/css/application.css"/>
+            <Button fx:id="btnZoomPlus" maxWidth="25" minWidth="25" stylesheets="/css/application.css"/>
+            <Button fx:id="btnModelisationFull" maxWidth="35" minWidth="35" stylesheets="/css/application.css"/>
+            <Button fx:id="btnScreenShared" maxWidth="35" minWidth="35" stylesheets="/css/application.css"/>
+            <Button fx:id="btnTextAreaFull" maxWidth="35" minWidth="35" stylesheets="/css/application.css" />
         </HBox>
     </bottom>
 </BorderPane>

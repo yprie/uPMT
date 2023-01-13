@@ -5,9 +5,10 @@ import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Cell.modelCommands.MoveSchemaTreePluggable;
 import components.schemaTree.Cell.Controllers.SchemaTreeCellController;
 import components.schemaTree.Section;
-import components.toolbox.controllers.ToolBoxControllers;
 import javafx.scene.control.TreeItem;
-import models.*;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
 import utils.reactiveTree.LeafToRootIterator;
 import components.schemaTree.Cell.Visitors.CreateControllerVisitor;
 import javafx.event.EventHandler;
@@ -100,22 +101,10 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
-                    Moment m = DragStore.getDraggable();
-
-                    if (ToolBoxControllers.getToolBoxControllersInstance().canBeDragged(m)) {
-                        event.acceptTransferModes(TransferMode.MOVE);
-                    } else {
-                        event.acceptTransferModes(TransferMode.NONE);
-                    }
-                    event.consume();
-                    return;
-
-                }
-
                 boolean accept = false;
+                // TODO: get size of the target
                 Section sect = controller.mouseIsDraggingOn(event.getY());
-                SchemaTreePluggable source = DragStore.getDraggable();
+                SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
                 SchemaTreePluggable target = selfCell.getItem();
 
                 SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
@@ -124,7 +113,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
                 if (!isAncestor(source, selfCell) && source != target && !isDirectParent(source, selfCell)) {
                     if (sect == Section.middle) {
-                        if (target.canContain(source) && !target.hasChild(source) && source.canChangeParent()) {
+                        if (target.canContain(source) && !target.hasChild(source)  && source.canChangeParent()) {
                             selfCell.setStyle("-fx-background-color: #999;-fx-font-weight: bold;");
                             controller.setStyle("");
                             accept = true;
@@ -157,60 +146,56 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
 
         selfCell.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                if (DragStore.getDraggable().getDataFormat() == Moment.format) {
-                    Moment m = DragStore.getDraggable();
-                    ToolBoxControllers.getToolBoxControllersInstance().addMomentTypeCommand(m);
-                } else {
-                    //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
-                    if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
 
-                        SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
-                        DragStore.clearStore();
-                        SchemaTreePluggable target = selfCell.getItem();
+                //Checking if we are in the case of an internal drag and drop (between TreeElementModels)
+                if(SchemaTreeCell.checkInternalDrop(event.getDragboard())) {
 
-                        Section sect = controller.mouseIsDraggingOn(event.getY());
+                    SchemaTreePluggable source = DragStore.<SchemaTreePluggable>getDraggable();
+                    DragStore.clearStore();
+                    SchemaTreePluggable target = selfCell.getItem();
 
-                        SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
-                                .getParent().getValue();
-                        SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
+                    Section sect = controller.mouseIsDraggingOn(event.getY());
 
-                        SchemaTreePluggable newParent = null;
+                    SchemaTreePluggable sourceParent = ((SchemaTreeCell)(event.getGestureSource())).getTreeItem()
+                            .getParent().getValue();
+                    SchemaTreePluggable parentTarget = selfCell.getTreeItem().getParent().getValue();
 
-                        int newIndex = -1;
+                    SchemaTreePluggable newParent = null;
 
-                        if (sect != Section.middle) {
-                            newParent = parentTarget;
-                            int oldIndex = sourceParent.getChildIndex(source);
-                            newIndex = parentTarget.getChildIndex(target);
+                    int newIndex = -1;
 
-                            if (sourceParent == parentTarget) {
-                                if (sect == Section.top && oldIndex < newIndex) {
-                                    newIndex--;
-                                }
-                                else if (sect == Section.bottom && oldIndex > newIndex) {
-                                    newIndex++;
-                                }
+                    if (sect != Section.middle) {
+                        newParent = parentTarget;
+                        int oldIndex = sourceParent.getChildIndex(source);
+                        newIndex = parentTarget.getChildIndex(target);
+
+                        if (sourceParent == parentTarget) {
+                            if (sect == Section.top && oldIndex < newIndex) {
+                                newIndex--;
                             }
-                            else {
-                                if (sect == Section.bottom) {
-                                    newIndex++;
-                                }
+                            else if (sect == Section.bottom && oldIndex > newIndex) {
+                                newIndex++;
                             }
-                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
-                                    .getSelectedItem()); // TODO: fix
                         }
                         else {
-                            // sect == middle so change parent
-                            newParent = target;
-                            selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
+                            if (sect == Section.bottom) {
+                                newIndex++;
+                            }
                         }
-                        HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
-                                true);
-
+                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeView().getSelectionModel()
+                                .getSelectedItem()); // TODO: fix
                     }
-                    event.setDropCompleted(false);
-                    event.consume();
+                    else {
+                        // sect == middle so change parent
+                        newParent = target;
+                        selfCell.getTreeView().getSelectionModel().select(selfCell.getTreeItem());
+                    }
+                    HistoryManager.addCommand(new MoveSchemaTreePluggable(sourceParent, newParent, source, newIndex),
+                            true);
+
                 }
+                event.setDropCompleted(false);
+                event.consume();
             }
         });
 
@@ -232,8 +217,7 @@ public class SchemaTreeCell extends TreeCell<SchemaTreePluggable> {
         return (
                 db.hasContent(SchemaCategory.format) ||
                         db.hasContent(SchemaFolder.format) ||
-                        db.hasContent(SchemaProperty.format) ||
-                        db.hasContent(SchemaMomentType.format)
+                        db.hasContent(SchemaProperty.format)
         );
     }
 

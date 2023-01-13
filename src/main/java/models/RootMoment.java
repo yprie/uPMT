@@ -17,18 +17,14 @@ public class RootMoment extends Emphasable {
 
     public void addMoment(int index, Moment m) {
         submoments.add(index, m);
-        m.setParent(this);
     }
 
     public void addMoment(Moment m) {
         submoments.add(m);
-        m.setParent(this);
-
     }
 
     public void removeMoment(Moment m) {
         submoments.remove(m);
-        m.setParent(null);
     }
 
     public ObservableList<Moment> momentsProperty() { return submoments; }
@@ -39,10 +35,6 @@ public class RootMoment extends Emphasable {
                 return i;
         }
         return -1;
-    }
-
-    public int numberOfSubMoments() {
-        return submoments.size();
     }
 
 }

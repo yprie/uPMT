@@ -1,7 +1,9 @@
 package components.schemaTree.Cell.Visitors;
 
-import models.SchemaMomentType;
-import models.*;
+import models.SchemaCategory;
+import models.SchemaFolder;
+import models.SchemaProperty;
+import models.SchemaTreeRoot;
 
 public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVisitor {
 
@@ -28,11 +30,6 @@ public class CanTreeElementBeSafelyDeletedVisitor extends SchemaTreePluggableVis
     public void visit(SchemaProperty element) {
         if(element.numberOfUsesInModelisationProperty().get() > 0)
             result = false;
-    }
-
-    @Override
-    public void visit(SchemaMomentType element) {
-        result = true;
     }
 
     public boolean elementCanBeSafelyDeleted() { return result; }
