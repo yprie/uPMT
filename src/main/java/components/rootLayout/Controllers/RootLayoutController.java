@@ -306,12 +306,14 @@ public class RootLayoutController implements Initializable {
 		final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombSAVE = new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN);
 		final KeyCodeCombination keyCombNEW = new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN);
-		final KeyCodeCombination keyCombUNDO;
+		final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
 		InputContext context = InputContext.getInstance();
 		String loc = context.getLocale().toString();
-		System.out.println(loc);  
-		// javafx keyboard layout bug management
+		System.out.println(loc);
 
+		// javafx keyboard layout bug management
+		//update 2022-17-12 : this block shouldn't be necessary anymore
+/*
 		if (OS.current == OS.mac) {
 			System.out.println("keyboard mac os");
 			switch (loc) {
@@ -344,7 +346,7 @@ public class RootLayoutController implements Initializable {
 		else {
 			keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCodeCombination.SHORTCUT_DOWN);
 		}
-
+*/
 		undo.setAccelerator(keyCombUNDO);
 		redo.setAccelerator(keyCombREDO);
 		saveProject.setAccelerator(keyCombSAVE);
