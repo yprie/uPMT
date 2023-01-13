@@ -44,7 +44,7 @@ public class MergeMomentCommand implements Executable<Void> {
             message.append(' ').append(Configuration.langBundle.getString("merge_be_replaced")).append(' ');
             message.append('"').append(sourceProperty.getValue()).append("\"\n");
         });
-        if (message.isEmpty()) {
+        if (message.toString().isEmpty()) {
             message.append('\t').append(Configuration.langBundle.getString("merge_empty_category_replacement")).append('\n');
         }
         return message;
