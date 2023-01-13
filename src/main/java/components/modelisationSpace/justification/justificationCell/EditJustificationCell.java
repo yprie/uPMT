@@ -25,8 +25,10 @@ public class EditJustificationCell implements Initializable {
     private Descripteme descripteme;
     private Descripteme descriptemeCopy;
 
-    private @FXML TextArea textArea;
-    private @FXML Button frontShiftLeft, frontShiftRight, endShiftLeft, endShiftRight, cancelButton, confirmButton;
+    private @FXML
+    TextArea textArea;
+    private @FXML
+    Button frontShiftLeft, frontShiftRight, endShiftLeft, endShiftRight, frontShiftLeftBy5, frontShiftRightBy5, endShiftLeftBy5, endShiftRightBy5, cancelButton, confirmButton;
 
 
     public EditJustificationCell(Stage stage, Descripteme descripteme) {
@@ -40,23 +42,39 @@ public class EditJustificationCell implements Initializable {
         textArea.textProperty().bind(descriptemeCopy.getSelectionProperty());
 
         frontShiftLeft.setOnAction(actionEvent -> {
-            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()-1, descriptemeCopy.getEndIndex());
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex() - 1, descriptemeCopy.getEndIndex());
             onDescriptemeUpdate();
         });
         endShiftLeft.setOnAction(actionEvent -> {
-            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()-1);
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex() - 1);
+            onDescriptemeUpdate();
+        });
+        frontShiftLeftBy5.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex() - 5, descriptemeCopy.getEndIndex());
+            onDescriptemeUpdate();
+        });
+        endShiftLeftBy5.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex() - 5);
             onDescriptemeUpdate();
         });
 
         frontShiftRight.setOnAction(actionEvent -> {
-            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex()+1, descriptemeCopy.getEndIndex());
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex() + 1, descriptemeCopy.getEndIndex());
             onDescriptemeUpdate();
         });
         endShiftRight.setOnAction(actionEvent -> {
-            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex()+1);
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex() + 1);
             onDescriptemeUpdate();
         });
 
+        frontShiftRightBy5.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex() + 5, descriptemeCopy.getEndIndex());
+            onDescriptemeUpdate();
+        });
+        endShiftRightBy5.setOnAction(actionEvent -> {
+            descriptemeCopy.modifyIndex(descriptemeCopy.getStartIndex(), descriptemeCopy.getEndIndex() + 5);
+            onDescriptemeUpdate();
+        });
 
 
         cancelButton.setOnAction(actionEvent -> {
@@ -97,14 +115,28 @@ public class EditJustificationCell implements Initializable {
         endShiftLeft.setDisable(false);
         endShiftRight.setDisable(false);
 
-        if(descriptemeCopy.getStartIndex() == 0)
+        frontShiftLeftBy5.setDisable(false);
+        frontShiftRightBy5.setDisable(false);
+        endShiftLeftBy5.setDisable(false);
+        endShiftRightBy5.setDisable(false);
+
+        if (descriptemeCopy.getStartIndex() == 0)
             frontShiftLeft.setDisable(true);
-        else if(descriptemeCopy.getFragmentText().length() == 1)
+        else if (descriptemeCopy.getFragmentText().length() == 1)
             frontShiftRight.setDisable(true);
-        if(descriptemeCopy.getEndIndex() == descriptemeCopy.getInterviewText().getText().length())
+        if (descriptemeCopy.getEndIndex() == descriptemeCopy.getInterviewText().getText().length())
             endShiftRight.setDisable(true);
-        else if(descriptemeCopy.getFragmentText().length() == 1)
+        else if (descriptemeCopy.getFragmentText().length() == 1)
             endShiftLeft.setDisable(true);
+
+        if (descriptemeCopy.getStartIndex() <= 5)
+            frontShiftLeftBy5.setDisable(true);
+        else if (descriptemeCopy.getFragmentText().length() <= 5)
+            frontShiftRightBy5.setDisable(true);
+        if ((descriptemeCopy.getInterviewText().getText().length() - descriptemeCopy.getEndIndex()) <= 5)
+            endShiftRightBy5.setDisable(true);
+        else if (descriptemeCopy.getFragmentText().length() <= 5)
+            endShiftLeftBy5.setDisable(true);
 
     }
 

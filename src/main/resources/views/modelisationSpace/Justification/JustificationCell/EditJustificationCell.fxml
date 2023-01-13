@@ -22,10 +22,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1">
+            <HBox alignment="CENTER_LEFT" spacing="1.0" GridPane.columnIndex="1">
                <children>
+                   <Button fx:id="frontShiftLeftBy5" mnemonicParsing="false" text="˂˂" />
                    <Button fx:id="frontShiftLeft" mnemonicParsing="false" text="&lt;" />
                    <Button fx:id="frontShiftRight" mnemonicParsing="false" text="&gt;" />
+                   <Button fx:id="frontShiftRightBy5" mnemonicParsing="false" text="˃˃" />
 <!--                   <RadioButton fx:id="beginningButton" mnemonicParsing="false" selected="true" text="%at_the_beginning">-->
 <!--                     <toggleGroup>-->
 <!--                        <ToggleGroup fx:id="position" />-->
@@ -43,10 +45,12 @@
                      <Insets left="10.0" right="10.0" />
                  </GridPane.margin>
              </Label>
-            <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="3">
+            <HBox alignment="CENTER_LEFT" spacing="1.0" GridPane.columnIndex="3">
                <children>
-                  <Button fx:id="endShiftLeft" mnemonicParsing="false" text="&lt;" />
-                  <Button fx:id="endShiftRight" mnemonicParsing="false" text="&gt;" />
+                   <Button fx:id="endShiftLeftBy5" mnemonicParsing="false" text="&lt;&lt;" />
+                   <Button fx:id="endShiftLeft" mnemonicParsing="false" text="&lt;" />
+                   <Button fx:id="endShiftRight" mnemonicParsing="false" text="&gt;" />
+                   <Button fx:id="endShiftRightBy5" mnemonicParsing="false" text="&gt;&gt;" />
                </children>
             </HBox>
          </children>
