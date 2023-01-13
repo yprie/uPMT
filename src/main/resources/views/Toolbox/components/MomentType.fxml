@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane fx:id="momentTypeBorderPane" stylesheets="/css/toolbox.css" maxHeight="-Infinity" maxWidth="150.0" minHeight="-Infinity" minWidth="120.0" prefHeight="50.0" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <Label fx:id="momentTypeLabel" text="label" stylesheets="/css/toolbox.css" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>

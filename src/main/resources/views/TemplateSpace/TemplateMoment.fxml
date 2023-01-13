@@ -3,8 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="150.0" minHeight="-Infinity" minWidth="120.0" prefHeight="50.0" styleClass="momentCard" stylesheets="@../../css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="150.0" minHeight="-Infinity" minWidth="120.0" prefHeight="50.0" styleClass="momentCard" stylesheets="/css/application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Label fx:id="name" styleClass="moment-header" stylesheets="@../../css/application.css" text="label" BorderPane.alignment="CENTER" />
+      <Label fx:id="name" styleClass="moment-header" text="label" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

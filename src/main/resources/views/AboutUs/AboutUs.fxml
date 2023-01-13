@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane pickOnBounds="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane pickOnBounds="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <children>
         <BorderPane prefWidth="569.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <bottom>
                 <HBox alignment="CENTER" prefHeight="33.0" prefWidth="569.0" spacing="25.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button fx:id="buttonCloseHelp" mnemonicParsing="false" onAction="#closeAbout" styleClass="button-gray" stylesheets="/css/application.css" text="\%close" />
-                        <Button fx:id="buttonLink2Github" mnemonicParsing="false" onAction="#link2Github" styleClass="button-gray" stylesheets="/css/application.css" text="%link_to_github">
+                        <Button fx:id="buttonCloseHelp" mnemonicParsing="false" onAction="#closeAbout" styleClass="button-gray" text="\%close" />
+                        <Button fx:id="buttonLink2Github" mnemonicParsing="false" onAction="#link2Github" styleClass="button-gray" text="%link_to_github">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>

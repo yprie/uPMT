@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>-->
 
 
-<VBox fx:id="container" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="container" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
    <VBox fx:id="childrenBox"/>
    <!--<HBox fx:id="descriptemeDndZone" alignment="CENTER" prefHeight="34.0" prefWidth="100.0">
       <ImageView fx:id="descriptemeDndLogo" fitHeight="20.0" pickOnBounds="true" preserveRatio="true">

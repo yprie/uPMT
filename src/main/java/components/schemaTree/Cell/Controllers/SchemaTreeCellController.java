@@ -1,24 +1,27 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Section;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import models.SchemaCategory;
+import models.SchemaFolder;
 import utils.ResourceLoader;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.dragAndDrop.DragStore;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -76,6 +79,8 @@ public abstract class SchemaTreeCellController implements Initializable {
             if(element.mustBeRenamed())
                 passInRenamingMode(true);
         });
+
+
     }
 
 
