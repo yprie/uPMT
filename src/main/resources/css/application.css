@@ -1,8 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');*/
 
 * {
-    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-family:  sans-serif;/*'Roboto',*/
 }
 /* --------------------------------------
  * --------------------------------------
