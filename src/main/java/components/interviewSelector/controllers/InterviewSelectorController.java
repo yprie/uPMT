@@ -13,7 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import models.ConcreteCategory;
 import models.Interview;
+import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;

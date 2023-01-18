@@ -18,7 +18,6 @@ public class InterviewSelectorCellController implements Initializable {
     @FXML Label name;
     @FXML ImageView pictureView;
     @FXML MenuButton optionsMenu;
-
     protected Interview interview;
     private boolean shouldRemoveMenuButtonVisibility;
     private InterviewSelectorCommandFactory commandFactory;
@@ -58,6 +57,7 @@ public class InterviewSelectorCellController implements Initializable {
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
             if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
         });
+
     }
 
     public void setOnHover(boolean YoN) {

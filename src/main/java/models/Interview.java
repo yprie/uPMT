@@ -3,18 +3,20 @@ package models;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.input.DataFormat;
+import utils.dragAndDrop.IDraggable;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Interview implements Serializable {
+public class Interview implements Serializable, IDraggable {
     private SimpleStringProperty title;
     private SimpleStringProperty participantName;
     private LocalDate date;
     private SimpleStringProperty comment;
     private InterviewText interviewText;
     private RootMoment rootMoment;
-
+    public static final DataFormat format = new DataFormat("Interview");
     public Interview(String participantName, LocalDate date, InterviewText interviewText, RootMoment rootMoment) {
         this.participantName = new SimpleStringProperty(participantName);
         this.date = date;
@@ -77,6 +79,14 @@ public class Interview implements Serializable {
             return participantName;
         }
     }
+    @Override
+    public DataFormat getDataFormat() {
+        return format;
+    }
 
+    @Override
+    public boolean isDraggable() {
+        return true;
+    }
     public RootMoment getRootMoment() { return rootMoment; }
 }
