@@ -28,14 +28,7 @@ public class InterviewSelectorCell extends ListCell<Interview> {
         addEventHandler(MouseEvent.MOUSE_EXITED, mouseEvent -> {
             if (controller != null) controller.setOnHover(false);
         });
-//        this.setOnDragDetected(mouseEvent -> {
-//            Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
-//            ClipboardContent content = new ClipboardContent();
-//            content.put(this.getItem());
-//            DragStore.setDraggable(content.get());
-//            db.setContent(content);
-//            mouseEvent.consume();
-//        });
+
     }
 
     @Override
@@ -67,8 +60,10 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             });
 
             this.setOnDragOver(event -> {
+                this.setStyle("-fx-opacity: 1;");
                 if (event.getGestureSource() != this &&
                         DragStore.getDraggable().getDataFormat() == Interview.format) {
+                    this.setStyle("-fx-opacity: 0.5;");
                     event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
                 }
                 event.consume();
@@ -93,6 +88,14 @@ public class InterviewSelectorCell extends ListCell<Interview> {
                 event.consume();
             });
 
+
+            this.setOnDragExited(dragEvent -> {
+                this.setStyle("-fx-opacity: 1;");
+            });
+
+            this.setOnDragEntered(dragEvent -> {
+                this.setStyle("-fx-opacity: 1;");
+            });
 
             try {
                 this.setGraphic(loader.load());
