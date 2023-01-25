@@ -4,6 +4,8 @@ import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
@@ -17,9 +19,11 @@ import models.Interview;
 import utils.dragAndDrop.DragStore;
 
 public class InterviewSelectorCell extends ListCell<Interview> {
-
+    ObjectProperty<Interview> selectedItem = new SimpleObjectProperty<>();
     private InterviewSelectorCellController controller;
     private InterviewSelectorCommandFactory commandFactory;
+    private static int selectedInterviewIndex;
+
     public InterviewSelectorCell(InterviewSelectorCommandFactory commandFactory) {
         this.commandFactory = commandFactory;
         addEventHandler(MouseEvent.MOUSE_ENTERED, mouseEvent -> {
@@ -28,6 +32,7 @@ public class InterviewSelectorCell extends ListCell<Interview> {
         addEventHandler(MouseEvent.MOUSE_EXITED, mouseEvent -> {
             if (controller != null) controller.setOnHover(false);
         });
+
 
     }
 
@@ -46,17 +51,19 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             loader.setController(newController);
             controller = newController;
             //Mouse click event
-            setOnMouseClicked(event -> commandFactory.selectCurrentInterview(item, true).execute());
-
+            setOnMouseClicked(event -> {
+                commandFactory.selectCurrentInterview(item, true).execute();
+                selectedInterviewIndex=this.getListView().getItems().indexOf(item);
+            });
 
             this.setOnDragDetected(mouseEvent -> {
+                selectedItem.set(this.getListView().getSelectionModel().getSelectedItem());
                 Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
                 content.put(ConcreteCategory.format, 0);
                 DragStore.setDraggable(this.getItem());
                 db.setContent(content);
                 mouseEvent.consume();
-                System.out.println(this.getItem().getTitle());
             });
 
             this.setOnDragOver(event -> {
@@ -72,16 +79,18 @@ public class InterviewSelectorCell extends ListCell<Interview> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (DragStore.getDraggable().getDataFormat() == Interview.format) {
-                    System.out.println(this.getListView().getSelectionModel().getSelectedIndices().get(0));
                     ObservableList<Interview> items = this.getListView().getItems();
                     int draggedIdx = items.indexOf(DragStore.getDraggable());
                     int thisIdx = items.indexOf(getItem());
-                    System.out.println(draggedIdx);
-                    System.out.println(thisIdx);
                     items.set(draggedIdx, getItem());
                     items.set(thisIdx, DragStore.getDraggable());
                     this.getListView().setItems(items);
-
+                    if(selectedInterviewIndex==draggedIdx){
+                        this.getListView().getSelectionModel().select(thisIdx);
+                        selectedInterviewIndex=thisIdx;
+                    }else{
+                        this.getListView().getSelectionModel().select(selectedInterviewIndex);
+                    }
                     success = true;
                 }
                 event.setDropCompleted(success);
