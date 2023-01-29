@@ -18,6 +18,7 @@ public class SInterview extends Serializable<Interview> {
     public String comment;
     public SInterviewText interviewText;
     public SRootMoment rootMoment;
+    public  String color;
 
     public SInterview(ObjectSerializer serializer) {
         super(serializer);
@@ -34,6 +35,7 @@ public class SInterview extends Serializable<Interview> {
         this.comment = modelReference.getComment();
         this.interviewText = new SInterviewText(serializer, modelReference.getInterviewText());
         this.rootMoment = new SRootMoment(serializer, modelReference.getRootMoment());
+        this.color=modelReference.getColor();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class SInterview extends Serializable<Interview> {
         comment = serializer.getFacultativeString("comment", null);
         interviewText = serializer.getObject(SInterviewText.modelName, SInterviewText::new);
         rootMoment = serializer.getObject(SRootMoment.modelName, SRootMoment::new);
+        color=serializer.getFacultativeString("color","ffffff");
     }
 
     @Override
@@ -58,11 +61,16 @@ public class SInterview extends Serializable<Interview> {
         serializer.writeFacultativeString("comment", comment);
         serializer.writeObject(SInterviewText.modelName, interviewText);
         serializer.writeObject(SRootMoment.modelName, rootMoment);
+        if(color==null){
+            System.out.println("wtf");
+        }
+
+        serializer.writeString("color",color);
     }
 
     @Override
     protected Interview createModel() {
-        Interview i = new Interview(participantName, date, interviewText.convertToModel(), rootMoment.convertToModel());
+        Interview i = new Interview(participantName, date, interviewText.convertToModel(), rootMoment.convertToModel(),color);
         if(this.comment != null)
             i.setComment(comment);
         return i;

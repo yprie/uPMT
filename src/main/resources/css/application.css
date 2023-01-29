@@ -4,6 +4,26 @@
 * {
     -fx-font-family:  sans-serif;/*'Roboto',*/
 }
+/*#textInterviewTitle {*/
+/*    -fx-font-size: 22px;*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+/*#nameDisplayer{*/
+/*    -fx-text-fill: black;*/
+/*}*/
+.list-cell:filled:selected:focused .text , .list-cell:filled:selected .text{
+    -fx-text-fill: #360909;
+    -fx-font-weight: bold;
+}
+/*#name {*/
+/*    !*-fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);*!*/
+/*    -fx-text-fill: black;*/
+/*}*/
+/*#container:selected {*/
+
+/*}*/
+
 /* --------------------------------------
  * --------------------------------------
  * --------------SCROLLBAR---------------
@@ -432,9 +452,5 @@ Green: #40AC40  #19C519
     -fx-background-repeat: no-repeat;
   	-fx-background-position: center;
     -fx-background-image: url("/images/btnZoomPlusPng.png");
-}
-
-#textInterviewTitle {
-    -fx-font-size: 22px;
 }
 
