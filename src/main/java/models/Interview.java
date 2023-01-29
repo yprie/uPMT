@@ -16,6 +16,9 @@ public class Interview implements Serializable, IDraggable {
     private SimpleStringProperty comment;
     private InterviewText interviewText;
     private RootMoment rootMoment;
+
+
+    private SimpleStringProperty color = new SimpleStringProperty("ffffff");
     public static final DataFormat format = new DataFormat("Interview");
     public Interview(String participantName, LocalDate date, InterviewText interviewText, RootMoment rootMoment) {
         this.participantName = new SimpleStringProperty(participantName);
@@ -24,6 +27,17 @@ public class Interview implements Serializable, IDraggable {
         this.rootMoment = rootMoment;
         this.title = new SimpleStringProperty(getTitle(participantName, date));
         this.comment = new SimpleStringProperty();
+
+    }
+    public Interview(String participantName, LocalDate date, InterviewText interviewText, RootMoment rootMoment,String color) {
+        this.participantName = new SimpleStringProperty(participantName);
+        this.date = date;
+        this.interviewText = interviewText;
+        this.rootMoment = rootMoment;
+        this.color.set(color);
+        this.title = new SimpleStringProperty(getTitle(participantName, date));
+        this.comment = new SimpleStringProperty();
+
     }
 
     public String getTitle(){
@@ -89,4 +103,15 @@ public class Interview implements Serializable, IDraggable {
         return true;
     }
     public RootMoment getRootMoment() { return rootMoment; }
+
+    public String getColor() {
+        return color.get();
+    }
+
+    public void setColor(String color) {
+        this.color.set(color);
+    }
+    public SimpleStringProperty colorProperty() {
+        return color;
+    }
 }
