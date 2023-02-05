@@ -32,14 +32,14 @@ public class InterviewSelectorCellController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        pictureView.setImage(ResourceLoader.loadImage("category.png"));
+        pictureView.setImage(ResourceLoader.loadImage("interview-"+interview.getColor()+".png"));
         name.setText(interview.getTitle());
 
         interview.titleProperty().addListener((observableValue, s, t1) -> name.setText(t1));
 
         MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
         MenuItem editButton = new MenuItem(Configuration.langBundle.getString("edit"));
-        updateColor();
+//        updateColor();
         //ADDING COLOR
         Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
 
@@ -109,7 +109,7 @@ public class InterviewSelectorCellController implements Initializable {
 
     }
     public void updateColor() {
-       this.interviewSelectorCell.setStyle("-fx-background-color: #" + interview.getColor() + ";\n"+"-fx-text-fill: black;\n"+"-fx-text-inner-color:black;\n");
+       this.pictureView.setImage(ResourceLoader.loadImage("interview-"+interview.getColor()+".png"));
 //        this.interviewSelectorCell.setStyle("-fx-text-fill: black;\n");
 
     }

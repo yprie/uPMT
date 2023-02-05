@@ -3,6 +3,7 @@ package components.interviewSelector;
 import components.interviewSelector.appCommands.InterviewSelectorCommandFactory;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
 import components.modelisationSpace.category.appCommands.RemoveConcreteCategoryCommand;
+import components.schemaTree.Section;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -49,19 +50,19 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/views/InterviewSelector/InterviewSelectorCell.fxml"));
             //Cell Controller
-            InterviewSelectorCellController newController = new InterviewSelectorCellController(item, this ,commandFactory);
+            InterviewSelectorCellController newController = new InterviewSelectorCellController(item, this, commandFactory);
             loader.setController(newController);
             controller = newController;
 
             //Mouse click event
             setOnMouseClicked(event -> {
                 commandFactory.selectCurrentInterview(item, true).execute();
-                selectedInterviewIndex=this.getListView().getItems().indexOf(item);
+                selectedInterviewIndex = this.getListView().getItems().indexOf(item);
             });
             this.getListView().getStyleClass().add("list-cell");
 
 
-            newController.updateColor();
+//            newController.updateColor();
             this.addDragAndDrop(newController);
 
             try {
@@ -72,7 +73,8 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             }
         }
     }
-    private void addDragAndDrop(InterviewSelectorCellController newController){
+
+    private void addDragAndDrop(InterviewSelectorCellController newController) {
         this.setOnDragDetected(mouseEvent -> {
             selectedItem.set(this.getListView().getSelectionModel().getSelectedItem());
             Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
@@ -84,14 +86,23 @@ public class InterviewSelectorCell extends ListCell<Interview> {
         });
 
         this.setOnDragOver(event -> {
-            this.setStyle("-fx-opacity: 1;");
+            boolean success = false;
             if (event.getGestureSource() != this &&
                     DragStore.getDraggable().getDataFormat() == Interview.format) {
-                this.setStyle("-fx-opacity: 0.5;");
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                Section section = this.mouseIsDraggingOn(event.getY());
+                if (section == Section.bottom) {
+                    this.setStyle("-fx-background-color: #999;-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 0 0 4;");
+                    success = true;
+                } else if (section == Section.top) {
+                    this.setStyle("-fx-background-color: #999;-fx-font-weight: bold;-fx-border-color: #777;-fx-border-width: 4 0 0 ;");
+                    success = true;
+                }
+                if (success) {
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
             }
             event.consume();
-            newController.updateColor();
+//            newController.updateColor();
         });
         this.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
@@ -100,17 +111,26 @@ public class InterviewSelectorCell extends ListCell<Interview> {
                 ObservableList<Interview> items = this.getListView().getItems();
                 int draggedIdx = items.indexOf(DragStore.getDraggable());
                 int thisIdx = items.indexOf(getItem());
-                items.set(draggedIdx, getItem());
-                items.set(thisIdx, DragStore.getDraggable());
-                this.getListView().setItems(items);
-                if(selectedInterviewIndex==draggedIdx){
-                    this.getListView().getSelectionModel().select(thisIdx);
-                    selectedInterviewIndex=thisIdx;
-                }else{
+                int newPosition;
+                Section section = this.mouseIsDraggingOn(event.getY());
+                if (section == Section.top && thisIdx != 0) {
+                    newPosition = thisIdx - 1;
+                } else {
+                    newPosition = thisIdx;
+                }
+//                items.set(draggedIdx, getItem());
+//                items.set(thisIdx, DragStore.getDraggable());
+//                this.getListView().setItems(items);
+                Interview selectedInterview = items.remove(draggedIdx);
+                items.add(newPosition, selectedInterview);
+                if (selectedInterviewIndex == draggedIdx) {
+                    this.getListView().getSelectionModel().select(newPosition);
+                    selectedInterviewIndex = newPosition;
+                } else {
                     this.getListView().getSelectionModel().select(selectedInterviewIndex);
                 }
                 success = true;
-                newController.updateColor();
+//                newController.updateColor();
             }
 
             event.setDropCompleted(success);
@@ -120,13 +140,24 @@ public class InterviewSelectorCell extends ListCell<Interview> {
 
         this.setOnDragExited(dragEvent -> {
             this.setStyle("-fx-opacity: 1;");
-            newController.updateColor();
+            this.getListView().getSelectionModel().select(selectedInterviewIndex);
+//            newController.updateColor();
         });
 
         this.setOnDragEntered(dragEvent -> {
             this.setStyle("-fx-opacity: 1;");
 //                newController.updateColor();
         });
+    }
+
+    public Section mouseIsDraggingOn(double y) {
+        if (y < 10) {
+            return Section.top;
+        } else if (y > 20) {
+            return Section.bottom;
+        } else {
+            return Section.middle;
+        }
     }
 
     private void removeGraphics() {
