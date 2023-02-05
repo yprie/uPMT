@@ -12,10 +12,7 @@
 /*#nameDisplayer{*/
 /*    -fx-text-fill: black;*/
 /*}*/
-.list-cell:filled:selected:focused .text , .list-cell:filled:selected .text{
-    -fx-text-fill: #360909;
-    -fx-font-weight: bold;
-}
+
 /*#name {*/
 /*    !*-fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);*!*/
 /*    -fx-text-fill: black;*/
@@ -23,6 +20,20 @@
 /*#container:selected {*/
 
 /*}*/
+
+/*
+    --Interviews panel--
+ */
+.list-cell:filled:selected:focused .text , .list-cell:filled:selected .text{
+    /*-fx-text-fill: #360909;*/
+    -fx-font-weight: bold;
+}
+/*.list-cell:filled:selected:focused  , .list-cell:filled:selected {*/
+/*!*#697dd7;*!*/
+/*    -fx-background-color: rgba(74, 95, 175, 0.78);*/
+
+/*}*/
+
 
 /* --------------------------------------
  * --------------------------------------
