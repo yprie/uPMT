@@ -53,7 +53,7 @@ public class InterviewSelectorCell extends ListCell<Interview> {
             InterviewSelectorCellController newController = new InterviewSelectorCellController(item, this, commandFactory);
             loader.setController(newController);
             controller = newController;
-
+            //setOnMousePressed(e->e.consume());
             //Mouse click event
             setOnMouseClicked(event -> {
                 commandFactory.selectCurrentInterview(item, true).execute();
@@ -113,20 +113,29 @@ public class InterviewSelectorCell extends ListCell<Interview> {
                 int thisIdx = items.indexOf(getItem());
                 int newPosition;
                 Section section = this.mouseIsDraggingOn(event.getY());
-                if (section == Section.top && thisIdx != 0) {
-                    newPosition = thisIdx - 1;
-                } else {
-                    newPosition = thisIdx;
+                //keep track of selected and target interview before the remove
+                Interview targetInterview= items.get(thisIdx);
+                Interview selectedInterview=items.get(selectedInterviewIndex);
+                Interview draggedInterview = items.remove(draggedIdx);
+                int newTargetIndex= items.indexOf(targetInterview);
+                System.out.println(newTargetIndex);
+                if (section == Section.top) {
+                    newPosition = newTargetIndex;
+                }else {
+                    newPosition = newTargetIndex+1;
                 }
 //                items.set(draggedIdx, getItem());
 //                items.set(thisIdx, DragStore.getDraggable());
 //                this.getListView().setItems(items);
-                Interview selectedInterview = items.remove(draggedIdx);
-                items.add(newPosition, selectedInterview);
+
+
+
+                items.add(newPosition, draggedInterview);
                 if (selectedInterviewIndex == draggedIdx) {
                     this.getListView().getSelectionModel().select(newPosition);
                     selectedInterviewIndex = newPosition;
                 } else {
+                    selectedInterviewIndex=items.indexOf(selectedInterview);
                     this.getListView().getSelectionModel().select(selectedInterviewIndex);
                 }
                 success = true;
