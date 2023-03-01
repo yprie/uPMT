@@ -21,8 +21,12 @@
 package application;
 
 import java.io.IOException;
+
+import components.comparison.ComparisonParser;
+import components.comparison.ComparisonTable;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import models.Project;
 
 
 public class Main extends Application {
@@ -31,6 +35,13 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) throws IOException {
 		UPMTApp app = new UPMTApp(primaryStage);
+		try {
+			String path = app.getCurrentProjectPath();
+			ComparisonTable ct = new ComparisonTable(path);
+			ct.readTable();
+		}catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
