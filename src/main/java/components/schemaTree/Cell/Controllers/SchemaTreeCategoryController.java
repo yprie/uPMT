@@ -7,6 +7,7 @@ import javafx.scene.control.Menu;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
+import utils.GlobalVariables;
 import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
@@ -18,6 +19,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
     private SchemaCategory category;
     private SchemaTreeCommandFactory cmdFactory;
+    private GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
 
     public SchemaTreeCategoryController(SchemaCategory model, SchemaTreeCommandFactory cmdFactory) {
         super(model, cmdFactory);
@@ -35,10 +37,20 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         super.initialize(url, resourceBundle);
 
         name.textProperty().bind(element.nameProperty());
+        usesPerInterview.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int currentInterviewUses = this.category.getCurrentInterviewUses();
+            int nUsesInModelisation = category.numberOfUsesInModelisationProperty().get();
+            if (nUsesInModelisation > 0) {
+                s = "  " + this.category.getCurrentInterviewUses() + " / ";
+            }
+            return s;
+
+        }, this.category.currentInterviewUsesProperty()));
         complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
             String s = "";
             int nUses = category.numberOfUsesInModelisationProperty().get();
-            if(nUses > 0) {
+            if (nUses > 0) {
                 s += nUses + " ";
                 s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
             }
@@ -132,7 +144,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         optionsMenu.getItems().add(changeColor);
     }
 
-    public void updateCategoryIcon(String color){
+    public void updateCategoryIcon(String color) {
 
         switch (color) {
             case "ffffff":
