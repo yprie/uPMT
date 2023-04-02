@@ -1,10 +1,14 @@
 package persistency.newSaveSystem;
 
+import components.schemaTree.Cell.Visitors.InitTreeElement;
 import components.toolbox.controllers.MomentTypeController;
 import models.Project;
 import models.Interview;
+import models.SchemaCategory;
+import models.SchemaTreeRoot;
 import persistency.newSaveSystem.serialization.ObjectSerializer;
 import persistency.newSaveSystem.serialization.Serializable;
+import utils.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -78,8 +82,8 @@ public class SProject extends Serializable<Project> {
 
     @Override
     protected Project createModel() {
-        Project p = new Project(this.name, schemaTreeRoot.convertToModel());
-
+        SchemaTreeRoot modelTreeRoot =schemaTreeRoot.convertToModel();
+        Project p = new Project(this.name,modelTreeRoot );
         for(SInterview i: interviews) {
             p.addInterview(i.convertToModel());
         }
@@ -92,7 +96,7 @@ public class SProject extends Serializable<Project> {
             mtcs.add(smtc.createModel());
         }
         p.setMomentTypeControllers(mtcs);
-
+        p.getSchemaTreeRoot().accept(new InitTreeElement());
         return p;
     }
 

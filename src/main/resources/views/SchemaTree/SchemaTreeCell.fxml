@@ -29,7 +29,16 @@
             <Insets left="10.0" />
          </padding>
          <right>
-            <Label fx:id="complementaryInfo" style="-fx-text-fill: black;" BorderPane.alignment="CENTER" />
+            <BorderPane>
+               <left>
+                  <Label fx:id="usesPerInterview" style="-fx-text-fill: black;" BorderPane.alignment="CENTER_LEFT" />
+               </left>
+               <right>
+                  <Label fx:id="complementaryInfo" style="-fx-text-fill: black;" BorderPane.alignment="CENTER" />
+               </right>
+
+
+            </BorderPane>
          </right>
       </BorderPane>
    </center>
