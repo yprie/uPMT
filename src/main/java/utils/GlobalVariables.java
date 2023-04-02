@@ -17,7 +17,7 @@ public class GlobalVariables {
 
     private static SchemaTreeRoot root;
     private static RootMoment rootMoment;
-
+    private static Project project;
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
 
 
@@ -55,6 +55,13 @@ public class GlobalVariables {
         return changedDescripteme;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public  void setProject(Project project) {
+        globalVariables.project = project;
+    }
     public HashSet<Descripteme> getAllDescripteme() {
         BiFunction<Moment, HashSet, Void> computeMoment = (Moment moment, HashSet result) -> {
             // Add the descriptems of the moment
@@ -101,4 +108,5 @@ public class GlobalVariables {
         }
         return result;
     }
+
 }

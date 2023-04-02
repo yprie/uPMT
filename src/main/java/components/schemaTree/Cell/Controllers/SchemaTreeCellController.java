@@ -36,7 +36,7 @@ public abstract class SchemaTreeCellController implements Initializable {
     Label name;
 
     @FXML Label complementaryInfo;
-
+    @FXML Label usesPerInterview;
     AutoSuggestionsTextField renamingField;
 
     @FXML
