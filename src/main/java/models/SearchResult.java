@@ -38,11 +38,12 @@ public class SearchResult {
         this.resultPosition = new SimpleIntegerProperty(-1);
     }
 
-    public void resetSearch(){
+    public void resetSearch() {
         this.resultPosition.set(-1);
         this.resultCount.set(0);
         this.searchResult.clear();
     }
+
     public void countOccurrences(String text, String search) {
         this.currentSearchWord = search;
         this.resetSearch();
@@ -79,7 +80,6 @@ public class SearchResult {
     }
 
     public boolean hasNext() {
-        System.out.println(this.resultPosition.get() + " >= " + this.resultCount.get());
         return !(this.resultPosition.get() + 1 >= this.resultCount.get());
     }
 

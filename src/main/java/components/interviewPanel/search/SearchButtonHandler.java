@@ -20,7 +20,6 @@ public class SearchButtonHandler implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
-        System.out.println(event.getTarget());
         if (this.searchResult.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Find");
