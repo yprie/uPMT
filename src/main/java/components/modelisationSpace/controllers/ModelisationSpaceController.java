@@ -70,6 +70,9 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
                 anchorPane.getTransforms().setAll(new Scale(ratio, ratio,0, 0));
             });
         }
+        System.out.println(this.superPane.getHeight());
+        System.out.println(this.superPane.getWidth());
+        this.setHvalue(this.superPane.getHmax());
     }
 
     public void clearSpace() {
