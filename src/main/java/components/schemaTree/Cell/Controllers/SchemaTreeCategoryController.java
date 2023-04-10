@@ -4,6 +4,8 @@ import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Menu;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
@@ -35,14 +37,17 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-
+        this.complementaryInfoTooltip = new Tooltip(Configuration.langBundle.getString("complementary_info_toolbox"));
+        complementaryInfoTooltip.setShowDelay(new Duration(0));
+        this.complementaryInfo.setTooltip(complementaryInfoTooltip);
+        this.usesPerInterview.setTooltip(complementaryInfoTooltip);
         name.textProperty().bind(element.nameProperty());
         usesPerInterview.textProperty().bind(Bindings.createStringBinding(() -> {
             String s = "";
             int currentInterviewUses = this.category.getCurrentInterviewUses();
             int nUsesInModelisation = category.numberOfUsesInModelisationProperty().get();
             if (nUsesInModelisation > 0) {
-                s = "  " + this.category.getCurrentInterviewUses() + " / ";
+                s = " (" + this.category.getCurrentInterviewUses() + " /";
             }
             return s;
 
@@ -53,9 +58,11 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             if (nUses > 0) {
                 s += nUses + " ";
                 s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
+                s += ")";
             }
             return s;
         }, category.numberOfUsesInModelisationProperty()));
+
 
         MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {
