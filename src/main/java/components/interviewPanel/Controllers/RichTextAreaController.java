@@ -30,6 +30,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import static utils.GlobalVariables.getGlobalVariables;
 
@@ -75,6 +76,7 @@ public class RichTextAreaController {
     private void showFindDialog(InlineCssTextArea richTextArea) {
         // Set up the dialog
         Dialog<String> dialog = new Dialog<>();
+        dialog.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         dialog.getDialogPane().setPrefWidth(450);
         dialog.setResizable(true);
         dialog.setTitle(Configuration.langBundle.getString("find"));
