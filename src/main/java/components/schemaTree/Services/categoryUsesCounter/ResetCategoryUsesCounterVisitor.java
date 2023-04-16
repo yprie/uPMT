@@ -1,16 +1,14 @@
 package components.schemaTree.Services.categoryUsesCounter;
 
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
-import models.SchemaTreeRoot;
+import models.SchemaMomentType;
+import models.*;
 
 public class ResetCategoryUsesCounterVisitor extends SchemaTreePluggableVisitor {
 
     @Override
     public void visit(SchemaTreeRoot element) {
-        element.foldersProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
+        element.childrenProperty().forEach(schemaFolder -> { schemaFolder.accept(this); });
     }
 
     @Override
@@ -26,6 +24,11 @@ public class ResetCategoryUsesCounterVisitor extends SchemaTreePluggableVisitor 
 
     @Override
     public void visit(SchemaProperty element) {
+
+    }
+
+    @Override
+    public void visit(SchemaMomentType element) {
 
     }
 

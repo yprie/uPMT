@@ -1,9 +1,7 @@
 package components.schemaTree.Cell.Visitors;
 
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
-import models.SchemaTreeRoot;
+import models.SchemaMomentType;
+import models.*;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.appCommands.strategies.ContainerCreateChildStrategy;
 import components.schemaTree.Cell.appCommands.strategies.LeafCreateChildStrategy;
@@ -41,6 +39,11 @@ public class CreateAddChildStrategyVisitor extends SchemaTreePluggableVisitor {
 
     @Override
     public void visit(SchemaProperty element) {
+        result = new LeafCreateChildStrategy();
+    }
+
+    @Override
+    public void visit(SchemaMomentType element) {
         result = new LeafCreateChildStrategy();
     }
 

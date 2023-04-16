@@ -5,7 +5,6 @@ import components.modelisationSpace.property.appCommands.AddConcretePropertyComm
 import components.modelisationSpace.property.appCommands.RemoveConcretePropertyCommand;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
@@ -113,4 +112,5 @@ public class ConcreteCategory implements IDraggable {
     public void setController(ConcreteCategoryController controller) {
         this.controller = controller;
     }
+
 }

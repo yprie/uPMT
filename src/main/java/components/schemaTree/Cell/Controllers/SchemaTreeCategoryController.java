@@ -4,9 +4,12 @@ import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Menu;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 import models.SchemaCategory;
 import models.SchemaProperty;
 import javafx.scene.control.MenuItem;
+import utils.GlobalVariables;
 import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
@@ -18,6 +21,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
     private SchemaCategory category;
     private SchemaTreeCommandFactory cmdFactory;
+    private GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
 
     public SchemaTreeCategoryController(SchemaCategory model, SchemaTreeCommandFactory cmdFactory) {
         super(model, cmdFactory);
@@ -33,17 +37,32 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-
+        this.complementaryInfoTooltip = new Tooltip(Configuration.langBundle.getString("complementary_info_toolbox"));
+        complementaryInfoTooltip.setShowDelay(new Duration(0));
+        this.complementaryInfo.setTooltip(complementaryInfoTooltip);
+        this.usesPerInterview.setTooltip(complementaryInfoTooltip);
         name.textProperty().bind(element.nameProperty());
+        usesPerInterview.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int currentInterviewUses = this.category.getCurrentInterviewUses();
+            int nUsesInModelisation = category.numberOfUsesInModelisationProperty().get();
+            if (nUsesInModelisation > 0) {
+                s = " (" + this.category.getCurrentInterviewUses() + " /";
+            }
+            return s;
+
+        }, this.category.currentInterviewUsesProperty()));
         complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
             String s = "";
             int nUses = category.numberOfUsesInModelisationProperty().get();
-            if(nUses > 0) {
+            if (nUses > 0) {
                 s += nUses + " ";
                 s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
+                s += ")";
             }
             return s;
         }, category.numberOfUsesInModelisationProperty()));
+
 
         MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {
@@ -132,7 +151,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         optionsMenu.getItems().add(changeColor);
     }
 
-    public void updateCategoryIcon(String color){
+    public void updateCategoryIcon(String color) {
 
         switch (color) {
             case "ffffff":

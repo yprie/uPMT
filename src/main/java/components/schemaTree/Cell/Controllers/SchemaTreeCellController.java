@@ -1,30 +1,35 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Section;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import models.SchemaCategory;
+import models.SchemaFolder;
 import utils.ResourceLoader;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.dragAndDrop.DragStore;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class SchemaTreeCellController implements Initializable {
-    @FXML private BorderPane container;
+    @FXML
+    private BorderPane container;
 
     @FXML
     BorderPane nameDisplayer;
@@ -32,8 +37,10 @@ public abstract class SchemaTreeCellController implements Initializable {
     @FXML
     Label name;
 
-    @FXML Label complementaryInfo;
-
+    @FXML
+    Label complementaryInfo;
+    @FXML
+    Label usesPerInterview;
     AutoSuggestionsTextField renamingField;
 
     @FXML
@@ -41,6 +48,8 @@ public abstract class SchemaTreeCellController implements Initializable {
 
     @FXML
     MenuButton optionsMenu;
+
+    Tooltip complementaryInfoTooltip;
 
     protected SchemaTreePluggable element;
     private boolean renamingMode = false;
@@ -69,19 +78,24 @@ public abstract class SchemaTreeCellController implements Initializable {
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
-            if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
+            if (shouldRemoveMenuButtonVisibility) {
+                shouldRemoveMenuButtonVisibility = false;
+                optionsMenu.setVisible(false);
+            }
         });
 
-        Platform.runLater(()-> {
-            if(element.mustBeRenamed())
+        Platform.runLater(() -> {
+            if (element.mustBeRenamed())
                 passInRenamingMode(true);
         });
+
+
     }
 
 
     public void passInRenamingMode(boolean YoN) {
-        if(YoN != renamingMode) {
-            if(YoN){
+        if (YoN != renamingMode) {
+            if (YoN) {
                 renamingField = new AutoSuggestionsTextField(name.getText());
                 renamingField.setStrategy(this.getSuggestionStrategy());
                 renamingField.setAlignment(Pos.CENTER);
@@ -94,8 +108,8 @@ public abstract class SchemaTreeCellController implements Initializable {
                 });
 
                 renamingField.setOnKeyPressed(keyEvent -> {
-                    if(keyEvent.getCode() == KeyCode.ENTER) {
-                        if(renamingField.getLength() > 0){
+                    if (keyEvent.getCode() == KeyCode.ENTER) {
+                        if (renamingField.getLength() > 0) {
                             cmdFactory.renameTreeElement(element, renamingField.getText());
                         }
                         passInRenamingMode(false);
@@ -105,8 +119,7 @@ public abstract class SchemaTreeCellController implements Initializable {
                 this.nameDisplayer.setLeft(renamingField);
                 renamingField.requestFocus();
                 renamingMode = true;
-            }
-            else {
+            } else {
                 this.nameDisplayer.setLeft(name);
                 renamingMode = false;
             }
@@ -114,22 +127,22 @@ public abstract class SchemaTreeCellController implements Initializable {
     }
 
     public void setOnHover(boolean YoN) {
-        if(optionsMenu.isShowing())
+        if (optionsMenu.isShowing())
             shouldRemoveMenuButtonVisibility = true;
         else
             optionsMenu.setVisible(YoN);
     }
 
-    public boolean getOnHover() { return optionsMenu.isVisible(); }
+    public boolean getOnHover() {
+        return optionsMenu.isVisible();
+    }
 
     public Section mouseIsDraggingOn(double y) {
-        if(y < 10) {
+        if (y < 10) {
             return Section.top;
-        }
-        else if (y > 20){
+        } else if (y > 20) {
             return Section.bottom;
-        }
-        else {
+        } else {
             return Section.middle;
         }
     }

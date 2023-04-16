@@ -42,7 +42,8 @@ public class Justification {
         for (Descripteme descripteme :
                 descriptemes) {
             sb.append(descripteme.getSelection());
-            sb.append('\t');
+            if (descripteme != descriptemes.get(descriptemes.size() - 1))
+                sb.append(" || ");
         }
         return sb.toString();
     }

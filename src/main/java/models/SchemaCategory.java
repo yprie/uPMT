@@ -1,7 +1,9 @@
 package models;
 
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
+import utils.GlobalVariables;
 import utils.removable.IRemovable;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
@@ -12,8 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class SchemaCategory extends SchemaElement implements IRemovable {
 
@@ -21,17 +23,23 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     private SimpleBooleanProperty exists;
     private ListProperty<SchemaProperty> properties;
-
+    private GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
     //Computed values, no need to store them
     private SimpleIntegerProperty nbUsesInModelisation;
     private SimpleStringProperty color = new SimpleStringProperty("efe4b0");
     private ArrayList<ConcreteCategoryController> ListImplements = new ArrayList<>();
+    private HashMap<Interview, Integer> nbUsesInInterviews;
+    private SimpleIntegerProperty currentInterviewUses;
+
 
     public SchemaCategory(String name) {
         super(name);
         this.exists = new SimpleBooleanProperty(true);
         this.properties = new SimpleListProperty<SchemaProperty>(FXCollections.observableList(new LinkedList<SchemaProperty>()));
         this.nbUsesInModelisation = new SimpleIntegerProperty(0);
+        this.nbUsesInInterviews = new HashMap<Interview, Integer>();
+        this.currentInterviewUses = new SimpleIntegerProperty(0);
+        globalVariables.getProject().selectedInterviewProperty().addListener(onSelectedInterviewChanges);
     }
 
     public SchemaCategory(String name, String color) {
@@ -40,15 +48,28 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         this.properties = new SimpleListProperty<SchemaProperty>(FXCollections.observableList(new LinkedList<SchemaProperty>()));
         this.nbUsesInModelisation = new SimpleIntegerProperty(0);
         this.color = new SimpleStringProperty(color);
+        this.currentInterviewUses = new SimpleIntegerProperty(0);
+        this.nbUsesInInterviews = new HashMap<Interview, Integer>();
+
     }
 
-    public final ObservableList<SchemaProperty> propertiesProperty() { return properties; }
+    public final ObservableList<SchemaProperty> propertiesProperty() {
+        return properties;
+    }
+
+    public void init() {
+        globalVariables.getProject().selectedInterviewProperty().addListener(onSelectedInterviewChanges);
+    }
 
     @Override
-    public void setExists(boolean b) { exists.set(b); }
+    public void setExists(boolean b) {
+        exists.set(b);
+    }
 
     @Override
-    public ObservableBooleanValue existsProperty() { return exists; }
+    public ObservableBooleanValue existsProperty() {
+        return exists;
+    }
 
     @Override
     public DataFormat getDataFormat() {
@@ -77,24 +98,24 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     @Override
     public void addChild(SchemaTreePluggable item) {
-        if(Utils.IsSchemaTreeProperty(item))
-            addProperty((SchemaProperty)item, -1);
+        if (Utils.IsSchemaTreeProperty(item))
+            addProperty((SchemaProperty) item, -1);
         else
             throw new IllegalArgumentException("(SchemaCategory::addChild) Can't receive this kind of child !");
     }
 
     @Override
     public void addChildAt(SchemaTreePluggable item, int index) {
-        if(Utils.IsSchemaTreeProperty(item))
-            addProperty((SchemaProperty)item, index);
+        if (Utils.IsSchemaTreeProperty(item))
+            addProperty((SchemaProperty) item, index);
         else
             throw new IllegalArgumentException("(SchemaCategory::addChildAt) Can't receive this kind of child !");
     }
 
     @Override
     public void removeChild(SchemaTreePluggable item) {
-        if(Utils.IsSchemaTreeProperty(item))
-            removeProperty((SchemaProperty)item);
+        if (Utils.IsSchemaTreeProperty(item))
+            removeProperty((SchemaProperty) item);
         else
             throw new IllegalArgumentException("(SchemaCategory::removeChild) Can't remove this kind of child !");
     }
@@ -102,7 +123,7 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
     @Override
     public int getChildIndex(SchemaTreePluggable item) {
         int r = this.properties.indexOf(item);
-        if(r == -1)
+        if (r == -1)
             throw new IllegalArgumentException("(SchemaCategory) The provided item is not a child of this element!");
         return r;
     }
@@ -117,18 +138,48 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         return true;
     }
 
-    private void addProperty(SchemaProperty p, int index){
-        if(index == -1)
+    private void addProperty(SchemaProperty p, int index) {
+        if (index == -1)
             properties.add(p);
         else
             properties.add(index, p);
     }
-    private void removeProperty(SchemaProperty p){
+
+    private void removeProperty(SchemaProperty p) {
         properties.remove(p);
     }
 
-    public void setNumberOfUsesInModelisation(int nbUses) { this.nbUsesInModelisation.set(nbUses); }
-    public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() { return this.nbUsesInModelisation; }
+    public void setNumberOfUsesInModelisation(int nbUses) {
+        this.nbUsesInModelisation.set(nbUses);
+    }
+
+    public void setNumberOfUsesInInterview(Interview interview, int nbUses) {
+        this.nbUsesInInterviews.put(interview, nbUses);
+        if (this.globalVariables.getProject().getSelectedInterview().equals(interview)) {
+            this.currentInterviewUses.set(nbUses);
+        }
+
+    }
+
+    public ReadOnlyIntegerProperty numberOfUsesInModelisationProperty() {
+        return this.nbUsesInModelisation;
+    }
+
+    public int numberOfUsesInInterviewProperty(Interview interview) {
+        return this.nbUsesInInterviews.getOrDefault(interview, 0);
+    }
+
+    public int getCurrentInterviewUses() {
+        return currentInterviewUses.get();
+    }
+
+    public SimpleIntegerProperty currentInterviewUsesProperty() {
+        return currentInterviewUses;
+    }
+
+    public void setCurrentInterviewUses(int currentInterviewUses) {
+        this.currentInterviewUses.set(currentInterviewUses);
+    }
 
 
     public String getColor() {
@@ -137,15 +188,21 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
 
     public void setColor(String color) {
         this.color.set(color);
-        for(ConcreteCategoryController c: ListImplements) {
+        for (ConcreteCategoryController c : ListImplements) {
             c.updateColor();
         }
     }
 
-    public void addToControllers(ConcreteCategoryController newController){
+    public void addToControllers(ConcreteCategoryController newController) {
         ListImplements.add(newController);
     }
-    public void removeFromControllers(ConcreteCategoryController Controller){
+
+    public void removeFromControllers(ConcreteCategoryController Controller) {
         ListImplements.remove(Controller);
     }
+
+    private final ChangeListener<Interview> onSelectedInterviewChanges = (observableValue, o, t1) -> {
+        this.nbUsesInInterviews.putIfAbsent(t1, 0);
+        this.currentInterviewUses.set(this.nbUsesInInterviews.get(t1));
+    };
 }

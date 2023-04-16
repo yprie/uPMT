@@ -25,8 +25,10 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     private ScrollPaneCommandFactory paneCmdFactory;
     private RootMomentController rmController;
 
-    private  @FXML AnchorPane pane;
-    private @FXML ScrollOnDragPane superPane;
+    private @FXML
+    AnchorPane pane;
+    private @FXML
+    ScrollOnDragPane superPane;
 
     AnchorPane anchorPane = new AnchorPane(); // Container
 
@@ -58,46 +60,48 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     public void setRootMoment(RootMoment m) {
         //Set new moment
         clearSpace();
-        if(m != null) {
+        if (m != null) {
             rmController = new RootMomentController(m, paneCmdFactory, hooksNotifier);
             anchorPane.getChildren().clear();
             anchorPane.getChildren().add(RootMomentController.createRootMoment(rmController));
             superPane.setContent(anchorPane);
             double r = AppSettings.zoomLevelProperty.getValue() * 0.01;
-            anchorPane.getTransforms().setAll(new Scale(r, r,0, 0));
+            anchorPane.getTransforms().setAll(new Scale(r, r, 0, 0));
             AppSettings.zoomLevelProperty.addListener((l) -> {
                 double ratio = AppSettings.zoomLevelProperty.getValue() * 0.01;
-                anchorPane.getTransforms().setAll(new Scale(ratio, ratio,0, 0));
+                anchorPane.getTransforms().setAll(new Scale(ratio, ratio, 0, 0));
             });
         }
+        this.setHvalue(this.superPane.getHmax());
     }
 
     public void clearSpace() {
-        if(rmController != null)
+        if (rmController != null)
             rmController.unmount();
         superPane.setContent(null);
     }
 
-    public ModelisationSpaceHook getHooks() { return hooks; }
+    public ModelisationSpaceHook getHooks() {
+        return hooks;
+    }
 
     private void setupDragAndDrop() {
         superPane.setOnDragOverHook((e) -> {
-            if(
-                !rmController.hasAtLeastOneChildMoment()
-                && DragStore.getDraggable().isDraggable()
-                && !e.isAccepted()
-                && DragStore.getDraggable().getDataFormat() == TemplateMoment.format
+            if (
+                    !rmController.hasAtLeastOneChildMoment()
+                            && DragStore.getDraggable().isDraggable()
+                            && !e.isAccepted()
+                            && DragStore.getDraggable().getDataFormat() == TemplateMoment.format
             ) {
                 e.acceptTransferModes(TransferMode.COPY);
             }
         });
 
         superPane.setOnDragDroppedHook(e -> {
-            System.out.println("DataFormat : " + DragStore.getDraggable().getDataFormat().toString());
-            if(
-                !rmController.hasAtLeastOneChildMoment()
-                && e.isAccepted()
-                && DragStore.getDraggable().getDataFormat() == TemplateMoment.format
+            if (
+                    !rmController.hasAtLeastOneChildMoment()
+                            && e.isAccepted()
+                            && DragStore.getDraggable().getDataFormat() == TemplateMoment.format
             ) {
                 TemplateMoment t = DragStore.getDraggable();
                 rmController.addMoment(t.createConcreteMoment());
@@ -105,7 +109,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         });
     }
 
-    public ScrollOnDragPane getSuperPane(){
+    public ScrollOnDragPane getSuperPane() {
         return this.superPane;
     }
 }

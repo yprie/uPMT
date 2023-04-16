@@ -9,6 +9,7 @@ import persistency.newSaveSystem.serialization.json.JSONSerializer;
 import persistency.newSaveSystem.serialization.json.JSONWritePool;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Stack;
 
 public class ProjectSaver {
@@ -21,8 +22,8 @@ public class ProjectSaver {
         JSONSerializer serializer = new JSONSerializer(obj, pool, write_stack, serializationPool);
         SProject p = new SProject(serializer, project);
         p.save(serializer);
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fullPath), StandardCharsets.UTF_8));
+//        BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath));
         writer.append(obj.toString(4));
         writer.close();
     }

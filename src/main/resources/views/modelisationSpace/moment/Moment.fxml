@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="momentBoundingBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="momentBoundingBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <GridPane fx:id="grid">
             <columnConstraints>
@@ -18,7 +18,7 @@
                 <RowConstraints vgrow="NEVER" />
             </rowConstraints>
             <AnchorPane fx:id="categoryDropper" GridPane.columnIndex="1">
-                <BorderPane fx:id="momentContainer" styleClass="momentCard" stylesheets="@../../../css/application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <BorderPane fx:id="momentContainer" styleClass="momentCard" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <center>
                         <BorderPane BorderPane.alignment="CENTER">
                             <BorderPane.margin>
@@ -56,11 +56,11 @@
                                             </padding>
                                         </Label>
                                     </HBox>
-                                    <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" stylesheets="@../../../css/application.css" />
+                                    <MenuButton fx:id="menuButton" mnemonicParsing="false" styleClass="threedotsTreeview" />
                                 </HBox>
                             </top>
                             <center>
-                                <TextArea fx:id="commentArea" prefHeight="30" prefWidth="150" promptText="Ecrivez quelques commentaires ici:" styleClass="momentComment" stylesheets="@../../../css/application.css" visible="false">
+                                <TextArea fx:id="commentArea" prefHeight="30" prefWidth="150" promptText="Ecrivez quelques commentaires ici:" styleClass="momentComment" visible="false">
                                     <VBox.margin>
                                         <Insets />
                                     </VBox.margin>

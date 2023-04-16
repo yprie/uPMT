@@ -1,4 +1,39 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');*/
+
+* {
+    -fx-font-family:  sans-serif;/*'Roboto',*/
+}
+/*#textInterviewTitle {*/
+/*    -fx-font-size: 22px;*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+/*#nameDisplayer{*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+/*#name {*/
+/*    !*-fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);*!*/
+/*    -fx-text-fill: black;*/
+/*}*/
+/*#container:selected {*/
+
+/*}*/
+
+/*
+    --Interviews panel--
+ */
+.list-cell:filled:selected:focused .text , .list-cell:filled:selected .text{
+    /*-fx-text-fill: #360909;*/
+    -fx-font-weight: bold;
+}
+/*.list-cell:filled:selected:focused  , .list-cell:filled:selected {*/
+/*!*#697dd7;*!*/
+/*    -fx-background-color: rgba(74, 95, 175, 0.78);*/
+
+/*}*/
+
 
 /* --------------------------------------
  * --------------------------------------
@@ -69,9 +104,6 @@
 .tree-cell:selected Text{
     -fx-fill: black ;
 }
-/*.tree-cell {
-    -fx-padding: 5px 0em 5px 0em;
-}*/
 
 .tree-view-right > .button{
 	-fx-border-width: 1;
@@ -223,7 +255,6 @@
 
 .moment-dnd-zone {
     -fx-background-radius: 50px;
-    -fx-background-color: red;
 }
 
 moment-no-left-padding {
@@ -433,5 +464,4 @@ Green: #40AC40  #19C519
   	-fx-background-position: center;
     -fx-background-image: url("/images/btnZoomPlusPng.png");
 }
-
 

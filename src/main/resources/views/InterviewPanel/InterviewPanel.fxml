@@ -10,14 +10,14 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane fx:id="container" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS" minWidth="200">
+<BorderPane fx:id="container" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS" minWidth="200" stylesheets="/css/application.css">
     <top>
         <BorderPane fx:id="topBarContainerTextInterview" BorderPane.alignment="CENTER">
             <center>
                 <BorderPane fx:id="headerGrid">
                     <center>
-                        <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
-                            <font><Font size="22.0" /></font>
+                        <Text fx:id="textInterviewTitle" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" >
+
                      <BorderPane.margin>
                         <Insets bottom="20.0" />
                      </BorderPane.margin>

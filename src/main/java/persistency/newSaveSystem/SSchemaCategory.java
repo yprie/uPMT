@@ -15,6 +15,7 @@ public class SSchemaCategory extends SSchemaElement<SchemaCategory> {
 
     //Fields
     public ArrayList<SSchemaProperty> properties;
+    public String color;
 
     public SSchemaCategory(ObjectSerializer serializer) {
         super(serializer);
@@ -23,7 +24,6 @@ public class SSchemaCategory extends SSchemaElement<SchemaCategory> {
     public SSchemaCategory(ObjectSerializer serializer, SchemaCategory modelReference) {
         super(serializer, modelName, version, modelReference);
     }
-    public String color;
 
     @Override
     public void init(SchemaCategory modelReference) {
