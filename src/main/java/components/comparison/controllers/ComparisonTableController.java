@@ -1,6 +1,7 @@
 package components.comparison.controllers;
 
 import components.comparison.ComparisonTable;
+import components.comparison.ComparisonView;
 import components.comparison.block;
 import components.comparison.line;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
@@ -25,12 +27,11 @@ public class ComparisonTableController implements Initializable {
 
     @FXML
     private VBox table;
-    private final String path;
 
-    public ComparisonTableController(String path) {
+    public ComparisonTableController() {
         this.table = new VBox();
-        this.path = path;
         initialize(null, null);
+
     }
 
     @Override
@@ -41,7 +42,7 @@ public class ComparisonTableController implements Initializable {
     //remplit la table avec les données
     public void fillTable() {
         try {
-            ComparisonTable ct = new ComparisonTable(this.path);
+            ComparisonTable ct = new ComparisonTable();
             //create table for each interview, we will fill them then
             for (block b : ct.getBlocks()){
                 TableView<List<StringProperty>> tv = new TableView<>();
@@ -126,8 +127,12 @@ public class ComparisonTableController implements Initializable {
             List<StringProperty> rowData = createRow(b, i);
             data.add(rowData);
         }
-        System.out.println("data");
-        System.out.println(data);
         tv.setItems(data);
+    }
+
+    public void displayTable() throws IOException {
+        Stage comparisonStage = new Stage();
+        ComparisonView comparisonView = new ComparisonView();
+        comparisonView.start(comparisonStage);
     }
 }

@@ -13,17 +13,15 @@ import java.io.IOException;
 public class ComparisonView extends Application {
 
     private VBox table;
-    private final String path;
 
-    public ComparisonView(String path) {
+    public ComparisonView() {
         this.table = new VBox();
-        this.path = path;
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/Comparison/ComparisonView.fxml"));
-        ComparisonTableController controller = new ComparisonTableController(this.path);
+        ComparisonTableController controller = new ComparisonTableController();
         fxmlLoader.setController(controller);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);

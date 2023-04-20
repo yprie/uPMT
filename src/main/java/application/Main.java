@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import components.comparison.ComparisonTable;
 import components.comparison.ComparisonView;
+import components.comparison.controllers.ComparisonTableController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -34,18 +35,6 @@ public class Main extends Application {
 
 	public void start(Stage primaryStage) throws IOException {
 		UPMTApp app = new UPMTApp(primaryStage);
-
-		Stage comparisonStage = new Stage();
-
-		ComparisonView comparisonView = new ComparisonView(app.getCurrentProjectPath());
-		comparisonView.start(comparisonStage);
-		try {
-			String path = app.getCurrentProjectPath();
-			ComparisonTable ct = new ComparisonTable(path);
-			ct.readTable();
-		}catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }

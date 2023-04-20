@@ -39,6 +39,7 @@
             <Button fx:id="btnModelisationFull" maxWidth="35" minWidth="35"/>
             <Button fx:id="btnScreenShared" maxWidth="35" minWidth="35"/>
             <Button fx:id="btnTextAreaFull" maxWidth="35" minWidth="35"/>
+
         </HBox>
     </bottom>
 </BorderPane>

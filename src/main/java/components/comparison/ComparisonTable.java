@@ -5,6 +5,7 @@ import models.SchemaFolder;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SInterview;
 import persistency.newSaveSystem.SMoment;
+import utils.GlobalVariables;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ public class ComparisonTable {
     private ArrayList<block> blocks;  //the table is made from the blocks (1 block = 1 interview)
     private ComparisonParser rawDatas; //datas to fill the table
 
-    public ComparisonTable (String path) throws IOException {
+    public ComparisonTable () throws IOException {
         this.blocks = new ArrayList<>();
-        this.rawDatas = new ComparisonParser(path);
+        this.rawDatas = new ComparisonParser(GlobalVariables.getGlobalVariables().getCurrentProjectPath());
         createTable();
     }
 
@@ -71,6 +72,7 @@ public class ComparisonTable {
         this.blocks = blocks;
     }
 
+    //display the content of the table on the terminal
     public void readTable(){
         for(block b: blocks){
             System.out.println(b.getTitle()+ " ->  ");
