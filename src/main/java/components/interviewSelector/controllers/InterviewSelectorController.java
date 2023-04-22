@@ -61,7 +61,7 @@ public class InterviewSelectorController implements Initializable  {
         addInterviewButton.setOnAction(event -> { commandFactory.createNewInterview().execute(); });
         comparisonButton.setOnAction(event -> {
             try {
-                commandFactory.createComparison().displayTable();
+                commandFactory.createComparison().selectInterviews();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,5 +1,6 @@
 package components.comparison.controllers;
 
+import application.configuration.Configuration;
 import components.comparison.ComparisonTable;
 import components.comparison.ComparisonView;
 import components.comparison.block;
@@ -14,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import models.Interview;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
@@ -27,22 +29,24 @@ public class ComparisonTableController implements Initializable {
 
     @FXML
     private VBox table;
+    private ObservableList<String> selectionInterviews;
 
-    public ComparisonTableController() {
+    public ComparisonTableController(ObservableList<String> selectionInterviews) {
         this.table = new VBox();
+        this.selectionInterviews = selectionInterviews;
         initialize(null, null);
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fillTable();
+        fillTable(this.selectionInterviews);
     }
 
     //remplit la table avec les données
-    public void fillTable() {
+    public void fillTable(ObservableList<String> selectionInterviews) {
         try {
-            ComparisonTable ct = new ComparisonTable();
+            ComparisonTable ct = new ComparisonTable(selectionInterviews);
             //create table for each interview, we will fill them then
             for (block b : ct.getBlocks()){
                 TableView<List<StringProperty>> tv = new TableView<>();
@@ -132,7 +136,8 @@ public class ComparisonTableController implements Initializable {
 
     public void displayTable() throws IOException {
         Stage comparisonStage = new Stage();
-        ComparisonView comparisonView = new ComparisonView();
+        comparisonStage.setTitle(Configuration.langBundle.getString("comparison_table"));
+        ComparisonView comparisonView = new ComparisonView(this.selectionInterviews);
         comparisonView.start(comparisonStage);
     }
 }

@@ -1,6 +1,8 @@
 package components.comparison;
 
+import javafx.collections.ObservableList;
 import javafx.util.Pair;
+import models.Interview;
 import models.SchemaFolder;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SInterview;
@@ -15,10 +17,10 @@ public class ComparisonTable {
     private ArrayList<block> blocks;  //the table is made from the blocks (1 block = 1 interview)
     private ComparisonParser rawDatas; //datas to fill the table
 
-    public ComparisonTable () throws IOException {
+    public ComparisonTable (ObservableList<String> selectionInterviews) throws IOException {
         this.blocks = new ArrayList<>();
         this.rawDatas = new ComparisonParser(GlobalVariables.getGlobalVariables().getCurrentProjectPath());
-        createTable();
+        createTable(selectionInterviews);
     }
 
     public int getMaxTableLength(){
@@ -64,10 +66,12 @@ public class ComparisonTable {
         return new block(title, firstLine, dimensionLines);
     }
 
-    private void createTable(){
+    private void createTable(ObservableList<String> selectionInterviews){
         ArrayList<block> blocks = new ArrayList<>();
         for (SInterview interview : rawDatas.getDatas().keySet()){
-            blocks.add(createBlock(interview));
+            if (selectionInterviews.contains(interview.convertToModel().getTitle())) {
+                blocks.add(createBlock(interview));
+            }
         }
         this.blocks = blocks;
     }
