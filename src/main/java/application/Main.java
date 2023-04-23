@@ -21,6 +21,10 @@
 package application;
 
 import java.io.IOException;
+
+import components.comparison.ComparisonTable;
+import components.comparison.ComparisonView;
+import components.comparison.controllers.ComparisonTableController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
