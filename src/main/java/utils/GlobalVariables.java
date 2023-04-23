@@ -18,6 +18,7 @@ public class GlobalVariables {
     private static SchemaTreeRoot root;
     private static RootMoment rootMoment;
     private static Project project;
+    private static String currentProjectPath;
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
 
 
@@ -61,6 +62,14 @@ public class GlobalVariables {
 
     public  void setProject(Project project) {
         globalVariables.project = project;
+    }
+
+    public String getCurrentProjectPath() {
+        return currentProjectPath;
+    }
+
+    public static void setCurrentProjectPath(String currentProjectPath) {
+        globalVariables.currentProjectPath = currentProjectPath;
     }
     public HashSet<Descripteme> getAllDescripteme() {
         BiFunction<Moment, HashSet, Void> computeMoment = (Moment moment, HashSet result) -> {

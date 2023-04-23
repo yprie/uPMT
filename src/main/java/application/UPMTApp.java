@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Project;
+import utils.GlobalVariables;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -69,6 +70,7 @@ public class UPMTApp {
     public void setCurrentProject(Project project, String path) {
         currentProject = project;
         currentProjectPath = path;
+        GlobalVariables.setCurrentProjectPath(currentProjectPath);
         rootLayoutController.setProject(project);
     }
     public Project getCurrentProject() {
