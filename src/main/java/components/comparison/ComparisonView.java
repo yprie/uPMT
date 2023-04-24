@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class ComparisonView extends Application {
 
@@ -26,6 +27,7 @@ public class ComparisonView extends Application {
         fxmlLoader.setResources(Configuration.langBundle);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         stage.setScene(scene);
 
         stage.show();
