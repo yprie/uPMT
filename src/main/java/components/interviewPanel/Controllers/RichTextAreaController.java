@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
@@ -67,9 +68,10 @@ public class RichTextAreaController {
                 .addListener(newValue -> this.updateDescripteme());
 
         applyStyleInitialize();
+
         //Add ctrl+F Listener to launch the research
         area.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-            if (e.getCode() == KeyCode.F && e.isControlDown()) {
+            if (e.getCode() == KeyCode.F && e.isShortcutDown()) {
                 isSearchClicked.set(true);
             }
         });
