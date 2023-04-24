@@ -6,12 +6,11 @@ import components.interviewPanel.search.ButtonSearchType;
 import components.interviewPanel.search.SearchButtonHandler;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -25,6 +24,7 @@ import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
+import utils.SearchResult;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -44,10 +44,12 @@ public class RichTextAreaController {
     private ContextMenuFactory contextMenuFactory;
     private final List<AnnotationColor> annotationColorList;
     private SearchResult searchResult;
+    private SimpleBooleanProperty isSearchClicked;
 
-    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList) {
+    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList, SimpleBooleanProperty isSearchClicked) {
         this.interviewText = interviewText;
         this.annotationColorList = annotationColorList;
+        this.isSearchClicked = isSearchClicked;
         userSelection = new SimpleObjectProperty<>();
         area = new InlineCssTextArea();
         area.setWrapText(true);
@@ -68,6 +70,11 @@ public class RichTextAreaController {
         //Add ctrl+F Listener to launch the research
         area.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
             if (e.getCode() == KeyCode.F && e.isControlDown()) {
+                isSearchClicked.set(true);
+            }
+        });
+        this.isSearchClicked.addListener((obs, oldValue, newValue) -> {
+            if (newValue) {
                 showFindDialog(area);
             }
         });
@@ -86,7 +93,8 @@ public class RichTextAreaController {
         // Set up the buttons
         ButtonType findPreviousButtonType = new ButtonType(Configuration.langBundle.getString("previous"), ButtonBar.ButtonData.OK_DONE);
         ButtonType findNextButtonType = new ButtonType(Configuration.langBundle.getString("next"), ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(findNextButtonType, findPreviousButtonType, ButtonType.CLOSE);
+        ButtonType closeButtonType = ButtonType.CLOSE;
+        dialog.getDialogPane().getButtonTypes().addAll(findNextButtonType, findPreviousButtonType, closeButtonType);
 
         // Set up the text field and label
         TextField findTextField = new TextField();
@@ -108,6 +116,7 @@ public class RichTextAreaController {
 
         Button findPreviousButton = (Button) dialog.getDialogPane().lookupButton(findPreviousButtonType);
         Button findNextButton = (Button) dialog.getDialogPane().lookupButton(findNextButtonType);
+        Button closeButton = (Button) dialog.getDialogPane().lookupButton(closeButtonType);
         //Init Buttons on disabled
         findNextButton.setDisable(true);
         findPreviousButton.setDisable(true);
@@ -152,7 +161,9 @@ public class RichTextAreaController {
                 ButtonSearchType.NEXT, searchResult, richTextArea));
         findPreviousButton.addEventFilter(ActionEvent.ACTION, new SearchButtonHandler(
                 ButtonSearchType.PREVIOUS, searchResult, richTextArea));
-
+        closeButton.addEventFilter(ActionEvent.ACTION, (e) -> {
+            this.isSearchClicked.set(false);
+        });
         // Show the dialog and reset the search result
         dialog.setOnCloseRequest(e -> {
             this.searchResult.resetSearch();
