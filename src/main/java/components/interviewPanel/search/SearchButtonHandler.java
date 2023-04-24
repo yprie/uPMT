@@ -3,7 +3,7 @@ package components.interviewPanel.search;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import models.SearchResult;
+import utils.SearchResult;
 import org.fxmisc.richtext.InlineCssTextArea;
 
 public class SearchButtonHandler implements EventHandler<ActionEvent> {
