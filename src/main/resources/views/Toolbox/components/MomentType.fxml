@@ -3,7 +3,21 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.Label?>
 
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.geometry.Insets?>
 <BorderPane fx:id="momentTypeBorderPane" stylesheets="/css/toolbox.css" maxHeight="-Infinity" maxWidth="150.0" minHeight="-Infinity" minWidth="120.0" prefHeight="50.0" xmlns:fx="http://javafx.com/fxml/1">
+    <right>
+        <MenuButton fx:id="optionsMenu" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0"
+                    mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" styleClass="threedotsTreeview"
+                    BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets right="10.0"/>
+            </BorderPane.margin>
+        </MenuButton>
+    </right>
+    <padding>
+        <Insets left="15.0"/>
+    </padding>
     <center>
         <Label fx:id="momentTypeLabel" text="label" stylesheets="/css/toolbox.css" BorderPane.alignment="CENTER" />
     </center>
