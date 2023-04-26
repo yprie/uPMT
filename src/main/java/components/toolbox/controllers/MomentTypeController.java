@@ -1,7 +1,10 @@
 package components.toolbox.controllers;
 
 import application.configuration.Configuration;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.toolbox.appCommand.RenameMomentTypesCommand;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.util.Duration;
 import models.SchemaMomentType;
 import javafx.fxml.FXML;
@@ -26,6 +29,8 @@ import java.util.ResourceBundle;
 public class MomentTypeController implements Initializable {
     private @FXML BorderPane momentTypeBorderPane;
     private @FXML Label momentTypeLabel;
+    @FXML
+    MenuButton optionsMenu;
     private SchemaMomentType schemaMomentType;
 
     private boolean renamingMode = false;
@@ -58,14 +63,7 @@ public class MomentTypeController implements Initializable {
         this.momentTypeBorderPane.setStyle("-fx-background-color: #"+this.schemaMomentType.getColor()+";");
         setupDragAndDrop();
         updatePopUp();
-
-        this.momentTypeBorderPane.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                if (mouseEvent.getClickCount() == 2) {
-                    passInRenamingMode(true);
-                }
-            }
-        });
+        setupContextMenu();
 
         schemaMomentType.nameProperty().addListener((observableValue, o, t1) -> updatePopUp());
         schemaMomentType.categoriesProperty().addListener((observableValue, o, t1) -> updatePopUp());
@@ -80,6 +78,25 @@ public class MomentTypeController implements Initializable {
            db.setContent(content);
            event.consume();
        });
+    }
+    private void setupContextMenu(){
+        MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
+        renameButton.setOnAction(actionEvent -> {
+            passInRenamingMode(true);
+        });
+        optionsMenu.getItems().add(renameButton);
+        MenuItem deleteButton = new MenuItem(Configuration.langBundle.getString("delete"));
+        deleteButton.setOnAction(actionEvent -> {
+            ToolBoxControllers.getToolBoxControllersInstance().removeMomentTypeCommand(schemaMomentType);
+        });
+        optionsMenu.getItems().add(deleteButton);
+        this.momentTypeBorderPane.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    passInRenamingMode(true);
+                }
+            }
+        });
     }
 
     private void updatePopUp() {
