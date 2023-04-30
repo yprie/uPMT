@@ -1,9 +1,12 @@
 package utils;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
+import javafx.scene.Node;
 import models.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.function.BiFunction;
 
@@ -20,9 +23,11 @@ public class GlobalVariables {
     private static Project project;
     private static String currentProjectPath;
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
-
-
-    private GlobalVariables() {}
+    public static NodeView nodeViews = new NodeView();
+    public  SimpleBooleanProperty isMomentSearchClicked;
+    private GlobalVariables() {
+        this.isMomentSearchClicked = new SimpleBooleanProperty(false);
+    }
 
     private void iterateOverSubMoment(Moment moment, HashSet result, BiFunction<Moment, HashSet, Void> computeMoment) {
         for (Moment subMoment: moment.momentsProperty()) {
@@ -30,7 +35,6 @@ public class GlobalVariables {
             iterateOverSubMoment(subMoment, result, computeMoment);
         }
     }
-
     public static GlobalVariables getGlobalVariables() {
         return globalVariables;
     }
