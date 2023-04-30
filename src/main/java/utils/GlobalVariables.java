@@ -24,7 +24,9 @@ public class GlobalVariables {
     private static String currentProjectPath;
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
     public static NodeView nodeViews = new NodeView();
+    public static ModelisationNavigator modelisationNavigator;
     public  SimpleBooleanProperty isMomentSearchClicked;
+
     private GlobalVariables() {
         this.isMomentSearchClicked = new SimpleBooleanProperty(false);
     }

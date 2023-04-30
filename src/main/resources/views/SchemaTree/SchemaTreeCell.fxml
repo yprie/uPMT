@@ -6,6 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 <BorderPane fx:id="container" prefHeight="30.0" prefWidth="176.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <left>
@@ -30,9 +32,16 @@
                 <Label fx:id="name" style="-fx-font-weight: bold; -fx-text-fill: black;" text="name"
                        BorderPane.alignment="CENTER"/>
             </left>
-            <padding>
-                <Insets left="10.0"/>
-            </padding>
+
+            <center>
+                <HBox fx:id="navigationBox">
+                    <padding>
+                        <Insets left="10.0"/>
+                    </padding>
+<!--                    <Button>&#60;</Button>-->
+<!--                    <Button>&#62;</Button>-->
+                </HBox>
+            </center>
             <right>
                 <BorderPane>
                     <left>

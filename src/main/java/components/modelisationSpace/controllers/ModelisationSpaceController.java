@@ -29,6 +29,7 @@ import javafx.stage.Modality;
 import models.RootMoment;
 import models.TemplateMoment;
 import utils.GlobalVariables;
+import utils.ModelisationNavigator;
 import utils.MomentSearch;
 import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
@@ -91,6 +92,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
                 showFindDialog();
             }
         });
+        GlobalVariables.modelisationNavigator = new ModelisationNavigator(this.superPane, this.anchorPane);
     }
 
     public void setRootMoment(RootMoment m) {
@@ -176,9 +178,6 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         this.superPane.setVvalue(y2 / height);
         //this.superPane.setVvalue(this.superPane.getVmax() * ((y - 0.5 * v) / (h - v)));
     }
-
-
-
 
 
     private void showFindDialog() {

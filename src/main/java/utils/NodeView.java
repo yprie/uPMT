@@ -3,6 +3,7 @@ package utils;
 import javafx.scene.Node;
 import models.Interview;
 import models.Moment;
+import models.SchemaCategory;
 
 import java.util.HashMap;
 
@@ -23,13 +24,21 @@ public class NodeView {
             this.nodeList.put(currentInterview, new InterviewNodes(moment, node));
         }
     }
-    public Node getNodeByMomentName(String name){
+
+    public Node getNodeByMomentName(String name) {
         return this.nodeList.get(globalVariables.getProject().getSelectedInterview()).getNodeByMomentName(name);
     }
-    public Moment getMomentByMomentName(String name){
+
+    public Moment getMomentByMomentName(String name) {
         return this.nodeList.get(globalVariables.getProject().getSelectedInterview()).getMomentByMomentName(name);
     }
-    public InterviewNodes getCurrentInterviewNodes(){
+
+    public Moment getInstanceByCategory(SchemaCategory schemaCategory, int index) {
+        return this.nodeList.get(this.globalVariables.getProject().getSelectedInterview())
+                .getInstanceByCategory(schemaCategory, index);
+    }
+
+    public InterviewNodes getCurrentInterviewNodes() {
         return this.nodeList.get(globalVariables.getProject().getSelectedInterview());
     }
 

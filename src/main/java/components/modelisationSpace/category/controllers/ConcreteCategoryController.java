@@ -188,5 +188,11 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     }
 
+    public Label getName() {
+        return name;
+    }
 
+    public void setName(Label name) {
+        this.name = name;
+    }
 }
