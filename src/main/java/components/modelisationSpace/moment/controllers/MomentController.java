@@ -61,7 +61,7 @@ public class MomentController extends ListViewController<Moment> implements Init
     @FXML private VBox categoryContainer;
     @FXML private AnchorPane momentBoundingBox;
     @FXML private TextArea commentArea;
-    @FXML HBox nameBox;
+    @FXML public HBox nameBox;
     @FXML private BorderPane momentBody;
     @FXML private ImageView collapseIcon;
     @FXML private HBox transitionBox;
