@@ -6,11 +6,13 @@
 <?import components.templateSpace.controllers.TemplateSpaceController?>
 
 
+<?import javafx.scene.layout.VBox?>
 <HBox fx:id="bodyToolBox" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/toolbox.css" HBox.hgrow="ALWAYS" maxWidth="Infinity">
     <!-- Icone "loupe" pour le moment -->
     <Button fx:id="addMomentTypeFolder" maxWidth="60" minWidth="60" maxHeight="60" minHeight="60"  stylesheets="/css/toolbox.css" xmlns:fx="http://javafx.com/fxml/1"/>
-
     <!-- New Moment -->
+    <VBox fx:id="searchMomentButton" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/toolbox.css" maxWidth="60" minWidth="60" maxHeight="60" minHeight="60">
+    </VBox>
     <TemplateSpaceController fx:id="templateSpaceController" xmlns:fx="http://javafx.com/fxml/1"/>
 
     <ScrollPane fx:id="scrollbarMomentTypes" vbarPolicy="NEVER" fitToWidth="true" fitToHeight="true" HBox.hgrow="ALWAYS">
