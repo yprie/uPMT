@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
@@ -27,6 +28,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import models.RootMoment;
@@ -34,6 +36,7 @@ import models.TemplateMoment;
 import utils.GlobalVariables;
 import utils.ModelisationNavigator;
 import utils.MomentSearch;
+import utils.SearchProperties;
 import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 
@@ -62,6 +65,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     private MomentSearchHandler previousButtonHandler;
     GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
     private MomentSearch searchResult;
+    private SearchProperties searchProperties;
 
     public ModelisationSpaceController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/modelisationSpace/ModelisationSpace.fxml"));
@@ -83,6 +87,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         super.initialize(location, resources);
         paneCmdFactory = new ScrollPaneCommandFactory(superPane);
         this.searchResult = new MomentSearch();
+        this.searchProperties = new SearchProperties();
         setupDragAndDrop();
         this.isSearchClicked = new SimpleBooleanProperty(false);
         globalVariables.isMomentSearchClicked = this.isSearchClicked;
@@ -191,7 +196,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         Dialog<String> dialog = new Dialog<>();
         dialog.initModality(Modality.WINDOW_MODAL);
         dialog.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
-        dialog.getDialogPane().setPrefWidth(450);
+        dialog.getDialogPane().setPrefWidth(750);
         dialog.setResizable(true);
         dialog.setTitle(Configuration.langBundle.getString("find_moment"));
         dialog.setHeaderText(Configuration.langBundle.getString("find_moment"));
@@ -212,6 +217,74 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         Label matchCountLabel = new Label();
         matchCountLabel.setVisible(false);
 
+        //Create the radios choices
+        // Create a ToggleGroup to ensure that only one radio button is selected at a time
+        ToggleGroup toggleGroup = new ToggleGroup();
+
+        // Create four RadioButtons and add them to the ToggleGroup
+        RadioButton moment_name_choice = new RadioButton(Configuration.langBundle.getString("moment_name"));
+        moment_name_choice.setToggleGroup(toggleGroup);
+        moment_name_choice.setOnAction(e -> {
+            if (moment_name_choice.isSelected()) {
+                this.searchProperties.setChoiceMomentName();
+                if (!findTextField.getText().isEmpty()) {
+                    this.launchSearch(findTextField.getText(), matchCountLabel);
+                }
+            }
+        });
+
+        RadioButton category_name_choice = new RadioButton(Configuration.langBundle.getString("category_name"));
+        category_name_choice.setToggleGroup(toggleGroup);
+        category_name_choice.setOnAction(e -> {
+            if (category_name_choice.isSelected()) {
+                this.searchProperties.setChoiceCategoryName();
+                if (!findTextField.getText().isEmpty()) {
+                    this.launchSearch(findTextField.getText(), matchCountLabel);
+                }
+            }
+        });
+
+        RadioButton property_name_choice = new RadioButton(Configuration.langBundle.getString("property_name"));
+        property_name_choice.setToggleGroup(toggleGroup);
+        property_name_choice.setOnAction(e -> {
+            if (property_name_choice.isSelected()) {
+                this.searchProperties.setChoicePropertyName();
+                if (!findTextField.getText().isEmpty()) {
+                    this.launchSearch(findTextField.getText(), matchCountLabel);
+                }
+            }
+        });
+
+        RadioButton property_value_choice = new RadioButton(Configuration.langBundle.getString("property_value"));
+        property_value_choice.setToggleGroup(toggleGroup);
+        property_value_choice.setOnAction(e -> {
+            if (property_value_choice.isSelected()) {
+                this.searchProperties.setChoicePropertyValue();
+                if (!findTextField.getText().isEmpty()) {
+                    this.launchSearch(findTextField.getText(), matchCountLabel);
+                }
+            }
+        });
+
+
+        RadioButton all_choice = new RadioButton(Configuration.langBundle.getString("all"));
+        all_choice.setToggleGroup(toggleGroup);
+        all_choice.setOnAction(e -> {
+            if (all_choice.isSelected()) {
+                this.searchProperties.setChoiceAll();
+                if (!findTextField.getText().isEmpty()) {
+                    this.launchSearch(findTextField.getText(), matchCountLabel);
+                }
+            }
+        });
+
+
+        Label choicesLabel = new Label(Configuration.langBundle.getString("search_in"));
+        // Create an HBox container and add the RadioButtons to it
+        HBox choicesHbox = new HBox(10); // 10 is the spacing between the controls
+        choicesHbox.setPadding(new Insets(10)); // Set some padding around the container
+        choicesHbox.getChildren().
+                addAll(choicesLabel, moment_name_choice, category_name_choice, property_name_choice, property_value_choice, all_choice);
         // Set up the grid pane
         HBox gridPane = new HBox();
         gridPane.setSpacing(15);
@@ -219,7 +292,12 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         gridPane.getChildren().add(findLabel);
         gridPane.getChildren().add(findTextField);
         gridPane.getChildren().add(matchCountLabel);
-        dialog.getDialogPane().setContent(gridPane);
+        //create vbox
+        VBox vBox = new VBox(20);
+        vBox.getChildren().add(choicesHbox);
+        vBox.getChildren().add(gridPane);
+
+        dialog.getDialogPane().setContent(vBox);
 
         Button findPreviousButton = (Button) dialog.getDialogPane().lookupButton(findPreviousButtonType);
         Button findNextButton = (Button) dialog.getDialogPane().lookupButton(findNextButtonType);
@@ -227,6 +305,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         //Init Buttons on disabled
         findNextButton.setDisable(true);
         findPreviousButton.setDisable(true);
+        moment_name_choice.fire();
 
 //        handle search result label
         findTextField.textProperty().addListener((obs, oldText, newText) -> {
@@ -276,7 +355,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
     }
 
     private void launchSearch(String query, Label matchCountLabel) {
-        this.searchResult.countOccurrences(query);
+        this.searchResult.countOccurrences(query, this.searchProperties);
         matchCountLabel.setVisible(true);
 
         matchCountLabel.textProperty().bind(Bindings.createStringBinding(() -> {
