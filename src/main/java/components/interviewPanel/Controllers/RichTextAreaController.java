@@ -80,6 +80,7 @@ public class RichTextAreaController {
                 showFindDialog(area);
             }
         });
+
     }
 
     private void showFindDialog(InlineCssTextArea richTextArea) {
@@ -88,8 +89,8 @@ public class RichTextAreaController {
         dialog.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         dialog.getDialogPane().setPrefWidth(450);
         dialog.setResizable(true);
-        dialog.setTitle(Configuration.langBundle.getString("find"));
-        dialog.setHeaderText(Configuration.langBundle.getString("find"));
+        dialog.setTitle(Configuration.langBundle.getString("find_text"));
+        dialog.setHeaderText(Configuration.langBundle.getString("find_text"));
         dialog.setResizable(false);
 
         // Set up the buttons
