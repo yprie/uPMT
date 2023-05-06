@@ -3,6 +3,8 @@ package utils;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
+import models.ConcreteCategory;
+import models.ConcreteProperty;
 import models.Moment;
 
 import java.util.ArrayList;
@@ -46,19 +48,79 @@ public class MomentSearch {
         this.searchResult.clear();
     }
 
-    public void countOccurrences(String search) {
+    public void countOccurrences(String search, SearchProperties searchProperties) {
         this.currentSearchWord = search;
         this.resetSearch();
         int count = 0;
         int lastIndex = 0;
         HashMap<Moment, Node> interviewNodes = GlobalVariables.nodeViews.getCurrentInterviewNodes().getInterviewNodesMap();
-
-        for (Moment moment : interviewNodes.keySet()) {
-            if(moment.getName().contains(search)){
-                this.searchResult.add(interviewNodes.get(moment)) ;
-                count++;
+        search=search.trim();
+        //by moment Name search
+        if (searchProperties.isMoment_name_choice()) {
+            for (Moment moment : interviewNodes.keySet()) {
+                if(this.searchResult.contains(interviewNodes.get(moment))){
+                    continue;
+                }
+                if (moment.getName().contains(search)) {
+                    this.searchResult.add(interviewNodes.get(moment));
+                    count++;
+                }
             }
         }
+        //By category name
+        if (searchProperties.isCategory_name_choice()) {
+            for (Moment moment : interviewNodes.keySet()) {
+                if(this.searchResult.contains(interviewNodes.get(moment))){
+                    continue;
+                }
+                for (ConcreteCategory category : moment.getCategories()) {
+                    if ((!this.searchResult.contains(interviewNodes.get(moment))) && category.getSchemaCategory().getName().contains(search)) {
+                        this.searchResult.add(interviewNodes.get(moment));
+                        count++;
+                        break;//because we return all moment that have atleast one category with matching name
+                    }
+                }
+            }
+        }
+
+        //By property names
+        if (searchProperties.isProperty_name_choice()) {
+            for (Moment moment : interviewNodes.keySet()) {
+                if(this.searchResult.contains(interviewNodes.get(moment))){
+                    continue;
+                }
+                for (ConcreteCategory category : moment.getCategories()) {
+                    for (ConcreteProperty property : category.propertiesProperty()) {
+                        if ((!this.searchResult.contains(interviewNodes.get(moment))) && property.getName().contains(search)) {
+                            this.searchResult.add(interviewNodes.get(moment));
+                            count++;
+                            break;//because we return all moment that have atleast one category with matching name
+                        }
+                    }
+
+                }
+            }
+        }
+
+        //By property Values
+        if (searchProperties.isProperty_value_choice()) {
+            for (Moment moment : interviewNodes.keySet()) {
+                if(this.searchResult.contains(interviewNodes.get(moment))){
+                    continue;
+                }
+                for (ConcreteCategory category : moment.getCategories()) {
+                    for (ConcreteProperty property : category.propertiesProperty()) {
+                        if ((!this.searchResult.contains(interviewNodes.get(moment))) && property.getValue().contains(search)) {
+                            this.searchResult.add(interviewNodes.get(moment));
+                            count++;
+                            break;//because we return all moment that have atleast one category with matching name
+                        }
+                    }
+
+                }
+            }
+        }
+
 
         this.resultCount.set(count);
     }

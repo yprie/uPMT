@@ -33,21 +33,28 @@
                        BorderPane.alignment="CENTER"/>
             </left>
 
-            <center>
-                <HBox fx:id="navigationBox">
-                    <padding>
-                        <Insets left="10.0"/>
-                    </padding>
-<!--                    <Button>&#60;</Button>-->
-<!--                    <Button>&#62;</Button>-->
-                </HBox>
-            </center>
-            <right>
-                <BorderPane>
+<!--            <center>-->
+<!--                <HBox fx:id="navigationBox">-->
+<!--                    <padding>-->
+<!--                        <Insets left="10.0"/>-->
+<!--                    </padding>-->
+
+<!--                </HBox>-->
+<!--            </center>-->
+            <right >
+                <BorderPane fx:id="usesSection">
                     <left>
+                        <HBox fx:id="navigationBox" BorderPane.alignment="CENTER">
+                            <padding>
+                                <Insets left="10.0"/>
+                            </padding>
+
+                        </HBox>
+                    </left>
+                    <center>
                         <Label fx:id="usesPerInterview" style="-fx-text-fill: black;"
                                BorderPane.alignment="CENTER_LEFT"/>
-                    </left>
+                    </center>
                     <right>
                         <Label fx:id="complementaryInfo" style="-fx-text-fill: black;" BorderPane.alignment="CENTER"/>
                     </right>
