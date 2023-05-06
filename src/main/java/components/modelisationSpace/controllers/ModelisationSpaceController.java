@@ -11,6 +11,7 @@ import components.modelisationSpace.moment.controllers.RootMomentController;
 import components.modelisationSpace.search.MomentSearchHandler;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
@@ -34,6 +37,8 @@ import utils.MomentSearch;
 import utils.dragAndDrop.DragStore;
 import utils.scrollOnDragPane.ScrollOnDragPane;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -93,6 +98,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
             }
         });
         GlobalVariables.modelisationNavigator = new ModelisationNavigator(this.superPane, this.anchorPane);
+
     }
 
     public void setRootMoment(RootMoment m) {
@@ -187,8 +193,8 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         dialog.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         dialog.getDialogPane().setPrefWidth(450);
         dialog.setResizable(true);
-        dialog.setTitle(Configuration.langBundle.getString("find"));
-        dialog.setHeaderText(Configuration.langBundle.getString("find"));
+        dialog.setTitle(Configuration.langBundle.getString("find_moment"));
+        dialog.setHeaderText(Configuration.langBundle.getString("find_moment"));
         dialog.setResizable(false);
 
         // Set up the buttons
@@ -225,23 +231,21 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
 //        handle search result label
         findTextField.textProperty().addListener((obs, oldText, newText) -> {
             if (!newText.isEmpty()) {
-                this.searchResult.countOccurrences(newText);
-                matchCountLabel.setVisible(true);
-
-                matchCountLabel.textProperty().bind(Bindings.createStringBinding(() -> {
-                    String s = "";
-                    int resultCount = this.searchResult.getResultCount();
-                    s += resultCount + " ";
-                    s += Configuration.langBundle.getString("matches_found") + ".";
-                    return s;
-                }, this.searchResult.resultCountProperty()));
+                this.launchSearch(newText, matchCountLabel);
             } else {
                 this.searchResult.resetSearch();
                 matchCountLabel.setVisible(false);
             }
 
         });
-
+        //If we changed the interview and the panel is open we just relaunch the search on the new one
+        GlobalVariables.getGlobalVariables().getProject().selectedInterviewProperty().addListener(
+                (obs, oldProject, newProject) -> {
+                    if (!findTextField.getText().isEmpty()) {
+                        this.launchSearch(findTextField.getText(), matchCountLabel);
+                    }
+                }
+        );
 
         //Handle buttons disabled property listeners
         this.searchResult.resultCountProperty().addListener((obs, oldCount, newCount) -> {
@@ -269,6 +273,19 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
         });
         dialog.show();
         dialog.getDialogPane().toFront();
+    }
+
+    private void launchSearch(String query, Label matchCountLabel) {
+        this.searchResult.countOccurrences(query);
+        matchCountLabel.setVisible(true);
+
+        matchCountLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int resultCount = this.searchResult.getResultCount();
+            s += resultCount + " ";
+            s += Configuration.langBundle.getString("matches_found") + ".";
+            return s;
+        }, this.searchResult.resultCountProperty()));
     }
 
 }
