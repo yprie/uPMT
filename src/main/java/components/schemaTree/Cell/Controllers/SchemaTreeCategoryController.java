@@ -268,7 +268,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             String s = "";
             int currentInterviewUses = this.category.getCurrentInterviewUses();
             if (currentInterviewUses > 0) {
-                s = Configuration.langBundle.getString("navigation_tooltip") + (this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1);
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1 + " " + Configuration.langBundle.getString("navigation_tooltip_interview"));
             }
             return s;
 
@@ -277,7 +277,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             String s = "";
             int currentInterviewUses = this.category.getCurrentInterviewUses();
             if (currentInterviewUses > 0) {
-                s = Configuration.langBundle.getString("navigation_tooltip") + (this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1);
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1) + " " + Configuration.langBundle.getString("navigation_tooltip_interview");
             }
             return s;
 
