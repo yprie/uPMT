@@ -133,10 +133,14 @@ public class RichTextAreaController {
                 matchCountLabel.textProperty().bind(Bindings.createStringBinding(() -> {
                     String s = "";
                     int resultCount = this.searchResult.getResultCount();
+                    int currentIndex = this.searchResult.getCurrentSearchIndex();
+                    if (currentIndex >= 0) {
+                        s += "#" + (currentIndex + 1) + "/";
+                    }
                     s += resultCount + " ";
-                    s += Configuration.langBundle.getString("matches_found") + ".";
+                    s += Configuration.langBundle.getString("matches_found");
                     return s;
-                }, this.searchResult.resultCountProperty()));
+                }, this.searchResult.resultCountProperty(),this.searchResult.getCurrentSearchIndexProperty()));
             } else {
                 this.searchResult.resetSearch();
                 matchCountLabel.setVisible(false);

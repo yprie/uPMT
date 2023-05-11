@@ -12,16 +12,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import models.ConcreteCategory;
-import models.Moment;
-import models.SchemaCategory;
-import models.SchemaProperty;
+import models.*;
 import utils.GlobalVariables;
 import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class SchemaTreeCategoryController extends SchemaTreeCellController {
@@ -64,8 +62,20 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         this.navigationBox.getChildren().add(this.rightNavigation);
         this.navigationBox.setPadding(new Insets(7.5, 0, 0, 0));
 
-        this.complementaryInfoTooltip = new Tooltip(Configuration.langBundle.getString("complementary_info_toolbox"));
-//        this.complementaryInfoTooltip = new Tooltip("Navigate to nb : "+(Math.floorMod(this.currentNavigationIndex - 1, this.category.getCurrentInterviewUses())+1));
+        //this.complementaryInfoTooltip = new Tooltip(Configuration.langBundle.getString("complementary_info_toolbox"));
+        this.complementaryInfoTooltip = new Tooltip();
+        this.complementaryInfoTooltip.textProperty().bind(Bindings.createStringBinding(() -> {
+            StringBuilder s = new StringBuilder();
+            HashMap<Interview, Integer> usesMap = this.category.getUsesMap();
+            for (Interview interview : usesMap.keySet()) {
+                if (usesMap.get(interview) > 0) {
+                    s.append(usesMap.get(interview)).append(" ").append(Configuration.langBundle.getString(usesMap.get(interview) == 1 ? "use" : "uses")).append(" -> ").append(interview.getTitle()).append("\n");
+                }
+            }
+            return s.toString();
+
+        }, this.category.currentInterviewUsesProperty()));
+        //        this.complementaryInfoTooltip = new Tooltip("Navigate to nb : "+(Math.floorMod(this.currentNavigationIndex - 1, this.category.getCurrentInterviewUses())+1));
 
         complementaryInfoTooltip.setShowDelay(new Duration(0));
         this.complementaryInfo.setTooltip(complementaryInfoTooltip);
@@ -268,7 +278,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             String s = "";
             int currentInterviewUses = this.category.getCurrentInterviewUses();
             if (currentInterviewUses > 0) {
-                s = Configuration.langBundle.getString("navigation_tooltip") + (this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1);
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1 + " " + Configuration.langBundle.getString("navigation_tooltip_interview"));
             }
             return s;
 
@@ -277,7 +287,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             String s = "";
             int currentInterviewUses = this.category.getCurrentInterviewUses();
             if (currentInterviewUses > 0) {
-                s = Configuration.langBundle.getString("navigation_tooltip") + (this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1);
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1) + " " + Configuration.langBundle.getString("navigation_tooltip_interview");
             }
             return s;
 

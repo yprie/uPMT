@@ -205,4 +205,8 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         this.nbUsesInInterviews.putIfAbsent(t1, 0);
         this.currentInterviewUses.set(this.nbUsesInInterviews.get(t1));
     };
+
+    public HashMap<Interview, Integer> getUsesMap() {
+        return this.nbUsesInInterviews;
+    }
 }
