@@ -3,6 +3,7 @@ package utils;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SearchResult {
     private String textContent;
@@ -45,6 +46,8 @@ public class SearchResult {
     }
 
     public void countOccurrences(String text, String search) {
+        search = search.trim().toUpperCase(Locale.ROOT);
+        text = text.trim().toUpperCase(Locale.ROOT);
         this.currentSearchWord = search;
         this.resetSearch();
         int count = 0;
@@ -89,6 +92,14 @@ public class SearchResult {
 
     public boolean isEmpty() {
         return this.resultCount.get() == 0;
+    }
+
+    public int getCurrentSearchIndex() {
+        return this.resultPosition.get();
+    }
+
+    public SimpleIntegerProperty getCurrentSearchIndexProperty() {
+        return this.resultPosition;
     }
 
 }
