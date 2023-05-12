@@ -176,6 +176,7 @@ public class RichTextAreaController {
             this.searchResult.resetSearch();
         });
         dialog.show();
+        findTextField.requestFocus();
     }
 
 
