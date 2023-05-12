@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -56,9 +57,12 @@ public class InterviewTextController implements Initializable {
     private InterviewTextCommandFactory interviewTextCommandFactory;
     private RichTextAreaController richTextAreaController;
     private SearchToolController searchToolController;
+    private PoliceSizeController increaseSizeController;
+    private PoliceSizeController decreaseSizeController;
     private final Interview interview;
     private Pane paneDragText;
     private SimpleBooleanProperty isSearchClicked;
+    private SimpleIntegerProperty fontSize;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
@@ -87,7 +91,9 @@ public class InterviewTextController implements Initializable {
         annotationColorList.add(new AnnotationColor("blue", "#7084B0"));
         annotationColorList.add(new AnnotationColor("green", "#7BCF7B"));
         this.isSearchClicked = new SimpleBooleanProperty(false);
-        richTextAreaController = new RichTextAreaController(interview.getInterviewText(), annotationColorList, isSearchClicked);
+        this.fontSize = new SimpleIntegerProperty(1);
+        richTextAreaController = new RichTextAreaController(interview.getInterviewText(), annotationColorList,
+                isSearchClicked, fontSize);
 
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
@@ -115,6 +121,10 @@ public class InterviewTextController implements Initializable {
         toolBarController.setSelectedToolProperty(selectionToolController);
         hboxAnnotation.getChildren().add(toolBarController);
         searchToolController = new SearchToolController(hboxAnnotation.getChildren(), isSearchClicked);
+        this.increaseSizeController = new PoliceSizeController(
+                hboxAnnotation.getChildren(), fontSize, PoliceSizeController.FontAction.INCREASE);
+        this.increaseSizeController = new PoliceSizeController(
+                hboxAnnotation.getChildren(), fontSize, PoliceSizeController.FontAction.DECREASE);
 
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
