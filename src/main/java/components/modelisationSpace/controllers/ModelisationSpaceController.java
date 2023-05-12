@@ -346,6 +346,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
             this.searchResult.resetSearch();
         });
         dialog.show();
+        findTextField.requestFocus();
         dialog.getDialogPane().toFront();
     }
 

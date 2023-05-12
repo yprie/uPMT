@@ -77,9 +77,11 @@ public class MomentSearch {
                 }
                 for (ConcreteCategory category : moment.getCategories()) {
                     if ((!this.searchResult.contains(interviewNodes.get(moment))) && category.getSchemaCategory().getName().trim().toUpperCase(Locale.ROOT).contains(search)) {
-                        this.searchResult.add(interviewNodes.get(moment));
+                        //this.searchResult.add(interviewNodes.get(moment));
+                        this.searchResult.add(category.getController().getName());
                         count++;
-                        break;//because we return all moment that have atleast one category with matching name
+                        //because we return all moment that have atleast one category with matching name
+                        break;
                     }
                 }
             }
@@ -94,9 +96,11 @@ public class MomentSearch {
                 for (ConcreteCategory category : moment.getCategories()) {
                     for (ConcreteProperty property : category.propertiesProperty()) {
                         if ((!this.searchResult.contains(interviewNodes.get(moment))) && property.getName().trim().toUpperCase(Locale.ROOT).contains(search)) {
-                            this.searchResult.add(interviewNodes.get(moment));
+                            //this.searchResult.add(interviewNodes.get(moment));
+                            this.searchResult.add(property.getController().getName());
                             count++;
-                            break;//because we return all moment that have atleast one category with matching name
+                            //because we return all moment that have atleast one category with matching name
+                            break;
                         }
                     }
 
@@ -110,9 +114,11 @@ public class MomentSearch {
                 for (ConcreteCategory category : moment.getCategories()) {
                     for (ConcreteProperty property : category.propertiesProperty()) {
                         if ((!this.searchResult.contains(interviewNodes.get(moment))) && property.getValue().trim().toUpperCase(Locale.ROOT).contains(search)) {
-                            this.searchResult.add(interviewNodes.get(moment));
+                            //this.searchResult.add(interviewNodes.get(moment));
+                            this.searchResult.add(property.getController().getValue());
                             count++;
-                            break;//because we return all moment that have atleast one category with matching name
+                            //because we return all moment that have atleast one category with matching name
+                            break;
                         }
                     }
 
