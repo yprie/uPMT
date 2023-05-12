@@ -177,5 +177,11 @@ public class ConcretePropertyController extends ListViewController<ConcretePrope
         renamingMode = false;
     }
 
+    public Label getName() {
+        return name;
+    }
 
+    public Label getValue() {
+        return value;
+    }
 }

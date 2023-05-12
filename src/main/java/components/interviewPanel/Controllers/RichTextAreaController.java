@@ -2,11 +2,13 @@ package components.interviewPanel.Controllers;
 
 import application.configuration.Configuration;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
+import components.interviewPanel.ToolBar.tools.Controllers.PoliceSizeController;
 import components.interviewPanel.search.ButtonSearchType;
 import components.interviewPanel.search.SearchButtonHandler;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static utils.GlobalVariables.getGlobalVariables;
 
@@ -46,12 +50,16 @@ public class RichTextAreaController {
     private final List<AnnotationColor> annotationColorList;
     private SearchResult searchResult;
     private SimpleBooleanProperty isSearchClicked;
+    private SimpleIntegerProperty fontSize;
 
-    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList, SimpleBooleanProperty isSearchClicked) {
+
+    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList,
+                                  SimpleBooleanProperty isSearchClicked, SimpleIntegerProperty fontSize) {
         this.interviewText = interviewText;
         this.annotationColorList = annotationColorList;
         this.isSearchClicked = isSearchClicked;
         userSelection = new SimpleObjectProperty<>();
+        this.fontSize = fontSize;
         area = new InlineCssTextArea();
         area.setWrapText(true);
         area.setEditable(false);
@@ -78,6 +86,23 @@ public class RichTextAreaController {
         this.isSearchClicked.addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 showFindDialog(area);
+            }
+        });
+        this.fontSize.addListener((obs, oldValue, newValue) -> {
+            String currentStyle = this.area.getStyle();
+
+            // Extract the font size from the style using regular expressions
+            Pattern pattern = Pattern.compile("-fx-font-size: (\\d+)em;");
+            Matcher matcher = pattern.matcher(currentStyle);
+            if (matcher.find()) {
+                // Extract the font size as an integer
+                int currentFontSize = newValue.intValue();
+                // Update the style with the new font size
+                String newStyle = currentStyle.replaceAll("-fx-font-size: \\d+em;", "-fx-font-size: " + currentFontSize + "em;");
+                this.area.setStyle(newStyle);
+            } else {
+                // If the pattern doesn't match, set the font size to the default value (12 px in this example)
+                this.area.setStyle(currentStyle+"\n-fx-font-size: "+this.fontSize.get()+"em;\n");
             }
         });
 
@@ -140,7 +165,7 @@ public class RichTextAreaController {
                     s += resultCount + " ";
                     s += Configuration.langBundle.getString("matches_found");
                     return s;
-                }, this.searchResult.resultCountProperty(),this.searchResult.getCurrentSearchIndexProperty()));
+                }, this.searchResult.resultCountProperty(), this.searchResult.getCurrentSearchIndexProperty()));
             } else {
                 this.searchResult.resetSearch();
                 matchCountLabel.setVisible(false);
@@ -176,6 +201,7 @@ public class RichTextAreaController {
             this.searchResult.resetSearch();
         });
         dialog.show();
+        findTextField.requestFocus();
     }
 
 
