@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class ComparisonView extends Application {
 
-    private ObservableList<String> selectionInterviews;
+    private final ObservableList<String> selectionInterviews;
 
     public ComparisonView(ObservableList<String> selectionInterviews){
         this.selectionInterviews = selectionInterviews;
