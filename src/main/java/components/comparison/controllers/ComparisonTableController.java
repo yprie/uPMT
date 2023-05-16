@@ -1,7 +1,11 @@
 package components.comparison.controllers;
 
 import application.configuration.Configuration;
+import application.history.HistoryManager;
 import components.comparison.*;
+import components.comparison.appCommands.AddColumnCommand;
+import components.comparison.appCommands.DelColumnCommand;
+import components.comparison.appCommands.MoveColumnCommand;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,7 +16,11 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -20,6 +28,7 @@ import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
 //import javax.swing.event.ChangeListener;
+import java.beans.EventHandler;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -30,8 +39,7 @@ import utils.GlobalVariables;
 
 public class ComparisonTableController implements Initializable {
 
-    @FXML
-    private VBox table;
+    private @FXML VBox table;
     private ComparisonTable comparisonTable;
     private ObservableList<String> selectionInterviews;
 
@@ -44,12 +52,32 @@ public class ComparisonTableController implements Initializable {
         initialize(null, null);
     }
 
+    public void undo() {
+        HistoryManager.goBack();
+    }
+
+    public void redo() {
+        HistoryManager.goForward();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+        final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+        //set the undo method to the undo keyCombination
+        table.setOnKeyPressed(event -> {
+            if (keyCombUNDO.match(event)) {
+                undo();
+            }
+            if (keyCombREDO.match(event)) {
+                redo();
+            }
+        });
         fillTable(this.selectionInterviews);
-        Platform.runLater(this::bindScroll);
-        Platform.runLater(this::setColumnsSizesToBiggest);
-        //Platform.runLater(this::updateColumnsSizes);
+        Platform.runLater(() -> {
+            bindScroll();
+            setColumnsSizesToBiggest();
+        });
 
     }
 
@@ -76,8 +104,9 @@ public class ComparisonTableController implements Initializable {
                 fillLines(b, tv);
 
                 //add empty columns at the end if it's shorter than the bigger interview
-                addToBalance(tv, this.comparisonTable.getMaxTableLength());
+                completeTable(tv, this.comparisonTable.getMaxTableLength());
                 setListener(tv); //allow to display the context menu
+                movingColumnListener(tv); //allow to know when a column is moved
                 updateColumnsSizes();
 
                 int numRows = tv.getItems().size();
@@ -162,6 +191,20 @@ public class ComparisonTableController implements Initializable {
     }
 
 
+    ///////////////////////////// MOVING COLUMNS /////////////////////////////
+    //to improve, doesn't work well
+    public void movingColumnListener(TableView<List<StringProperty>> tv){
+        tv.setOnDragDone(event -> {
+            if (event.getGestureSource() instanceof TableColumnHeader) {
+                TableColumnHeader source = (TableColumnHeader) event.getGestureSource();
+                TableColumnHeader target = (TableColumnHeader) event.getGestureTarget();
+                int fromIndex = tv.getColumns().indexOf(source.getTableColumn());
+                int toIndex = tv.getColumns().indexOf(target.getTableColumn());
+                MoveColumnCommand moveColumnCommand = new MoveColumnCommand(tv, fromIndex, toIndex);
+                HistoryManager.addCommand(moveColumnCommand, true);
+            }
+        });
+    }
     ///////////////////////////// CONTEXT MENU /////////////////////////////
     public void setContextMenu(TableView<List<StringProperty>> tv, int columnIndex, ContextMenuEvent event) {
         // Create the pop-up menu
@@ -208,17 +251,12 @@ public class ComparisonTableController implements Initializable {
 
     public void addColumn(int idx, TableView<List<StringProperty>> tv){
         // Handle "Add Column After" action here
-        TableColumn<List<StringProperty>, StringProperty> tc = new TableColumn<>("                  ");
-        tv.getColumns().add(idx, tc);
-        tv.getColumns().get(idx).setSortable(false);
-        setListener(tc);
-        //then add columns at the end of the other tables for balance
+        AddColumnCommand addColumnCommand = new AddColumnCommand(idx, tv, getTables());
+        HistoryManager.addCommand(addColumnCommand, true);
+        setListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(idx));
         for (TableView<List<StringProperty>> tableView : getTables()){
             if (tableView != tv){
-                TableColumn<List<StringProperty>, StringProperty> column = new TableColumn<>("                  ");
-                tableView.getColumns().add(column);
-                tv.getColumns().get(tv.getColumns().size() - 1).setSortable(false);
-                setListener(column);
+                setListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(tv.getColumns().size() - 1));
             }
         }
         setColumnsSizesToBiggest();
@@ -227,32 +265,13 @@ public class ComparisonTableController implements Initializable {
 
     public void deleteColumn(int idx, TableView<List<StringProperty>> tv){
         //delete column on right click
-        System.out.println(tv.getColumns().get(idx).getText());
-        tv.getColumns().remove(idx);
-        List<Boolean> easy_balance = new ArrayList<>();
-        //check if the last column of other tables is empty
-        for (TableView<?> tableView : getTables()){
-            if (tableView != tv){
-                if (tableView.getColumns().get(tableView.getColumns().size() - 1).getText().equals("                  ")){
-                    easy_balance.add(false);
-                    System.out.println("false");
-                } else {
-                    easy_balance.add(true);
-                    System.out.println("true");
-                }
-            }
-        }
-        if (easy_balance.contains(true)){
-            tv.getColumns().add(new TableColumn<>("                  "));
-        }
-        else {
-            delToBalance(tv);
-        }
-        setColumnsSizesToBiggest();
+        DelColumnCommand delColumnCommand = new DelColumnCommand(idx, tv, getTables());
+        HistoryManager.addCommand(delColumnCommand, true);
+        updateColumnsSizes();
     }
 
 
-    public void addToBalance(TableView<List<StringProperty>> tv, int length){
+    public void completeTable(TableView<List<StringProperty>> tv, int length){
         int actualLength = tv.getColumns().size();
         length += 2; //add 2 because we have the interview name and the legend;
         if (actualLength < length){
@@ -260,13 +279,6 @@ public class ComparisonTableController implements Initializable {
                 TableColumn<List<StringProperty>, StringProperty> tc = new TableColumn<>("                  ");
                 tv.getColumns().add(tc);
                 setListener(tc);
-            }
-        }
-    }
-    public void delToBalance(TableView<List<StringProperty>> tv){
-        for (TableView<?> tableView : getTables()){
-            if (tableView != tv) {
-                tableView.getColumns().remove(tableView.getColumns().size() - 1);
             }
         }
     }
