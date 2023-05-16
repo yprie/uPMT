@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
 <VBox fx:id="table" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
-
-
+    <padding>
+        <Insets bottom="20.0" />
+    </padding>
+    <Button id="ExcelExport" fx:id="excelExportButton" mnemonicParsing="false" onAction="#exportToExcel" prefHeight="27.0" prefWidth="98.0" styleClass="button-gray" text="%export">
+        <font>
+            <Font size="18.0" />
+        </font>
+        <HBox.margin>
+            <Insets bottom="20.0" />
+        </HBox.margin>
+    </Button>
 </VBox>
 
 
