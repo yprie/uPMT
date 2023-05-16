@@ -1,10 +1,7 @@
 package components.comparison.controllers;
 
 import application.configuration.Configuration;
-import components.comparison.ComparisonTable;
-import components.comparison.ComparisonView;
-import components.comparison.block;
-import components.comparison.line;
+import components.comparison.*;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,30 +12,36 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
 //import javax.swing.event.ChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import persistency.Export.*;
+import utils.GlobalVariables;
 
 public class ComparisonTableController implements Initializable {
 
     @FXML
     private VBox table;
+    private ComparisonTable comparisonTable;
     private ObservableList<String> selectionInterviews;
 
     private ArrayList<Double> columnsWidth = new ArrayList<>();
+    private Stage comparisonStage;
 
     public ComparisonTableController(ObservableList<String> selectionInterviews) {
         this.table = new VBox();
         this.selectionInterviews = selectionInterviews;
         initialize(null, null);
-
     }
 
     @Override
@@ -46,7 +49,7 @@ public class ComparisonTableController implements Initializable {
         fillTable(this.selectionInterviews);
         Platform.runLater(this::bindScroll);
         Platform.runLater(this::setColumnsSizesToBiggest);
-        Platform.runLater(this::updateColumnsSizes);
+        //Platform.runLater(this::updateColumnsSizes);
 
     }
 
@@ -55,14 +58,13 @@ public class ComparisonTableController implements Initializable {
     //remplit la table avec les données
     public void fillTable(ObservableList<String> selectionInterviews) {
         try {
-            ComparisonTable ct = new ComparisonTable(selectionInterviews);
+            this.comparisonTable = new ComparisonTable(selectionInterviews);
 
             //create table for each interview, we will fill them then
-            for (block b : ct.getBlocks()){
+            for (block b : this.comparisonTable.getBlocks()){
                 TableView<List<StringProperty>> tv = new TableView<>();
                 tv.setPrefWidth(1000);
                 tv.setId(b.getTitle());
-                addColumn(tv); //allow to add empty columns
                 hideScroll(tv);
 
                 this.table.getChildren().add(tv);
@@ -74,7 +76,9 @@ public class ComparisonTableController implements Initializable {
                 fillLines(b, tv);
 
                 //add empty columns at the end if it's shorter than the bigger interview
-                addEmptyColumns(tv, ct.getMaxTableLength());
+                addToBalance(tv, this.comparisonTable.getMaxTableLength());
+                setListener(tv); //allow to display the context menu
+                updateColumnsSizes();
 
                 int numRows = tv.getItems().size();
                 tv.setFixedCellSize(24);
@@ -151,88 +155,127 @@ public class ComparisonTableController implements Initializable {
     }
 
     public void displayTable() throws IOException {
-        Stage comparisonStage = new Stage();
-        comparisonStage.setTitle(Configuration.langBundle.getString("comparison_table"));
+        this.comparisonStage = new Stage();
+        this.comparisonStage.setTitle(Configuration.langBundle.getString("comparison_table"));
         ComparisonView comparisonView = new ComparisonView(this.selectionInterviews);
-        comparisonView.start(comparisonStage);
+        comparisonView.start(this.comparisonStage);
     }
 
 
     ///////////////////////////// CONTEXT MENU /////////////////////////////
-    public void addColumn(TableView<List<StringProperty>> tv) {// Create the pop-up menu
+    public void setContextMenu(TableView<List<StringProperty>> tv, int columnIndex, ContextMenuEvent event) {
+        // Create the pop-up menu
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem addColumnBeforeItem = new MenuItem("Add Column Before");
+        MenuItem addColumnAfterItem = new MenuItem("Add Column After");
+        MenuItem deleteColumnItem = new MenuItem("Delete Column");
+        contextMenu.getItems().addAll(addColumnBeforeItem, addColumnAfterItem, deleteColumnItem);
+
+        // Set action listeners for the menu items
+        addColumnBeforeItem.setOnAction(addColumnBeforeEvent -> {
+            this.addColumn(columnIndex, tv);
+        });
+
+        addColumnAfterItem.setOnAction(addColumnAfterEvent -> {
+            this.addColumn(columnIndex + 1, tv);
+        });
+
+        deleteColumnItem.setOnAction(deleteColumnEvent -> {
+            this.deleteColumn(columnIndex, tv);
+        });
+
+        contextMenu.show(tv, event.getScreenX(), event.getScreenY());
+    }
+    public void setListener(TableView<List<StringProperty>> tv) {// Create the pop-up menu
         // Set the pop-up menu to show on a right-click event on the table header
-        tv.setOnContextMenuRequested(event -> {
-            double x = event.getX();
-            int columnIndex = -1;
-            double width = 0;
-            for (TableColumn<?, ?> column : tv.getColumns()) {
-                width += column.getWidth();
-                if (width > x) {
-                    columnIndex = tv.getColumns().indexOf(column);
-                    break;
-                }
-            }
-
-            if (columnIndex >= 0) {
-                int finalColumnIndex = columnIndex;
-                // Create the pop-up menu
-                ContextMenu contextMenu = new ContextMenu();
-                MenuItem addColumnBeforeItem = new MenuItem("Add Column Before");
-                MenuItem addColumnAfterItem = new MenuItem("Add Column After");
-                contextMenu.getItems().addAll(addColumnBeforeItem, addColumnAfterItem);
-
-                // Set action listeners for the menu items
-                addColumnBeforeItem.setOnAction(addColumnBeforeEvent -> {
-                    // Handle "Add Column Before" action here
-                    tv.getColumns().add(finalColumnIndex, new TableColumn<>("                  "));
-                    tv.getColumns().get(finalColumnIndex).setSortable(false);
-                    //then add columns at the end of the other tables for balance
-                    for (TableView<?> tableView : getTables()){
-                        if (tableView != tv){
-                            tableView.getColumns().add(new TableColumn<>("                  "));
-                            tv.getColumns().get(tv.getColumns().size() - 1).setSortable(false);
-                        }
-                    }
-                    setColumnsSizesToBiggest();
-                    updateColumnsSizes();
-                });
-
-                addColumnAfterItem.setOnAction(addColumnAfterEvent -> {
-                    // Handle "Add Column After" action here
-                    tv.getColumns().add(finalColumnIndex + 1, new TableColumn<>("                  "));
-                    tv.getColumns().get(finalColumnIndex).setSortable(false);
-                    //then add columns at the end of the other tables for balance
-                    for (TableView<?> tableView : getTables()){
-                        if (tableView != tv){
-                            tableView.getColumns().add(new TableColumn<>("                  "));
-                            tv.getColumns().get(tv.getColumns().size() - 1).setSortable(false);
-                        }
-                    }
-                    setColumnsSizesToBiggest();
-                    updateColumnsSizes();
-
-                });
-
-                contextMenu.show(tv, event.getScreenX(), event.getScreenY());
-            }
+        for (TableColumn<?, ?> column : tv.getColumns()) {
+            column.setGraphic(new Label(column.getText()));
+            column.setContextMenu(new ContextMenu());
+            column.getGraphic().setOnContextMenuRequested(event -> {
+                int columnIndex = tv.getColumns().indexOf(column);
+                setContextMenu(tv, columnIndex, event);
+            });
+        }
+    }
+    public void setListener(TableColumn<List<StringProperty>, StringProperty> tc){
+        tc.setGraphic(new Label(tc.getText()));
+        tc.setContextMenu(new ContextMenu());
+        tc.getGraphic().setOnContextMenuRequested(event -> {
+            int columnIndex = tc.getTableView().getColumns().indexOf(tc);
+            setContextMenu(tc.getTableView(), columnIndex, event);
         });
     }
 
-    public void addEmptyColumns(TableView<List<StringProperty>> tv, int length){
+    public void addColumn(int idx, TableView<List<StringProperty>> tv){
+        // Handle "Add Column After" action here
+        TableColumn<List<StringProperty>, StringProperty> tc = new TableColumn<>("                  ");
+        tv.getColumns().add(idx, tc);
+        tv.getColumns().get(idx).setSortable(false);
+        setListener(tc);
+        //then add columns at the end of the other tables for balance
+        for (TableView<List<StringProperty>> tableView : getTables()){
+            if (tableView != tv){
+                TableColumn<List<StringProperty>, StringProperty> column = new TableColumn<>("                  ");
+                tableView.getColumns().add(column);
+                tv.getColumns().get(tv.getColumns().size() - 1).setSortable(false);
+                setListener(column);
+            }
+        }
+        setColumnsSizesToBiggest();
+        updateColumnsSizes();
+    }
+
+    public void deleteColumn(int idx, TableView<List<StringProperty>> tv){
+        //delete column on right click
+        System.out.println(tv.getColumns().get(idx).getText());
+        tv.getColumns().remove(idx);
+        List<Boolean> easy_balance = new ArrayList<>();
+        //check if the last column of other tables is empty
+        for (TableView<?> tableView : getTables()){
+            if (tableView != tv){
+                if (tableView.getColumns().get(tableView.getColumns().size() - 1).getText().equals("                  ")){
+                    easy_balance.add(false);
+                    System.out.println("false");
+                } else {
+                    easy_balance.add(true);
+                    System.out.println("true");
+                }
+            }
+        }
+        if (easy_balance.contains(true)){
+            tv.getColumns().add(new TableColumn<>("                  "));
+        }
+        else {
+            delToBalance(tv);
+        }
+        setColumnsSizesToBiggest();
+    }
+
+
+    public void addToBalance(TableView<List<StringProperty>> tv, int length){
         int actualLength = tv.getColumns().size();
         length += 2; //add 2 because we have the interview name and the legend;
         if (actualLength < length){
             for (int i = 0; i < length - actualLength; i++){
-                tv.getColumns().add(new TableColumn<>("                  "));
+                TableColumn<List<StringProperty>, StringProperty> tc = new TableColumn<>("                  ");
+                tv.getColumns().add(tc);
+                setListener(tc);
+            }
+        }
+    }
+    public void delToBalance(TableView<List<StringProperty>> tv){
+        for (TableView<?> tableView : getTables()){
+            if (tableView != tv) {
+                tableView.getColumns().remove(tableView.getColumns().size() - 1);
             }
         }
     }
 
-    public List<TableView<?>> getTables(){
-        List<TableView<?>> tableViews = new ArrayList<>();
+    public List<TableView<List<StringProperty>>> getTables(){
+        List<TableView<List<StringProperty>>> tableViews = new ArrayList<>();
         for (Node node : this.table.getChildren()) {
             if (node instanceof TableView) {
-                tableViews.add((TableView<?>) node);
+                tableViews.add((TableView<List<StringProperty>>) node);
             }
         }
         return tableViews;
@@ -351,6 +394,23 @@ public class ComparisonTableController implements Initializable {
                     }
                 });
             }
+        }
+    }
+
+    public void exportToExcel(){
+        ComparisonTableDataExtractor extractor = new ComparisonTableDataExtractor();
+        List<List<List<String>>> containerData = extractor.extractContainerData(this.table);
+
+        String path = Configuration.getProjectsPath()[0];
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(path).getParentFile());
+        fileChooser.setInitialFileName(GlobalVariables.getGlobalVariables().getCurrentProjectPath());
+        fileChooser.setTitle(Configuration.langBundle.getString("export_to_excel"));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLSX files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File saveFile = fileChooser.showSaveDialog(this.comparisonStage);
+        if(saveFile != null) {
+            ExcelExporter.exportToExcel(containerData, saveFile.getAbsolutePath());
         }
     }
 
