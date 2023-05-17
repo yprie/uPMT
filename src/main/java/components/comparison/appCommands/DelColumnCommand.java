@@ -13,11 +13,13 @@ public class DelColumnCommand extends ModelUserActionCommand {
     private final int idx;
     private final TableView<List<StringProperty>> tv;
     private final List<TableView<List<StringProperty>>>  tables;
+    private final List<TableColumn<List<StringProperty>, ?>> previousState;
 
     public DelColumnCommand(int columnIndex, TableView<List<StringProperty>> tv, List<TableView<List<StringProperty>>> tables) {
         this.idx = columnIndex;
         this.tv = tv;
         this.tables = tables;
+        this.previousState = new ArrayList<>(tv.getColumns());
     }
     @Override
     public Void execute() {
@@ -48,6 +50,9 @@ public class DelColumnCommand extends ModelUserActionCommand {
 
     @Override
     public Object undo() {
+        // Restaurer l'état précédent de la table en réinsérant les colonnes précédentes
+        tv.getColumns().setAll(previousState);
+
         return null;
     }
 }
