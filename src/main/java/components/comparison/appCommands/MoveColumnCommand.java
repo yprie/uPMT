@@ -9,6 +9,7 @@ import java.util.List;
 
 public class MoveColumnCommand extends ModelUserActionCommand {
     private final TableView<List<StringProperty>> tableView;
+    private final List<TableColumn<List<StringProperty>, ?>> previousState;
     private final int fromIndex;
     private final int toIndex;
 
@@ -16,6 +17,7 @@ public class MoveColumnCommand extends ModelUserActionCommand {
         this.tableView = tableView;
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
+        this.previousState = List.copyOf(tableView.getColumns());
     }
 
     @Override
@@ -30,8 +32,7 @@ public class MoveColumnCommand extends ModelUserActionCommand {
     @Override
     public Object undo() {
         // Undo the column reordering operation
-        TableColumn<List<StringProperty>, ?> column = tableView.getColumns().remove(toIndex);
-        tableView.getColumns().add(fromIndex, column);
+        tableView.getColumns().setAll(previousState);
 
         return null;
     }

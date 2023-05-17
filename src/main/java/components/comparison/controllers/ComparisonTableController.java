@@ -426,5 +426,4 @@ public class ComparisonTableController implements Initializable {
         }
     }
 
-
 }
