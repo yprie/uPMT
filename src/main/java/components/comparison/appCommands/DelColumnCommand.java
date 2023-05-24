@@ -23,25 +23,27 @@ public class DelColumnCommand extends ModelUserActionCommand {
     }
     @Override
     public Void execute() {
-        tv.getColumns().remove(idx);
-        List<Boolean> easy_balance = new ArrayList<>();
-        //check if the last column of other tables is empty
-        for (TableView<?> tableView : tables){
-            if (tableView != tv){
-                if (tableView.getColumns().get(tableView.getColumns().size() - 1).getText().equals("                  ")){
-                    easy_balance.add(false);
-                } else {
-                    easy_balance.add(true);
+        if (tv.getColumns().get(idx).getText().equals("                  ")) {
+            tv.getColumns().remove(idx);
+            List<Boolean> easy_balance = new ArrayList<>();
+            //check if the last column of other tables is empty
+            //if so,
+            for (TableView<?> tableView : tables) {
+                if (tableView != tv) {
+                    if (tableView.getColumns().get(tableView.getColumns().size() - 1).getText().equals("                  ")) {
+                        easy_balance.add(false);
+                    } else {
+                        easy_balance.add(true);
+                    }
                 }
             }
-        }
-        if (easy_balance.contains(true)){
-            tv.getColumns().add(new TableColumn<>("                  "));
-        }
-        else {
-            for (TableView<?> tableView : tables){
-                if (tableView != tv) {
-                    tableView.getColumns().remove(tableView.getColumns().size() - 1);
+            if (easy_balance.contains(true)) {
+                tv.getColumns().add(new TableColumn<>("                  "));
+            } else {
+                for (TableView<?> tableView : tables) {
+                    if (tableView != tv) {
+                        tableView.getColumns().remove(tableView.getColumns().size() - 1);
+                    }
                 }
             }
         }
@@ -52,7 +54,6 @@ public class DelColumnCommand extends ModelUserActionCommand {
     public Object undo() {
         // Restaurer l'état précédent de la table en réinsérant les colonnes précédentes
         tv.getColumns().setAll(previousState);
-
         return null;
     }
 }

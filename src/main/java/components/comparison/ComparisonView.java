@@ -1,6 +1,9 @@
 package components.comparison;
 
+import application.appCommands.ApplicationCommand;
+import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
+import application.history.HistoryManager;
 import components.comparison.controllers.ComparisonTableController;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -8,13 +11,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.GlobalVariables;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ComparisonView extends Application {
 
     private final ObservableList<String> selectionInterviews;
+    private final UUID startingId = HistoryManager.getCurrentCommandId();     //save the current command id
 
     public ComparisonView(ObservableList<String> selectionInterviews){
         this.selectionInterviews = selectionInterviews;
@@ -29,7 +35,8 @@ public class ComparisonView extends Application {
         Scene scene = new Scene(root);
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         stage.setScene(scene);
-
+        GlobalVariables.getGlobalVariables().setComparisonState(true);
+        GlobalVariables.getGlobalVariables().setId(startingId);
         stage.show();
     }
 }

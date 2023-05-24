@@ -28,7 +28,7 @@ import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
 //import javax.swing.event.ChangeListener;
-import java.beans.EventHandler;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,17 +40,14 @@ import utils.GlobalVariables;
 public class ComparisonTableController implements Initializable {
 
     private @FXML VBox table;
+    public @FXML MenuItem undo;
+    public @FXML MenuItem redo;
     private ComparisonTable comparisonTable;
-    private ObservableList<String> selectionInterviews;
+    private final ObservableList<String> selectionInterviews;
 
     private ArrayList<Double> columnsWidth = new ArrayList<>();
     private Stage comparisonStage;
 
-    public ComparisonTableController(ObservableList<String> selectionInterviews) {
-        this.table = new VBox();
-        this.selectionInterviews = selectionInterviews;
-        initialize(null, null);
-    }
 
     public void undo() {
         HistoryManager.goBack();
@@ -60,23 +57,39 @@ public class ComparisonTableController implements Initializable {
         HistoryManager.goForward();
     }
 
+
+    public ComparisonTableController(ObservableList<String> selectionInterviews) {
+        this.table = new VBox();
+        this.selectionInterviews = selectionInterviews;
+        initialize(null, null);
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
         final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
-        //set the undo method to the undo keyCombination
-        table.setOnKeyPressed(event -> {
-            if (keyCombUNDO.match(event)) {
-                undo();
-            }
-            if (keyCombREDO.match(event)) {
-                redo();
-            }
-        });
+
         fillTable(this.selectionInterviews);
         Platform.runLater(() -> {
+            //bindUndoRedoButtons(false);
             bindScroll();
             setColumnsSizesToBiggest();
+            //bindUndoRedoButtons(true);
+
+            //set the undo method to the undo keyCombination
+            this.undo.setAccelerator(keyCombUNDO);
+            redo.setAccelerator(keyCombREDO);
+        });
+
+        this.table.setOnKeyPressed(event -> {
+            if (keyCombUNDO.match(event)) {
+                undo();
+                event.consume(); // Prevent the event from being processed further
+            } else if (keyCombREDO.match(event)) {
+                redo();
+                event.consume(); // Prevent the event from being processed further
+            }
         });
 
     }
@@ -229,18 +242,13 @@ public class ComparisonTableController implements Initializable {
 
         contextMenu.show(tv, event.getScreenX(), event.getScreenY());
     }
-    public void setListener(TableView<List<StringProperty>> tv) {// Create the pop-up menu
+    public void setListener(TableView<List<StringProperty>> tv) {// Create the pop-up menu on right click
         // Set the pop-up menu to show on a right-click event on the table header
         for (TableColumn<?, ?> column : tv.getColumns()) {
-            column.setGraphic(new Label(column.getText()));
-            column.setContextMenu(new ContextMenu());
-            column.getGraphic().setOnContextMenuRequested(event -> {
-                int columnIndex = tv.getColumns().indexOf(column);
-                setContextMenu(tv, columnIndex, event);
-            });
+            setColListener((TableColumn<List<StringProperty>, StringProperty>) column);
         }
     }
-    public void setListener(TableColumn<List<StringProperty>, StringProperty> tc){
+    public void setColListener(TableColumn<List<StringProperty>, StringProperty> tc){
         tc.setGraphic(new Label(tc.getText()));
         tc.setContextMenu(new ContextMenu());
         tc.getGraphic().setOnContextMenuRequested(event -> {
@@ -253,10 +261,10 @@ public class ComparisonTableController implements Initializable {
         // Handle "Add Column After" action here
         AddColumnCommand addColumnCommand = new AddColumnCommand(idx, tv, getTables());
         HistoryManager.addCommand(addColumnCommand, true);
-        setListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(idx));
+        setColListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(idx));
         for (TableView<List<StringProperty>> tableView : getTables()){
             if (tableView != tv){
-                setListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(tv.getColumns().size() - 1));
+                setColListener((TableColumn<List<StringProperty>, StringProperty>) tv.getColumns().get(tv.getColumns().size() - 1));
             }
         }
         setColumnsSizesToBiggest();
@@ -278,7 +286,7 @@ public class ComparisonTableController implements Initializable {
             for (int i = 0; i < length - actualLength; i++){
                 TableColumn<List<StringProperty>, StringProperty> tc = new TableColumn<>("                  ");
                 tv.getColumns().add(tc);
-                setListener(tc);
+                setColListener(tc);
             }
         }
     }
@@ -425,5 +433,4 @@ public class ComparisonTableController implements Initializable {
             ExcelExporter.exportToExcel(containerData, saveFile.getAbsolutePath());
         }
     }
-
 }
