@@ -8,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.ButtonBar.ButtonData;
+import utils.GlobalVariables;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -37,9 +38,14 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
         String currentTitle = upmtApp.getPrimaryStage().getTitle();
         UUID currentCommandId = HistoryManager.getCurrentCommandId();
         UUID lastSavedCommandId = upmtApp.getLastSavedCommandId();
-        if(currentCommandId != null ){
+        if (GlobalVariables.getGlobalVariables().getComparisonState()) {
+            GlobalVariables.getGlobalVariables().setId(currentCommandId);
+        }
+        if(currentCommandId != null){
             if(lastSavedCommandId == null){
-                workUnsaved = true;
+                if (!(currentCommandId.equals(GlobalVariables.getGlobalVariables().getId()))) {
+                    workUnsaved = true;
+                }
             }else {
                 if (HistoryManager.getCurrentCommandId().equals(lastSavedCommandId)) {
                     System.out.println("Projet sauvegardé");
@@ -62,6 +68,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
             Optional<ButtonType> result = alert.showAndWait();
+
             if (result.get() == buttonTypeOne){
                 // ... user chose "Save And Quit"
                 appCommandFactory.saveProject().execute();

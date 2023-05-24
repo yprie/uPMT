@@ -1,13 +1,13 @@
 package utils;
 
+import application.UPMTApp;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
-import javafx.scene.Node;
 import models.*;
 
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.UUID;
 import java.util.function.BiFunction;
 
 public class GlobalVariables {
@@ -26,6 +26,8 @@ public class GlobalVariables {
     public static NodeView nodeViews = new NodeView();
     public static ModelisationNavigator modelisationNavigator;
     public  SimpleBooleanProperty isMomentSearchClicked;
+    public boolean isComparisonViewOn = false;
+    public UUID lastCommandIdWhenStartComparisonView = null;
 
     private GlobalVariables() {
         this.isMomentSearchClicked = new SimpleBooleanProperty(false);
@@ -55,6 +57,13 @@ public class GlobalVariables {
         return rootMoment;
     }
 
+    public void setId(UUID id) {
+        this.lastCommandIdWhenStartComparisonView = id;
+    }
+    public UUID getId() {
+        return lastCommandIdWhenStartComparisonView;
+    }
+
     public void setDescriptemeChanged(Descripteme descripteme) {
         changedDescripteme.set(descripteme);
     }
@@ -72,6 +81,13 @@ public class GlobalVariables {
 
     public String getCurrentProjectPath() {
         return currentProjectPath;
+    }
+    public boolean getComparisonState(){
+        return isComparisonViewOn;
+    }
+
+    public void setComparisonState(boolean state){
+        isComparisonViewOn = state;
     }
 
     public static void setCurrentProjectPath(String currentProjectPath) {
