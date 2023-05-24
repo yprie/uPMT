@@ -7,17 +7,18 @@
 
 
 <VBox fx:id="table" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+    <MenuBar BorderPane.alignment="CENTER">
+        <Menu mnemonicParsing="false" text="%file">
+            <MenuItem fx:id="excelExportButton" mnemonicParsing="false" onAction="#exportToExcel" text="%export_to_excel"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="%edit">
+            <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
+            <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>
+        </Menu>
+    </MenuBar>
     <padding>
         <Insets bottom="20.0" />
     </padding>
-    <Button id="ExcelExport" fx:id="excelExportButton" mnemonicParsing="false" onAction="#exportToExcel" prefHeight="27.0" prefWidth="98.0" styleClass="button-gray" text="%export">
-        <font>
-            <Font size="18.0" />
-        </font>
-        <HBox.margin>
-            <Insets bottom="20.0" />
-        </HBox.margin>
-    </Button>
 </VBox>
 
 
