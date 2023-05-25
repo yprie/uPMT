@@ -6,10 +6,14 @@ import application.configuration.Configuration;
 import application.history.HistoryManager;
 import components.comparison.controllers.ComparisonTableController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import utils.GlobalVariables;
 
@@ -33,10 +37,12 @@ public class ComparisonView extends Application {
         fxmlLoader.setResources(Configuration.langBundle);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
+        controller.setShortcuts();
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
         stage.setScene(scene);
         GlobalVariables.getGlobalVariables().setComparisonState(true);
         GlobalVariables.getGlobalVariables().setId(startingId);
         stage.show();
+
     }
 }
