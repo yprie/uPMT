@@ -12,8 +12,8 @@
             <MenuItem fx:id="excelExportButton" mnemonicParsing="false" onAction="#exportToExcel" text="%export_to_excel"/>
         </Menu>
         <Menu mnemonicParsing="false" text="%edit">
-            <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undo" text="%undo"/>
-            <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redo" text="%redo"/>
+            <MenuItem fx:id="undoC" mnemonicParsing="false" onAction="#undo" text="%undo"/>
+            <MenuItem fx:id="redoC" mnemonicParsing="false" onAction="#redo" text="%redo"/>
         </Menu>
     </MenuBar>
     <padding>

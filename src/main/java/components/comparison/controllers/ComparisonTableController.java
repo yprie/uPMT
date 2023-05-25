@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.skin.TableColumnHeader;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
@@ -27,8 +28,6 @@ import javafx.stage.Stage;
 import persistency.newSaveSystem.SConcreteCategory;
 import persistency.newSaveSystem.SMoment;
 
-//import javax.swing.event.ChangeListener;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,8 +39,8 @@ import utils.GlobalVariables;
 public class ComparisonTableController implements Initializable {
 
     private @FXML VBox table;
-    public @FXML MenuItem undo;
-    public @FXML MenuItem redo;
+    public @FXML MenuItem undoC;
+    public @FXML MenuItem redoC;
     private ComparisonTable comparisonTable;
     private final ObservableList<String> selectionInterviews;
 
@@ -67,21 +66,21 @@ public class ComparisonTableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+        /*final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
         final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
 
+        //set the undo method to the undo keyCombination
+        this.undoC.setAccelerator(keyCombUNDO);
+        redoC.setAccelerator(keyCombREDO);*/
+        table.requestFocus();
         fillTable(this.selectionInterviews);
         Platform.runLater(() -> {
             //bindUndoRedoButtons(false);
             bindScroll();
             setColumnsSizesToBiggest();
             //bindUndoRedoButtons(true);
-
-            //set the undo method to the undo keyCombination
-            this.undo.setAccelerator(keyCombUNDO);
-            redo.setAccelerator(keyCombREDO);
         });
-
+/*
         this.table.setOnKeyPressed(event -> {
             if (keyCombUNDO.match(event)) {
                 undo();
@@ -90,8 +89,15 @@ public class ComparisonTableController implements Initializable {
                 redo();
                 event.consume(); // Prevent the event from being processed further
             }
-        });
+        });*/
 
+    }
+
+    public void setShortcuts(){
+        final KeyCodeCombination keyCombUNDO = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+        final KeyCodeCombination keyCombREDO = new KeyCodeCombination(KeyCode.Y, KeyCombination.SHORTCUT_DOWN);
+        undoC.setAccelerator(keyCombUNDO);
+        redoC.setAccelerator(keyCombREDO);
     }
 
 
