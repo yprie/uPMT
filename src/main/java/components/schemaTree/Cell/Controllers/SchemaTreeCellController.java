@@ -8,10 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
@@ -20,6 +17,7 @@ import javafx.scene.layout.Pane;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import utils.ResourceLoader;
+import utils.GlobalVariables;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.dragAndDrop.DragStore;
@@ -72,7 +70,7 @@ public abstract class SchemaTreeCellController implements Initializable {
 
         MenuItem renameButton = new MenuItem(Configuration.langBundle.getString("rename"));
         renameButton.setOnAction(actionEvent -> {
-            passInRenamingMode(true);
+            passInRenamingMode(true, false);
         });
         optionsMenu.getItems().add(renameButton);
 
@@ -86,16 +84,14 @@ public abstract class SchemaTreeCellController implements Initializable {
 
         Platform.runLater(() -> {
             if (element.mustBeRenamed())
-                passInRenamingMode(true);
+                passInRenamingMode(true, true);
         });
 
 
     }
-
-
-    public void passInRenamingMode(boolean YoN) {
-        if (YoN != renamingMode) {
-            if (YoN) {
+    public void passInRenamingMode(boolean YoN,boolean deleteIfUnavailable) {
+        if(YoN != renamingMode) {
+            if(YoN){
                 renamingField = new AutoSuggestionsTextField(name.getText());
                 renamingField.setStrategy(this.getSuggestionStrategy());
                 renamingField.setAlignment(Pos.CENTER);
@@ -104,22 +100,69 @@ public abstract class SchemaTreeCellController implements Initializable {
 
                 renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
                     if (!newVal)
-                        passInRenamingMode(false);
+                        passInRenamingMode(false, false);
                 });
 
                 renamingField.setOnKeyPressed(keyEvent -> {
-                    if (keyEvent.getCode() == KeyCode.ENTER) {
-                        if (renamingField.getLength() > 0) {
+                    if(keyEvent.getCode() == KeyCode.ENTER) {
+                        if(renamingField.getLength() > 0){
+                            for (SchemaFolder folder : GlobalVariables.getSchemaTreeRoot().foldersProperty()
+                            ) {
+                                for (SchemaCategory category : folder.categoriesProperty()
+                                ) {
+                                    if (renamingField.getText().equals(name.getText())){
+                                        if (name.getText().equals("category")){
+                                            if (element.getClass() == SchemaCategory.class){
+                                                // suppréssion de la catégorie
+                                                if (deleteIfUnavailable) {
+                                                    cmdFactory.removeTreeElement((SchemaCategory) element).execute();
+                                                }
+                                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                alert.setTitle("Warning");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText("Veillez à ne pas laisser le nom de la catégorie vide");
+                                                alert.showAndWait();
+
+                                            }
+
+                                        }
+                                        cmdFactory.renameTreeElement(element, renamingField.getText());
+                                        passInRenamingMode(false, false);
+                                        return;
+                                    }
+                                    if (renamingField.getText().equals(category.nameProperty().get())) {
+                                        System.out.println("test");
+                                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                                        alert.setTitle("Warning");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Le nom de la catégorie existe déjà");
+                                        alert.showAndWait();
+                                        if (name.getText().equals("category")){
+                                            if (element.getClass() == SchemaCategory.class){
+                                                // suppréssion de la catégorie
+                                                if (deleteIfUnavailable) {
+                                                    cmdFactory.removeTreeElement((SchemaCategory) element).execute();
+                                                }
+                                            }
+                                        }
+
+                                        return;
+                                    }
+
+                                }
+
+                            }
                             cmdFactory.renameTreeElement(element, renamingField.getText());
                         }
-                        passInRenamingMode(false);
+                        passInRenamingMode(false, false);
                     }
                 });
 
                 this.nameDisplayer.setLeft(renamingField);
                 renamingField.requestFocus();
                 renamingMode = true;
-            } else {
+            }
+            else {
                 this.nameDisplayer.setLeft(name);
                 renamingMode = false;
             }

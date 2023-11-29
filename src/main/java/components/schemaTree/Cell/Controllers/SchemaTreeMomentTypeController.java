@@ -85,7 +85,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
     }
 
     @Override
-    public void passInRenamingMode(boolean YoN) {
+    public void passInRenamingMode(boolean YoN, boolean deleteIfUnavailable) {
         if (YoN != renamingMode) {
             if (YoN) {
                 renamingField = new AutoSuggestionsTextField(name.getText(), new SuggestionStrategyMoment());
@@ -95,7 +95,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
 
                 renamingField.focusedProperty().addListener((obs, oldVal, newVal) -> {
                     if (!newVal)
-                        passInRenamingMode(false);
+                        passInRenamingMode(false, false);
                 });
 
                 renamingField.setOnKeyPressed(keyEvent -> {
@@ -103,7 +103,7 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
                         if (renamingField.getLength() > 0) {
                             cmdFactory.renameTreeSchemaMomentTypes(this.schemaMomentType, renamingField.getText()).execute();
                         }
-                        passInRenamingMode(false);
+                        passInRenamingMode(false, false);
                     }
                 });
 
