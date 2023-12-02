@@ -20,6 +20,7 @@ public class Project implements Serializable {
     private ReadOnlyListWrapper<Interview> readOnlyInterviews;
 
     private SimpleObjectProperty<Interview> selectedInterview;
+    private boolean modified;
 
     public Project(String name, SchemaTreeRoot baseScheme) {
         this.name = new SimpleStringProperty(name);
@@ -29,7 +30,12 @@ public class Project implements Serializable {
         this.readOnlyInterviews = new ReadOnlyListWrapper<>(this.interviews);
 
         this.selectedInterview = new SimpleObjectProperty<>();
+
+        this.modified = false;
     }
+
+    public void setModified(boolean modified) {this.modified = modified;}
+    public boolean isModified() {return modified;}
 
     public String getName() { return this.name.get(); }
     public StringProperty nameProperty() { return this.name; }
@@ -39,9 +45,11 @@ public class Project implements Serializable {
 
     public void addInterview(Interview i) {
         interviews.add(i);
+        setModified(true);
     }
     public void removeInterview(Interview i) {
         interviews.remove(i);
+        setModified(true);
     }
     public ReadOnlyListWrapper<Interview> interviewsProperty() { return readOnlyInterviews; }
 

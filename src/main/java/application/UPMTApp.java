@@ -47,6 +47,7 @@ public class UPMTApp {
             appCommandFactory.openProjectManagerCommand().execute();
         }
 
+        startAutoSave();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/MainView/MainView.fxml"));
@@ -79,5 +80,32 @@ public class UPMTApp {
         if(getCurrentProject() != null)
             setCurrentProject(getCurrentProject(), currentProjectPath);
     }
-    
+
+    private void startAutoSave() {
+        if (currentProject != null) {
+            Thread autoSaveThread = new Thread(() -> {
+                while (true) {
+                    try {
+                        // Effectuez la sauvegarde automatique uniquement si le projet a été modifié
+                        if (currentProject.isModified()) {
+                            currentProject.saveAs("auto_save", getCurrentProjectPath());
+                            System.out.println(getCurrentProjectPath());
+                            appCommandFactory.saveProject().execute2();
+
+                            // Marquez le projet comme non modifié après la sauvegarde
+                            currentProject.setModified(false);
+                        }
+
+                        // Pause pour l'intervalle spécifié
+                        Thread.sleep(2000);
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                        // Gérer les exceptions si nécessaire
+                    }
+                }
+            });
+            autoSaveThread.setDaemon(true);
+            autoSaveThread.start();
+        }
+    }
 }

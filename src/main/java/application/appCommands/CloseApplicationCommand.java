@@ -44,7 +44,8 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
                 }
             }
         }
-        if(workUnsaved) {
+        System.out.println(upmtApp.getCurrentProjectPath());
+        if(upmtApp.getCurrentProjectPath() == null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setHeaderText("");
             alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));

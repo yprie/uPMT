@@ -31,4 +31,24 @@ public class SaveProjectCommand extends ApplicationCommand<Void> {
         }
         return null;
     }
+
+    public Void execute2() {
+        // Vérifiez s'il y a un projet en cours.
+        if (upmtApp.getCurrentProjectPath() != null) {
+            try {
+                System.out.println("ici");
+                ProjectSaver.save(upmtApp.getCurrentProject(), Configuration.getProjectsPath()[0]);
+                //upmtApp.setLastSavedCommandId(HistoryManager.getCurrentCommandId());
+                //new ProjectSavingStatusChangedCommand(upmtApp).execute();
+
+
+            } catch (Exception e) {
+                ProjectDialogBox.projectSavingFailed();
+                e.printStackTrace();
+            }
+        } else {
+            new SaveProjectAsCommand(upmtApp).execute();
+        }
+        return null;
+    }
 }
