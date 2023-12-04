@@ -7,10 +7,11 @@ import components.rootLayout.Controllers.RootLayoutController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 import models.Project;
-
 import java.io.IOException;
 import java.util.UUID;
+
 
 
 public class UPMTApp {
@@ -18,9 +19,12 @@ public class UPMTApp {
     private Stage primaryStage;
     private RootLayoutController rootLayoutController;
     private ApplicationCommandFactory appCommandFactory;
-    private Project currentProject;
+    private static Project currentProject;
     private String currentProjectPath;
     private UUID lastSavedCommandId;
+
+    private long autoSaveIntervalMillis;
+
 
     public UPMTApp(Stage primaryStage) throws IOException {
 
@@ -28,6 +32,8 @@ public class UPMTApp {
         this.primaryStage = primaryStage;
         this.appCommandFactory = new ApplicationCommandFactory(this);
         this.rootLayoutController = new RootLayoutController(appCommandFactory);
+        this.autoSaveIntervalMillis = 10000;
+
 
         Configuration.loadAppConfiguration();
         HistoryManager.init(appCommandFactory);
@@ -57,6 +63,7 @@ public class UPMTApp {
     }
 
 
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -66,7 +73,7 @@ public class UPMTApp {
         currentProjectPath = path;
         rootLayoutController.setProject(project);
     }
-    public Project getCurrentProject() {
+    public static Project getCurrentProject() {
         return currentProject;
     }
     public String getCurrentProjectPath() { return currentProjectPath; }
@@ -81,31 +88,29 @@ public class UPMTApp {
             setCurrentProject(getCurrentProject(), currentProjectPath);
     }
 
-    private void startAutoSave() {
+    public void startAutoSave() {
         if (currentProject != null) {
+            // Créez et démarrez un nouveau thread pour la sauvegarde automatique
             Thread autoSaveThread = new Thread(() -> {
                 while (true) {
                     try {
-                        // Effectuez la sauvegarde automatique uniquement si le projet a été modifié
-                        if (currentProject.isModified()) {
-                            currentProject.saveAs("auto_save", getCurrentProjectPath());
-                            System.out.println(getCurrentProjectPath());
-                            appCommandFactory.saveProject().execute2();
+                        // Effectuez la sauvegarde automatique
+                        currentProject.saveAs("auto_save", getCurrentProjectPath());
 
-                            // Marquez le projet comme non modifié après la sauvegarde
-                            currentProject.setModified(false);
-                        }
+                        // Utilisez Platform.runLater() pour exécuter l'opération sur le thread de l'interface utilisateur
+                        Platform.runLater(() -> appCommandFactory.saveProject().execute());
 
                         // Pause pour l'intervalle spécifié
-                        Thread.sleep(2000);
+                        Thread.sleep(autoSaveIntervalMillis);
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                         // Gérer les exceptions si nécessaire
                     }
                 }
             });
-            autoSaveThread.setDaemon(true);
+            autoSaveThread.setDaemon(true); // Le thread s'exécutera en arrière-plan et se terminera lorsque le programme principal se termine
             autoSaveThread.start();
         }
     }
+
 }
