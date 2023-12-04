@@ -95,14 +95,14 @@ public class UPMTApp {
                 while (true) {
                     try {
                         // Effectuez la sauvegarde automatique
-                        currentProject.saveAs("auto_save", getCurrentProjectPath());
+                        //currentProject.saveAs("auto_save", getCurrentProjectPath());
 
                         // Utilisez Platform.runLater() pour exécuter l'opération sur le thread de l'interface utilisateur
                         Platform.runLater(() -> appCommandFactory.saveProject().execute());
 
                         // Pause pour l'intervalle spécifié
                         Thread.sleep(autoSaveIntervalMillis);
-                    } catch (IOException | InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                         // Gérer les exceptions si nécessaire
                     }
