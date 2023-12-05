@@ -1,0 +1,32 @@
+/* toolbox */
+
+#addMomentTypeFolder {
+    -fx-background-size: 40 40;
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+    -fx-background-image: url("/images/toolBox_icon.png");
+}
+
+
+#momentTypeBorderPane {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 0);
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+	-fx-border-insets: 3px;
+    -fx-background-insets: 3px;
+    -fx-background-radius: 3;
+    -fx-border-radius:3;
+}
+
+#momentTypeLabel {
+    -fx-font-weight: bold;
+}
+
+#containerMomentsTypes {
+    -fx-padding: 5px;
+}
+
+#scrollbarMomentTypes {
+    -fx-background-color: transparent;
+}

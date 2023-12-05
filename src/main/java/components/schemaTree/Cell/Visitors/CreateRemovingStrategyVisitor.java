@@ -1,9 +1,7 @@
 package components.schemaTree.Cell.Visitors;
 
-import models.SchemaCategory;
-import models.SchemaFolder;
-import models.SchemaProperty;
-import models.SchemaTreeRoot;
+import models.SchemaMomentType;
+import models.*;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.appCommands.RemovingStrategy;
 import components.schemaTree.Cell.appCommands.strategies.RemovableRemovingStrategy;
@@ -42,6 +40,11 @@ public class CreateRemovingStrategyVisitor<E extends SchemaTreePluggable& IRemov
 
     @Override
     public void visit(SchemaProperty element) {
+        result = new RemovableRemovingStrategy<>(view, parent, item);
+    }
+
+    @Override
+    public void visit(SchemaMomentType element) {
         result = new RemovableRemovingStrategy<>(view, parent, item);
     }
 

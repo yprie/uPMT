@@ -18,6 +18,12 @@ public class SuggestionStrategyProperty  extends SuggestionStrategy<SchemaProper
         for(SchemaFolder folder: GlobalVariables.getSchemaTreeRoot().foldersProperty()) {
             iterateOverFolder(folder, result);
         }
+
+        // Loop over the categories of the root
+        for(SchemaCategory category : GlobalVariables.getSchemaTreeRoot().categoriesProperty()) {
+            iterateOverCategory(category, result);
+        }
+
         return result;
     }
 

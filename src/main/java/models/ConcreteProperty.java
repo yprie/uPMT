@@ -1,5 +1,7 @@
 package models;
 
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
+import components.modelisationSpace.property.controllers.ConcretePropertyController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableStringValue;
@@ -9,6 +11,7 @@ public class ConcreteProperty {
     private SchemaProperty property;
     private Justification justification;
     private StringProperty value;
+    private ConcretePropertyController controller;
 
     public ConcreteProperty(SchemaProperty p) {
         this.property = p;
@@ -22,16 +25,43 @@ public class ConcreteProperty {
         this.justification = j;
     }
 
-    public final SchemaProperty getSchemaProperty() { return property; }
+    public final SchemaProperty getSchemaProperty() {
+        return property;
+    }
 
-    public String getName() { return property.getName(); }
-    public ObservableStringValue nameProperty() { return property.nameProperty(); }
+    public String getName() {
+        return property.getName();
+    }
 
-    public String getValue() { return value.get(); }
-    public ObservableStringValue valueProperty() { return value; }
-    public void setValue(String s) { value.set(s); System.out.println("V" + value.get());}
+    public ObservableStringValue nameProperty() {
+        return property.nameProperty();
+    }
 
-    public Justification getJustification() { return justification; }
+    public String getValue() {
+        return value.get();
+    }
 
-    public boolean isSchemaProperty(SchemaProperty sp) { return sp == property; }
+    public ObservableStringValue valueProperty() {
+        return value;
+    }
+
+    public void setValue(String s) {
+        value.set(s);
+    }
+
+    public Justification getJustification() {
+        return justification;
+    }
+
+    public boolean isSchemaProperty(SchemaProperty sp) {
+        return sp == property;
+    }
+
+    public ConcretePropertyController getController() {
+        return controller;
+    }
+
+    public void setController(ConcretePropertyController controller) {
+        this.controller = controller;
+    }
 }

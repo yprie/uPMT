@@ -44,14 +44,18 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     private JustificationController justificationController;
     private ListView<ConcreteProperty, ConcretePropertyController> properties;
 
-    @FXML private BorderPane container;
-    @FXML private Label name;
-    @FXML private MenuButton menuButton;
-    @FXML private VBox propertiesContainer;
+    @FXML
+    private BorderPane container;
+    @FXML
+    private Label name;
+    @FXML
+    private MenuButton menuButton;
+    @FXML
+    private VBox propertiesContainer;
 
     //Listeners
     private ChangeListener<Boolean> onSchemaTreeRemoving = (ChangeListener<Boolean>) (observableValue, aBoolean, t1) -> {
-        if(!t1) {
+        if (!t1) {
             cmdFactory.removeConcreteCategoryCommand(category, false).execute();
         }
     };
@@ -72,7 +76,7 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
         category.getSchemaCategory().addToControllers(this);
         category.setController(this);
         name.textProperty().bind(category.nameProperty());
-        VBox justif = (VBox)JustificationController.createJustificationArea(justificationController);
+        VBox justif = (VBox) JustificationController.createJustificationArea(justificationController);
         justif.setPadding(new Insets(0, 0, 0, 10));
         container.setCenter(justif);
         updateColor();
@@ -85,7 +89,11 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         properties = new ListView<>(
                 category.propertiesProperty(),
-                (property) -> { return new ConcretePropertyController(cmdFactory.getHookNotifier(), property); },
+                (property) -> {
+                    ConcretePropertyController controller = new ConcretePropertyController(cmdFactory.getHookNotifier(), property);
+                    property.setController(controller);
+                    return controller;
+                },
                 ConcretePropertyController::create,
                 propertiesContainer
         );
@@ -127,23 +135,22 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
         container.setOnDragOver(dragEvent -> {
             container.setStyle("-fx-opacity: 1;");
-            if(
-                !dragEvent.isAccepted()
-                && DragStore.getDraggable().getDataFormat() == Descripteme.format
-            ){
-                if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
+            if (
+                    !dragEvent.isAccepted()
+                            && DragStore.getDraggable().getDataFormat() == Descripteme.format
+            ) {
+                if (justificationController.acceptDescripteme(DragStore.getDraggable())) {
                     container.setStyle("-fx-opacity: 0.5;");
                     dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                }
-                else {
+                } else {
                     dragEvent.acceptTransferModes(TransferMode.NONE);
                 }
             }
         });
 
         container.setOnDragDropped(dragEvent -> {
-            if(DragStore.getDraggable().getDataFormat() == Descripteme.format) {
-                if(justificationController.acceptDescripteme(DragStore.getDraggable())) {
+            if (DragStore.getDraggable().getDataFormat() == Descripteme.format) {
+                if (justificationController.acceptDescripteme(DragStore.getDraggable())) {
                     justificationController.addDescripteme(DragStore.getDraggable());
                     dragEvent.setDropCompleted(true);
                     dragEvent.consume();
@@ -174,7 +181,9 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
     @Override
     public void onMount() {
         Timeline viewFocus = new Timeline(new KeyFrame(Duration.seconds(0.1),
-                (EventHandler<ActionEvent>) event -> { paneCommandFactory.scrollToNode(container).execute(); }));
+                (EventHandler<ActionEvent>) event -> {
+                    paneCommandFactory.scrollToNode(container).execute();
+                }));
         viewFocus.play();
     }
 
@@ -188,5 +197,11 @@ public class ConcreteCategoryController extends ListViewController<ConcreteCateg
 
     }
 
+    public Label getName() {
+        return name;
+    }
 
+    public void setName(Label name) {
+        this.name = name;
+    }
 }

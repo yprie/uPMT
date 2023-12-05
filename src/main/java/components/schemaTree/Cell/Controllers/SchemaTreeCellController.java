@@ -1,33 +1,34 @@
 package components.schemaTree.Cell.Controllers;
 
 import application.configuration.Configuration;
-import application.history.HistoryManager;
-import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
-import components.schemaTree.Cell.modelCommands.RenameSchemaTreePluggable;
 import components.schemaTree.Cell.SchemaTreePluggable;
+import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.schemaTree.Section;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import utils.GlobalVariables;
 import utils.ResourceLoader;
+import utils.GlobalVariables;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
+import utils.dragAndDrop.DragStore;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class SchemaTreeCellController implements Initializable {
-    @FXML private BorderPane container;
+    @FXML
+    private BorderPane container;
 
     @FXML
     BorderPane nameDisplayer;
@@ -35,8 +36,10 @@ public abstract class SchemaTreeCellController implements Initializable {
     @FXML
     Label name;
 
-    @FXML Label complementaryInfo;
-
+    @FXML
+    Label complementaryInfo;
+    @FXML
+    Label usesPerInterview;
     AutoSuggestionsTextField renamingField;
 
     @FXML
@@ -44,6 +47,8 @@ public abstract class SchemaTreeCellController implements Initializable {
 
     @FXML
     MenuButton optionsMenu;
+
+    Tooltip complementaryInfoTooltip;
 
     protected SchemaTreePluggable element;
     private boolean renamingMode = false;
@@ -72,14 +77,16 @@ public abstract class SchemaTreeCellController implements Initializable {
 
         optionsMenu.setVisible(false);
         optionsMenu.onHiddenProperty().addListener((observableValue, eventEventHandler, t1) -> {
-            if(shouldRemoveMenuButtonVisibility) { shouldRemoveMenuButtonVisibility = false; optionsMenu.setVisible(false);}
+            if (shouldRemoveMenuButtonVisibility) {
+                shouldRemoveMenuButtonVisibility = false;
+                optionsMenu.setVisible(false);
+            }
         });
 
         Platform.runLater(()-> {
             if(element.mustBeRenamed())
                 passInRenamingMode(true, true);
         });
-    }
 
 
     public void passInRenamingMode(boolean YoN,boolean deleteIfUnavailable) {
@@ -100,9 +107,10 @@ public abstract class SchemaTreeCellController implements Initializable {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
                         if(renamingField.getLength() > 0){
                             for (SchemaFolder folder : GlobalVariables.getSchemaTreeRoot().foldersProperty()
-                                 ) {
+
+                                ) {
                                 for (SchemaCategory category : folder.categoriesProperty()
-                                     ) {
+                                ) {
                                     if (renamingField.getText().equals(name.getText())){
                                         if (name.getText().equals("category")){
                                             if (element.getClass() == SchemaCategory.class){
@@ -164,22 +172,22 @@ public abstract class SchemaTreeCellController implements Initializable {
 
 
     public void setOnHover(boolean YoN) {
-        if(optionsMenu.isShowing())
+        if (optionsMenu.isShowing())
             shouldRemoveMenuButtonVisibility = true;
         else
             optionsMenu.setVisible(YoN);
     }
 
-    public boolean getOnHover() { return optionsMenu.isVisible(); }
+    public boolean getOnHover() {
+        return optionsMenu.isVisible();
+    }
 
     public Section mouseIsDraggingOn(double y) {
-        if(y < 10) {
+        if (y < 10) {
             return Section.top;
-        }
-        else if (y > 20){
+        } else if (y > 20) {
             return Section.bottom;
-        }
-        else {
+        } else {
             return Section.middle;
         }
     }
