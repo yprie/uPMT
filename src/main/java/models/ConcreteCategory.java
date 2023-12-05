@@ -1,5 +1,6 @@
 package models;
 
+import application.UPMTApp;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.property.appCommands.AddConcretePropertyCommand;
 import components.modelisationSpace.property.appCommands.RemoveConcretePropertyCommand;
