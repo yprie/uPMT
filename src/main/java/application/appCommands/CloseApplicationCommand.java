@@ -26,25 +26,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
 
     @Override
     public Void execute() {
-
-        System.out.println("Test checking project unsaved");
-        //TODO check for unsaved work
-        boolean workUnsaved = false;
-        String currentTitle = upmtApp.getPrimaryStage().getTitle();
-        UUID currentCommandId = HistoryManager.getCurrentCommandId();
-        UUID lastSavedCommandId = upmtApp.getLastSavedCommandId();
-        if(currentCommandId != null ){
-            if(lastSavedCommandId == null){
-                workUnsaved = true;
-            }else {
-                if (HistoryManager.getCurrentCommandId().equals(lastSavedCommandId)) {
-                    System.out.println("Projet sauvegardé");
-                } else {
-                    workUnsaved = true;
-                }
-            }
-        }
-        if(workUnsaved) {
+        if (upmtApp.getCurrentProjectPath() == null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setHeaderText("");
             alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
@@ -57,7 +39,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == buttonTypeOne){
+            if (result.get() == buttonTypeOne) {
                 // ... user chose "Save And Quit"
                 appCommandFactory.saveProject().execute();
                 System.exit(0);
@@ -68,6 +50,8 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
                 // ... user chose CANCEL or closed the dialog
                 event.consume();
             }
+        } else {
+            appCommandFactory.saveProject().execute();
         }
         return null;
     }

@@ -29,6 +29,7 @@ public class Project implements Serializable {
         this.readOnlyInterviews = new ReadOnlyListWrapper<>(this.interviews);
 
         this.selectedInterview = new SimpleObjectProperty<>();
+
     }
 
     public String getName() { return this.name.get(); }
