@@ -1,6 +1,7 @@
 package components.modelisationSpace.category.appCommands;
 
 import application.history.HistoryManager;
+import application.history.ModelUserActionCommandHooks;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.hooks.ModelisationSpaceHookNotifier;
 import models.ConcreteCategory;
@@ -26,8 +27,13 @@ public class RemoveConcreteCategoryCommand implements Executable<Void> {
 
     @Override
     public Void execute() {
-        HistoryManager.addCommand(new RemoveConcreteCategory(parent, category, controller), userCommand);
-        hooksNotifier.notifyConcreteCategoryRemoved(category);
+        RemoveConcreteCategory cmd = new RemoveConcreteCategory(parent, category, controller);
+        if(hooksNotifier != null) {
+            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterExecute, () -> hooksNotifier.notifyConcreteCategoryRemoved(category));
+            cmd.hooks().setHook(ModelUserActionCommandHooks.HookMoment.AfterUndo, () -> hooksNotifier.notifyConcreteCategoryAdded(category));
+        }
+        HistoryManager.addCommand(cmd, userCommand);
+
         return null;
     }
 }

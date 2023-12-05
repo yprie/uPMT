@@ -4,20 +4,29 @@ import application.configuration.Configuration;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
 import components.interviewPanel.ToolBar.ToolBarController;
 import components.interviewPanel.ToolBar.tools.AnnotationTool;
-import components.interviewPanel.ToolBar.tools.Controllers.AnnotationToolController;
-import components.interviewPanel.ToolBar.tools.Controllers.EraserToolController;
-import components.interviewPanel.ToolBar.tools.Controllers.SelectionToolController;
-import components.interviewPanel.ToolBar.tools.Controllers.ToolController;
+import components.interviewPanel.ToolBar.tools.Controllers.*;
 import components.interviewPanel.ToolBar.tools.EraserTool;
 import components.interviewPanel.ToolBar.tools.SelectionTool;
 import components.interviewPanel.appCommands.InterviewTextCommandFactory;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.IndexRange;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
@@ -25,6 +34,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import models.AnnotationColor;
 import models.Descripteme;
 import models.Interview;
@@ -39,12 +50,19 @@ import java.util.ResourceBundle;
 
 public class InterviewTextController implements Initializable {
 
-    @FXML private HBox hboxAnnotation;
-    @FXML private StackPane stackPaneInterview;
+    @FXML
+    private HBox hboxAnnotation;
+    @FXML
+    private StackPane stackPaneInterview;
     private InterviewTextCommandFactory interviewTextCommandFactory;
     private RichTextAreaController richTextAreaController;
+    private SearchToolController searchToolController;
+    private PoliceSizeController increaseSizeController;
+    private PoliceSizeController decreaseSizeController;
     private final Interview interview;
     private Pane paneDragText;
+    private SimpleBooleanProperty isSearchClicked;
+    private SimpleIntegerProperty fontSize;
 
     private InterviewTextController(Interview interview) {
         this.interview = interview;
@@ -72,8 +90,10 @@ public class InterviewTextController implements Initializable {
         annotationColorList.add(new AnnotationColor("red", "#FF9797"));
         annotationColorList.add(new AnnotationColor("blue", "#7084B0"));
         annotationColorList.add(new AnnotationColor("green", "#7BCF7B"));
-
-        richTextAreaController = new RichTextAreaController(interview.getInterviewText(), annotationColorList);
+        this.isSearchClicked = new SimpleBooleanProperty(false);
+        this.fontSize = new SimpleIntegerProperty(1);
+        richTextAreaController = new RichTextAreaController(interview.getInterviewText(), annotationColorList,
+                isSearchClicked, fontSize);
 
         stackPaneInterview.getChildren().add(richTextAreaController.getNode());
 
@@ -94,12 +114,17 @@ public class InterviewTextController implements Initializable {
         toolBarController.addSeparator();
         ToolController selectionToolController = new SelectionToolController(
                 "selection",
-                new SelectionTool( "#fff", interview.getInterviewText(), interviewTextCommandFactory), true);
+                new SelectionTool("#fff", interview.getInterviewText(), interviewTextCommandFactory), true);
         toolBarController.addTool(selectionToolController);
         toolBarController.addTool(new EraserToolController("eraser",
                 new EraserTool("#8b8b8b", interview.getInterviewText(), interviewTextCommandFactory)));
         toolBarController.setSelectedToolProperty(selectionToolController);
         hboxAnnotation.getChildren().add(toolBarController);
+        searchToolController = new SearchToolController(hboxAnnotation.getChildren(), isSearchClicked);
+        this.increaseSizeController = new PoliceSizeController(
+                hboxAnnotation.getChildren(), fontSize, PoliceSizeController.FontAction.INCREASE);
+        this.increaseSizeController = new PoliceSizeController(
+                hboxAnnotation.getChildren(), fontSize, PoliceSizeController.FontAction.DECREASE);
 
         // On click release on text area: add a pane over the text area
         richTextAreaController.getUserSelection().addListener((change) -> toolBarController.getSelectedToolProperty().get()
@@ -125,7 +150,7 @@ public class InterviewTextController implements Initializable {
         // On click on the added pane, remove the pane
         paneDragText.setOnMouseClicked(arg0 -> hideDnDPane());
         paneDragText.setOnMousePressed(event -> {
-            if (event.getButton() == MouseButton.SECONDARY  || event.isControlDown()){
+            if (event.getButton() == MouseButton.SECONDARY || event.isControlDown()) {
                 hideDnDPane();
                 richTextAreaController.updateContextMenu();
             }

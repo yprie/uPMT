@@ -1,10 +1,13 @@
 package utils;
 
+import application.UPMTApp;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableObjectValue;
 import models.*;
 
 import java.util.HashSet;
+import java.util.UUID;
 import java.util.function.BiFunction;
 
 public class GlobalVariables {
@@ -17,11 +20,18 @@ public class GlobalVariables {
 
     private static SchemaTreeRoot root;
     private static RootMoment rootMoment;
-
+    private static Project project;
+    private static String currentProjectPath;
     private static SimpleObjectProperty<Descripteme> changedDescripteme = new SimpleObjectProperty<>();
+    public static NodeView nodeViews = new NodeView();
+    public static ModelisationNavigator modelisationNavigator;
+    public  SimpleBooleanProperty isMomentSearchClicked;
+    public boolean isComparisonViewOn = false;
+    public UUID lastCommandIdWhenStartComparisonView = null;
 
-
-    private GlobalVariables() {}
+    private GlobalVariables() {
+        this.isMomentSearchClicked = new SimpleBooleanProperty(false);
+    }
 
     private void iterateOverSubMoment(Moment moment, HashSet result, BiFunction<Moment, HashSet, Void> computeMoment) {
         for (Moment subMoment: moment.momentsProperty()) {
@@ -29,7 +39,6 @@ public class GlobalVariables {
             iterateOverSubMoment(subMoment, result, computeMoment);
         }
     }
-
     public static GlobalVariables getGlobalVariables() {
         return globalVariables;
     }
@@ -48,6 +57,13 @@ public class GlobalVariables {
         return rootMoment;
     }
 
+    public void setId(UUID id) {
+        this.lastCommandIdWhenStartComparisonView = id;
+    }
+    public UUID getId() {
+        return lastCommandIdWhenStartComparisonView;
+    }
+
     public void setDescriptemeChanged(Descripteme descripteme) {
         changedDescripteme.set(descripteme);
     }
@@ -55,6 +71,28 @@ public class GlobalVariables {
         return changedDescripteme;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public  void setProject(Project project) {
+        globalVariables.project = project;
+    }
+
+    public String getCurrentProjectPath() {
+        return currentProjectPath;
+    }
+    public boolean getComparisonState(){
+        return isComparisonViewOn;
+    }
+
+    public void setComparisonState(boolean state){
+        isComparisonViewOn = state;
+    }
+
+    public static void setCurrentProjectPath(String currentProjectPath) {
+        globalVariables.currentProjectPath = currentProjectPath;
+    }
     public HashSet<Descripteme> getAllDescripteme() {
         BiFunction<Moment, HashSet, Void> computeMoment = (Moment moment, HashSet result) -> {
             // Add the descriptems of the moment
@@ -101,4 +139,5 @@ public class GlobalVariables {
         }
         return result;
     }
+
 }

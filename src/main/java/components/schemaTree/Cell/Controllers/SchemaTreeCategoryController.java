@@ -3,21 +3,39 @@ package components.schemaTree.Cell.Controllers;
 import application.configuration.Configuration;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import javafx.beans.binding.Bindings;
-import javafx.scene.control.Menu;
-import models.SchemaCategory;
-import models.SchemaProperty;
-import javafx.scene.control.MenuItem;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Duration;
+import models.*;
+import utils.GlobalVariables;
 import utils.ResourceLoader;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyCategory;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class SchemaTreeCategoryController extends SchemaTreeCellController {
 
     private SchemaCategory category;
     private SchemaTreeCommandFactory cmdFactory;
+    private GlobalVariables globalVariables = GlobalVariables.getGlobalVariables();
+    private SimpleIntegerProperty currentNavigationIndex = new SimpleIntegerProperty(-1);
+    @FXML
+    HBox navigationBox;
+    @FXML
+    BorderPane usesSection;
+    private Button leftNavigation;
+    private Button rightNavigation;
+    private Tooltip rightNavigationButtonTooltip;
+    private Tooltip leftNavigationButtonTooltip;
 
     public SchemaTreeCategoryController(SchemaCategory model, SchemaTreeCommandFactory cmdFactory) {
         super(model, cmdFactory);
@@ -33,17 +51,57 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
+        this.leftNavigation = new Button("<");
+        this.rightNavigation = new Button(">");
+        this.leftNavigation.setPadding(new Insets(1, 3, 1, 3));
+        this.rightNavigation.setPadding(new Insets(1, 3, 1, 3));
+        this.leftNavigation.setStyle("-fx-background-color:rgba(0, 0, 0, 0.1);-fx-background-size:0;");
+        this.rightNavigation.setStyle("-fx-background-color:rgba(0, 0, 0, 0.1);-fx-background-size:0;");
+        this.navigationBox.setSpacing(5);
+        this.navigationBox.getChildren().add(this.leftNavigation);
+        this.navigationBox.getChildren().add(this.rightNavigation);
+        this.navigationBox.setPadding(new Insets(7.5, 0, 0, 0));
 
+        //this.complementaryInfoTooltip = new Tooltip(Configuration.langBundle.getString("complementary_info_toolbox"));
+        this.complementaryInfoTooltip = new Tooltip();
+        this.complementaryInfoTooltip.textProperty().bind(Bindings.createStringBinding(() -> {
+            StringBuilder s = new StringBuilder();
+            HashMap<Interview, Integer> usesMap = this.category.getUsesMap();
+            for (Interview interview : usesMap.keySet()) {
+                if (usesMap.get(interview) > 0) {
+                    s.append(usesMap.get(interview)).append(" ").append(Configuration.langBundle.getString(usesMap.get(interview) == 1 ? "use" : "uses")).append(" -> ").append(interview.getTitle()).append("\n");
+                }
+            }
+            return s.toString();
+
+        }, this.category.currentInterviewUsesProperty()));
+        //        this.complementaryInfoTooltip = new Tooltip("Navigate to nb : "+(Math.floorMod(this.currentNavigationIndex - 1, this.category.getCurrentInterviewUses())+1));
+
+        complementaryInfoTooltip.setShowDelay(new Duration(0));
+        this.complementaryInfo.setTooltip(complementaryInfoTooltip);
+        this.usesPerInterview.setTooltip(complementaryInfoTooltip);
         name.textProperty().bind(element.nameProperty());
+        usesPerInterview.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int currentInterviewUses = this.category.getCurrentInterviewUses();
+            int nUsesInModelisation = category.numberOfUsesInModelisationProperty().get();
+            if (nUsesInModelisation > 0) {
+                s = " (" + this.category.getCurrentInterviewUses() + " /";
+            }
+            return s;
+
+        }, this.category.currentInterviewUsesProperty()));
         complementaryInfo.textProperty().bind(Bindings.createStringBinding(() -> {
             String s = "";
             int nUses = category.numberOfUsesInModelisationProperty().get();
-            if(nUses > 0) {
+            if (nUses > 0) {
                 s += nUses + " ";
                 s += Configuration.langBundle.getString(nUses == 1 ? "use" : "uses");
+                s += ")";
             }
             return s;
         }, category.numberOfUsesInModelisationProperty()));
+
 
         MenuItem addPropertyButton = new MenuItem(Configuration.langBundle.getString("add_property"));
         addPropertyButton.setOnAction(actionEvent -> {
@@ -60,6 +118,28 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
             cmdFactory.removeTreeElement(category).execute();
         });
         optionsMenu.getItems().add(deleteButton);
+        if (this.category.getCurrentInterviewUses() <= 0) {
+            this.leftNavigation.setDisable(true);
+            this.rightNavigation.setDisable(true);
+        } else {
+            this.leftNavigation.setDisable(false);
+            this.rightNavigation.setDisable(false);
+        }
+        this.category.currentInterviewUsesProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue.intValue() <= 0) {
+                this.leftNavigation.setDisable(true);
+                this.rightNavigation.setDisable(true);
+            } else {
+                this.leftNavigation.setDisable(false);
+                this.rightNavigation.setDisable(false);
+            }
+        });
+
+        //Navigation Buttons ToolTipSetup
+        this.setupNavigationToolTip();
+        this.setupNavigationHandlers();
+
+
     }
 
     private void addColorChange() {
@@ -132,7 +212,7 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
         optionsMenu.getItems().add(changeColor);
     }
 
-    public void updateCategoryIcon(String color){
+    public void updateCategoryIcon(String color) {
 
         switch (color) {
             case "ffffff":
@@ -163,5 +243,77 @@ public class SchemaTreeCategoryController extends SchemaTreeCellController {
                 pictureView.setImage(ResourceLoader.loadImage("category.png"));
                 break;
         }
+    }
+
+    public Node getNavigationNode(int index) {
+        Moment navigationMoment = GlobalVariables.nodeViews.
+                getInstanceByCategory(this.category, this.currentNavigationIndex.get());
+        for (ConcreteCategory category : navigationMoment.getCategories()) {
+            if (category.getSchemaCategory().equals(this.category)) {
+                return category.getController().getName();
+            }
+        }
+        return navigationMoment.getController().nameBox;
+    }
+
+    private int calculateLeftIndex(int currentIndex, int total) {
+        if (currentIndex == -1) {
+            return total - 1;
+        } else {
+            return Math.floorMod(currentIndex - 1, total);
+        }
+    }
+
+    private int calculateRightIndex(int currentIndex, int total) {
+
+        return Math.floorMod(currentIndex + 1, total);
+    }
+
+    private void setupNavigationToolTip() {
+        this.leftNavigationButtonTooltip = new Tooltip();
+        this.rightNavigationButtonTooltip = new Tooltip();
+        leftNavigationButtonTooltip.setShowDelay(new Duration(100));
+        rightNavigationButtonTooltip.setShowDelay(new Duration(100));
+        leftNavigationButtonTooltip.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int currentInterviewUses = this.category.getCurrentInterviewUses();
+            if (currentInterviewUses > 0) {
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1 + " " + Configuration.langBundle.getString("navigation_tooltip_interview"));
+            }
+            return s;
+
+        }, this.currentNavigationIndex, this.category.currentInterviewUsesProperty()));
+        rightNavigationButtonTooltip.textProperty().bind(Bindings.createStringBinding(() -> {
+            String s = "";
+            int currentInterviewUses = this.category.getCurrentInterviewUses();
+            if (currentInterviewUses > 0) {
+                s = Configuration.langBundle.getString("navigation_tooltip_navigate") + " #" + (this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()) + 1) + " " + Configuration.langBundle.getString("navigation_tooltip_interview");
+            }
+            return s;
+
+        }, this.currentNavigationIndex, this.category.currentInterviewUsesProperty()));
+        this.leftNavigation.setTooltip(leftNavigationButtonTooltip);
+        this.rightNavigation.setTooltip(rightNavigationButtonTooltip);
+    }
+
+    private void setupNavigationHandlers() {
+        this.leftNavigation.setOnMouseClicked((e) -> {
+
+            this.currentNavigationIndex.set(this.calculateLeftIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()));
+
+            GlobalVariables.modelisationNavigator.
+                    centerNodeInScrollPaneX(this.getNavigationNode(this.currentNavigationIndex.get()));
+            GlobalVariables.modelisationNavigator.
+                    centerNodeInScrollPaneY(this.getNavigationNode(this.currentNavigationIndex.get()));
+        });
+
+        this.rightNavigation.setOnMouseClicked((e) -> {
+            this.currentNavigationIndex.set(this.calculateRightIndex(this.currentNavigationIndex.get(), this.category.getCurrentInterviewUses()));
+
+            GlobalVariables.modelisationNavigator.
+                    centerNodeInScrollPaneX(this.getNavigationNode(this.currentNavigationIndex.get()));
+            GlobalVariables.modelisationNavigator.
+                    centerNodeInScrollPaneY(this.getNavigationNode(this.currentNavigationIndex.get()));
+        });
     }
 }

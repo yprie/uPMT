@@ -9,13 +9,11 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
 
     private Moment moment;
     private ConcreteCategory concreteCategory;
-    int prevIndex;
     private ConcreteCategoryController controller;
 
     public RemoveConcreteCategory(Moment m, ConcreteCategory c, ConcreteCategoryController controller) {
         this.moment = m;
         this.concreteCategory = c;
-        this.prevIndex = moment.indexOfConcreteCategory(concreteCategory);
         this.controller = controller;
     }
 
@@ -38,7 +36,7 @@ public class RemoveConcreteCategory extends ModelUserActionCommand<Void, Void> {
 
     @Override
     public Void undo() {
-        moment.addCategory(prevIndex, concreteCategory);
+        moment.addCategory(concreteCategory);
 
         // Add the underlining of the descripteme deleted
         concreteCategory.getJustification().descriptemesProperty().forEach(descripteme -> {

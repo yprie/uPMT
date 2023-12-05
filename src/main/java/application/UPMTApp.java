@@ -3,15 +3,17 @@ package application;
 import application.appCommands.ApplicationCommandFactory;
 import application.configuration.Configuration;
 import application.history.HistoryManager;
+import com.sun.javafx.css.StyleManager;
 import components.rootLayout.Controllers.RootLayoutController;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Platform;
 import models.Project;
+import utils.GlobalVariables;
 import java.io.IOException;
 import java.util.UUID;
-
 
 
 public class UPMTApp {
@@ -39,10 +41,14 @@ public class UPMTApp {
         HistoryManager.init(appCommandFactory);
 
         Scene mainScene = new Scene(RootLayoutController.createRootLayout(rootLayoutController));
-        primaryStage.setScene(mainScene);
-        primaryStage.setOnCloseRequest(event -> { appCommandFactory.closeApplication(event).execute(); });
-        primaryStage.show();
 
+        //set default stylesheet
+        Application.setUserAgentStylesheet(null);
+        StyleManager.getInstance().addUserAgentStylesheet(this.getClass().getResource("/css/application.css").toExternalForm());
+
+        primaryStage.setScene(mainScene);
+        primaryStage.setOnCloseRequest(event -> appCommandFactory.closeApplication(event).execute());
+        primaryStage.show();
 
         //Load the last used project or ask for a new one.
         if(Configuration.getProjectsPath().length > 0){
@@ -71,6 +77,7 @@ public class UPMTApp {
     public void setCurrentProject(Project project, String path) {
         currentProject = project;
         currentProjectPath = path;
+        GlobalVariables.setCurrentProjectPath(currentProjectPath);
         rootLayoutController.setProject(project);
     }
     public static Project getCurrentProject() {

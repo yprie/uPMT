@@ -1,13 +1,25 @@
 package components.interviewPanel.Controllers;
 
+import application.configuration.Configuration;
 import components.interviewPanel.ContextMenus.ContextMenuFactory;
+import components.interviewPanel.ToolBar.tools.Controllers.PoliceSizeController;
+import components.interviewPanel.search.ButtonSearchType;
+import components.interviewPanel.search.SearchButtonHandler;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
-import javafx.scene.control.IndexRange;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import models.*;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -15,11 +27,15 @@ import org.fxmisc.richtext.Caret;
 import org.fxmisc.richtext.InlineCssTextArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.event.MouseOverTextEvent;
+import utils.SearchResult;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static utils.GlobalVariables.getGlobalVariables;
 
@@ -32,32 +48,162 @@ public class RichTextAreaController {
     private final HashSet<Moment> emphasizedMoments = new HashSet<>(); // used temporary when over a descripteme
     private ContextMenuFactory contextMenuFactory;
     private final List<AnnotationColor> annotationColorList;
+    private SearchResult searchResult;
+    private SimpleBooleanProperty isSearchClicked;
+    private SimpleIntegerProperty fontSize;
 
-    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList) {
+
+    public RichTextAreaController(InterviewText interviewText, List<AnnotationColor> annotationColorList,
+                                  SimpleBooleanProperty isSearchClicked, SimpleIntegerProperty fontSize) {
         this.interviewText = interviewText;
         this.annotationColorList = annotationColorList;
+        this.isSearchClicked = isSearchClicked;
         userSelection = new SimpleObjectProperty<>();
+        this.fontSize = fontSize;
         area = new InlineCssTextArea();
         area.setWrapText(true);
         area.setEditable(false);
         area.setParagraphGraphicFactory(LineNumberFactory.get(area));
         area.appendText(interviewText.getText());
         area.setShowCaret(Caret.CaretVisibility.ON);
-
+        this.searchResult = new SearchResult(this.interviewText.getText());
         setUpClick();
         setUpPopUp();
-
         bind();
-
         // Watch for new descriptemes
         getGlobalVariables()
                 .getDescriptemeChangedProperty()
                 .addListener(newValue -> this.updateDescripteme());
 
-        // Initialize view annotation
-        //interviewText.getAnnotationsProperty().forEach(annotation -> applyStyle(annotation.getStartIndex(), annotation.getEndIndex()));
         applyStyleInitialize();
+
+        //Add ctrl+F Listener to launch the research
+        area.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.F && e.isShortcutDown()) {
+                isSearchClicked.set(true);
+            }
+        });
+        this.isSearchClicked.addListener((obs, oldValue, newValue) -> {
+            if (newValue) {
+                showFindDialog(area);
+            }
+        });
+        this.fontSize.addListener((obs, oldValue, newValue) -> {
+            String currentStyle = this.area.getStyle();
+
+            // Extract the font size from the style using regular expressions
+            Pattern pattern = Pattern.compile("-fx-font-size: (\\d+)em;");
+            Matcher matcher = pattern.matcher(currentStyle);
+            if (matcher.find()) {
+                // Extract the font size as an integer
+                int currentFontSize = newValue.intValue();
+                // Update the style with the new font size
+                String newStyle = currentStyle.replaceAll("-fx-font-size: \\d+em;", "-fx-font-size: " + currentFontSize + "em;");
+                this.area.setStyle(newStyle);
+            } else {
+                // If the pattern doesn't match, set the font size to the default value (12 px in this example)
+                this.area.setStyle(currentStyle+"\n-fx-font-size: "+this.fontSize.get()+"em;\n");
+            }
+        });
+
     }
+
+    private void showFindDialog(InlineCssTextArea richTextArea) {
+        // Set up the dialog
+        Dialog<String> dialog = new Dialog<>();
+        dialog.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/application.css")).toExternalForm());
+        dialog.getDialogPane().setPrefWidth(450);
+        dialog.setResizable(true);
+        dialog.setTitle(Configuration.langBundle.getString("find_text"));
+        dialog.setHeaderText(Configuration.langBundle.getString("find_text"));
+        dialog.setResizable(false);
+
+        // Set up the buttons
+        ButtonType findPreviousButtonType = new ButtonType(Configuration.langBundle.getString("previous"), ButtonBar.ButtonData.OK_DONE);
+        ButtonType findNextButtonType = new ButtonType(Configuration.langBundle.getString("next"), ButtonBar.ButtonData.OK_DONE);
+        ButtonType closeButtonType = ButtonType.CLOSE;
+        dialog.getDialogPane().getButtonTypes().addAll(findNextButtonType, findPreviousButtonType, closeButtonType);
+
+        // Set up the text field and label
+        TextField findTextField = new TextField();
+        Label findLabel = new Label(Configuration.langBundle.getString("find"));
+        findLabel.setLabelFor(findTextField);
+
+        // Set up the match count label
+        Label matchCountLabel = new Label();
+        matchCountLabel.setVisible(false);
+
+        // Set up the grid pane
+        HBox gridPane = new HBox();
+        gridPane.setSpacing(15);
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+        gridPane.getChildren().add(findLabel);
+        gridPane.getChildren().add(findTextField);
+        gridPane.getChildren().add(matchCountLabel);
+        dialog.getDialogPane().setContent(gridPane);
+
+        Button findPreviousButton = (Button) dialog.getDialogPane().lookupButton(findPreviousButtonType);
+        Button findNextButton = (Button) dialog.getDialogPane().lookupButton(findNextButtonType);
+        Button closeButton = (Button) dialog.getDialogPane().lookupButton(closeButtonType);
+        //Init Buttons on disabled
+        findNextButton.setDisable(true);
+        findPreviousButton.setDisable(true);
+
+        //handle search result label
+        findTextField.textProperty().addListener((obs, oldText, newText) -> {
+            if (!newText.isEmpty()) {
+                this.searchResult.countOccurrences(this.interviewText.getText(), newText);
+                matchCountLabel.setVisible(true);
+
+                matchCountLabel.textProperty().bind(Bindings.createStringBinding(() -> {
+                    String s = "";
+                    int resultCount = this.searchResult.getResultCount();
+                    int currentIndex = this.searchResult.getCurrentSearchIndex();
+                    if (currentIndex >= 0) {
+                        s += "#" + (currentIndex + 1) + "/";
+                    }
+                    s += resultCount + " ";
+                    s += Configuration.langBundle.getString("matches_found");
+                    return s;
+                }, this.searchResult.resultCountProperty(), this.searchResult.getCurrentSearchIndexProperty()));
+            } else {
+                this.searchResult.resetSearch();
+                matchCountLabel.setVisible(false);
+            }
+
+        });
+
+
+        //Handle buttons disabled property listeners
+        this.searchResult.resultCountProperty().addListener((obs, oldCount, newCount) -> {
+            findNextButton.setDisable(newCount.intValue() <= 0);
+        });
+        this.searchResult.resultPositionProperty().addListener((obs, oldCount, newCount) -> {
+            if (!this.searchResult.hasNext()) {
+                findNextButton.setDisable(true);
+            } else if (!this.searchResult.hasPrevious()) {
+                findPreviousButton.setDisable(true);
+            } else {
+                findNextButton.setDisable(false);
+                findPreviousButton.setDisable(false);
+            }
+        });
+        //Set up search buttons actions
+        findNextButton.addEventFilter(ActionEvent.ACTION, new SearchButtonHandler(
+                ButtonSearchType.NEXT, searchResult, richTextArea));
+        findPreviousButton.addEventFilter(ActionEvent.ACTION, new SearchButtonHandler(
+                ButtonSearchType.PREVIOUS, searchResult, richTextArea));
+        closeButton.addEventFilter(ActionEvent.ACTION, (e) -> {
+            this.isSearchClicked.set(false);
+        });
+        // Show the dialog and reset the search result
+        dialog.setOnCloseRequest(e -> {
+            this.searchResult.resetSearch();
+        });
+        dialog.show();
+        findTextField.requestFocus();
+    }
+
 
     public void setContextMenuFactory(ContextMenuFactory contextMenuFactory) {
         this.contextMenuFactory = contextMenuFactory;
@@ -132,7 +278,8 @@ public class RichTextAreaController {
         popupMsg.setStyle(
                 "-fx-background-color: black;" +
                         "-fx-text-fill: white;" +
-                        "-fx-padding: 5;");
+                        "-fx-padding: 5;" +
+                        "-fx-font-family: serif;");
         popup.getContent().add(popupMsg);
 
         area.setMouseOverTextDelay(Duration.ofMillis(500));
@@ -151,10 +298,10 @@ public class RichTextAreaController {
                     descripteme.getEmphasizeProperty().set(true);
                     emphasizedMoments.addAll(getGlobalVariables().getMomentsByDescripteme(descripteme));
                 }
-                for(Moment moment : emphasizedMoments) {
+                for (Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(true);
                 }
-                message += + emphasizedMoments.size() + " moment(s)";
+                message += +emphasizedMoments.size() + " moment(s)";
 
                 popupMsg.setText(message);
                 popup.show(area, pos.getX(), pos.getY() + 10);
@@ -171,7 +318,7 @@ public class RichTextAreaController {
                 emphasizedDescriptemes.clear();
             }
             if (!emphasizedMoments.isEmpty()) {
-                for(Moment moment : emphasizedMoments) {
+                for (Moment moment : emphasizedMoments) {
                     moment.getEmphasizeProperty().set(false);
                 }
                 emphasizedMoments.clear();
@@ -205,8 +352,8 @@ public class RichTextAreaController {
     }
 
     private void applyStyle(int start, int end) {
-        for (int i = start ; i < end ; i++) {
-            area.setStyle(i, i+1, getCSS(i));
+        for (int i = start; i < end; i++) {
+            area.setStyle(i, i + 1, getCSS(i));
         }
     }
 
@@ -228,7 +375,7 @@ public class RichTextAreaController {
             }
             css += "-rtfx-underline-color: black; " + "-rtfx-underline-width: " + size + ";";
             boolean isRevealed = false;
-            for (Descripteme descripteme: descriptemes) {
+            for (Descripteme descripteme : descriptemes) {
                 if (descripteme.getRevealedProperty().get()) {
                     isRevealed = true;
                     break;
@@ -282,8 +429,7 @@ public class RichTextAreaController {
             descripteme.endIndexProperty().addListener(listenerEndIndex);
             descripteme.getRevealedProperty().addListener(listenerRevealed);
             descripteme.getTriggerScrollReveal().addListener(listenerScrollToTrigger);
-        }
-        else {
+        } else {
             descripteme.getRevealedProperty().removeListener(listenerStartIndex);
             descripteme.getRevealedProperty().removeListener(listenerEndIndex);
             descripteme.getRevealedProperty().removeListener(listenerRevealed);
@@ -317,24 +463,22 @@ public class RichTextAreaController {
                     descriptemes,
                     annotation)
             );
-        }
-        else if (annotation != null) {
+        } else if (annotation != null) {
             area.setContextMenu(contextMenuFactory.getContextMenuAnnotation(
                     area.getSelectedText(),
                     annotation)
             );
-        }
-        else if (!descriptemes.isEmpty()) {
+        } else if (!descriptemes.isEmpty()) {
             area.setContextMenu(contextMenuFactory.getContextMenuDescripteme(
                     area.getSelectedText(),
                     descriptemes)
             );
-        }
-        else if (!area.getSelectedText().isEmpty()) {
+        } else if (!area.getSelectedText().isEmpty()) {
             area.setContextMenu(contextMenuFactory.getContextMenuSelection(
                     area.getSelectedText(),
                     area.getSelection())
             );
         }
     }
+
 }

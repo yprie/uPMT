@@ -25,6 +25,7 @@ public class SetAutoScrollWhenRevealCommand extends ApplicationCommand<Void> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(Configuration.langBundle.getString("error"));
             alert.setHeaderText(Configuration.langBundle.getString("application_settings_failed"));
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             alert.showAndWait();
         }
         return null;

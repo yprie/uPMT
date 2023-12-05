@@ -3,5 +3,5 @@
 <?import javafx.scene.control.ScrollPane?>
 
 
-<fx:root fx:id="superPane" type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="superPane" type="javafx.scene.control.ScrollPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
 </fx:root>

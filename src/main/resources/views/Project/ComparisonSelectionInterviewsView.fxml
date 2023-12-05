@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" prefHeight="460.0" prefWidth="300.0" stylesheets="/css/application.css">
+    <VBox layoutX="25" layoutY="25" prefHeight="400.0" prefWidth="250.0">
+        <HBox id="interviewsPan">
+            <ListView fx:id="interviewList" />
+        </HBox>
+        <HBox GridPane.columnIndex="2" spacing="10" alignment="CENTER">
+            <children>
+                <Button id="btnAnnu" fx:id="btncancel" mnemonicParsing="false" onAction="#closeWindow" prefHeight="36.0" prefWidth="98.0" styleClass="button-gray" text="%cancel">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets top="20.0" />
+                    </HBox.margin>
+                </Button>
+                <Button id="btnVeri" fx:id="validateButton" mnemonicParsing="false" onAction="#displayTable" prefHeight="36.0" prefWidth="98.0" styleClass="button-gray" text="%confirm">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets top="20.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+    </VBox>
+</AnchorPane>
