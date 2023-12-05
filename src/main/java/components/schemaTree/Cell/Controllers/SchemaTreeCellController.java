@@ -83,10 +83,11 @@ public abstract class SchemaTreeCellController implements Initializable {
             }
         });
 
-        Platform.runLater(()-> {
-            if(element.mustBeRenamed())
+        Platform.runLater(() -> {
+            if (element.mustBeRenamed())
                 passInRenamingMode(true, true);
         });
+    }
 
 
     public void passInRenamingMode(boolean YoN,boolean deleteIfUnavailable) {
