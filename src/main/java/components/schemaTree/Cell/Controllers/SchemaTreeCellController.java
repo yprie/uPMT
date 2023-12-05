@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import models.SchemaCategory;
 import models.SchemaFolder;
+import utils.GlobalVariables;
 import utils.ResourceLoader;
 import utils.GlobalVariables;
 import utils.autoSuggestion.AutoSuggestionsTextField;
@@ -82,13 +83,12 @@ public abstract class SchemaTreeCellController implements Initializable {
             }
         });
 
-        Platform.runLater(() -> {
-            if (element.mustBeRenamed())
+        Platform.runLater(()-> {
+            if(element.mustBeRenamed())
                 passInRenamingMode(true, true);
         });
 
 
-    }
     public void passInRenamingMode(boolean YoN,boolean deleteIfUnavailable) {
         if(YoN != renamingMode) {
             if(YoN){
@@ -107,7 +107,8 @@ public abstract class SchemaTreeCellController implements Initializable {
                     if(keyEvent.getCode() == KeyCode.ENTER) {
                         if(renamingField.getLength() > 0){
                             for (SchemaFolder folder : GlobalVariables.getSchemaTreeRoot().foldersProperty()
-                            ) {
+
+                                ) {
                                 for (SchemaCategory category : folder.categoriesProperty()
                                 ) {
                                     if (renamingField.getText().equals(name.getText())){
@@ -168,6 +169,7 @@ public abstract class SchemaTreeCellController implements Initializable {
             }
         }
     }
+
 
     public void setOnHover(boolean YoN) {
         if (optionsMenu.isShowing())

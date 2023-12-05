@@ -33,7 +33,6 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
 
     @Override
     public Void execute() {
-
         boolean workUnsaved = false;
         String currentTitle = upmtApp.getPrimaryStage().getTitle();
         UUID currentCommandId = HistoryManager.getCurrentCommandId();
@@ -54,7 +53,8 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
                 }
             }
         }
-        if(workUnsaved) {
+
+        if (upmtApp.getCurrentProjectPath() == null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setHeaderText("");
             alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
@@ -70,7 +70,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == buttonTypeOne){
-                // ... user chose "Save And Quit"
+               // ... user chose "Save And Quit"
                 appCommandFactory.saveProject().execute();
                 System.exit(0);
             } else if (result.get() == buttonTypeTwo) {
@@ -85,6 +85,7 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             }
         } else {
             System.exit(0);
+            appCommandFactory.saveProject().execute();
         }
 
         return null;

@@ -38,6 +38,7 @@ public class Project implements Serializable {
 
         this.momentTypeControllers = new LinkedList<>();
         globalVariables.setProject(this);
+
     }
 
     public String getName() { return this.name.get(); }
