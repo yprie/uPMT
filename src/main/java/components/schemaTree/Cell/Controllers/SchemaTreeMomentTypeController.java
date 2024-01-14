@@ -11,6 +11,7 @@ import javafx.util.Duration;
 import models.SchemaCategory;
 import models.SchemaMomentType;
 import models.SchemaProperty;
+import utils.ResourceLoader;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
 import utils.autoSuggestion.strategies.SuggestionStrategyMoment;
@@ -65,6 +66,39 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
             }
         });
         optionsMenu.getItems().add(showButton);
+        updateMomentTypeIcon(schemaMomentType.getColor());
+    }
+
+    public void updateMomentTypeIcon(String color) {
+        switch (color) {
+            case "ffffff":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_icon.png"));
+                break;
+            case "b97a57":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_brown.png"));
+                break;
+            case "ffaec9":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_pink.png"));
+                break;
+            case "ffc90e":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_yellow.png"));
+                break;
+            case "b5e61d":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_green.png"));
+                break;
+            case "7092be":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_blue.png"));
+                break;
+            case "8671cd":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_purple.png"));
+                break;
+            case "f15252":
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_red.png"));
+                break;
+            default:
+                pictureView.setImage(ResourceLoader.loadImage("toolBox_icon.png"));
+                break;
+        }
     }
 
     @Override
