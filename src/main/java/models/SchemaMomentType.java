@@ -1,6 +1,8 @@
 package models;
 
 import application.history.HistoryManager;
+import components.modelisationSpace.category.controllers.ConcreteCategoryController;
+import components.schemaTree.Cell.Controllers.SchemaTreeMomentTypeController;
 import components.schemaTree.Cell.SchemaTreePluggable;
 import components.schemaTree.Cell.Utils;
 import components.schemaTree.Cell.Visitors.SchemaTreePluggableVisitor;
@@ -27,8 +29,7 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     private ListProperty<SchemaCategory> categories;
     private SimpleBooleanProperty transitional;
     private SimpleStringProperty color;
-
-
+    private SchemaTreeMomentTypeController schemaTreeMomentTypeController;
     public SchemaMomentType(Moment moment, MomentTypeController momentTypeController) {
         super(moment.getName());
         super.expanded = new SimpleBooleanProperty(false);
@@ -199,5 +200,8 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     public String getColor() {
         return color.get();
     }
-
+    public void setColor(String color) {
+        this.color.set(color);
+        //momentTypeController.updateColor();
+    }
 }
