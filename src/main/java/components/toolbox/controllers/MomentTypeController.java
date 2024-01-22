@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 public class MomentTypeController implements Initializable {
     private @FXML BorderPane momentTypeBorderPane;
     private @FXML Label momentTypeLabel;
-    private @FXML BorderPane momentContainer;
     @FXML
     MenuButton optionsMenu;
     @FXML
@@ -39,7 +38,7 @@ public class MomentTypeController implements Initializable {
     private boolean renamingMode = false;
     private AutoSuggestionsTextField renamingField;
     private SchemaTreeCommandFactory cmdFactory;
-    public MomentTypeController(Moment moment) {
+    public MomentTypeController(Moment moment ) {
         this.schemaMomentType = new SchemaMomentType(moment, this);
     }
 
@@ -47,6 +46,10 @@ public class MomentTypeController implements Initializable {
         this.schemaMomentType = schemaMomentType;
     }
 
+//    public MomentTypeController(SchemaMomentType schemaMomentType, SchemaTreeCommandFactory cmdFactory) {
+//        this.schemaMomentType = schemaMomentType;
+//        this.cmdFactory =cmdFactory;
+//    }
     public static Node createMomentTypeController(MomentTypeController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -157,11 +160,10 @@ public class MomentTypeController implements Initializable {
         }
     }
     public void updateColor() {
-        momentContainer.setStyle("-fx-background-color: #" + schemaMomentType.getColor() + ";\n");
+        momentTypeBorderPane.setStyle("-fx-background-color: #" + schemaMomentType.getColor() + ";\n");
     }
     private void addColorChange() {
         Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
-
         MenuItem white = new MenuItem("    ");
         white.setStyle("-fx-background-color: #ffffff;\n");
         white.setOnAction(actionEvent -> {
@@ -173,7 +175,21 @@ public class MomentTypeController implements Initializable {
         MenuItem brown = new MenuItem("    ");
         brown.setStyle("-fx-background-color: #b97a57;\n");
         brown.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "b97a57").execute();
+            if (cmdFactory == null) {
+                System.out.println("cmdFactory is null");
+            }
+            if (schemaMomentType == null) {
+                System.out.println("schemaMomentType is null");
+            }
+            if (cmdFactory != null && schemaMomentType != null) {
+                cmdFactory.colorCommandMomentType(schemaMomentType, "7092be");
+                if (cmdFactory.colorCommandMomentType(schemaMomentType, "7092be") != null) {
+                    cmdFactory.colorCommandMomentType(schemaMomentType, "7092be").execute();
+                } else {
+                    System.out.println("colorCommandMomentType returns null");
+                }
+            }
+//            cmdFactory.colorCommandMomentType(schemaMomentType, "b97a57").execute();
             updateMomentTypeIcon("b97a57");
         });
         changeColor.getItems().add(brown);

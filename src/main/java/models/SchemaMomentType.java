@@ -202,6 +202,6 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     }
     public void setColor(String color) {
         this.color.set(color);
-        //momentTypeController.updateColor();
+        momentTypeController.updateColor();
     }
 }
