@@ -25,11 +25,12 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
     private SchemaMomentType schemaMomentType;
     private SchemaTreeCommandFactory cmdFactory;
     private boolean renamingMode = false;
-
+    public static SchemaTreeMomentTypeController schemaTreeMomentTypeController;
     public SchemaTreeMomentTypeController(SchemaMomentType schemaMomentType, SchemaTreeCommandFactory cmdFactory) {
         super(schemaMomentType, cmdFactory);
         this.schemaMomentType = schemaMomentType;
         this.cmdFactory = cmdFactory;
+        schemaTreeMomentTypeController=this;
     }
 
     @Override
@@ -70,6 +71,42 @@ public class SchemaTreeMomentTypeController extends SchemaTreeCellController {
         addColorChange();
         updateMomentTypeIcon(schemaMomentType.getColor());
     }
+    public void c_white(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "ffffff").execute();
+        updateMomentTypeIcon("ffffff");
+
+    }
+    public void c_brown(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "b97a57").execute();
+        updateMomentTypeIcon("b97a57");
+    }
+    public void c_pink(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "ffaec9").execute();
+        updateMomentTypeIcon("ffaec9");
+
+    }
+    public void c_yellow(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "ffc90e").execute();
+        updateMomentTypeIcon("ffc90e");
+    }
+    public void c_green(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "b5e61d").execute();
+        updateMomentTypeIcon("b5e61d");
+    }
+    public void c_blue(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "7092be").execute();
+        updateMomentTypeIcon("7092be");
+    }
+    public void c_purple(){
+        cmdFactory.colorCommandMomentType(schemaMomentType, "8671cd").execute();
+        updateMomentTypeIcon("8671cd");
+    }
+    public void c_red(){
+
+        cmdFactory.colorCommandMomentType(schemaMomentType, "f15252").execute();
+        updateMomentTypeIcon("f15252");
+    }
+
     private void addColorChange() {
         Menu changeColor = new Menu(Configuration.langBundle.getString("change_color"));
 

@@ -140,7 +140,9 @@ public class ToolBoxControllers extends HBox implements Initializable {
 
     // permet d'être utilisé dans l'arbre à gauche pour créer un type de moment
     public void addMomentTypeCommand(Moment m) {
-        SchemaMomentType smt = new SchemaMomentType(m, new MomentTypeController(m));
+        MomentTypeController momentTypeController = new MomentTypeController(m);
+        SchemaMomentType smt = new SchemaMomentType(m, momentTypeController);
+        momentTypeController.schemaMomentType=smt;
         new AddSchemaMomentTypeCommand(instance, smt).execute();
     }
 

@@ -30,6 +30,15 @@ public class SchemaMomentType extends SchemaElement implements IRemovable {
     private SimpleBooleanProperty transitional;
     private SimpleStringProperty color;
     private SchemaTreeMomentTypeController schemaTreeMomentTypeController;
+
+    public SchemaTreeMomentTypeController getSchemaTreeMomentTypeController() {
+        return schemaTreeMomentTypeController;
+    }
+
+    public void setSchemaTreeMomentTypeController(SchemaTreeMomentTypeController schemaTreeMomentTypeController) {
+        this.schemaTreeMomentTypeController = schemaTreeMomentTypeController;
+    }
+
     public SchemaMomentType(Moment moment, MomentTypeController momentTypeController) {
         super(moment.getName());
         super.expanded = new SimpleBooleanProperty(false);

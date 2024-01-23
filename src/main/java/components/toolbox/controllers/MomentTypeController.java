@@ -2,6 +2,7 @@ package components.toolbox.controllers;
 
 import application.configuration.Configuration;
 import components.modelisationSpace.moment.appCommands.MomentCommandFactory;
+import components.schemaTree.Cell.Controllers.SchemaTreeMomentTypeController;
 import components.schemaTree.Cell.appCommands.SchemaTreeCommandFactory;
 import components.toolbox.appCommand.RenameMomentTypesCommand;
 import javafx.scene.control.*;
@@ -33,11 +34,10 @@ public class MomentTypeController implements Initializable {
     MenuButton optionsMenu;
     @FXML
     ImageView pictureView;
-    private SchemaMomentType schemaMomentType;
+    public SchemaMomentType schemaMomentType;
 
     private boolean renamingMode = false;
     private AutoSuggestionsTextField renamingField;
-    private SchemaTreeCommandFactory cmdFactory;
     public MomentTypeController(Moment moment ) {
         this.schemaMomentType = new SchemaMomentType(moment, this);
     }
@@ -46,10 +46,6 @@ public class MomentTypeController implements Initializable {
         this.schemaMomentType = schemaMomentType;
     }
 
-//    public MomentTypeController(SchemaMomentType schemaMomentType, SchemaTreeCommandFactory cmdFactory) {
-//        this.schemaMomentType = schemaMomentType;
-//        this.cmdFactory =cmdFactory;
-//    }
     public static Node createMomentTypeController(MomentTypeController controller) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -167,112 +163,59 @@ public class MomentTypeController implements Initializable {
         MenuItem white = new MenuItem("    ");
         white.setStyle("-fx-background-color: #ffffff;\n");
         white.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "ffffff").execute();
-            updateMomentTypeIcon("ffffff");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_white();
         });
         changeColor.getItems().add(white);
 
         MenuItem brown = new MenuItem("    ");
         brown.setStyle("-fx-background-color: #b97a57;\n");
         brown.setOnAction(actionEvent -> {
-            if (cmdFactory == null) {
-                System.out.println("cmdFactory is null");
-            }
-            if (schemaMomentType == null) {
-                System.out.println("schemaMomentType is null");
-            }
-            if (cmdFactory != null && schemaMomentType != null) {
-                cmdFactory.colorCommandMomentType(schemaMomentType, "7092be");
-                if (cmdFactory.colorCommandMomentType(schemaMomentType, "7092be") != null) {
-                    cmdFactory.colorCommandMomentType(schemaMomentType, "7092be").execute();
-                } else {
-                    System.out.println("colorCommandMomentType returns null");
-                }
-            }
-//            cmdFactory.colorCommandMomentType(schemaMomentType, "b97a57").execute();
-            updateMomentTypeIcon("b97a57");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_brown();
         });
         changeColor.getItems().add(brown);
 
         MenuItem pink = new MenuItem("    ");
         pink.setStyle("-fx-background-color: #ffaec9;\n");
         pink.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "ffaec9").execute();
-            updateMomentTypeIcon("ffaec9");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_pink();
         });
         changeColor.getItems().add(pink);
 
         MenuItem yellow = new MenuItem("    ");
         yellow.setStyle("-fx-background-color: #ffc90e;\n");
         yellow.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "ffc90e").execute();
-            updateMomentTypeIcon("ffc90e");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_yellow();
         });
         changeColor.getItems().add(yellow);
 
         MenuItem green = new MenuItem("    ");
         green.setStyle("-fx-background-color: #b5e61d;\n");
         green.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "b5e61d").execute();
-            updateMomentTypeIcon("b5e61d");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_green();
         });
         changeColor.getItems().add(green);
 
         MenuItem blue = new MenuItem("    ");
         blue.setStyle("-fx-background-color: #7092be;\n");
         blue.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "7092be").execute();
-            updateMomentTypeIcon("7092be");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_blue();
         });
         changeColor.getItems().add(blue);
 
         MenuItem purple = new MenuItem("    ");
         purple.setStyle("-fx-background-color: #8671cd;\n");
         purple.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "8671cd").execute();
-            updateMomentTypeIcon("8671cd");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_purple();
         });
         changeColor.getItems().add(purple);
 
         MenuItem red = new MenuItem("    ");
         red.setStyle("-fx-background-color: #f15252;\n");
         red.setOnAction(actionEvent -> {
-            cmdFactory.colorCommandMomentType(schemaMomentType, "f15252").execute();
-            updateMomentTypeIcon("f15252");
+            schemaMomentType.getSchemaTreeMomentTypeController().c_red();
         });
         changeColor.getItems().add(red);
 
         optionsMenu.getItems().add(changeColor);
-    }
-    public void updateMomentTypeIcon(String color) {
-        switch (color) {
-            case "ffffff":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_icon.png"));
-                break;
-            case "b97a57":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_brown.png"));
-                break;
-            case "ffaec9":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_pink.png"));
-                break;
-            case "ffc90e":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_yellow.png"));
-                break;
-            case "b5e61d":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_green.png"));
-                break;
-            case "7092be":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_blue.png"));
-                break;
-            case "8671cd":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_purple.png"));
-                break;
-            case "f15252":
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_red.png"));
-                break;
-            default:
-                pictureView.setImage(ResourceLoader.loadImage("toolBox_icon.png"));
-                break;
-        }
     }
 }
