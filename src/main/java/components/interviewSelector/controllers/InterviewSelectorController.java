@@ -13,12 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import models.ConcreteCategory;
 import models.Interview;
-import utils.dragAndDrop.DragStore;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +24,8 @@ public class InterviewSelectorController implements Initializable  {
     @FXML private ListView<Interview> interviewList;
     @FXML private Button addInterviewButton;
     @FXML private Button comparisonButton;
+
+    @FXML private Button normalisationButton;
 
     private ObservableList<Interview> interviews;
     private ListChangeListener<Interview> listChangeListener;
@@ -72,6 +69,10 @@ public class InterviewSelectorController implements Initializable  {
             this.interviewList.getItems().add(i);
         }
         interviewList.getSelectionModel().select(interviewList.getItems().indexOf(selectedInterview.getValue()));
+
+        normalisationButton.setOnAction(event -> {
+            commandFactory.createNormalisation().selectCategories();
+        });
     }
 
     private void bind(ObservableList<Interview> interviews) {
