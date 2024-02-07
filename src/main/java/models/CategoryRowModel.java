@@ -16,8 +16,27 @@ public class CategoryRowModel {
 
 
     public CategoryRowModel(SchemaCategory category){
+        this.category = category;
 
     }
 
+    public SchemaCategory getCategory() {
+        return this.category;
+    }
 
+    public int getNbOfUses() {
+        return this.nbOfUse;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public Boolean getSelected() {
+        return this.selected;
+    }
+
+    public List<String> getPropertiesValues() {
+        return this.propertiesValues;
+    }
 }
