@@ -34,7 +34,7 @@ public class UPMTApp {
         this.primaryStage = primaryStage;
         this.appCommandFactory = new ApplicationCommandFactory(this);
         this.rootLayoutController = new RootLayoutController(appCommandFactory);
-        this.autoSaveIntervalMillis = 10000;
+        this.autoSaveIntervalMillis = 5000;
 
 
         Configuration.loadAppConfiguration();

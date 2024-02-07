@@ -21,7 +21,6 @@ public class SaveProjectCommand extends ApplicationCommand<Void> {
                 ProjectSaver.save(upmtApp.getCurrentProject(), Configuration.getProjectsPath()[0]);
                 upmtApp.setLastSavedCommandId(HistoryManager.getCurrentCommandId());
                 new ProjectSavingStatusChangedCommand(upmtApp).execute();
-                System.out.println("Projet saved");
 
             } catch (Exception e) {
                 ProjectDialogBox.projectSavingFailed();
