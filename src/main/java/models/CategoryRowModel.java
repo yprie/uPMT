@@ -1,6 +1,12 @@
 package models;
 
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CategoryRowModel {
 
@@ -9,22 +15,35 @@ public class CategoryRowModel {
     private boolean selected;
     private List<Interview> interviews;
     private List<Moment> moments;
-    private List<ConcreteProperty> properties;
+    private ObservableList<SchemaProperty> properties;
     private List<String> propertiesValues;
 
-    private int nbOfUse;
+    private ReadOnlyIntegerProperty nbOfUse;
 
 
     public CategoryRowModel(SchemaCategory category){
         this.category = category;
+        this.interviews = category.getInterviews();
+        this.nbOfUse = category.numberOfUsesInModelisationProperty();
+        this.interviews = FXCollections.observableArrayList(category.getInterviews());
+        this.properties = FXCollections.observableArrayList(category.propertiesProperty());
 
+        this.moments = FXCollections.observableArrayList();
+        Set<Moment> uniqueMoments = new HashSet<>();
+
+        for (Interview interview : interviews) {
+            RootMoment rootMoment = interview.getRootMoment();
+            uniqueMoments.addAll(rootMoment.momentsProperty());
+        }
+
+        this.moments.addAll(uniqueMoments);
     }
 
     public SchemaCategory getCategory() {
         return this.category;
     }
 
-    public int getNbOfUses() {
+    public ReadOnlyIntegerProperty getNbOfUses() {
         return this.nbOfUse;
     }
 
@@ -39,4 +58,6 @@ public class CategoryRowModel {
     public List<String> getPropertiesValues() {
         return this.propertiesValues;
     }
+
+
 }
