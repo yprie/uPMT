@@ -27,15 +27,13 @@ public class CategoryRowModel {
         this.nbOfUse = category.numberOfUsesInModelisationProperty();
         this.interviews = FXCollections.observableArrayList(category.getInterviews());
         this.properties = FXCollections.observableArrayList(category.propertiesProperty());
-
+        //ConcreteProperty concreteProperty = new ConcreteProperty(property);
         this.moments = FXCollections.observableArrayList();
         Set<Moment> uniqueMoments = new HashSet<>();
-
         for (Interview interview : interviews) {
             RootMoment rootMoment = interview.getRootMoment();
             uniqueMoments.addAll(rootMoment.momentsProperty());
         }
-
         this.moments.addAll(uniqueMoments);
     }
 
