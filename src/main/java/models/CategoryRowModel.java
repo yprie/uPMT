@@ -1,9 +1,11 @@
 package models;
 
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +18,7 @@ public class CategoryRowModel {
     private List<Interview> interviews;
     private List<Moment> moments;
     private ObservableList<SchemaProperty> properties;
-    private List<String> propertiesValues;
-
+    private List<ObservableStringValue> propertiesValues;
     private ReadOnlyIntegerProperty nbOfUse;
 
 
@@ -27,7 +28,13 @@ public class CategoryRowModel {
         this.nbOfUse = category.numberOfUsesInModelisationProperty();
         this.interviews = FXCollections.observableArrayList(category.getInterviews());
         this.properties = FXCollections.observableArrayList(category.propertiesProperty());
-        //ConcreteProperty concreteProperty = new ConcreteProperty(property);
+        this.propertiesValues = FXCollections.observableArrayList();
+        ObservableList<ConcreteProperty> propertiesConcrete = FXCollections.observableArrayList();
+        for (SchemaProperty p : properties) {
+            ConcreteProperty concreteProperty = new ConcreteProperty(p);
+            propertiesConcrete.add(concreteProperty);
+            this.propertiesValues.add(concreteProperty.valueProperty());
+        }
         this.moments = FXCollections.observableArrayList();
         Set<Moment> uniqueMoments = new HashSet<>();
         for (Interview interview : interviews) {
@@ -53,7 +60,7 @@ public class CategoryRowModel {
         return this.selected;
     }
 
-    public List<String> getPropertiesValues() {
+    public List<ObservableStringValue> getPropertiesValues() {
         return this.propertiesValues;
     }
 
