@@ -82,4 +82,7 @@ public class SchemaTreeCommandFactory {
     public ChangeColorCategoryCommand colorCommand(SchemaCategory c, String newColor) {
         return new ChangeColorCategoryCommand(c, newColor);
     }
+    public ChangeColorMomentTypesCommand colorCommandMomentType(SchemaMomentType mt, String newColor) {
+        return new ChangeColorMomentTypesCommand(mt, newColor);
+    }
 }

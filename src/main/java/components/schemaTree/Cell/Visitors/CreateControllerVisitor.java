@@ -35,6 +35,7 @@ public class CreateControllerVisitor extends SchemaTreePluggableVisitor {
     @Override
     public void visit(SchemaMomentType element) {
         resultController = new SchemaTreeMomentTypeController(element, cmdFactory);
+        element.setSchemaTreeMomentTypeController((SchemaTreeMomentTypeController) resultController);
     }
 
     public SchemaTreeCellController getResultController() {
