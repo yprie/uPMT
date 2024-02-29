@@ -54,39 +54,35 @@ public class CloseApplicationCommand extends ApplicationCommand<Void> {
             }
         }
 
-        if (upmtApp.getCurrentProjectPath() == null) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setHeaderText("");
-            alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
-            alert.setContentText(Configuration.langBundle.getString("alert_unsaved_project"));
-            alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText("");
+        alert.setTitle(Configuration.langBundle.getString("alert_unsaved_project_title"));
+        alert.setContentText(Configuration.langBundle.getString("alert_unsaved_project"));
+        alert.getDialogPane().getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 
-            ButtonType buttonTypeOne = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeOne"));
-            ButtonType buttonTypeTwo = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeTwo"));
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeOne = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeOne"));
+        ButtonType buttonTypeTwo = new ButtonType(Configuration.langBundle.getString("alert_unsaved_project_buttonTypeTwo"));
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
-            Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.get() == buttonTypeOne){
-               // ... user chose "Save And Quit"
-                appCommandFactory.saveProject().execute();
-                System.exit(0);
-            } else if (result.get() == buttonTypeTwo) {
-                // ... user chose "Quit without saving"
-                System.exit(0);
-            } else if (result.get() == buttonTypeCancel) {
-                // ... user chose "Cancel"
-                if (event != null) {
-                    event.consume();
-                }
-                return null;
-            }
-        } else {
-            System.exit(0);
+        if (result.get() == buttonTypeOne){
+           // ... user chose "Save And Quit"
             appCommandFactory.saveProject().execute();
+            System.exit(0);
+        } else if (result.get() == buttonTypeTwo) {
+            // ... user chose "Quit without saving"
+            System.exit(0);
+        } else if (result.get() == buttonTypeCancel) {
+            // ... user chose "Cancel"
+            if (event != null) {
+                event.consume();
+            }
+            return null;
         }
+
 
         return null;
     }
