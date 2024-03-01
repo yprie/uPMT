@@ -273,4 +273,13 @@ public class Moment extends RootMoment implements IDraggable {
         return categories.get();
     }
 
+    public boolean containsCategory(SchemaCategory category) {
+        for (ConcreteCategory cc : categories) {
+            if (cc.getSchemaCategory() == category) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
