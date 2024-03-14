@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +59,36 @@ public class CategoryRowModel {
         this.selectedProperty = new SimpleBooleanProperty(false); // Initialisation à false
     }
 
+    public CategoryRowModel duplicate() {
+        // This method should create and return a copy of this object
+        CategoryRowModel duplicate = new CategoryRowModel(this.category);
+        duplicate.setSelected(this.getSelected());
+        duplicate.setInterviews(new ArrayList<>(this.interviews));
+        duplicate.setMoments(new ArrayList<>(this.moments));
+        duplicate.setProperties(FXCollections.observableArrayList(this.properties));
+        duplicate.setPropertiesValues(new ArrayList<>(this.propertiesValues));
+        // Note: The deep or shallow copy depends on the specific needs
+        return duplicate;
+    }
+
+    public void movePropertyValue() {
+        // The logic for moving a property value goes here, which needs specific business logic to implement
+    }
+
+    public void addProperty(SchemaProperty property) {
+        this.properties.add(property);
+        // Also need to add values associated with this property
+    }
+
+    public void removeProperty(SchemaProperty property) {
+        this.properties.remove(property);
+        // Also need to remove values associated with this property
+    }
+
+    public void addPropertyValue(ObservableStringValue propertyValue) {
+        this.propertiesValues.add(propertyValue);
+        // Additional operations?
+    }
     public SchemaCategory getCategory() {
         return this.category;
     }
@@ -69,6 +100,8 @@ public class CategoryRowModel {
     public Boolean isSelected() {
         return selectedProperty.get();
     }
+
+    public boolean getSelected() {return selectedProperty.get();}
 
     public void setSelected(boolean selected) {
         this.selectedProperty.set(selected);
@@ -122,7 +155,7 @@ public class CategoryRowModel {
         return this.propertiesValues;
     }
 
-    public ReadOnlyBooleanProperty selectedProperty() {
+    public BooleanProperty selectedProperty() {
         return selectedProperty;
     }
 }

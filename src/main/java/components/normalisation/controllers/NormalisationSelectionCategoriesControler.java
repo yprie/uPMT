@@ -29,6 +29,9 @@ public class NormalisationSelectionCategoriesControler implements Initializable 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        categoriesTable.setEditable(true);
+
         // Créer et ajouter les colonnes à la table
         TableColumn<CategoryRowModel, Boolean> selectColumn = new TableColumn<>("Selection");
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
