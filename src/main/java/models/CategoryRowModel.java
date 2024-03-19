@@ -75,11 +75,16 @@ public class CategoryRowModel {
         int index1 = propertiesValues.indexOf(propertyValue1);
         int index2 = propertiesValues.indexOf(propertyValue2);
 
-        // Check if both property values are in the list
-        if (index1 >= 0 && index2 >= 0) {
-            // Swap the property values
-            propertiesValues.set(index1, propertyValue2);
-            propertiesValues.set(index2, propertyValue1);
+        // Check if the first property value is in the list
+        if (index1 >= 0) {
+            // Move property value1 to the position of property value2
+            if (index2 >= 0) {
+                propertiesValues.set(index2, propertyValue1);
+            } else {
+                propertiesValues.add(propertyValue1);
+            }
+            // Remove the original property value1 or replace it with a null or an empty string
+            propertiesValues.set(index1, null );
         }
     }
 
