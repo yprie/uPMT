@@ -71,23 +71,32 @@ public class CategoryRowModel {
         return duplicate;
     }
 
-    public void movePropertyValue() {
-        // The logic for moving a property value goes here, which needs specific business logic to implement
+    public void movePropertyValue(ObservableStringValue propertyValue1,ObservableStringValue propertyValue2) {
+        int index1 = propertiesValues.indexOf(propertyValue1);
+        int index2 = propertiesValues.indexOf(propertyValue2);
+
+        // Check if both property values are in the list
+        if (index1 >= 0 && index2 >= 0) {
+            // Swap the property values
+            propertiesValues.set(index1, propertyValue2);
+            propertiesValues.set(index2, propertyValue1);
+        }
     }
 
     public void addProperty(SchemaProperty property) {
         this.properties.add(property);
-        // Also need to add values associated with this property
     }
 
     public void removeProperty(SchemaProperty property) {
         this.properties.remove(property);
         // Also need to remove values associated with this property
+        ConcreteProperty concreteProperty = new ConcreteProperty(property);
+        ObservableStringValue propertiesValue = concreteProperty.valueProperty();
+        this.propertiesValues.remove(propertiesValue);
     }
 
     public void addPropertyValue(ObservableStringValue propertyValue) {
         this.propertiesValues.add(propertyValue);
-        // Additional operations?
     }
     public SchemaCategory getCategory() {
         return this.category;
