@@ -14,7 +14,9 @@ import models.Project;
 import utils.GlobalVariables;
 import java.io.IOException;
 import java.util.UUID;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class UPMTApp {
 
@@ -24,15 +26,15 @@ public class UPMTApp {
     private static Project currentProject;
     private String currentProjectPath;
     private UUID lastSavedCommandId;
+    private long autoSaveIntervalMillis;
 
 
     public UPMTApp(Stage primaryStage) throws IOException {
 
-
         this.primaryStage = primaryStage;
         this.appCommandFactory = new ApplicationCommandFactory(this);
         this.rootLayoutController = new RootLayoutController(appCommandFactory);
-
+        this.autoSaveIntervalMillis = 30000;
 
         Configuration.loadAppConfiguration();
         HistoryManager.init(appCommandFactory);
@@ -56,6 +58,8 @@ public class UPMTApp {
             appCommandFactory.openProjectManagerCommand().execute();
         }
 
+        startAutoSave();
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/MainView/MainView.fxml"));
         loader.setResources(Configuration.langBundle);
@@ -63,7 +67,26 @@ public class UPMTApp {
         loader.load();
     }
 
+    private void startAutoSave() {
+        if (currentProject != null) {
+            // Créez et démarrez un nouveau thread pour la sauvegarde automatique
+            Thread autoSaveThread = new Thread(() -> {
+                while (true) {
+                    try {
+                        // Utilisez Platform.runLater() pour exécuter l'opération sur le thread de l'interface utilisateur
+                        Platform.runLater(() -> appCommandFactory.saveProject().execute());
 
+                        // Pause pour l'intervalle spécifié
+                        Thread.sleep(autoSaveIntervalMillis);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            autoSaveThread.setDaemon(true); // Le thread s'exécutera en arrière-plan et se terminera lorsque le programme principal se termine
+            autoSaveThread.start();
+        }
+    }
 
     public Stage getPrimaryStage() {
         return primaryStage;
