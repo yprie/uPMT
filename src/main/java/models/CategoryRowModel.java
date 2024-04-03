@@ -1,7 +1,6 @@
 package models;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableStringValue;
@@ -171,5 +170,14 @@ public class CategoryRowModel {
 
     public BooleanProperty selectedProperty() {
         return selectedProperty;
+    }
+
+    public ConcreteCategory getConcreteCategory(Moment moment) {
+        for (ConcreteCategory concreteCategory : moment.getCategories()) {
+            if (concreteCategory.isSchemaCategory(this.category)) {
+                return concreteCategory;
+            }
+        }
+        return null;
     }
 }

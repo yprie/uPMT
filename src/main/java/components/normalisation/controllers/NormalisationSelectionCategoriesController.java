@@ -5,8 +5,10 @@ import components.normalisation.SelectionCategoriesView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -18,17 +20,25 @@ import models.SchemaFolder;
 import utils.GlobalVariables;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class NormalisationSelectionCategoriesControler implements Initializable {
+public class NormalisationSelectionCategoriesController implements Initializable {
 
+    @FXML
+    private Button validateButton;
     @FXML
     private TableView<CategoryRowModel> categoriesTable;
     private final ObservableList<CategoryRowModel> categories = FXCollections.observableArrayList();
 
+    private SelectedCategoriesController selectedCategoriesController;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        selectedCategoriesController = new SelectedCategoriesController();
+
 
         categoriesTable.setEditable(true);
 
@@ -98,4 +108,26 @@ public class NormalisationSelectionCategoriesControler implements Initializable 
             e.printStackTrace();
         }
     }
+
+    private List<CategoryRowModel> getSelectedCategories() {
+        return categories.stream()
+                .filter(CategoryRowModel::isSelected)
+                .collect(Collectors.toList());
+    }
+
+    // lorsque l'utilisateur clique sur le bouton "Valider"
+    // on récupère les catégories sélectionnées et on les envoie à la vue suivante
+    // la vue suivante est SelectedCategoriesView
+    @FXML
+    private void handleValidateButton(ActionEvent event) {
+        List<CategoryRowModel> selectedCategories = getSelectedCategories();
+        for(CategoryRowModel category : selectedCategories) {
+            System.out.println("Selected category: " + category.getName());
+        }
+
+        // Utiliser la même instance de SelectedCategoriesController pour lancer la vue
+        selectedCategoriesController.launchView(selectedCategories);
+    }
+
+
 }
