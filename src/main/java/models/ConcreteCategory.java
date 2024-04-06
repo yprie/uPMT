@@ -1,6 +1,5 @@
 package models;
 
-import application.UPMTApp;
 import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.property.appCommands.AddConcretePropertyCommand;
 import components.modelisationSpace.property.appCommands.RemoveConcretePropertyCommand;
@@ -113,5 +112,23 @@ public class ConcreteCategory implements IDraggable {
     public void setController(ConcreteCategoryController controller) {
         this.controller = controller;
     }
+
+    // Affiche ce que contient la catégorie
+    // c'est-à dire la liste des concreteProperty
+    // et la justification
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (ConcreteProperty property : properties) {
+            sb.append(property.getName());
+            if (property != properties.get(properties.size() - 1))
+                sb.append(" || ");
+        }
+        sb.append(" || ");
+        sb.append(justification.toString());
+        return sb.toString();
+
+    }
+
 
 }

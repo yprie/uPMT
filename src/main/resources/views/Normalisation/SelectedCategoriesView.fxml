@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" prefHeight="460.0" prefWidth="600.0" stylesheets="/css/application.css">
+    <center>
+        <!-- GridPane que je vais remplir avec les catégories sélectionnées dans la vue précédente -->
+        <!-- cela va se faire dans le controller -->
+        <ScrollPane fitToHeight="true" fitToWidth="true">
+            <content>
+                <GridPane fx:id="selectedCategoriesGrid" prefHeight="400.0" prefWidth="250.0" GridPane.vgrow="ALWAYS">
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
