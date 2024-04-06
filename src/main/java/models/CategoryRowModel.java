@@ -8,10 +8,7 @@ import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CategoryRowModel {
 
@@ -130,14 +127,27 @@ public class CategoryRowModel {
     }
 
     public List<Interview> getInterviews() {
+        // Trier la liste par ordre alphabétique
+        Collections.sort(interviews, new Comparator<Interview>() {
+            @Override
+            public int compare(Interview interview1, Interview interview2) {
+                return interview1.getTitle().compareTo(interview2.getTitle());
+            }
+        });
         return interviews;
     }
-
     public void setInterviews(List<Interview> interviews) {
         this.interviews = interviews;
     }
 
     public List<Moment> getMoments() {
+        // Trier la liste par ordre alphabétique
+        Collections.sort(moments, new Comparator<Moment>() {
+            @Override
+            public int compare(Moment moment1, Moment moment2) {
+                return moment1.getName().compareTo(moment2.getName());
+            }
+        });
         return moments;
     }
 
