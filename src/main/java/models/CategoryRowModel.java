@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CategoryRowModel {
 
@@ -19,6 +20,8 @@ public class CategoryRowModel {
     private List<ObservableStringValue> propertiesValues;
     private ReadOnlyIntegerProperty nbOfUse;
     private BooleanProperty selectedProperty;
+    private Map<String, List<String>> interviewMomentsMap;
+
 
     public CategoryRowModel(SchemaCategory category){
         this.category = category;
@@ -50,6 +53,16 @@ public class CategoryRowModel {
             //RootMoment rootMoment = interview.getRootMoment();
             //uniqueMoments.addAll(rootMoment.momentsProperty());
         }
+
+        this.interviewMomentsMap = new HashMap<>();
+        for (Interview interview : interviews) {
+            List<String> momentNames = interview.getRootMoment().momentsProperty().stream()
+                    .filter(moment -> moment.containsCategory(category))
+                    .map(Moment::getName)
+                    .collect(Collectors.toList());
+            this.interviewMomentsMap.put(interview.getTitle(), momentNames);
+        }
+
         this.moments.addAll(uniqueMoments);
 
         this.selectedProperty = new SimpleBooleanProperty(false); // Initialisation à false
@@ -65,6 +78,10 @@ public class CategoryRowModel {
         duplicate.setPropertiesValues(new ArrayList<>(this.propertiesValues));
         // Note: The deep or shallow copy depends on the specific needs
         return duplicate;
+    }
+
+    public Map<String, List<String>> getInterviewMomentsMap() {
+        return this.interviewMomentsMap;
     }
 
     public void movePropertyValue(ObservableStringValue propertyValue1,ObservableStringValue propertyValue2) {

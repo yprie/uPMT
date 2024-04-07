@@ -2,6 +2,7 @@ package components.normalisation.controllers;
 
 import application.configuration.Configuration;
 import components.normalisation.SelectionCategoriesView;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -62,27 +64,24 @@ public class NormalisationSelectionCategoriesController implements Initializable
             return new SimpleStringProperty(properties);
         });
 
-        TableColumn<CategoryRowModel, String> interviewsColumn = new TableColumn<>("Associated Interviews");
+
+        TableColumn<CategoryRowModel, String> interviewsColumn = new TableColumn<>("Associated Interviews (with Moments)");
         interviewsColumn.setCellValueFactory(cellData -> {
             CategoryRowModel rowModel = cellData.getValue();
-            String interviews = rowModel.getInterviews().stream()
-                    .map(Interview::getTitle)
-                    .map(title -> "• " + title) // Ajout du point devant chaque titre d'interview
-                    .collect(Collectors.joining("\n"));
-            return new SimpleStringProperty(interviews);
+            StringBuilder moments = new StringBuilder();
+            for (Interview interview : rowModel.getInterviews()) {
+                moments.append("• ").append(interview.getTitle()).append(":\n");
+                List<String> momentNames = rowModel.getInterviewMomentsMap().get(interview.getTitle());
+                if (momentNames != null) {
+                    for (String momentName : momentNames) {
+                        moments.append("\t• ").append(momentName).append("\n");
+                    }
+                }
+            }
+            return new SimpleStringProperty(moments.toString());
         });
 
-        TableColumn<CategoryRowModel, String> momentsColumn = new TableColumn<>("Associated Moments");
-        momentsColumn.setCellValueFactory(cellData -> {
-            CategoryRowModel rowModel = cellData.getValue();
-            String moments = rowModel.getMoments().stream()
-                    .map(moment -> "• " + moment.getName())
-                    .collect(Collectors.joining("\n"));
-            return new SimpleStringProperty(moments);
-        });
-
-
-        categoriesTable.getColumns().addAll(selectColumn, nameColumn, usesColumn, propertiesColumn, interviewsColumn, momentsColumn);
+        categoriesTable.getColumns().addAll(selectColumn, nameColumn, usesColumn, propertiesColumn, interviewsColumn);
 
         // Remplir la table avec les catégories
         for (SchemaFolder folder : GlobalVariables.getSchemaTreeRoot().foldersProperty()) {
