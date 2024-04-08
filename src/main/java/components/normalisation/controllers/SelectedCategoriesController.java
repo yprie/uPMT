@@ -67,15 +67,21 @@ public class SelectedCategoriesController implements Initializable {
             for (Moment moment : category.getMoments()) {
                 moments.append(moment.getName()).append("\n");
                 selectedCategoriesGrid.add(new javafx.scene.control.Label(moment.getName()), columnIndex, 0);
-                System.out.println("chaque instance : " + category.getConcreteCategory(moment).toString());
+                //System.out.println("chaque instance : " + category.getConcreteCategory(moment).toString());
                 columnIndex++;
 
             }
-            //selectedCategoriesGrid.add(new javafx.scene.control.Label(moments.toString()), 1, rowIndex);
+            rowIndex++;
+        }
 
-
-
-
+        // ajouter les instances de chaque catégorie
+        rowIndex = 1;
+        for (CategoryRowModel category : categories) {
+            columnIndex = 1;
+            for (Moment moment : category.getMoments()) {
+                selectedCategoriesGrid.add(new Label(category.getConcreteCategory(moment).toString()), columnIndex, rowIndex);
+                columnIndex++;
+            }
             rowIndex++;
         }
 

@@ -113,19 +113,12 @@ public class ConcreteCategory implements IDraggable {
         this.controller = controller;
     }
 
-    // Affiche ce que contient la catégorie
     // c'est-à dire la liste des concreteProperty
-    // et la justification
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (ConcreteProperty property : properties) {
-            sb.append(property.getName());
-            if (property != properties.get(properties.size() - 1))
-                sb.append(" || ");
-        }
-        sb.append(" || ");
-        sb.append(justification.toString());
+        for(ConcreteProperty p: properties)
+            sb.append(p.toString()).append("\n");
         return sb.toString();
 
     }
