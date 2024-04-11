@@ -5,8 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import models.CategoryRowModel;
@@ -18,80 +21,112 @@ import java.util.ResourceBundle;
 
 public class SelectedCategoriesController implements Initializable {
 
-    private Button validateButton;
     @FXML
     private GridPane selectedCategoriesGrid;
     private final ObservableList<CategoryRowModel> categories = FXCollections.observableArrayList();
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
         fillTable(categories);
-
-        // ajout des bordures
-        selectedCategoriesGrid.setStyle("-fx-border-color: black; -fx-border-width: 1px;");
-        selectedCategoriesGrid.setHgap(10);
-        selectedCategoriesGrid.setVgap(10);
-
-
-
-
-
-
-
     }
-
-// cette fonction permet de remplir le tableau avec les catégories sélectionnées
 
     public void fillTable(List<CategoryRowModel> categories) {
-        // Supprimer tous les enfants du GridPane
         selectedCategoriesGrid.getChildren().clear();
+        selectedCategoriesGrid.add(createHeaderLabel("Nom de la catégorie"), 0, 0);
+        selectedCategoriesGrid.setGridLinesVisible(true);
+        selectedCategoriesGrid.setStyle("-fx-alignment: center;");
 
-        // Ajouter les en-têtes des colonnes
-        selectedCategoriesGrid.add(new javafx.scene.control.Label("Nom de la catégorie"), 0, 0);
         int columnIndex = 1;
-        int rowIndex = 1; // Index de la ligne actuelle
-        System.out.println("Nombre de catégories : " + categories.size());
-        // Ajouter les catégories à la table
+        int rowIndex = 1;
+
         for (CategoryRowModel category : categories) {
-            // Ajouter le nom de la catégorie
-            System.out.println("Première catégorie : " + category.getName());
-            selectedCategoriesGrid.add(new Label(category.getName()), 0, rowIndex);
+            Label categoryNameLabel = createLabel(category.getName());
+            categoryNameLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px; -fx-padding: 5px;");
 
+            selectedCategoriesGrid.add(categoryNameLabel, 0, rowIndex);
 
-            // Ajouter les moments associés
-
-            StringBuilder moments = new StringBuilder();
             for (Moment moment : category.getMoments()) {
-                moments.append(moment.getName()).append("\n");
-                selectedCategoriesGrid.add(new javafx.scene.control.Label(moment.getName()), columnIndex, 0);
-                //System.out.println("chaque instance : " + category.getConcreteCategory(moment).toString());
+                Label momentLabel = createLabel(moment.getName());
+                momentLabel.setStyle("-fx-font-size: 18px; -fx-padding: 5px;");
+                selectedCategoriesGrid.add(momentLabel, columnIndex, 0);
                 columnIndex++;
-
             }
+
             rowIndex++;
         }
 
-        // ajouter les instances de chaque catégorie
+        columnIndex = 1;
         rowIndex = 1;
         for (CategoryRowModel category : categories) {
-            columnIndex = 1;
             for (Moment moment : category.getMoments()) {
-                selectedCategoriesGrid.add(new Label(category.getConcreteCategory(moment).toString()), columnIndex, rowIndex);
+                Label instanceLabel = createLabel(category.getConcreteCategory(moment).toString());
+                instanceLabel.setStyle("-fx-font-size: 18px; -fx-padding: 5px;");
+                addDragDropHandlers(instanceLabel);
+                selectedCategoriesGrid.add(instanceLabel, columnIndex, rowIndex);
                 columnIndex++;
             }
             rowIndex++;
+            columnIndex = 1;
         }
+    }
 
+    private Label createLabel(String text) {
+        Label label = new Label(text);
+        label.setStyle("-fx-padding: 5px;");
+        return label;
+    }
 
+    private Label createHeaderLabel(String text) {
+        Label label = createLabel(text);
+        label.setStyle("-fx-font-weight: bold; -fx-font-size: 18px; -fx-padding: 5px;");
+        return label;
+    }
 
+    private void addDragDropHandlers(Label label) {
+        label.setOnDragDetected(event -> {
+            System.out.println("Drag detected on label: " + label.getText());
+            Dragboard dragboard = label.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(label.getText());
+            dragboard.setContent(content);
+        });
 
+        label.setOnDragOver(event -> {
+            System.out.println("Drag over label: " + label.getText());
+            if (event.getGestureSource() != label && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        label.setOnDragDropped(event -> {
+            System.out.println("Drag dropped on label: " + label.getText());
+            Dragboard dragboard = event.getDragboard();
+            boolean success = false;
+            if (dragboard.hasString()) {
+                // Récupérer le texte déposé
+                String droppedText = dragboard.getString();
+                System.out.println("Dropped text: " + droppedText);
+
+                // Supprimer le contenu de la cellule où l'étiquette a été déposée
+                Node target = event.getPickResult().getIntersectedNode();
+                if (target != null && target instanceof Label) {
+                    ((Label) target).setText(droppedText);
+                    System.out.println("Dropped text set on label: " + droppedText);
+                    success = true;
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+        label.setOnDragDone(event -> {
+            System.out.println("Drag done on label: " + label.getText());
+            event.consume();
+        });
     }
 
 
-    // fonction pour lancer la vue avec les catégories sélectionnées
     public void launchView(List<CategoryRowModel> categories) {
         Stage stage = new Stage();
         SelectedCategoriesView selectedCategoriesView = new SelectedCategoriesView();
@@ -102,14 +137,7 @@ public class SelectedCategoriesController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
     }
-
 
     public void setCategories(List<CategoryRowModel> categories) {
         this.categories.addAll(categories);
