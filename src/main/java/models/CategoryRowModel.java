@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CategoryRowModel {
 
@@ -39,31 +38,38 @@ public class CategoryRowModel {
         }
         this.moments = FXCollections.observableArrayList();
         Set<Moment> uniqueMoments = new HashSet<>();
+        this.interviewMomentsMap = new HashMap<>();
+        List<String> momentNames = new ArrayList<>();
+
         for (Interview interview : interviews) {
+
             // On récupère les moments de chaque interview dans lesquels la catégorie est utilisée
             // l'objectif est d'avoir la listes des moments dans lesquels la catégorie est utilisée
             // ne pas ajouter les doublons
             // si le moment ne contient pas la catégorie, on l'ajoute pas
+            momentNames = new ArrayList<>();
            for (Moment moment : interview.getRootMoment().momentsProperty()) {
                 if (moment.containsCategory(category)) {
+                    momentNames.add(moment.getName());
                     uniqueMoments.add(moment);
                 }
+               for (Moment subMoment : moment.momentsProperty()) {
+                   if (subMoment.containsCategory(category)) {
+                       momentNames.add(subMoment.getName());
+                          uniqueMoments.add(subMoment);
+                   }
+                }
             }
+            this.interviewMomentsMap.put(interview.getTitle(), momentNames);
 
             //RootMoment rootMoment = interview.getRootMoment();
             //uniqueMoments.addAll(rootMoment.momentsProperty());
         }
 
-        this.interviewMomentsMap = new HashMap<>();
-        for (Interview interview : interviews) {
-            List<String> momentNames = interview.getRootMoment().momentsProperty().stream()
-                    .filter(moment -> moment.containsCategory(category))
-                    .map(Moment::getName)
-                    .collect(Collectors.toList());
-            this.interviewMomentsMap.put(interview.getTitle(), momentNames);
-        }
 
-        this.moments.addAll(uniqueMoments);
+
+
+       this.moments.addAll(uniqueMoments);
 
         this.selectedProperty = new SimpleBooleanProperty(false); // Initialisation à false
     }
