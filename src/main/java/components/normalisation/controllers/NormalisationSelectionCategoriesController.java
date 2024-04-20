@@ -2,7 +2,6 @@ package components.normalisation.controllers;
 
 import application.configuration.Configuration;
 import components.normalisation.SelectionCategoriesView;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,18 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Stage;
-import models.CategoryRowModel;
-import models.Interview;
-import models.SchemaCategory;
-import models.SchemaFolder;
+import models.*;
 import utils.GlobalVariables;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -71,7 +67,11 @@ public class NormalisationSelectionCategoriesController implements Initializable
             StringBuilder moments = new StringBuilder();
             for (Interview interview : rowModel.getInterviews()) {
                 moments.append("• ").append(interview.getTitle()).append(":\n");
-                List<String> momentNames = rowModel.getInterviewMomentsMap().get(interview.getTitle());
+
+                List<String> momentNames = new ArrayList<>();
+                for (Moment moment : rowModel.getInterviewMomentsMap().get(interview)) {
+                    momentNames.add(moment.getName());
+                }
                 if (momentNames != null) {
                     for (String momentName : momentNames) {
                         moments.append("\t• ").append(momentName).append("\n");

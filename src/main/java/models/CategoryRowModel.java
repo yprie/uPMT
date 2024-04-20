@@ -19,7 +19,7 @@ public class CategoryRowModel {
     private List<ObservableStringValue> propertiesValues;
     private ReadOnlyIntegerProperty nbOfUse;
     private BooleanProperty selectedProperty;
-    private Map<String, List<String>> interviewMomentsMap;
+    private Map<Interview, List<Moment>> interviewMomentsMap;
 
 
     public CategoryRowModel(SchemaCategory category){
@@ -39,7 +39,7 @@ public class CategoryRowModel {
         this.moments = FXCollections.observableArrayList();
         Set<Moment> uniqueMoments = new HashSet<>();
         this.interviewMomentsMap = new HashMap<>();
-        List<String> momentNames = new ArrayList<>();
+        List<Moment> moments = new ArrayList<>();
 
         for (Interview interview : interviews) {
 
@@ -47,15 +47,15 @@ public class CategoryRowModel {
             // l'objectif est d'avoir la listes des moments dans lesquels la catégorie est utilisée
             // ne pas ajouter les doublons
             // si le moment ne contient pas la catégorie, on l'ajoute pas
-            momentNames = new ArrayList<>();
+            moments = new ArrayList<Moment>();
             Set<Moment> visitedMoments = new HashSet<>(); // Pour éviter les doublons
 
             // Parcours des moments de premier niveau
             for (Moment moment : interview.getRootMoment().momentsProperty()) {
-                processMoment(moment, momentNames, visitedMoments);
+                processMoment(moment, moments, visitedMoments);
             }
 
-            this.interviewMomentsMap.put(interview.getTitle(), momentNames);
+            this.interviewMomentsMap.put(interview, moments);
 
         }
 
@@ -75,7 +75,7 @@ public class CategoryRowModel {
         return duplicate;
     }
 
-    public Map<String, List<String>> getInterviewMomentsMap() {
+    public Map<Interview, List<Moment>> getInterviewMomentsMap() {
         return this.interviewMomentsMap;
     }
 
@@ -108,9 +108,10 @@ public class CategoryRowModel {
         this.propertiesValues.remove(propertiesValue);
     }
 
-    private void processMoment(Moment moment, List<String> momentNames, Set<Moment> visitedMoments) {
+    private void
+    processMoment(Moment moment, List<Moment> momentNames, Set<Moment> visitedMoments) {
         if (moment.containsCategory(category)) {
-            momentNames.add(moment.getName());
+            momentNames.add(moment);
             visitedMoments.add(moment);
         }
 

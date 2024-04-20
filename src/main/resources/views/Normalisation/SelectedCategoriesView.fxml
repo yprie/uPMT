@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true">
+        <ScrollPane fx:id="scrollPane" prefWidth="600" prefHeight="400">
             <content>
                 <GridPane fx:id="selectedCategoriesGrid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                 </GridPane>
