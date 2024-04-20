@@ -48,30 +48,19 @@ public class CategoryRowModel {
             // ne pas ajouter les doublons
             // si le moment ne contient pas la catégorie, on l'ajoute pas
             momentNames = new ArrayList<>();
-           for (Moment moment : interview.getRootMoment().momentsProperty()) {
-                if (moment.containsCategory(category)) {
-                    momentNames.add(moment.getName());
-                    uniqueMoments.add(moment);
-                }
-               for (Moment subMoment : moment.momentsProperty()) {
-                   if (subMoment.containsCategory(category)) {
-                       momentNames.add(subMoment.getName());
-                          uniqueMoments.add(subMoment);
-                   }
-                }
+            Set<Moment> visitedMoments = new HashSet<>(); // Pour éviter les doublons
+
+            // Parcours des moments de premier niveau
+            for (Moment moment : interview.getRootMoment().momentsProperty()) {
+                processMoment(moment, momentNames, visitedMoments);
             }
+
             this.interviewMomentsMap.put(interview.getTitle(), momentNames);
 
-            //RootMoment rootMoment = interview.getRootMoment();
-            //uniqueMoments.addAll(rootMoment.momentsProperty());
         }
 
-
-
-
-       this.moments.addAll(uniqueMoments);
-
-        this.selectedProperty = new SimpleBooleanProperty(false); // Initialisation à false
+        this.moments.addAll(uniqueMoments);
+        this.selectedProperty = new SimpleBooleanProperty(false);
     }
 
     public CategoryRowModel duplicate() {
@@ -118,6 +107,21 @@ public class CategoryRowModel {
         ObservableStringValue propertiesValue = concreteProperty.valueProperty();
         this.propertiesValues.remove(propertiesValue);
     }
+
+    private void processMoment(Moment moment, List<String> momentNames, Set<Moment> visitedMoments) {
+        if (moment.containsCategory(category)) {
+            momentNames.add(moment.getName());
+            visitedMoments.add(moment);
+        }
+
+        // Parcours des sous-moments
+        for (Moment subMoment : moment.momentsProperty()) {
+            if (!visitedMoments.contains(subMoment)) {
+                processMoment(subMoment, momentNames, visitedMoments);
+            }
+        }
+    }
+
 
     public void addPropertyValue(ObservableStringValue propertyValue) {
         this.propertiesValues.add(propertyValue);
