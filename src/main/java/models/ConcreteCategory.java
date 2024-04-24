@@ -119,8 +119,13 @@ public class ConcreteCategory implements IDraggable {
         StringBuilder sb = new StringBuilder();
         for(ConcreteProperty p: properties)
             sb.append(p.toString()).append("\n");
+        // afficher les justifications mais pas tout car c'est trop long, juste le début et la fin avec ... au milieu
+        String justif = justification.toString();
+        if(justif.length() > 50) {
+            justif = justif.substring(0, 50) + "..." + justif.substring(justif.length()-50);
+        }
+        sb.append(justif);
         return sb.toString();
-
     }
 
 
