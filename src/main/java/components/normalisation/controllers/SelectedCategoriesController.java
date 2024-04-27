@@ -77,6 +77,15 @@ public class SelectedCategoriesController implements Initializable {
         }
     }
 
+    private void updateDragDropHandlers(Label label) {
+        if (!label.getText().isEmpty()) {
+            addDragDropHandlers(label);
+        } else {
+            label.setOnDragDetected(null);
+        }
+    }
+
+
     // Méthode pour ajouter les instances des catégories par interview
     // Méthode pour ajouter les instances des catégories par interview
     private void addCategoryInstances(List<CategoryRowModel> categories) {
@@ -105,6 +114,20 @@ public class SelectedCategoriesController implements Initializable {
                 }
             }
         }
+        // ajouter un label vide pour les cellules vides
+        for (int i = 2; i < selectedCategoriesGrid.getRowCount(); i++) {
+            for (int j = 1; j < selectedCategoriesGrid.getColumnCount(); j++) {
+                if (getNodeByRowAndColumnIndex(i, j) == null) {
+                    Label emptyLabel = createLabel("");
+                    // prendre toute la place disponible
+                    emptyLabel.setMaxWidth(Double.MAX_VALUE);
+                    emptyLabel.setMaxHeight(Double.MAX_VALUE);
+                    addDragDropHandlers(emptyLabel);
+                    selectedCategoriesGrid.add(emptyLabel, j, i);
+
+                }
+            }
+        }
 
     }
 
@@ -115,44 +138,71 @@ public class SelectedCategoriesController implements Initializable {
         return label;
     }
 
-    private void addDragDropHandlers(Label label) {
-        label.setOnDragDetected(event -> {
-            System.out.println("Drag detected on label: " + label.getText());
-            Dragboard dragboard = label.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(label.getText());
-            dragboard.setContent(content);
-            label.setStyle(label.getStyle() + "-fx-background-color: lightblue;");
-        });
+    private Node getNodeByRowAndColumnIndex(int rowIndex, int columnIndex) {
+        for (Node node : selectedCategoriesGrid.getChildren()) {
+            if (GridPane.getRowIndex(node) == rowIndex && GridPane.getColumnIndex(node) == columnIndex) {
+                return node;
+            }
+        }
+        return null;
+    }
 
-        label.setOnDragOver(event -> {
+
+    private void addDragDropHandlers(Label label) {
+        if (!label.getText().isEmpty()) { // Vérifier si le label est vide
+            label.setOnDragDetected(event -> {
+                System.out.println("Drag detected on label: " + label.getText());
+                Dragboard dragboard = label.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(label.getText());
+                dragboard.setContent(content);
+                label.setStyle(label.getStyle() + "-fx-background-color: lightblue;");
+            });
+        }
+
+
+            label.setOnDragOver(event -> {
             System.out.println("Drag over label: " + label.getText());
             if (event.getGestureSource() != label && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
+
             event.consume();
         });
 
         label.setOnDragDropped(event -> {
-            System.out.println("Drag dropped on label: " + label.getText());
             Dragboard dragboard = event.getDragboard();
             boolean success = false;
             if (dragboard.hasString()) {
-                // Récupérer le texte déposé
-                String droppedText = dragboard.getString();
-                System.out.println("Dropped text: " + droppedText);
+                int rowIndex = GridPane.getRowIndex((Node) event.getGestureTarget());
+                int columnIndex = GridPane.getColumnIndex((Node) event.getGestureTarget());
+                int sourceColumnIndex = GridPane.getColumnIndex((Node) event.getGestureSource());
 
-                // Supprimer le contenu de la cellule où l'étiquette a été déposée
-                Node target = event.getPickResult().getIntersectedNode();
-                if (target != null && target instanceof Label) {
-                    ((Label) target).setText(droppedText);
-                    System.out.println("Dropped text set on label: " + droppedText);
+
+                if (rowIndex >= 2 && columnIndex >= 0 && sourceColumnIndex == columnIndex) {
+                    Label targetLabel = null;
+                    ObservableList<Node> children = selectedCategoriesGrid.getChildren();
+                    for (Node child : children) {
+                        if (child instanceof Label && GridPane.getRowIndex(child) == rowIndex && GridPane.getColumnIndex(child) == columnIndex) {
+                            targetLabel = (Label) child;
+                            break;
+                        }
+                    }
+                    if (targetLabel != null) {
+                        targetLabel.setText(dragboard.getString());
+                        updateDragDropHandlers(targetLabel);
+                    } else {
+                        Label newLabel = createLabel(dragboard.getString());
+                        selectedCategoriesGrid.add(newLabel, columnIndex, rowIndex);
+                        updateDragDropHandlers(newLabel);
+                    }
                     success = true;
                 }
             }
             event.setDropCompleted(success);
             event.consume();
         });
+
 
         label.setOnDragDone(event -> {
             System.out.println("Drag done on label: " + label.getText());

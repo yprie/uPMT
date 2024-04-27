@@ -114,9 +114,7 @@ public class NormalisationSelectionCategoriesController implements Initializable
                 .collect(Collectors.toList());
     }
 
-    // lorsque l'utilisateur clique sur le bouton "Valider"
-    // on récupère les catégories sélectionnées et on les envoie à la vue suivante
-    // la vue suivante est SelectedCategoriesView
+
     @FXML
     private void handleValidateButton(ActionEvent event) {
         List<CategoryRowModel> selectedCategories = getSelectedCategories();

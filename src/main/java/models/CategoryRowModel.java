@@ -16,7 +16,6 @@ public class CategoryRowModel {
     private List<Interview> interviews;
     private List<Moment> moments;
     private ObservableList<SchemaProperty> properties;
-    private List<ObservableStringValue> propertiesValues;
     private ReadOnlyIntegerProperty nbOfUse;
     private BooleanProperty selectedProperty;
     private Map<Interview, List<Moment>> interviewMomentsMap;
@@ -29,13 +28,6 @@ public class CategoryRowModel {
         this.nbOfUse = category.numberOfUsesInModelisationProperty();
         this.interviews = FXCollections.observableArrayList(category.getInterviews());
         this.properties = FXCollections.observableArrayList(category.propertiesProperty());
-        this.propertiesValues = FXCollections.observableArrayList();
-        ObservableList<ConcreteProperty> propertiesConcrete = FXCollections.observableArrayList();
-        for (SchemaProperty p : properties) {
-            ConcreteProperty concreteProperty = new ConcreteProperty(p);
-            propertiesConcrete.add(concreteProperty);
-            this.propertiesValues.add(concreteProperty.valueProperty());
-        }
         this.moments = FXCollections.observableArrayList();
         Set<Moment> uniqueMoments = new HashSet<>();
         this.interviewMomentsMap = new HashMap<>();
@@ -70,7 +62,6 @@ public class CategoryRowModel {
         duplicate.setInterviews(new ArrayList<>(this.interviews));
         duplicate.setMoments(new ArrayList<>(this.moments));
         duplicate.setProperties(FXCollections.observableArrayList(this.properties));
-        duplicate.setPropertiesValues(new ArrayList<>(this.propertiesValues));
         // Note: The deep or shallow copy depends on the specific needs
         return duplicate;
     }
@@ -79,22 +70,6 @@ public class CategoryRowModel {
         return this.interviewMomentsMap;
     }
 
-    public void movePropertyValue(ObservableStringValue propertyValue1,ObservableStringValue propertyValue2) {
-        int index1 = propertiesValues.indexOf(propertyValue1);
-        int index2 = propertiesValues.indexOf(propertyValue2);
-
-        // Check if the first property value is in the list
-        if (index1 >= 0) {
-            // Move property value1 to the position of property value2
-            if (index2 >= 0) {
-                propertiesValues.set(index2, propertyValue1);
-            } else {
-                propertiesValues.add(propertyValue1);
-            }
-            // Remove the original property value1 or replace it with a null or an empty string
-            propertiesValues.set(index1, null );
-        }
-    }
 
     public void addProperty(SchemaProperty property) {
         this.properties.add(property);
@@ -105,7 +80,6 @@ public class CategoryRowModel {
         // Also need to remove values associated with this property
         ConcreteProperty concreteProperty = new ConcreteProperty(property);
         ObservableStringValue propertiesValue = concreteProperty.valueProperty();
-        this.propertiesValues.remove(propertiesValue);
     }
 
     private void
@@ -124,9 +98,6 @@ public class CategoryRowModel {
     }
 
 
-    public void addPropertyValue(ObservableStringValue propertyValue) {
-        this.propertiesValues.add(propertyValue);
-    }
     public SchemaCategory getCategory() {
         return this.category;
     }
@@ -190,9 +161,6 @@ public class CategoryRowModel {
         this.properties = properties;
     }
 
-    public void setPropertiesValues(List<ObservableStringValue> propertiesValues) {
-        this.propertiesValues = propertiesValues;
-    }
 
     public int getNbOfUse() {
         return nbOfUse.get();
@@ -200,10 +168,6 @@ public class CategoryRowModel {
 
     public ReadOnlyIntegerProperty nbOfUseProperty() {
         return nbOfUse;
-    }
-
-    public List<ObservableStringValue> getPropertiesValues() {
-        return this.propertiesValues;
     }
 
     public BooleanProperty selectedProperty() {
