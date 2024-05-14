@@ -11,7 +11,7 @@
        <ButtonBar prefHeight="40.0" prefWidth="200.0">
            <buttons>
                <Button fx:id="addInterviewButton" mnemonicParsing="false" text="%add_interview" styleClass="button-gray" />
-               <Button fx:id="comparisonButton" mnemonicParsing="false" text="%comparison_table" styleClass="button-gray" />
+               <!---<Button fx:id="comparisonButton" mnemonicParsing="false" text="%comparison_table" styleClass="button-gray" /> -->
                <Button fx:id="normalisationButton" mnemonicParsing="false" text="%normalisation_table" styleClass="button-gray" />
            </buttons>
          <padding>

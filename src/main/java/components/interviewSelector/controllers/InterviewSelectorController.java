@@ -23,7 +23,7 @@ public class InterviewSelectorController implements Initializable  {
 
     @FXML private ListView<Interview> interviewList;
     @FXML private Button addInterviewButton;
-    @FXML private Button comparisonButton;
+    //@FXML private Button comparisonButton;
 
     @FXML private Button normalisationButton;
 
@@ -56,13 +56,13 @@ public class InterviewSelectorController implements Initializable  {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addInterviewButton.setOnAction(event -> { commandFactory.createNewInterview().execute(); });
-        comparisonButton.setOnAction(event -> {
+        /*comparisonButton.setOnAction(event -> {
             try {
                 commandFactory.createComparison().selectInterviews();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        });
+        });*/
         interviewList.setCellFactory(listView -> new InterviewSelectorCell(commandFactory));
         bind(interviews);
         for(Interview i: interviews){
