@@ -11,17 +11,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import models.SchemaCategory;
 import models.SchemaFolder;
 import utils.GlobalVariables;
 import utils.ResourceLoader;
-import utils.GlobalVariables;
 import utils.autoSuggestion.AutoSuggestionsTextField;
 import utils.autoSuggestion.strategies.SuggestionStrategy;
-import utils.dragAndDrop.DragStore;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -122,7 +119,7 @@ public abstract class SchemaTreeCellController implements Initializable {
                                                 Alert alert = new Alert(Alert.AlertType.WARNING);
                                                 alert.setTitle("Warning");
                                                 alert.setHeaderText(null);
-                                                alert.setContentText("Veillez à ne pas laisser le nom de la catégorie vide");
+                                                alert.setContentText("Le nom de la catégorie est invalide");
                                                 alert.showAndWait();
 
                                             }
@@ -133,7 +130,6 @@ public abstract class SchemaTreeCellController implements Initializable {
                                         return;
                                     }
                                     if (renamingField.getText().equals(category.nameProperty().get())) {
-                                        System.out.println("test");
                                         Alert alert = new Alert(Alert.AlertType.WARNING);
                                         alert.setTitle("Warning");
                                         alert.setHeaderText(null);
