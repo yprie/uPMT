@@ -1,6 +1,5 @@
 package models;
 
-import components.modelisationSpace.category.controllers.ConcreteCategoryController;
 import components.modelisationSpace.property.controllers.ConcretePropertyController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -63,5 +62,11 @@ public class ConcreteProperty {
 
     public void setController(ConcretePropertyController controller) {
         this.controller = controller;
+    }
+
+    // To string method
+    @Override
+    public String toString() {
+        return property.getName() + " = " + value.getValue();
     }
 }

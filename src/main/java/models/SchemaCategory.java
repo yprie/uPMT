@@ -16,6 +16,7 @@ import javafx.scene.input.DataFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SchemaCategory extends SchemaElement implements IRemovable {
 
@@ -205,8 +206,11 @@ public class SchemaCategory extends SchemaElement implements IRemovable {
         this.nbUsesInInterviews.putIfAbsent(t1, 0);
         this.currentInterviewUses.set(this.nbUsesInInterviews.get(t1));
     };
-
+    public List<Interview> getInterviews() {
+        return new ArrayList<>(nbUsesInInterviews.keySet());
+    }
     public HashMap<Interview, Integer> getUsesMap() {
         return this.nbUsesInInterviews;
     }
-}
+};
+

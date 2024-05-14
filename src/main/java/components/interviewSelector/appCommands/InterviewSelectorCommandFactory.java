@@ -2,6 +2,7 @@ package components.interviewSelector.appCommands;
 
 import components.comparison.controllers.ComparisonSelectionInterviewsControler;
 import components.interviewSelector.controllers.InterviewSelectorCellController;
+import components.normalisation.controllers.NormalisationSelectionCategoriesController;
 import models.Interview;
 import models.Project;
 
@@ -17,5 +18,9 @@ public class InterviewSelectorCommandFactory {
     public ComparisonSelectionInterviewsControler createComparison() { return new ComparisonSelectionInterviewsControler(); }
     public ChangeColorInterviewCommand colorCommand(Interview interview, String color, InterviewSelectorCellController interviewSelectorCellController) {
         return new ChangeColorInterviewCommand(interview, color, interviewSelectorCellController);
+    }
+
+    public NormalisationSelectionCategoriesController createNormalisation() {
+        return new NormalisationSelectionCategoriesController();
     }
 }

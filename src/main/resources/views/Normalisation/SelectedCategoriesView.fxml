@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/application.css">
+    <center>
+        <ScrollPane fx:id="scrollPane" prefWidth="600" prefHeight="400">
+            <content>
+                <GridPane fx:id="selectedCategoriesGrid" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

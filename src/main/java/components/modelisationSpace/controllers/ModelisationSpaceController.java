@@ -226,7 +226,7 @@ public class ModelisationSpaceController extends ScrollOnDragPane implements Ini
             }
         });
 
-        RadioButton category_name_choice = new RadioButton(Configuration.langBundle.getString("category_name"));
+        RadioButton category_name_choice = new RadioButton(Configuration.langBundle.getString("categories_name"));
         category_name_choice.setToggleGroup(toggleGroup);
         category_name_choice.setOnAction(e -> {
             if (category_name_choice.isSelected()) {
