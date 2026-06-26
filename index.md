@@ -2,6 +2,8 @@
 
 ![uPMT main screenshot](/uPMT-main.png)
 
+## IMPORTANT: This Java version of uPMT is not maintained anymore: please consider using the new version on https://upmt.github.io/
+
 ### What is µPMT?
 
 µPMT stands for "micro Phenomenology Modelling Tool". It is also written uPMT because greec letters can be hard to find on average keyboards.
