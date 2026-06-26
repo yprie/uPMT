@@ -2,6 +2,8 @@
 
 GitHub page for this project: https://yprie.github.io/uPMT/
 
+!!!IMPORTANT!!! This Java version of uPMT is not maintained anymore: please consider using the new version on https://upmt.github.io/ 
+
 uPMT is aimed at researchers using microphenomenology interviews (also know as explicitation interviews) to study lived experience. It has been designed to help analyze the micro-dynamics of experience as described in interview transcriptions, by modelling and formalizing the sequential unfolding of "experience moments" described with categories and properties, and linked to the descriptemes - excerpts of the transcript - that justify them.
 
 Current work is carried out by Gabriel Jolly, Thomas Clouet and Célian Rolland. Past developers were Yves Motteux and Esteban Jamin (20-21), Xavier Tremillon, Yahuan Chen and Nathan Seva (19-20), Gwenaelle Gouriten, Salma Hichami and Othman Houmair (18-19), and Mehdi Haddad, Eva Boon and Yinxing Huang (17-18), under the supervision of Yannick Prié. The first version of the software was implemented by Corentin Jezequel in late 2017, under the supervision of Yannick Prié and Thomas Rabeyron.
